@@ -2,25 +2,51 @@ import { ReactComponent as Telephone } from '../../assets/icons/telephoneIcon.sv
 import { ReactComponent as Clock } from '../../assets/icons/clock_icon.svg'
 import { ReactComponent as Mail } from '../../assets/icons/mail_icon.svg'
 import { ReactComponent as Location } from '../../assets/icons/location_icon.svg'
+import { ReactComponent as Logo } from '../../assets/images/logo.svg'
+import { styled } from '@mui/material'
+
+const StyledFooter = styled('footer')(() => ({
+  backgroundColor: '#1A1A25',
+  width: '100%',
+  height: '100%',
+  padding: '1.5rem 2rem',
+  color: '#858FA4',
+  paddingBottom: '2.5rem',
+  paddingTop: '3.75rem',
+  paddingLeft: '12.1rem',
+  paddingRight: '12.1rem'
+}))
+
+const StyledLink = styled('a')(() => ({
+  textDecoration: 'none',
+  color: '#858FA4',
+  '&:hover': {
+    color: '#FFF'
+  }
+}))
+
+const StyledFirstFooterBlock = styled('a')(() => ({
+  display: 'flex'
+}))
 
 const Footer = () => {
   return (
-    <footer>
-      <div>
+    <StyledFooter>
+      <StyledFirstFooterBlock>
         <div>
           <p>Каталог</p>
           <ul>
             <li>
-              <a href="#">Смартфоны</a>
+              <StyledLink href="#">Смартфоны</StyledLink>
             </li>
             <li>
-              <a href="#">Ноутбуки и планшеты</a>
+              <StyledLink href="#">Ноутбуки и планшеты</StyledLink>
             </li>
             <li>
-              <a href="#">Смарт-часы и браслеты</a>
+              <StyledLink href="#">Смарт-часы и браслеты</StyledLink>
             </li>
             <li>
-              <a href="#">Аксессуары</a>
+              <StyledLink href="#">Аксессуары</StyledLink>
             </li>
           </ul>
         </div>
@@ -29,13 +55,13 @@ const Footer = () => {
           <p>Будь с нами</p>
           <ul>
             <li>
-              <a href="#">Акции</a>
+              <StyledLink href="#">Акции</StyledLink>
             </li>
             <li>
-              <a href="#">Новинки</a>
+              <StyledLink href="#">Новинки</StyledLink>
             </li>
             <li>
-              <a href="#">Популярные категории</a>
+              <StyledLink href="#">Популярные категории</StyledLink>
             </li>
           </ul>
         </div>
@@ -44,48 +70,50 @@ const Footer = () => {
           <p>Помощь и сервисы</p>
           <ul>
             <li>
-              <a href="#">О магазине</a>
+              <StyledLink href="#">О магазине</StyledLink>
             </li>
             <li>
-              <a href="#">Доставка</a>
+              <StyledLink href="#">Доставка</StyledLink>
             </li>
             <li>
-              <a href="#">FAQ</a>
+              <StyledLink href="#">FAQ</StyledLink>
             </li>
             <li>
-              <a href="#">Контакты</a>
-              <input type="email" />
-              <button>Подпиаться</button>
-              <h5>
-                Нажимая на кнопку «подписаться» Вы соглашаетесь на обработку персональных данных
-              </h5>
-              <p>
-                <Telephone /> +996 (400) 00 00 00
-              </p>
-              <p>
-                <Mail />
-                Gadgetarium.kg
-              </p>
-              <p>
-                <Location /> г.Бишкек, ул. Гражданская 119
-              </p>
-              <p>
-                <Clock />С 10:00 до 21:00 (без выходных)
-              </p>
+              <StyledLink href="#">Контакты</StyledLink>
             </li>
           </ul>
         </div>
-      </div>
+
+        <div>
+          <p>Расскажем об акциях и скидках</p>
+          <input type="email" />
+          <button>Подпиcаться</button>
+          <h5>Нажимая на кнопку «подписаться» Вы соглашаетесь на обработку персональных данных</h5>
+          <p>
+            <Telephone /> +996 (400) 00 00 00
+          </p>
+          <p>
+            <Mail />
+            Gadgetarium.kg
+          </p>
+          <p>
+            <Location /> г.Бишкек, ул. Гражданская 119
+          </p>
+          <p>
+            <Clock />С 10:00 до 21:00 (без выходных)
+          </p>
+        </div>
+      </StyledFirstFooterBlock>
 
       <div>
-        <p>Расскажем об акциях и скидках</p>
-      </div>
-
-      <div>
-        <div>LOGO</div>
+        <div>
+          <a href="/">
+            <Logo />
+          </a>
+        </div>
         <p>© 2022 Gadgetarium. Интернет магазин Все права защищены.</p>
       </div>
-    </footer>
+    </StyledFooter>
   )
 }
 
