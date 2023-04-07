@@ -1,5 +1,4 @@
 import { InputBase, styled } from '@mui/material'
-import { Box } from '@mui/system'
 import { ChangeEvent, forwardRef } from 'react'
 
 type InputProps = {
@@ -28,17 +27,15 @@ const InputStyled = styled(InputBase)(() => ({
 const Input = forwardRef(
   ({ value, onChange, error, placeholder = '', ...props }: InputProps, ref) => {
     return (
-      <Box>
-        <InputStyled
-          {...props}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          error={Boolean(error)}
-          classes={{ root: 'input', focused: 'focused', error: 'error' }}
-          ref={ref}
-        />
-      </Box>
+      <InputStyled
+        {...props}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        error={Boolean(error)}
+        classes={{ root: 'input', focused: 'focused', error: 'error' }}
+        ref={ref}
+      />
     )
   }
 )
