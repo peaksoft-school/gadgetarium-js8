@@ -7,10 +7,8 @@ type PropsModalContent = {
 }
 
 const StyledModalContent = styled('div')(() => ({
-  position: 'fixed',
   display: 'flex',
   flexDirection: 'column',
-  top: '20vh',
   backgroundColor: '#fff',
   padding: '1rem',
   borderRadius: '14px',
@@ -18,7 +16,10 @@ const StyledModalContent = styled('div')(() => ({
   zIndex: '30',
   animation: 'slide-down 300ms ease-out forwards',
   width: '40rem',
-  left: 'calc(50% -  20rem)'
+  position: 'absolute',
+  left: '50%',
+  top: '50%',
+  transform: 'translate(-50%, -50%)'
 }))
 
 const ModalContent = ({ children }: PropsModalContent) => {
@@ -34,12 +35,7 @@ type PropsModal = {
 const Modal = ({ children, onClose, open }: PropsModal) => {
   return (
     <>
-      <MuiModal
-        open={open}
-        onClose={onClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <MuiModal open={open} onClose={onClose}>
         <Box>
           <ModalContent>{children}</ModalContent>
         </Box>
