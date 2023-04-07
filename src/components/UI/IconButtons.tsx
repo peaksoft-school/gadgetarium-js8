@@ -4,8 +4,8 @@ type Props = {
   icon?: React.ReactNode
 }
 
-const IconButtons = ({ icon }: Props) => {
-  return <IconButton>{icon}</IconButton>
+const IconButtons = ({ icon, ...restProps }: Props) => {
+  return <IconButton {...restProps}>{icon}</IconButton>
 }
 
 export default IconButtons
