@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@mui/material/styles'
-import './App.css'
 import { appTheme } from './utils/constants/theme'
 
 const AppContent = () => {
