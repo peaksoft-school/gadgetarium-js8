@@ -1,6 +1,11 @@
 import styled from '@emotion/styled'
-import { Checkbox } from '@mui/material'
+import { Checkbox, FormControlLabel, FormGroup } from '@mui/material'
 
+interface CheckBox {
+  label?: string
+  checked?: boolean
+  onChange?: () => void
+}
 const StyledCheckBox = styled(Checkbox)(() => ({
   '&:hover': {
     color: '#CB11AB'
@@ -11,6 +16,13 @@ const StyledCheckBox = styled(Checkbox)(() => ({
   color: '#858FA4'
 }))
 
-export const CheckBox = () => {
-  return <StyledCheckBox />
+export const CheckBoxLabels = ({ checked, onChange, label }: CheckBox) => {
+  return (
+    <FormGroup>
+      <FormControlLabel
+        control={<StyledCheckBox checked={checked} onChange={onChange} />}
+        label={label}
+      />
+    </FormGroup>
+  )
 }
