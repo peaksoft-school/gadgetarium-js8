@@ -2,10 +2,6 @@ import { styled } from '@mui/system'
 import { Modal as MuiModal } from '@mui/material'
 import { Box } from '@mui/material'
 
-type PropsModalContent = {
-  children?: JSX.Element | JSX.Element[] | string
-}
-
 const StyledModalContent = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
@@ -22,10 +18,6 @@ const StyledModalContent = styled('div')(() => ({
   transform: 'translate(-50%, -50%)'
 }))
 
-const ModalContent = ({ children }: PropsModalContent) => {
-  return <StyledModalContent>{children}</StyledModalContent>
-}
-
 type PropsModal = {
   onClose: () => void
   open: boolean
@@ -34,13 +26,11 @@ type PropsModal = {
 
 const Modal = ({ children, onClose, open }: PropsModal) => {
   return (
-    <>
-      <MuiModal open={open} onClose={onClose}>
-        <Box>
-          <ModalContent>{children}</ModalContent>
-        </Box>
-      </MuiModal>
-    </>
+    <MuiModal open={open} onClose={onClose}>
+      <Box>
+        <StyledModalContent>{children}</StyledModalContent>
+      </Box>
+    </MuiModal>
   )
 }
 
