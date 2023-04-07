@@ -6,6 +6,7 @@ type InputProps = {
   value: string
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void
   error: boolean
+  placeholder?: string
 }
 const InputStyled = styled(InputBase)(() => ({
   '&.input': {
@@ -24,19 +25,22 @@ const InputStyled = styled(InputBase)(() => ({
   }
 }))
 
-const Input = forwardRef(({ value, onChange, error, ...props }: InputProps, ref) => {
-  return (
-    <Box>
-      <InputStyled
-        {...props}
-        value={value}
-        onChange={onChange}
-        error={Boolean(error)}
-        classes={{ root: 'input', focused: 'focused', error: 'error' }}
-        ref={ref}
-      />
-    </Box>
-  )
-})
+const Input = forwardRef(
+  ({ value, onChange, error, placeholder = '', ...props }: InputProps, ref) => {
+    return (
+      <Box>
+        <InputStyled
+          {...props}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          error={Boolean(error)}
+          classes={{ root: 'input', focused: 'focused', error: 'error' }}
+          ref={ref}
+        />
+      </Box>
+    )
+  }
+)
 
 export default Input
