@@ -1,6 +1,5 @@
 import { styled } from '@mui/system'
 import { Modal as MuiModal } from '@mui/material'
-import { Box } from '@mui/material'
 
 const StyledModalContent = styled('div')(() => ({
   display: 'flex',
@@ -27,9 +26,7 @@ type PropsModal = {
 const Modal = ({ children, onClose, open }: PropsModal) => {
   return (
     <MuiModal open={open} onClose={onClose}>
-      <Box>
-        <StyledModalContent>{children}</StyledModalContent>
-      </Box>
+      <StyledModalContent>{children}</StyledModalContent>
     </MuiModal>
   )
 }
