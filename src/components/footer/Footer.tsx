@@ -67,6 +67,28 @@ const StyledSecondFooterBlock = styled('div')(() => ({
   width: '30%'
 }))
 
+const StyledInput = styled('input')(() => ({
+  minWidth: '230px',
+  padding: '10px 10px',
+  outline: 'none',
+  color: '#292929',
+  borderRadius: '4px 0px 0px 4px',
+  border: 'none',
+  fomtFamily: 'Inter'
+}))
+
+const StyledButton = styled('button')(() => ({
+  padding: '7.5px 1.3rem 10px 1.3rem',
+  fontFamily: 'Montserrat',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '16px',
+  background: '#CB11AB',
+  color: '#fff',
+  border: 'none',
+  fomtFamily: 'Montserrat'
+}))
+
 const StyledThirdFooterBlock = styled('div')(() => ({
   textAlign: 'center'
 }))
@@ -130,8 +152,8 @@ const Footer = () => {
 
         <StyledSecondFooterBlock>
           <StyledBlockName>Расскажем об акциях и скидках</StyledBlockName>
-          <input type="email" />
-          <button>Подпиcаться</button>
+          <StyledInput placeholder="Email" type="email" />
+          <StyledButton>Подпиcаться</StyledButton>
           <p style={{ color: '#FFF' }}>
             Нажимая на кнопку «подписаться» Вы соглашаетесь на обработку персональных данных
           </p>
