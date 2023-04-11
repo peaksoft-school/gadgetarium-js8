@@ -61,21 +61,13 @@ const SecondHeaderContainer = styled('div')(() => ({
 const StyledList = styled('ul')(() => ({
   listStyle: 'none',
   display: 'flex',
-  marginLeft: '4rem',
-  alignItems: 'center',
-  li: {
-    marginRight: '2.2rem'
-  },
-  'li:first-child': {
-    backgroundColor: '#858FA426',
-    padding: '0.75rem 0.857rem',
-    borderRadius: '4px'
-  }
+  marginLeft: '3rem',
+  alignItems: 'center'
 }))
 
 const NumberContainer = styled('div')(() => ({
   display: 'flex',
-  fontFamily: 'Inter',
+  fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
   fontWeight: '500',
   fontSize: '1rem',
@@ -89,12 +81,18 @@ const NumberContainer = styled('div')(() => ({
 const StyledNavLink = styled('a')(() => ({
   textDecoration: 'none',
   color: '#fff',
-  fontFamily: 'Inter',
+  fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
   fontWeight: '400',
   fontSize: '1rem',
   lineHeight: '140%',
-  textAlign: 'center'
+  textAlign: 'center',
+  marginRight: '1.5rem',
+  '&:first-of-type': {
+    backgroundColor: '#858FA426',
+    padding: '0.75rem 0.857rem',
+    borderRadius: '4px'
+  }
 }))
 
 const StyledButton = styled(Button)(() => ({
@@ -103,7 +101,7 @@ const StyledButton = styled(Button)(() => ({
   opacity: '1000',
   padding: '0.75rem 1.25rem 0.8125rem 1.25rem',
   borderRadius: '4px',
-  marginLeft: '5rem',
+  marginLeft: '5.5rem',
 
   '&:hover': {
     backgroundColor: '#991984'
@@ -111,7 +109,7 @@ const StyledButton = styled(Button)(() => ({
 }))
 
 const StyledPContent = styled('p')(() => ({
-  fontFamily: 'Inter',
+  fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
   fontWeight: '700',
   fontSize: '1rem',
@@ -169,7 +167,7 @@ const InteractionIcons = styled('ul')(() => ({
 const InteractionIconsItem = styled('li')(() => ({
   'path:hover': {
     fill: '#CB11AB',
-    'span:nth-child(2)': {
+    'span:nth-of-type(2)': {
       fill: 'red'
     }
   }
@@ -182,14 +180,14 @@ const SocialMediaListItem = styled('li')(() => ({
 }))
 
 const LikeIconItem = styled('li')(() => ({
-  'span:last-child': {
+  'span:last-of-type': {
     display: 'none'
   },
   '&:hover': {
-    'span:first-child': {
+    'span:first-of-type': {
       display: 'none'
     },
-    'span:last-child': {
+    'span:last-of-type': {
       display: 'block'
     }
   }
@@ -206,21 +204,11 @@ const Header = () => {
         </div>
         <div>
           <StyledList>
-            <li>
-              <StyledNavLink href="baac">Главная</StyledNavLink>
-            </li>
-            <li>
-              <StyledNavLink href="sdvs">О магазине</StyledNavLink>
-            </li>
-            <li>
-              <StyledNavLink href="asc">Доставка</StyledNavLink>
-            </li>
-            <li>
-              <StyledNavLink href="sdv">FAG</StyledNavLink>
-            </li>
-            <li>
-              <StyledNavLink href="svn">Контакты</StyledNavLink>
-            </li>
+            <StyledNavLink href="baac">Главная</StyledNavLink>
+            <StyledNavLink href="sdvs">О магазине</StyledNavLink>
+            <StyledNavLink href="asc">Доставка</StyledNavLink>
+            <StyledNavLink href="sdv">FAG</StyledNavLink>
+            <StyledNavLink href="svn">Контакты</StyledNavLink>
           </StyledList>
         </div>
         <NumberContainer>
