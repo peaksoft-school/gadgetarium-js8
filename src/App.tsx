@@ -1,12 +1,7 @@
 import './App.css'
-import SimpleSnackbar from './components/UI/snackbar/Snackbar'
 
 function App() {
-  return (
-    <div>
-      <SimpleSnackbar />
-    </div>
-  )
+  return <div></div>
 }
 
 export default App
