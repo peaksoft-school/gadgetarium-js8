@@ -93,6 +93,10 @@ const StyledThirdFooterBlock = styled('div')(() => ({
   textAlign: 'center'
 }))
 
+const StyledInfoBlockSpan = styled('span')(() => ({
+  marginLeft: '15px'
+}))
+
 const Footer = () => {
   return (
     <StyledFooter>
@@ -159,17 +163,18 @@ const Footer = () => {
           </p>
           <InfoBlock>
             <p>
-              <Telephone /> +996 (400) 00 00 00
+              <Telephone /> <StyledInfoBlockSpan> +996 (400) 00 00 00</StyledInfoBlockSpan>
             </p>
             <p>
               <Mail />
-              Gadgetarium.kg
+              <StyledInfoBlockSpan>Gadgetarium.kg</StyledInfoBlockSpan>
             </p>
             <p>
-              <Location /> г.Бишкек, ул. Гражданская 119
+              <Location />
+              <StyledInfoBlockSpan> г.Бишкек, ул. Гражданская 119 </StyledInfoBlockSpan>
             </p>
             <p>
-              <Clock />С 10:00 до 21:00 (без выходных)
+              <Clock /> <StyledInfoBlockSpan> С 10:00 до 21:00 (без выходных) </StyledInfoBlockSpan>
             </p>
           </InfoBlock>
         </StyledSecondFooterBlock>
