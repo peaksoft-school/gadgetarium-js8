@@ -34,11 +34,11 @@ const Button = ({
   ...props
 }: ButtonProps & { children: React.ReactNode }) => {
   return (
-    <div>
+    <>
       <MuiButtonStyled onClick={onClick} disabled={disabled} variant={variant} {...props}>
         {children}
       </MuiButtonStyled>
-    </div>
+    </>
   )
 }
 
