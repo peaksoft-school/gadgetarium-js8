@@ -1,6 +1,7 @@
 import Snackbar from '@mui/material/Snackbar'
 import { ReactComponent as SnackbarIcon } from '../../../assets/icons/SnackbarIcon.svg'
 import styled from '@emotion/styled'
+import { Fragment } from 'react'
 
 type SnackbarOriginType = {
   vertical: 'top' | 'bottom'
@@ -50,7 +51,7 @@ const SimpleSnackbar = ({
   )
 
   return (
-    <div>
+    <Fragment>
       <Snackbar
         ContentProps={{
           sx: {
@@ -73,7 +74,7 @@ const SimpleSnackbar = ({
         message={message}
         action={action}
       />
-    </div>
+    </Fragment>
   )
 }
 export default SimpleSnackbar
