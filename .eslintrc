@@ -18,7 +18,7 @@
     "prettier",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["react", "react-hooks", "@typescript-eslint", "jest","import"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "jest", "import"],
   "env": {
     "browser": true,
     "es6": true,
@@ -53,14 +53,14 @@
     "react/function-component-definition": "off",
     "react/prop-types":"off",
     "max-len": [
-           "error",
-       {
-         "code": 100,
-         "ignoreStrings": true,
-         "ignoreTemplateLiterals": true,
-         "ignoreRegExpLiterals": true
-       }
-     ],
+      "error",
+      {
+        "code": 100,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
+      }
+    ],
     "no-console": ["warn", { "allow": ["warn", "error"] }],
     "import/no-extraneous-dependencies": "off"
   }
