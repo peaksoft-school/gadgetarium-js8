@@ -2,7 +2,6 @@ import { ThemeProvider } from '@mui/material/styles'
 import { appTheme } from './utils/constants/theme'
 import Footer from './components/footer/Footer'
 
-
 const AppContent = () => {
   return (
     <div>
