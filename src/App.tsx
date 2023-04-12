@@ -1,7 +1,12 @@
 import './App.css'
+import Delivery from './layout/delivery/Delivery'
 
 function App() {
-  return <div></div>
+  return (
+    <div>
+      <Delivery />
+    </div>
+  )
 }
 
 export default App
