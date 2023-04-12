@@ -73,7 +73,7 @@ const InfoContainerListItem = styled('li')(() => ({
   div: {
     display: 'flex',
     p: {
-      marginLeft: '0.75rem'
+      marginLeft: '0.751rem'
     }
   }
 }))
