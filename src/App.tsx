@@ -1,12 +1,6 @@
 import './App.css'
-import Delivery from './layout/delivery/Delivery'
-
 function App() {
-  return (
-    <div>
-      <Delivery />
-    </div>
-  )
+  return <div></div>
 }
 
 export default App
