@@ -2,12 +2,11 @@ import React from 'react'
 import Input from '../../components/UI/inputs/Input'
 import Button from '../../components/UI/buttons/Button'
 import { styled, Divider, TextField } from '@mui/material'
-import Map1 from '../../components/UI/yandexMap/Map'
 
 const MainContainer = styled('div')(() => ({
   width: '100%',
   height: '100%',
-  padding: '3.9375rem 12.25rem 2rem 12.25rem',
+  padding: '3.9375rem 12.25rem 7.5rem 12.25rem',
   backgroundColor: '#E8E8E8'
 }))
 
@@ -80,6 +79,7 @@ const StyledSpan = styled('span')(() => ({
 }))
 
 const StyledFormContainer = styled('form')(() => ({
+  width: '550px',
   marginTop: '60px'
 }))
 
@@ -96,7 +96,9 @@ const FormTitle = styled('h2')(() => ({
 }))
 
 const InputContainer = styled('div')(() => ({
-  display: 'flex'
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, auto)',
+  gap: '12px'
 }))
 
 const StyledStarIcon = styled('span')(() => ({
@@ -113,7 +115,8 @@ const StyledFormLi = styled('li')(() => ({
   marginTop: '1rem'
 }))
 const StyledFormUl = styled('ul')(() => ({
-  marginRight: '1rem'
+  marginRight: '1rem',
+  width: '100%'
 }))
 
 const StyledLabel = styled('label')(() => ({
@@ -126,12 +129,16 @@ const StyledLabel = styled('label')(() => ({
   color: '#384255'
 }))
 
-const StyledInput = styled(TextField)(() => ({
-  width: '450px',
+const StyledInput = styled(Input)(() => ({
+  width: '100%'
+}))
+
+const MultilineInput = styled(TextField)(() => ({
+  width: '100%',
   border: '0.1px solid #b59099',
   background: '#F7F7F7',
   borderRadius: '5px',
-  '&:activ': {
+  '&:focus': {
     border: '0.1px solid #CB11AB',
     background: '#F4F4F4',
     color: '#292929'
@@ -143,8 +150,8 @@ const StyledButton = styled(Button)(() => ({
   width: '100%'
 }))
 
-const StyledMap = styled('div')(() => ({
-  margin: '3.5rem',
+const StyledMap = styled('iframe')(() => ({
+  marginTop: '7.5rem',
   width: '100%',
   height: '20rem'
 }))
@@ -190,7 +197,7 @@ const Contackts = () => {
                   <StyledLabel htmlFor="">
                     Имя <StyledStarIcon>*</StyledStarIcon>
                   </StyledLabel>
-                  <Input
+                  <StyledInput
                     value={''}
                     onChange={() => {}}
                     error={false}
@@ -201,7 +208,7 @@ const Contackts = () => {
                   <StyledLabel htmlFor="">
                     E-mail <StyledStarIcon>*</StyledStarIcon>
                   </StyledLabel>
-                  <Input
+                  <StyledInput
                     value={''}
                     onChange={() => {}}
                     error={false}
@@ -214,7 +221,7 @@ const Contackts = () => {
                   <StyledLabel htmlFor="">
                     Фамилия <StyledStarIcon>*</StyledStarIcon>
                   </StyledLabel>
-                  <Input
+                  <StyledInput
                     value={''}
                     onChange={() => {}}
                     error={false}
@@ -225,7 +232,7 @@ const Contackts = () => {
                   <StyledLabel htmlFor="">
                     Телефон <StyledStarIcon>*</StyledStarIcon>
                   </StyledLabel>
-                  <Input
+                  <StyledInput
                     value={''}
                     onChange={() => {}}
                     error={false}
@@ -236,7 +243,7 @@ const Contackts = () => {
             </InputContainer>
             <StyledFormLi>
               <StyledLabel htmlFor="">Собщение</StyledLabel>
-              <StyledInput
+              <MultilineInput
                 multiline
                 rows={5}
                 onChange={() => {}}
@@ -249,9 +256,12 @@ const Contackts = () => {
           </div>
         </StyledFormContainer>
       </StyledContentContainer>
-      <StyledMap>
-        <Map1 />
-      </StyledMap>
+
+      <StyledMap
+        src="https://yandex.ru/maps/10309/bishkek/house/Y00YcAVoSkwBQFpofXR2dHVjZw==/?ll=74.627051%2C42.874992&z=17.8"
+        height="100%"
+        width="100%"
+      />
     </MainContainer>
   )
 }
