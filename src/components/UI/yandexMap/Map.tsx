@@ -10,7 +10,7 @@ import {
   GeolocationControl,
   TrafficControl,
   ZoomControl
-} from 'react-yandex-maps'
+} from '@pbe/react-yandex-maps'
 
 const StyledMap1 = styled(YandexMap)(() => ({
   width: '100%',
