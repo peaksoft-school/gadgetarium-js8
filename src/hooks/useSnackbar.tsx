@@ -41,6 +41,6 @@ export const useSnackbar = ({
 
   return {
     snackbarHanler,
-    toast: <Toastify position={position} autoClose={autoClose} icon={false} />
+    ToastContainer: <Toastify position={position} autoClose={autoClose} icon={false} />
   }
 }
