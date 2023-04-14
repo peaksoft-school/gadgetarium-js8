@@ -1,5 +1,11 @@
-import { Accordion, AccordionDetails, AccordionSummary, styled, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+import {
+  Box,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  styled,
+  Typography
+} from '@mui/material'
 import { ReactComponent as Vector } from '../../assets/icons/fag-icons/Vector 2.svg'
 
 type AccordionProps = {
@@ -68,7 +74,7 @@ const AccordionDetailsStyled = styled(AccordionDetails)(() => ({
   }
 }))
 
-const FagAccordion = ({
+const FaqAccordion = ({
   expanded,
   onChange,
   background,
@@ -104,4 +110,4 @@ const FagAccordion = ({
   )
 }
 
-export default FagAccordion
+export default FaqAccordion

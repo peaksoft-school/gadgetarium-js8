@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Box, styled, Typography } from '@mui/material'
-import FagAccordion from './Accordion'
+import FaqAccordion from './Accordion'
 import { accordion } from '../../../src/utils/constants/accordionQuestions'
 
 const ContainerStyled = styled('div')(() => ({
@@ -84,7 +84,7 @@ const FrequentlyAskedQuestions = () => {
       <AccordionBoxStyled>
         <TypographyStyled>Часто задаваемые вопросы</TypographyStyled>
         {accordion.map((item) => (
-          <FagAccordion
+          <FaqAccordion
             key={item.number}
             expanded={expanded}
             onChange={() => handleChange(item.background)}
