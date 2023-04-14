@@ -1,47 +1,39 @@
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { ElementSnackbar } from './ElementSnackbar'
 import { styled } from '@mui/material'
-
-export interface SnackbarType {
-  message?: string
-  linkText?: string
-  position?:
-    | 'top-left'
-    | 'top-center'
-    | 'top-right'
-    | 'bottom-left'
-    | 'bottom-center'
-    | 'bottom-right'
-  type?: 'success' | 'error'
-  autoClose?: number
-}
-
-const Toastify = styled(ToastContainer)(() => ({
-  '&': {
-    width: 'auto',
-    '& .Toastify__close-button': {
-      display: 'none'
-    }
-  }
+import { ReactComponent as SnackbarIcon } from '../../../assets/icons/SnackbarIcon.svg'
+import { SnackbarType } from '../../../hooks/useSnackbar'
+const Container = styled('div')(() => ({
+  width: 'auto',
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: 22
 }))
-export const Snackbar = ({
-  autoClose = 2000,
-  position = 'top-right',
-  message = 'Товар успешно добавлен в корзину!',
-  linkText = 'Перейти в корзину',
-  type = 'success'
-}: SnackbarType) => {
-  const snackbarHanler = () => {
-    toast[type](<ElementSnackbar message={message} linkText={linkText} />, {
-      style: {
-        backgroundColor: '#202027'
-      }
-    })
-  }
-
-  return {
-    snackbarHanler,
-    toast: <Toastify position={position} autoClose={autoClose} icon={false} />
-  }
+const Title = styled('p')(() => ({
+  width: 'auto',
+  fontWeight: 400,
+  fontSize: '18px',
+  lineHeight: ' 140%',
+  color: '#FFFFFF'
+}))
+const StyledLink = styled('a')(() => ({
+  textDecoration: 'none',
+  fontWeight: 700,
+  fontSize: '18px',
+  lineHeight: '130%',
+  color: '#3CDE14;'
+}))
+const StyledSnackbarIcon = styled(SnackbarIcon)(() => ({
+  marginRight: 12
+}))
+const SimpleSnackbar = ({ message, linkText }: SnackbarType) => {
+  return (
+    <Container>
+      <Title>{message}</Title>
+      <StyledLink href="#">{linkText}</StyledLink>
+      <StyledSnackbarIcon />
+    </Container>
+  )
 }
+export default SimpleSnackbar
