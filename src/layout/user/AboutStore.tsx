@@ -2,6 +2,10 @@ import Slider from 'react-slick'
 import { styled } from '@mui/material'
 import Footer from '../../components/footer/Footer'
 import Header from '../../components/header/Header'
+import mapImage from '../../assets/images/mapOfKyrgyzstan.png'
+import { ReactComponent as ArrowLeft } from '../../assets/icons/arrowLeft_icon.svg'
+import { ReactComponent as ArrowRight } from '../../assets/icons/arrowRight_icon.svg'
+import { CSSProperties, FC, MouseEventHandler } from 'react'
 
 const StyledMainBlock = styled('div')(() => ({
   width: '100%',
@@ -29,6 +33,10 @@ const StyledLayoutTitle = styled('h1')(() => ({
 }))
 
 const StyledSlider = styled(Slider)(() => ({
+  position: 'relative',
+  display: 'grid',
+  gridTemplateColumns: 'auto auto auto',
+  alignItems: 'center',
   '& .slick-track': {
     display: 'flex'
   },
@@ -45,6 +53,21 @@ const StyledSlider = styled(Slider)(() => ({
       width: '100%',
       filter: 'brightness(100%)'
     }
+  },
+  '& .slick-arrow': {
+    cursor: 'pointer'
+  },
+  '& .slick-prev': {
+    position: 'absolute',
+    display: 'block',
+    zIndex: 1,
+    left: '25%'
+  },
+  '& .slick-next': {
+    position: 'absolute',
+    display: 'block',
+    zIndex: 1,
+    right: '25%'
   }
 }))
 
@@ -89,6 +112,19 @@ const sliderImagesSources = [
   }
 ]
 
+type ComponentPropsType = {
+  className: string
+  style?: CSSProperties
+  onClick?: MouseEventHandler<SVGSVGElement>
+}
+
+const PrevArrow: FC<ComponentPropsType> = ({ className, style, onClick }) => {
+  return <ArrowLeft className={className} style={{ ...style }} onClick={onClick} />
+}
+const NextArrow: FC<ComponentPropsType> = ({ className, style, onClick }) => {
+  return <ArrowRight className={className} style={{ ...style }} onClick={onClick} />
+}
+
 const AboutStore = () => {
   const settings = {
     className: 'center',
@@ -98,8 +134,11 @@ const AboutStore = () => {
     slidesToShow: 3,
     speed: 500,
     autoplaySpeed: 5000,
-    autoplay: true
+    autoplay: true,
+    prevArrow: <PrevArrow className="slick-prev" />,
+    nextArrow: <NextArrow className="slick-next" />
   }
+
   return (
     <div style={{ background: '#F4F4F4' }}>
       <Header />
@@ -196,8 +235,8 @@ const AboutStore = () => {
                 </p>
               </div>
 
-              <div style={{ border: '1px solid', width: '55%' }}>
-                <img src="../../assets/images/mapOfKyrgyzstan.png" alt="1" />
+              <div style={{ width: '55%' }}>
+                <img style={{ width: '100%', marginTop: '4rem' }} src={mapImage} alt="1" />
               </div>
             </article>
           </section>
