@@ -1,7 +1,5 @@
 import Slider from 'react-slick'
 import { styled } from '@mui/material'
-import Footer from '../../components/footer/Footer'
-import Header from '../../components/header/Header'
 import mapImage from '../../assets/images/mapOfKyrgyzstan.png'
 import { ReactComponent as ArrowLeft } from '../../assets/icons/arrowLeft_icon.svg'
 import { ReactComponent as ArrowRight } from '../../assets/icons/arrowRight_icon.svg'
@@ -38,19 +36,26 @@ const StyledSlider = styled(Slider)(() => ({
   gridTemplateColumns: 'auto auto auto',
   alignItems: 'center',
   '& .slick-track': {
-    display: 'flex'
+    display: 'flex',
+    width: '800px',
+    background: '#f4f4f4'
   },
   '& .slick-list': {
     overflow: 'hidden',
-    width: '100%'
+    width: '100%',
+    background: '#f4f4f4'
   },
   '& .slick-slide': {
-    width: '500px'
+    width: '600px',
+    background: '#f4f4f4'
   },
   '& .slick-current': {
+    background: '#f4f4f4',
     img: {
-      height: '100%',
-      width: '100%',
+      height: '90%',
+      width: '90%',
+      marginLeft: '70px',
+      marginTop: '30px',
       filter: 'brightness(100%)'
     }
   },
@@ -61,24 +66,24 @@ const StyledSlider = styled(Slider)(() => ({
     position: 'absolute',
     display: 'block',
     zIndex: 1,
-    left: '25%'
+    left: '1%'
   },
   '& .slick-next': {
     position: 'absolute',
     display: 'block',
     zIndex: 1,
-    right: '25%'
+    right: '1%'
   }
 }))
 
 const StyledSliderItem = styled('div')(() => ({
   border: '1px solid',
-  height: '300px',
+  height: '600px',
   width: '100%',
   backgroundColor: '#000',
   img: {
     height: '100%',
-    width: '100%',
+    width: '950px',
     filter: 'brightness(40%)'
   },
 
@@ -131,7 +136,7 @@ const AboutStore = () => {
     centerMode: true,
     infinite: true,
     centerPadding: '60px',
-    slidesToShow: 3,
+    slidesToShow: 1,
     speed: 500,
     autoplaySpeed: 5000,
     autoplay: true,
@@ -141,7 +146,6 @@ const AboutStore = () => {
 
   return (
     <div style={{ background: '#F4F4F4' }}>
-      <Header />
       <StyledMainBlock>
         <MainContainer>
           <article style={{ borderBottom: '2px solid #CDCDCD', marginBottom: '2.5rem' }}>
@@ -242,7 +246,6 @@ const AboutStore = () => {
           </section>
         </MainContainer>
       </StyledMainBlock>
-      <Footer />
     </div>
   )
 }
