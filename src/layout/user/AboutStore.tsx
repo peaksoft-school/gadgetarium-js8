@@ -21,6 +21,45 @@ const MainContainer = styled('div')(() => ({
   margin: '0 auto'
 }))
 
+const FirstArticle = styled('article')(() => ({
+  borderBottom: '2px solid #CDCDCD',
+  marginBottom: '2.5rem'
+}))
+
+const SecondArticle = styled('article')(() => ({
+  width: '70%'
+}))
+
+const StyledSecondArticleUl = styled('ul')(() => ({
+  padding: '2rem',
+  lineHeight: '27px'
+}))
+
+const ThirdArticle = styled('article')(() => ({
+  width: '67%',
+  marginTop: '3.75rem'
+}))
+
+const FourthArticle = styled('article')(() => ({
+  marginTop: '3.75rem',
+  display: 'flex'
+}))
+
+const StyledMapImage = styled('img')(() => ({
+  width: '100%',
+  marginTop: '4rem'
+}))
+
+const StyledArticleParagraph = styled('p')(() => ({
+  margin: '1.5rem 0rem',
+  lineHeight: '27px'
+}))
+
+const FourthArticleFirstBlock = styled('div')(() => ({
+  width: '40%',
+  marginRight: '5rem'
+}))
+
 const StyledLayoutTitle = styled('h1')(() => ({
   fontFamily: 'Ubuntu',
   fontStyle: 'normal',
@@ -145,15 +184,15 @@ const AboutStore = () => {
   }
 
   return (
-    <div style={{ background: '#F4F4F4' }}>
+    <>
       <StyledMainBlock>
         <MainContainer>
-          <article style={{ borderBottom: '2px solid #CDCDCD', marginBottom: '2.5rem' }}>
+          <FirstArticle>
             <p style={{ fontSize: '14px' }}>
               <StyledTopLink href="/">Главная</StyledTopLink> » О Магазине
             </p>
             <StyledLayoutTitle>О Магазине</StyledLayoutTitle>
-          </article>
+          </FirstArticle>
         </MainContainer>
       </StyledMainBlock>
 
@@ -172,9 +211,9 @@ const AboutStore = () => {
       <StyledMainBlock>
         <MainContainer>
           <section style={{ marginBottom: '7.5rem' }}>
-            <article style={{ width: '70%' }}>
+            <SecondArticle>
               <h3>Магазин Gadgetarium </h3>
-              <ul style={{ padding: '2rem', lineHeight: '27px' }}>
+              <StyledSecondArticleUl>
                 <li>
                   слаженная команда людей, любящих спорт и здоровый образ жизни знающих свое дело и
                   ориентирующихся во всех нюансах фитнес оборудования;
@@ -190,12 +229,12 @@ const AboutStore = () => {
                 <li>полный послепродажный сервис с информационной и технической поддержкой;</li>
                 <li>строгое соблюдение всех обязательств перед партнерами;</li>
                 <li>отличные цены и эксклюзивные условия для постоянных партнеров.</li>
-              </ul>
-            </article>
+              </StyledSecondArticleUl>
+            </SecondArticle>
 
-            <article style={{ width: '67%', marginTop: '3.75rem' }}>
+            <ThirdArticle>
               <h3>В чем причина нашего успеха?</h3>
-              <p style={{ margin: '1.5rem 0rem', lineHeight: '27px' }}>
+              <StyledArticleParagraph>
                 Non ultricies sollicitudin nisi quisque. Morbi integer quis tincidunt vitae
                 penatibus. Feugiat quis tincidunt volutpat scelerisque elit fermentum nullam rhoncus
                 adipiscing. Sem tortor molestie odio. Adipiscing etiam vitae in semper sed eget nec
@@ -204,8 +243,8 @@ const AboutStore = () => {
                 molestie odio.Adipiscing etiam vitae in semper sed eget nec aliquet aliquam. Morbi
                 integer quis tincidunt vitae penatibus. Feugiat quis tincidunt volutpat scelerisque
                 elit fermentum nullam rhoncus adipiscing. Sem tortor molestie odio.
-              </p>
-              <p style={{ margin: '1.5rem 0rem', lineHeight: '27px' }}>
+              </StyledArticleParagraph>
+              <StyledArticleParagraph>
                 Non ultricies sollicitudin nisi quisque. Morbi integer quis tincidunt vitae
                 penatibus. Feugiat quis tincidunt volutpat scelerisque elit fermentum nullam rhoncus
                 adipiscing. Sem tortor molestie odio. Adipiscing etiam vitae in semper sed eget nec
@@ -214,19 +253,19 @@ const AboutStore = () => {
                 molestie odio.Adipiscing etiam vitae in semper sed eget nec aliquet aliquam. Morbi
                 integer quis tincidunt vitae penatibus. Feugiat quis tincidunt volutpat scelerisque
                 elit fermentum nullam rhoncus adipiscing. Sem tortor molestie odio.
-              </p>
-            </article>
+              </StyledArticleParagraph>
+            </ThirdArticle>
 
-            <article style={{ marginTop: '3.75rem', display: 'flex' }}>
-              <div style={{ width: '40%', marginRight: '5rem' }}>
+            <FourthArticle>
+              <FourthArticleFirstBlock>
                 <h3>Мы сегодня – это:</h3>
-                <p style={{ margin: '1.5rem 0rem', lineHeight: '27px' }}>
+                <StyledArticleParagraph>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Amet amet est orci
                   volutpat placerat maecenas egestas augue ac. Tortor, sed magnis interdum massa. Id
                   phasellus lectus dui nisl. Adipiscing etiam vitae in semper sed eget nec aliquet
                   aliquam.
-                </p>
-                <p style={{ margin: '1.5rem 0rem', lineHeight: '27px' }}>
+                </StyledArticleParagraph>
+                <StyledArticleParagraph>
                   Non ultricies sollicitudin nisi quisque. Morbi integer quis tincidunt vitae
                   penatibus. Feugiat quis tincidunt volutpat scelerisque elit fermentum nullam
                   rhoncus adipiscing. Sem tortor molestie odio. Adipiscing etiam vitae in semper sed
@@ -236,17 +275,17 @@ const AboutStore = () => {
                   aliquam. Morbi integer quis tincidunt vitae penatibus. Feugiat quis tincidunt
                   volutpat scelerisque elit fermentum nullam rhoncus adipiscing. Sem tortor molestie
                   odio.
-                </p>
-              </div>
+                </StyledArticleParagraph>
+              </FourthArticleFirstBlock>
 
               <div style={{ width: '55%' }}>
-                <img style={{ width: '100%', marginTop: '4rem' }} src={mapImage} alt="1" />
+                <StyledMapImage src={mapImage} alt="1" />
               </div>
-            </article>
+            </FourthArticle>
           </section>
         </MainContainer>
       </StyledMainBlock>
-    </div>
+    </>
   )
 }
 
