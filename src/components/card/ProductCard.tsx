@@ -4,9 +4,25 @@ import { ReactComponent as HeartIcon } from '../../assets/icons/Shape (Stroke).s
 import { ReactComponent as StarIconEmpty } from '../../assets/icons/StarEmpty.svg'
 import { ReactComponent as StarIconFill } from '../../assets/icons/StarFill.svg'
 import { ReactComponent as BasketIcon } from '../../assets/icons/Basket.svg'
+import { ReactComponent as LikeIcon } from '../../assets/icons/LikeIconProduct.svg'
+import { ReactComponent as LikeIconDetail } from '../../assets/icons/LikeIconProduct2.svg'
+
 import ImageProduct from '../../assets/images/image53.png'
 import Button from '../UI/buttons/Button'
 import IconButtons from '../UI/IconButtons'
+interface ProductType {
+  ellipseChildren?: string | React.ReactNode
+  ellipseColor?: string
+  amount?: number
+  productText?: string
+  rating?: number
+  newPrice?: number
+  oldPrice?: number
+  onClick?: () => void
+}
+type EllipseType = {
+  ellipseColor: string
+}
 const CardContainer = styled('div')(() => ({
   width: '300px',
   height: '495px',
@@ -20,10 +36,10 @@ const ContainerIcon = styled('div')(() => ({
   justifyContent: 'space-between',
   alignItems: 'center'
 }))
-const StyledEllipseIcon = styled('div')(() => ({
+const StyledEllipseIcon = styled('div')(({ ellipseColor }: EllipseType) => ({
   width: '36px',
   height: '36px',
-  backgroundColor: '#F10000',
+  backgroundColor: `${ellipseColor}`,
   borderRadius: '100%',
   color: '#fff',
   fontFamily: 'Inter',
@@ -34,7 +50,7 @@ const StyledEllipseIcon = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  textTransform: 'uppercase'
+  textTransform: 'capitalize'
 }))
 
 const StyledScaleIcon = styled(ScaleIcon)(() => ({
@@ -53,24 +69,27 @@ const StyledImage = styled('img')(() => ({
   width: '180px',
   height: '236px'
 }))
-const Title = styled('h4')(() => ({
+const Title = styled('a')(() => ({
   fontWeight: 500,
   fontSize: '12px',
   lineHeight: ' 15px',
   color: '#2FC509',
-  marginBottom: '8px'
+  marginBottom: '8px',
+  textDecoration: 'none'
 }))
 const StyledParapgraph = styled('p')(() => ({
   fontWeight: 500,
   fontSize: '16px',
   lineHeight: '22px',
   textTransform: 'capitalize',
-  color: '#292929'
+  color: '#292929',
+  paddingRight: '20px'
 }))
 const StyledSection = styled('section')(() => ({
   fontFamily: 'Inter',
   fontStyle: 'normal',
-  marginTop: '28px'
+  marginTop: '28px',
+  marginLeft: '7px'
 }))
 const StyledRating = styled('p')(() => ({
   fontWeight: 500,
@@ -98,7 +117,7 @@ const StyledButton = styled(Button)(() => ({
   ':hover': {
     backgroundColor: '#CB11AB'
   },
-  padding: '10px 18px',
+  padding: '10px 17px',
   marginRight: '5px'
 }))
 const StyledBasketTitle = styled('span')(() => ({
@@ -136,11 +155,25 @@ const ButtonContainer = styled('div')(() => ({
   alignItems: 'center'
 }))
 
-export const ProductCard = () => {
+export const ProductCard = ({
+  ellipseChildren = (
+    <div>
+      <LikeIconDetail />
+      <LikeIcon />
+    </div>
+  ),
+  ellipseColor = '#2C68F5',
+  amount = 14,
+  productText = 'Смартфон Apple iPhone 13 256gb синий 9(MLP3RU...',
+  rating = 54,
+  newPrice = 98910,
+  oldPrice = 109900,
+  onClick = () => {}
+}: ProductType) => {
   return (
     <CardContainer>
       <ContainerIcon>
-        <StyledEllipseIcon>-10%</StyledEllipseIcon>
+        <StyledEllipseIcon ellipseColor={ellipseColor}>{ellipseChildren}</StyledEllipseIcon>
         <ContainerTwoIcons>
           <IconButtons icon={<StyledScaleIcon />} />
           <IconButtons icon={<HeartIcon />} />
@@ -150,8 +183,8 @@ export const ProductCard = () => {
         <StyledImage src={ImageProduct} alt="image" />
       </StyledArticle>
       <StyledSection>
-        <Title>В наличии (14)</Title>
-        <StyledParapgraph>Смартфон Apple iPhone 13 256gb синий 9(MLP3RU...</StyledParapgraph>
+        <Title href="#">В наличии ({amount})</Title>
+        <StyledParapgraph>{productText}</StyledParapgraph>
         <StyledRating>
           Рейтинг
           <StyledStartIconsContainer>
@@ -161,15 +194,15 @@ export const ProductCard = () => {
             <StyledIconButton icon={<StarIconFill />} />
             <StyledIconButton icon={<StarIconEmpty />} />
           </StyledStartIconsContainer>
-          (56)
+          ({rating})
         </StyledRating>
         <StyledContainerPricesAndButton>
           <StyledContainerPrices>
-            <StyledNewPrice>98 910 с</StyledNewPrice>
-            <StyledOldPrice>109 900 с</StyledOldPrice>
+            <StyledNewPrice>{newPrice} с</StyledNewPrice>
+            <StyledOldPrice> {oldPrice}с</StyledOldPrice>
           </StyledContainerPrices>
           <ButtonContainer>
-            <StyledButton variant="contained" onClick={() => {}}>
+            <StyledButton variant="contained" onClick={onClick}>
               <BasketIcon />
               <StyledBasketTitle>В корзину</StyledBasketTitle>
             </StyledButton>
