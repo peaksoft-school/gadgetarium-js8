@@ -56,14 +56,13 @@ export const Ratings = () => {
   return (
     <MainContainer>
       <InnerContainer>
-        <MainContainer>
+        <div>
           <StyledRatingNumber>
             4,5
             <StyledRating name="half-rating" defaultValue={2.5} precision={0.5} />
           </StyledRatingNumber>
           <StyledTitle>789 отзывов</StyledTitle>
-        </MainContainer>
-
+        </div>
         <FeedbackPart>
           <StyledStar>
             <Rating name="half-rating" defaultValue={2.5} precision={0.5} />
