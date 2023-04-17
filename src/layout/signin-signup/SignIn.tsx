@@ -1,9 +1,12 @@
 import { ReactComponent as Logo } from '../../assets/images/logo.svg'
 import { ReactComponent as CrossIcon } from '../../assets/icons/cross_icon.svg'
+import { ReactComponent as SlashedEyeIcon } from '../../assets/icons/icons_eye-slashed.svg'
+import { ReactComponent as EyeIcon } from '../../assets/icons/eyeIcon.svg'
 import Input from '../../components/UI/inputs/Input'
 import { styled } from '@mui/material'
 import IconButtons from '../../components/UI/IconButtons'
 import Button from '../../components/UI/buttons/Button'
+import { useState } from 'react'
 
 const StyledBlockName = styled('p')(() => ({
   fontFamily: 'Inter',
@@ -32,6 +35,22 @@ const StyledBottomText = styled('p')(() => ({
 }))
 
 const SignIn = () => {
+  const [email, setEmail] = useState('')
+  const [password, setpassword] = useState('')
+  //   const [emailError, setEmailError] = useState(false)
+  //   const [passwordError, setPasswordError] = useState(false)
+
+  const [showPassword, setShowPassword] = useState(false)
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword)
+  }
+
+  const emailChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value)
+  }
+  const passwordChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setpassword(e.target.value)
+  }
   return (
     <div
       style={{
@@ -51,7 +70,7 @@ const SignIn = () => {
           background: '#fff',
           width: '36.25rem',
           margin: '0 auto',
-          marginTop: '8rem',
+          marginTop: '8.5rem',
           position: 'relative'
         }}
       >
@@ -70,12 +89,28 @@ const SignIn = () => {
             marginBottom: '1rem'
           }}
         >
-          <Input value="" placeholder="Напишите email" type="email" />
-          <Input value="" placeholder="Напишите пароль" type="password" />
+          <Input
+            value={email}
+            onChange={emailChangeHandler}
+            placeholder="Напишите email"
+            type="email"
+          />
+          <Input
+            value={password}
+            onChange={passwordChangeHandler}
+            placeholder="Напишите пароль"
+            type={showPassword ? 'text' : 'password'}
+          />
           <Button variant="contained" onClick={() => {}}>
             Войти
           </Button>
         </form>
+        <div style={{ position: 'absolute', right: 60, top: 195, zIndex: 10 }}>
+          <IconButtons
+            onClick={togglePasswordVisibility}
+            icon={showPassword ? <EyeIcon /> : <SlashedEyeIcon />}
+          />
+        </div>
         <StyledBottomText>
           Нет аккаунта? <a href="">Зарегистрироваться</a>
         </StyledBottomText>

@@ -3,7 +3,7 @@ import { ChangeEvent, forwardRef } from 'react'
 
 type InputProps = {
   value: string
-  onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   error?: boolean
   placeholder?: string
   type?: string
@@ -16,7 +16,7 @@ const InputStyled = styled(InputBase)(() => ({
     padding: '7px 18px',
     fontFamily: 'Inter',
     fontSize: '16px',
-    margin: '1rem 0'
+    margin: '0.8rem 0'
   },
   '&.input.focused': {
     border: '0.1px solid #CB11AB',

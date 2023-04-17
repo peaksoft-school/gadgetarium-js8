@@ -2,6 +2,7 @@ import { IconButton } from '@mui/material'
 
 type Props = {
   icon?: React.ReactNode
+  onClick?: () => void
 }
 
 const IconButtons = ({ icon, ...restProps }: Props) => {
