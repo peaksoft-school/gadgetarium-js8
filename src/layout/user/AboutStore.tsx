@@ -200,7 +200,7 @@ const AboutStore = () => {
         <StyledSlider {...settings}>
           {sliderImagesSources.map((item, index) => {
             return (
-              <StyledSliderItem>
+              <StyledSliderItem key={index}>
                 <img src={item.img} alt={index.toString()} />
               </StyledSliderItem>
             )
