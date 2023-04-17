@@ -3,11 +3,7 @@ import { appTheme } from './utils/constants/theme'
 import SignIn from './layout/signin-signup/SignIn'
 
 const AppContent = () => {
-  return (
-    <div>
-      <SignIn />
-    </div>
-  )
+  return <div></div>
 }
 
 function App() {
