@@ -1,8 +1,13 @@
 import { ThemeProvider } from '@mui/material/styles'
 import { appTheme } from './utils/constants/theme'
+import SignIn from './layout/signin-signup/SignIn'
 
 const AppContent = () => {
-  return <div></div>
+  return (
+    <div>
+      <SignIn />
+    </div>
+  )
 }
 
 function App() {

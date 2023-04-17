@@ -4,15 +4,19 @@ import { ChangeEvent, forwardRef } from 'react'
 type InputProps = {
   value: string
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void
-  error: boolean
+  error?: boolean
   placeholder?: string
+  type?: string
 }
 const InputStyled = styled(InputBase)(() => ({
   '&.input': {
     border: '0.1px solid #909CB5',
     background: '#F7F7F7',
     borderRadius: '5px',
-    padding: '0 10px'
+    padding: '7px 18px',
+    fontFamily: 'Inter',
+    fontSize: '16px',
+    margin: '1rem 0'
   },
   '&.input.focused': {
     border: '0.1px solid #CB11AB',
@@ -25,12 +29,13 @@ const InputStyled = styled(InputBase)(() => ({
 }))
 
 const Input = forwardRef(
-  ({ value, onChange, error, placeholder = '', ...props }: InputProps, ref) => {
+  ({ value, type = 'text', onChange, error, placeholder = '', ...props }: InputProps, ref) => {
     return (
       <InputStyled
         {...props}
         placeholder={placeholder}
         value={value}
+        type={type}
         onChange={onChange}
         error={Boolean(error)}
         classes={{ root: 'input', focused: 'focused', error: 'error' }}
