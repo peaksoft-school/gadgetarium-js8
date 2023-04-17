@@ -1,4 +1,6 @@
-import './App.css'
+const AppContent = () => {
+  return <div></div>
+}
 
 function App() {
   return <div></div>
