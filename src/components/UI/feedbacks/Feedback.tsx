@@ -1,8 +1,9 @@
-import { ReactComponent as ComeraIcon } from '../../../assets/icons/CameraIcon.svg'
+import { ReactComponent as ComeraIcon } from '../../../assets/icons/cameraIcon.svg'
 import { Rating, TextField, styled } from '@mui/material'
 import Button from '../buttons/Button'
+import Modal from '../Modal'
 
-const Container = styled('div')(() => ({
+const Container = styled('form')(() => ({
   padding: '24px 30px '
 }))
 
@@ -83,40 +84,49 @@ const StyledButton = styled(Button)(() => ({
   width: '100%',
   marginTop: '20px'
 }))
-export const Feedback = () => {
+
+type PropsModal = {
+  onSubmit: () => void
+  closeHandler: () => void
+  open: boolean
+}
+
+export const Feedback = ({ onSubmit, open, closeHandler }: PropsModal) => {
   return (
-    <Container>
-      <StyledTitle>Оставьте свой отзыв</StyledTitle>
-      <div>
-        <ContainerStars>
-          <span>Оценка</span>
-          <Rating name="half-rating" defaultValue={2.5} precision={0.5} />
-        </ContainerStars>
-        <StyledCommentContainer>
-          <StyledLabel htmlFor="">Ваш комментарий</StyledLabel>
+    <Modal open={open} onClose={closeHandler}>
+      <Container onSubmit={onSubmit}>
+        <StyledTitle>Оставьте свой отзыв</StyledTitle>
+        <div>
+          <ContainerStars>
+            <span>Оценка</span>
+            <Rating name="half-rating" defaultValue={2.5} precision={0.5} />
+          </ContainerStars>
+          <StyledCommentContainer>
+            <StyledLabel htmlFor="">Ваш комментарий</StyledLabel>
 
-          <MultilineInput
-            multiline
-            rows={5}
-            onChange={() => {}}
-            placeholder="Напишите комментарий"
-          />
-        </StyledCommentContainer>
-        <StyledLinkContainer>
-          <StyledInnerContainer>
-            <span>
-              <ComeraIcon />
-            </span>
+            <MultilineInput
+              multiline
+              rows={5}
+              onChange={() => {}}
+              placeholder="Напишите комментарий"
+            />
+          </StyledCommentContainer>
+          <StyledLinkContainer>
+            <StyledInnerContainer>
+              <span>
+                <ComeraIcon />
+              </span>
 
-            <StyledTextLink>
-              Нажмите на ссылку, чтобы выбрать фотографии или просто перетащите их сюда
-            </StyledTextLink>
-          </StyledInnerContainer>
-        </StyledLinkContainer>
-      </div>
-      <StyledButton disabled={false} onClick={() => {}} variant="contained">
-        Отправить отзыв
-      </StyledButton>
-    </Container>
+              <StyledTextLink>
+                Нажмите на ссылку, чтобы выбрать фотографии или просто перетащите их сюда
+              </StyledTextLink>
+            </StyledInnerContainer>
+          </StyledLinkContainer>
+        </div>
+        <StyledButton disabled={false} type="submit" variant="contained">
+          Отправить отзыв
+        </StyledButton>
+      </Container>
+    </Modal>
   )
 }

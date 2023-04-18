@@ -59,7 +59,7 @@ export const Ratings = () => {
         <div>
           <StyledRatingNumber>
             4,5
-            <StyledRating name="half-rating" defaultValue={2.5} precision={0.5} />
+            <StyledRating name="half-rating" defaultValue={2.5} precision={0.5} readOnly />
           </StyledRatingNumber>
           <StyledTitle>789 отзывов</StyledTitle>
         </div>

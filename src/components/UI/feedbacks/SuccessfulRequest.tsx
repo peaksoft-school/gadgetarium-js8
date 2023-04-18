@@ -1,8 +1,11 @@
 import Modal from '../Modal'
-import Button from '../buttons/Button'
-import { ReactComponent as Tickicon } from '../../../assets/icons/TickIcon.svg'
-import { useState } from 'react'
+import { ReactComponent as Tickicon } from '../../../assets/icons/tickIcon.svg'
 import { styled } from '@mui/material'
+
+type PropsSuccessRequest = {
+  onClose: () => void
+  open: boolean
+}
 
 const StyledText = styled('h2')(() => ({
   fontFamily: 'Inter',
@@ -25,17 +28,10 @@ const StyledModalIconContainer = styled('div')(() => ({
   marginBottom: '20px'
 }))
 
-export const SuccessfulRequest = () => {
-  const [openModal, setOpenModal] = useState<boolean>(false)
-
-  const ModalHandler = () => {
-    setOpenModal((prevState) => !prevState)
-  }
-
+export const SuccessfulRequest = ({ open, onClose }: PropsSuccessRequest) => {
   return (
     <>
-      <Button onClick={ModalHandler}>Open Modal</Button>
-      <Modal onClose={ModalHandler} open={openModal}>
+      <Modal open={open} onClose={onClose}>
         <StyledModalContainer>
           <StyledModalIconContainer>
             <Tickicon />
