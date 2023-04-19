@@ -8,8 +8,6 @@ const MainContainer = styled('div')(() => ({
   width: '32.875rem',
   height: '100%',
   margin: '0 auto',
-  marginTop: '7rem',
-  marginBottom: '1rem',
   background: '#FFFFFF',
   boxShadow: '0rem 0.625rem 1.875rem rgba(133, 143, 164, 0.1)',
   borderRadius: '5px'
