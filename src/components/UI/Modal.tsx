@@ -10,7 +10,6 @@ const StyledModalContent = styled('div')(() => ({
   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
   zIndex: '30',
   animation: 'slide-down 300ms ease-out forwards',
-  width: '40rem',
   position: 'absolute',
   left: '50%',
   top: '50%',

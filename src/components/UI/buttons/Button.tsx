@@ -1,10 +1,7 @@
-import { Button as MuiButton, styled } from '@mui/material'
+import { Button as MuiButton, styled, ButtonProps as MuiButtonProps } from '@mui/material'
 
-export type ButtonProps = {
-  variant?: 'text' | 'outlined' | 'contained' | undefined
+export interface ButtonProps extends MuiButtonProps {
   children: React.ReactNode
-  onClick: () => void
-  disabled?: boolean
 }
 
 const MuiButtonStyled = styled(MuiButton)<ButtonProps>(() => ({
@@ -26,18 +23,10 @@ const MuiButtonStyled = styled(MuiButton)<ButtonProps>(() => ({
   }
 }))
 
-const Button = ({
-  children,
-  disabled,
-  onClick,
-  variant,
-  ...props
-}: ButtonProps & { children: React.ReactNode }) => {
+const Button = ({ children, ...props }: ButtonProps & { children: React.ReactNode }) => {
   return (
     <>
-      <MuiButtonStyled onClick={onClick} disabled={disabled} variant={variant} {...props}>
-        {children}
-      </MuiButtonStyled>
+      <MuiButtonStyled {...props}>{children}</MuiButtonStyled>
     </>
   )
 }
