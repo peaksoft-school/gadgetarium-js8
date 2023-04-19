@@ -1,6 +1,6 @@
-import { IconButton } from '@mui/material'
+import { ButtonProps, IconButton } from '@mui/material'
 
-type Props = {
+interface Props extends ButtonProps {
   icon?: React.ReactNode
 }
 
