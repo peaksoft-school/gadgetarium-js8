@@ -1,13 +1,11 @@
-import * as React from 'react'
 import Box from '@mui/material/Box'
 import Rating from '@mui/material/Rating'
 import Typography from '@mui/material/Typography'
 interface Props {
   rating: number
-  totalRating: number
+  quantityOfPeople: number
 }
-const ProductRating = ({ rating, totalRating }: Props) => {
-  const [value, setValue] = React.useState<number | null>(rating)
+const ProductRating = ({ rating, quantityOfPeople }: Props) => {
   return (
     <Box
       sx={{
@@ -36,11 +34,7 @@ const ProductRating = ({ rating, totalRating }: Props) => {
           fontSize: '14px'
         }}
         size="small"
-        name="simple-controlled"
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue)
-        }}
+        value={rating}
       />
       <Typography
         sx={{
@@ -48,7 +42,7 @@ const ProductRating = ({ rating, totalRating }: Props) => {
           fontSize: '12px'
         }}
       >
-        ({totalRating})
+        ({quantityOfPeople})
       </Typography>
     </Box>
   )

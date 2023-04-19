@@ -22,7 +22,7 @@ interface ProductType {
   scaleIconOnClick?: () => void
   heartIconOnClick?: () => void
   image?: string
-  totalRating?: number
+  quantityOfPeople?: number
 }
 type EllipseType = {
   ellipseColor: string
@@ -149,7 +149,7 @@ export const ProductCard = ({
   scaleIconOnClick = () => {},
   heartIconOnClick = () => {},
   image = ImageProduct,
-  totalRating = 56
+  quantityOfPeople = 56
 }: ProductType) => {
   return (
     <CardContainer>
@@ -173,7 +173,7 @@ export const ProductCard = ({
         <StyledParagraph>
           <TextWithEllipsis text={productText} />
         </StyledParagraph>
-        <ProductRating rating={rating} totalRating={totalRating} />
+        <ProductRating rating={rating} quantityOfPeople={quantityOfPeople} />
         <StyledContainerPricesAndButton>
           <StyledContainerPrices>
             <StyledNewPrice>{newPrice} с</StyledNewPrice>
