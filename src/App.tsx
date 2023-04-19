@@ -1,15 +1,9 @@
-import { ProductCard } from './components/card/ProductCard'
-
 const AppContent = () => {
   return <div></div>
 }
 
 function App() {
-  return (
-    <div>
-      <ProductCard />
-    </div>
-  )
+  return <div></div>
 }
 
 export default App
