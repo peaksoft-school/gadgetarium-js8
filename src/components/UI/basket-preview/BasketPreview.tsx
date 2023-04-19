@@ -60,15 +60,24 @@ interface Product {
 
 interface BasketPreviewProps {
   productData: Product[]
+  totalPrice: number
+  orderRegistrationHandler: () => void
+  removeBasketPreviewItem: () => void
 }
 
-const BasketPreview: React.FC<BasketPreviewProps> = ({ productData }) => {
+const BasketPreview: React.FC<BasketPreviewProps> = ({
+  productData,
+  totalPrice,
+  orderRegistrationHandler,
+  removeBasketPreviewItem
+}) => {
   return (
     <MainContainer>
       <StyledTriangle />
       {productData.map((data) => {
         return (
           <BasketPreviewItem
+            removeBasketPreviewItem={removeBasketPreviewItem}
             description={data.description}
             img={data.img}
             title={data.title}
@@ -78,8 +87,8 @@ const BasketPreview: React.FC<BasketPreviewProps> = ({ productData }) => {
         )
       })}
       <BottomContainer>
-        <StyledButton onClick={() => {}}>Оформить заказ</StyledButton>
-        <TotalAmount>Итого 68 000 с</TotalAmount>
+        <StyledButton onClick={orderRegistrationHandler}>Оформить заказ</StyledButton>
+        <TotalAmount>Итого {totalPrice}</TotalAmount>
       </BottomContainer>
     </MainContainer>
   )
