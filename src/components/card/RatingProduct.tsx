@@ -31,6 +31,7 @@ const ProductRating = ({ rating, totalRating }: Props) => {
         Рейтинг
       </Typography>
       <Rating
+        readOnly
         sx={{
           fontSize: '14px'
         }}

@@ -17,7 +17,10 @@ interface ProductType {
   rating?: number
   newPrice?: number
   oldPrice?: number
-  onClick?: () => void
+  basketOnClick?: () => void
+  ellipsIconOnClick?: () => void
+  scaleIconOnClick?: () => void
+  heartIconOnClick?: () => void
   image?: string
   totalRating?: number
 }
@@ -141,7 +144,10 @@ export const ProductCard = ({
   rating = 4,
   newPrice = 98910,
   oldPrice = 109900,
-  onClick = () => {},
+  basketOnClick = () => {},
+  ellipsIconOnClick = () => {},
+  scaleIconOnClick = () => {},
+  heartIconOnClick = () => {},
   image = ImageProduct,
   totalRating = 56
 }: ProductType) => {
@@ -173,7 +179,7 @@ export const ProductCard = ({
             <StyledOldPrice> {oldPrice}с</StyledOldPrice>
           </StyledContainerPrices>
           <ButtonContainer>
-            <StyledButton variant="contained" onClick={onClick}>
+            <StyledButton variant="contained" onClick={basketOnClick}>
               <BasketIcon />
               <StyledBasketTitle>В корзину</StyledBasketTitle>
             </StyledButton>
