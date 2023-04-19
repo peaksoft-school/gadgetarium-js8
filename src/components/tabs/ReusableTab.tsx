@@ -7,7 +7,6 @@ import { styled } from '@mui/material'
 import { ReactComponent as ShortLine } from '../../assets/icons/tabs-icons/tabicon2.svg'
 import { ReactComponent as LongLine } from '../../assets/icons/tabs-icons/tabsicon3svg.svg'
 import IconButtons from '../UI/IconButtons'
-import { Description } from './Description'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -19,6 +18,7 @@ interface PropsType {
   characteristics?: React.ReactNode
   reviews?: React.ReactNode
   shippingAndPayment?: React.ReactNode
+  onClickButton?: () => void
 }
 const StyledBoxContainer = styled(Box)(() => ({
   width: '100%'
@@ -125,10 +125,11 @@ const Icon = () => {
   )
 }
 const ReusableTabs = ({
-  description = <Description />,
+  description = <p>description</p>,
   characteristics,
   reviews,
-  shippingAndPayment
+  shippingAndPayment,
+  onClickButton = () => {}
 }: PropsType) => {
   const [value, setValue] = React.useState<number>(0)
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -149,7 +150,7 @@ const ReusableTabs = ({
           <StyledTab label="Доставка и оплата" {...a11yProps(3)} />
         </Tabs>
         <ContainerDocumentStyled>
-          <IconButtons icon={<Icon />} />
+          <IconButtons onClick={onClickButton} icon={<Icon />} />
           <DocumentTitle>Скачать документ.pdf</DocumentTitle>
         </ContainerDocumentStyled>
       </StyledBox>

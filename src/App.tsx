@@ -1,12 +1,9 @@
-import './App.css'
-import ReusableTabs from './components/tabs/ReusableTab'
+const AppContent = () => {
+  return <div></div>
+}
 
 function App() {
-  return (
-    <div>
-      <ReusableTabs />
-    </div>
-  )
+  return <div></div>
 }
 
 export default App
