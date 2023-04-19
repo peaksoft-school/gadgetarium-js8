@@ -155,13 +155,14 @@ export const ProductCard = ({
     <CardContainer>
       <ContainerIcon>
         <StyledIconButton
+          onClick={ellipsIconOnClick}
           icon={
             <StyledEllipseIcon ellipseColor={ellipseColor}>{ellipseChildren}</StyledEllipseIcon>
           }
         />
         <ContainerTwoIcons>
-          <StyledIconButton icon={<ScaleIcon />} />
-          <StyledIconButton icon={<HeartIcon />} />
+          <StyledIconButton onClick={scaleIconOnClick} icon={<ScaleIcon />} />
+          <StyledIconButton onClick={heartIconOnClick} icon={<HeartIcon />} />
         </ContainerTwoIcons>
       </ContainerIcon>
       <StyledArticle>
