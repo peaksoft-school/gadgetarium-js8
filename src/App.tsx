@@ -1,10 +1,10 @@
 import './App.css'
-import BasicTabs from './components/tabs/ReusableTab'
+import ReusableTabs from './components/tabs/ReusableTab'
 
 function App() {
   return (
     <div>
-      <BasicTabs />
+      <ReusableTabs />
     </div>
   )
 }

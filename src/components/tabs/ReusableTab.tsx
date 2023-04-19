@@ -7,13 +7,19 @@ import { styled } from '@mui/material'
 import { ReactComponent as ShortLine } from '../../assets/icons/tabs-icons/tabicon2.svg'
 import { ReactComponent as LongLine } from '../../assets/icons/tabs-icons/tabsicon3svg.svg'
 import IconButtons from '../UI/IconButtons'
+import { Description } from './Description'
 
 interface TabPanelProps {
   children?: React.ReactNode
   index: number
   value: number
 }
-
+interface PropsType {
+  description?: React.ReactNode
+  characteristics?: React.ReactNode
+  reviews?: React.ReactNode
+  shippingAndPayment?: React.ReactNode
+}
 const StyledBoxContainer = styled(Box)(() => ({
   width: '100%'
 }))
@@ -23,20 +29,19 @@ const StyledBox = styled(Box)(() => ({
   justifyContent: 'space-between',
   alignItems: 'center'
 }))
-const StyledContainerTab = styled(Tabs)(() => ({}))
 const StyledTab = styled(Tab)(() => ({
   '&.Mui-selected': {
     color: '#CB11AB',
     borderBottom: '2px solid #CB11AB',
-    paddingBottom: '6px'
+    paddingBottom: 0
   },
-  paddingBottom: '8px',
-  paddingRight: '16px',
+  padding: 2,
+  paddingRight: '30px',
   fontFamily: 'Inter',
   fontStyle: 'normal',
+  textTransform: 'initial',
   fontWeight: 500,
-  fontSize: '18px',
-  lineHeight: '22px',
+  fontSize: '16px',
   color: '#292929'
 }))
 const StyledBorder = styled('div')(() => ({
@@ -97,7 +102,7 @@ function TabPanel(props: TabPanelProps) {
   )
 }
 
-function a11yProps(index: number) {
+const a11yProps = (index: number) => {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`
@@ -119,8 +124,13 @@ const Icon = () => {
     </StyledBorder>
   )
 }
-export default function BasicTabs() {
-  const [value, setValue] = React.useState(0)
+const ReusableTabs = ({
+  description = <Description />,
+  characteristics,
+  reviews,
+  shippingAndPayment
+}: PropsType) => {
+  const [value, setValue] = React.useState<number>(0)
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
@@ -128,7 +138,7 @@ export default function BasicTabs() {
   return (
     <StyledBoxContainer>
       <StyledBox>
-        <StyledContainerTab
+        <Tabs
           TabIndicatorProps={{ style: { borderBottom: '2px solid #CB11AB' } }}
           value={value}
           onChange={handleChange}
@@ -137,24 +147,26 @@ export default function BasicTabs() {
           <StyledTab label="Характеристики" {...a11yProps(1)} />
           <StyledTab label="Отзывы" {...a11yProps(2)} />
           <StyledTab label="Доставка и оплата" {...a11yProps(3)} />
-        </StyledContainerTab>
+        </Tabs>
         <ContainerDocumentStyled>
           <IconButtons icon={<Icon />} />
           <DocumentTitle>Скачать документ.pdf</DocumentTitle>
         </ContainerDocumentStyled>
       </StyledBox>
       <TabPanel value={value} index={0}>
-        Item One
+        {description}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        {characteristics}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        {reviews}
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Item Four
+        {shippingAndPayment}
       </TabPanel>
     </StyledBoxContainer>
   )
 }
+
+export default ReusableTabs
