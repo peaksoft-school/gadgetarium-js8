@@ -14,7 +14,7 @@ const PaperStyled = styled(Paper)(({}) => ({
 
 const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
   padding: '8px',
-  '&:hover': {
+  '&:active': {
     color: '#FFFFFF',
     background: theme.customPalette.primary.main,
     borderRadius: '11px'
@@ -92,7 +92,7 @@ const Categories = () => {
   const open = Boolean(anchorEl)
 
   return (
-    <div>
+    <>
       <PaperStyled>
         <MenuList>
           {categories.map((categorie) => (
@@ -127,7 +127,7 @@ const Categories = () => {
             </DivStyled>
           ))}
       </Popover>
-    </div>
+    </>
   )
 }
 
