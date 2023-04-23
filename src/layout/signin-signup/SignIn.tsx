@@ -34,6 +34,45 @@ const StyledBottomText = styled('p')(() => ({
   }
 }))
 
+const MainSignInContainer = styled('div')(() => ({
+  width: '100%',
+  minHeight: '710px',
+  background: 'linear-gradient(107.03deg, #6B0FA9 13.93%, #4D0EB8 94.5%)',
+  padding: '2.5rem 3.125rem',
+  position: 'relative'
+}))
+
+const StyledModalContent = styled('div')(() => ({
+  padding: '3.25rem',
+  background: '#fff',
+  width: '36.25rem',
+  margin: '0 auto',
+  marginTop: '8.5rem',
+  position: 'relative'
+}))
+
+const StyledModalForm = styled('form')(() => ({
+  margin: '0 auto',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-around',
+  marginBottom: '1rem',
+  positiom: 'relative'
+}))
+
+const StyledIconButtonContainer = styled('div')(() => ({
+  position: 'absolute',
+  right: 60,
+  top: 195,
+  zIndex: 10
+}))
+
+const StyledCrossIconContainer = styled('div')(() => ({
+  position: 'absolute',
+  right: 15,
+  top: 15
+}))
+
 const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setpassword] = useState('')
@@ -52,43 +91,17 @@ const SignIn = () => {
     setpassword(e.target.value)
   }
   return (
-    <div
-      style={{
-        width: '100%',
-        minHeight: '710px',
-        background: 'linear-gradient(107.03deg, #6B0FA9 13.93%, #4D0EB8 94.5%)',
-        padding: '2.5rem 3.125rem',
-        position: 'relative'
-      }}
-    >
+    <MainSignInContainer>
       <div style={{ position: 'absolute' }}>
         <Logo />
       </div>
-      <div
-        style={{
-          padding: '3.25rem',
-          background: '#fff',
-          width: '36.25rem',
-          margin: '0 auto',
-          marginTop: '8.5rem',
-          position: 'relative'
-        }}
-      >
-        <div style={{ position: 'absolute', right: 15, top: 15 }}>
+      <StyledModalContent>
+        <StyledCrossIconContainer>
           <IconButtons icon={<CrossIcon />} />
-        </div>
+        </StyledCrossIconContainer>
         <StyledBlockName>Войти</StyledBlockName>
 
-        <form
-          action=""
-          style={{
-            margin: '0 auto',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-            marginBottom: '1rem'
-          }}
-        >
+        <StyledModalForm action="">
           <Input
             value={email}
             onChange={emailChangeHandler}
@@ -104,18 +117,18 @@ const SignIn = () => {
           <Button variant="contained" onClick={() => {}}>
             Войти
           </Button>
-        </form>
-        <div style={{ position: 'absolute', right: 60, top: 195, zIndex: 10 }}>
+        </StyledModalForm>
+        <StyledIconButtonContainer>
           <IconButtons
             onClick={togglePasswordVisibility}
             icon={showPassword ? <EyeIcon /> : <SlashedEyeIcon />}
           />
-        </div>
+        </StyledIconButtonContainer>
         <StyledBottomText>
           Нет аккаунта? <a href="">Зарегистрироваться</a>
         </StyledBottomText>
-      </div>
-    </div>
+      </StyledModalContent>
+    </MainSignInContainer>
   )
 }
 
