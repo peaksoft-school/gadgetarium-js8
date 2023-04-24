@@ -1,13 +1,8 @@
 import { ThemeProvider } from '@mui/material/styles'
-import Categories from './components/UI/Categories'
 import { appTheme } from './utils/constants/theme'
 
 const AppContent = () => {
-  return (
-    <div>
-      <Categories />
-    </div>
-  )
+  return <div></div>
 }
 
 function App() {
