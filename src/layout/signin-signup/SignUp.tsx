@@ -19,6 +19,14 @@ const StyledBlockName = styled('p')(() => ({
   marginBottom: '1.2rem'
 }))
 
+const MainSignUpContainer = styled('div')(() => ({
+  width: '100%',
+  minHeight: '710px',
+  background: 'linear-gradient(107.03deg, #6B0FA9 13.93%, #4D0EB8 94.5%)',
+  padding: '2.5rem 3.125rem',
+  position: 'relative'
+}))
+
 const StyledBottomText = styled('p')(() => ({
   fontFamily: 'Inter',
   fontStyle: 'normal',
@@ -32,6 +40,44 @@ const StyledBottomText = styled('p')(() => ({
     textDecoration: 'none',
     fontWeight: 600
   }
+}))
+
+const StyledCrossIconContainer = styled('div')(() => ({
+  position: 'absolute',
+  right: 15,
+  top: 15
+}))
+
+const StyledSignUpContainer = styled('div')(() => ({
+  padding: '3.25rem',
+  background: '#fff',
+  width: '36.25rem',
+  margin: '0 auto',
+  marginTop: '8.5rem',
+  position: 'relative'
+}))
+
+const StyledModalForm = styled('form')(() => ({
+  margin: '0 auto',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-around',
+  marginBottom: '1rem',
+  positiom: 'relative'
+}))
+
+const StyledIconButtonContainer = styled('div')(() => ({
+  position: 'absolute',
+  right: 60,
+  top: 415,
+  zIndex: 10
+}))
+
+const StyledSecondEyeIconButtonContainer = styled('div')(() => ({
+  position: 'absolute',
+  right: 60,
+  top: 490,
+  zIndex: 10
 }))
 
 const SignUp = () => {
@@ -78,43 +124,17 @@ const SignUp = () => {
   }
 
   return (
-    <div
-      style={{
-        width: '100%',
-        minHeight: '710px',
-        background: 'linear-gradient(107.03deg, #6B0FA9 13.93%, #4D0EB8 94.5%)',
-        padding: '2.5rem 3.125rem',
-        position: 'relative'
-      }}
-    >
+    <MainSignUpContainer>
       <div style={{ position: 'absolute' }}>
         <Logo />
       </div>
-      <div
-        style={{
-          padding: '3.25rem',
-          background: '#fff',
-          width: '36.25rem',
-          margin: '0 auto',
-          marginTop: '8.5rem',
-          position: 'relative'
-        }}
-      >
-        <div style={{ position: 'absolute', right: 15, top: 15 }}>
+      <StyledSignUpContainer>
+        <StyledCrossIconContainer>
           <IconButtons icon={<CrossIcon />} />
-        </div>
+        </StyledCrossIconContainer>
         <StyledBlockName>Регистрация</StyledBlockName>
 
-        <form
-          action=""
-          style={{
-            margin: '0 auto',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-            marginBottom: '1rem'
-          }}
-        >
+        <StyledModalForm action="">
           <Input value={name} onChange={nameChangeHandler} placeholder="Напишите имя" type="text" />
           <Input
             value={lastName}
@@ -140,34 +160,34 @@ const SignUp = () => {
             placeholder="Напишите пароль"
             type={showPassword ? 'text' : 'password'}
           />
-          <div style={{ position: 'absolute', right: 60, top: 415, zIndex: 10 }}>
+          <StyledIconButtonContainer>
             <IconButtons
               onClick={togglePasswordVisibility}
               icon={showPassword ? <EyeIcon /> : <SlashedEyeIcon />}
             />
-          </div>
+          </StyledIconButtonContainer>
           <Input
             value={confirmPassword}
             onChange={confirmPasswordChangeHandler}
             placeholder="Напишите пароль"
             type={showConfirmPassword ? 'text' : 'password'}
           />
-          <div style={{ position: 'absolute', right: 60, top: 490, zIndex: 10 }}>
+          <StyledSecondEyeIconButtonContainer>
             <IconButtons
               onClick={toggleConfirmPasswordVisibility}
               icon={showConfirmPassword ? <EyeIcon /> : <SlashedEyeIcon />}
             />
-          </div>
+          </StyledSecondEyeIconButtonContainer>
           <Button variant="contained" onClick={() => {}}>
             Создать Аккаунт
           </Button>
-        </form>
+        </StyledModalForm>
 
         <StyledBottomText>
           Нет аккаунта? <a href="">Зарегистрироваться</a>
         </StyledBottomText>
-      </div>
-    </div>
+      </StyledSignUpContainer>
+    </MainSignUpContainer>
   )
 }
 

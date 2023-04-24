@@ -34,6 +34,33 @@ const StyledBottomText = styled('p')(() => ({
   }
 }))
 
+const StyledModalForm = styled('form')(() => ({
+  margin: '0 auto',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-around',
+  marginBottom: '1rem',
+  positiom: 'relative'
+}))
+
+const StyledCrossIconContainer = styled('div')(() => ({
+  position: 'absolute',
+  right: 15,
+  top: 15
+}))
+
+const StyledModalHeading = styled('h3')(() => ({
+  textAlign: 'center',
+  marginBottom: '1rem'
+}))
+
+const StyledIconButtonContainer = styled('div')(() => ({
+  position: 'absolute',
+  right: 60,
+  top: 270,
+  zIndex: 10
+}))
+
 const StyledModalContent = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
@@ -73,24 +100,15 @@ const SignInModal = ({ open, onClose }: PropsType) => {
     <MuiModal open={open} onClose={onClose}>
       <StyledModalContent>
         <div style={{ padding: '3.25rem 2.65rem' }}>
-          <h3 style={{ textAlign: 'center', marginBottom: '1rem' }}>
+          <StyledModalHeading>
             Войдите или зарегистрируйтесь <br /> чтобы опубликовать отзыв
-          </h3>
-          <div style={{ position: 'absolute', right: 15, top: 15 }}>
+          </StyledModalHeading>
+          <StyledCrossIconContainer>
             <IconButtons onClick={onClose} icon={<CrossIcon />} />
-          </div>
+          </StyledCrossIconContainer>
           <StyledBlockName>Войти</StyledBlockName>
 
-          <form
-            action=""
-            style={{
-              margin: '0 auto',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-around',
-              marginBottom: '1rem'
-            }}
-          >
+          <StyledModalForm action="">
             <Input
               value={email}
               onChange={emailChangeHandler}
@@ -103,16 +121,16 @@ const SignInModal = ({ open, onClose }: PropsType) => {
               placeholder="Напишите пароль"
               type={showPassword ? 'text' : 'password'}
             />
-            <div style={{ position: 'absolute', right: 60, top: 270, zIndex: 10 }}>
+            <StyledIconButtonContainer>
               <IconButtons
                 onClick={togglePasswordVisibility}
                 icon={showPassword ? <EyeIcon /> : <SlashedEyeIcon />}
               />
-            </div>
+            </StyledIconButtonContainer>
             <Button variant="contained" onClick={() => {}}>
               Войти
             </Button>
-          </form>
+          </StyledModalForm>
 
           <StyledBottomText>
             Нет аккаунта? <a href="">Зарегистрироваться</a>
