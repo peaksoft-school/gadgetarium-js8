@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles'
 import Checkbox from '@mui/material/Checkbox'
-import { ReactComponent as CheckIcon } from '../../../assets/icons/CheckIcon.svg'
+import { ReactComponent as CheckIcon } from '../../../assets/icons/check_icon.svg'
 import { FormControlLabel } from '@mui/material'
 interface CheckBoxType {
   checked?: boolean
