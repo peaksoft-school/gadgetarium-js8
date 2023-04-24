@@ -6,7 +6,7 @@ import {
   styled,
   Typography
 } from '@mui/material'
-import { ReactComponent as Vector } from '../../assets/icons/fag-icons/vector 2.svg'
+import { ReactComponent as Vector } from '../../assets/icons/fag-icons/Vector 2.svg'
 
 type AccordionProps = {
   expanded: boolean | string

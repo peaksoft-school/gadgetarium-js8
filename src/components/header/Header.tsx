@@ -207,7 +207,7 @@ const Header = () => {
             <StyledNavLink href="baac">Главная</StyledNavLink>
             <StyledNavLink href="sdvs">О магазине</StyledNavLink>
             <StyledNavLink href="asc">Доставка</StyledNavLink>
-            <StyledNavLink href="sdv">FAG</StyledNavLink>
+            <StyledNavLink href="sdv">FAQ</StyledNavLink>
             <StyledNavLink href="svn">Контакты</StyledNavLink>
           </StyledList>
         </div>
