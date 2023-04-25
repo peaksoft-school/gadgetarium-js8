@@ -1,7 +1,10 @@
 export type Column<T> = {
   header: string
   key: string
-  minWidth?: string | number
+  width?: string | number
   index?: boolean
-  render?: (meal: T) => JSX.Element
+  cell?: string
+  style?: string
+  render?: (product: T) => JSX.Element
+  checked?: boolean
 }
