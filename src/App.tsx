@@ -1,11 +1,15 @@
 import { ThemeProvider } from '@mui/material/styles'
+import FrequentlyAskedQuestions from './layout/user/FrequentlyAskedQuestions'
 import { appTheme } from './utils/constants/theme'
 
 const AppContent = () => {
-  return <div></div>
+  return (
+    <div>
+      <FrequentlyAskedQuestions />
+    </div>
+  )
 }
-
-function App() {
+const App = () => {
   return (
     <>
       <ThemeProvider theme={appTheme}>
@@ -14,5 +18,4 @@ function App() {
     </>
   )
 }
-
 export default App
