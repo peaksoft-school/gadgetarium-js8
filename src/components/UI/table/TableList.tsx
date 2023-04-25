@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Checkbox, styled } from '@mui/material'
 import { Column } from '../../../utils/constants/tableColumns'
-import { Row } from '../../../App'
 
 type Props<T> = {
   columns: Column<T>[]
@@ -51,27 +50,16 @@ const StyledHeaderTr = styled('tr')`
   background-color: rgba(56, 66, 85, 0.9);
 `
 
-const AppTable = <T,>({ columns, rows, setHover }: Props<T>) => {
+const AppTable = <T,>({ columns, rows }: Props<T>) => {
   const [localRows, setLocalRows] = useState(rows)
   const hoverRowHandler = (obj: Row) => {
-    const changedRows = localRows.map((item) => {
-      if (item.id === obj.id) {
-        item.check = !item.check
-      }
-      return item
-    })
-    setLocalRows(changedRows)
+    const index = localRows.findIndex((item) => item.id === obj.id)
+    if (index !== -1) {
+      const newRows = [...localRows]
+      newRows[index] = { ...newRows[index], check: !newRows[index].check }
+      setLocalRows(newRows)
+    }
   }
-
-  // const unHoverElement = (obj: Row) => {
-  //   const changedRows = localRows.map((item) => {
-  //     if (item.id === obj.id) {
-  //       item.check = false
-  //     }
-  //     return item
-  //   })
-  //   setLocalRows(changedRows)
-  // }
 
   return (
     <StyledTable>
@@ -82,8 +70,11 @@ const AppTable = <T,>({ columns, rows, setHover }: Props<T>) => {
       </StyledHeaderTr>
       <tbody>
         {localRows?.map((row) => {
-          // const test = row.check ? <Checkbox /> : row[column.key]
-          const test = row.check ? <Checkbox /> : <Styledtd>{row.id}</Styledtd>
+          const test = row.check ? (
+            <Checkbox checked={true} onChange={() => hoverRowHandler(row)} />
+          ) : (
+            <Styledtd>{row.id}</Styledtd>
+          )
           return (
             <StyledTr
               key={Math.random().toString()}
@@ -91,23 +82,14 @@ const AppTable = <T,>({ columns, rows, setHover }: Props<T>) => {
               onMouseLeave={() => hoverRowHandler(row)}
             >
               {test}
-              <Styledtd>{row.title}</Styledtd>
-              <Styledtd>{row.image}</Styledtd>
-              {/* {columns?.map((column) => {
-                // if (column.render) {
-                //   return column.render(row)
-                // }
-
-                // const value = column.index
-                //   ? rowIndex + 1
-                //   : // eslint-disable-next-line @type'script-eslint/ban-ts-comment
-                //     //@ts-ignore'
-                //     row[column.key]
-
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //@ts-ignore
-
-              })} */}
+              <Styledtd>{}</Styledtd>
+              <Styledtd>{}</Styledtd>
+              <Styledtd>{}</Styledtd>
+              <Styledtd>{}</Styledtd>
+              <Styledtd>{}</Styledtd>
+              <Styledtd>{}</Styledtd>
+              <Styledtd>{}</Styledtd>
+              <Styledtd>{}</Styledtd>
             </StyledTr>
           )
         })}
