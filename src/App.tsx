@@ -6,6 +6,7 @@ import { Column } from './utils/constants/tableColumns'
 export type Row = {
   title: string
   id: string
+  image: string
   check: boolean
 }
 
@@ -66,16 +67,25 @@ const App = () => {
     {
       id: '1',
       title: 'awda',
+      image: 'photo',
       check: false
     },
     {
       id: '2',
       title: 'wad',
+      image: 'photo',
       check: false
     },
     {
       id: '3',
       title: 'awda',
+      image: 'photo',
+      check: false
+    },
+    {
+      id: '4',
+      title: 'awda',
+      image: 'photo',
       check: false
     }
   ]
