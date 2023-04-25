@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ListItemText, MenuItem, MenuList, Paper, Popover, styled } from '@mui/material'
 import { ReactComponent as Arrow } from '../../assets/icons/categories/arrow.svg'
-import { categories } from '../../utils/constants/categories'
+import { CategoriTypes } from '../../utils/constants/categories'
 
 const PaperStyled = styled(Paper)(({}) => ({
   width: 372,
@@ -14,7 +14,7 @@ const PaperStyled = styled(Paper)(({}) => ({
 
 const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
   padding: '8px',
-  '&:active': {
+  '&:hover': {
     color: '#FFFFFF',
     background: theme.customPalette.primary.main,
     borderRadius: '11px'
@@ -64,6 +64,12 @@ const ListItemTextStyled = styled(ListItemText)(() => ({
 
 type MenuItemType = {
   title: string
+  id: string
+}
+
+interface PropsType {
+  data: CategoriTypes[]
+  category: (id: string) => void
 }
 
 type CategoryType = {
@@ -72,13 +78,13 @@ type CategoryType = {
   id: string
   menuItem: MenuItemType[]
 }
-const Categories = () => {
+const Categories = ({ data, category }: PropsType) => {
   const [anchorEl, setAnchorEl] = useState<HTMLLIElement | null>(null)
   const [test, setTest] = useState<CategoryType | undefined>(undefined)
 
   const handleClick = (event: React.MouseEvent<HTMLLIElement>, id: string) => {
     setAnchorEl(event.currentTarget)
-    const nestedTest = categories.find((item) => item.id === id)
+    const nestedTest = data.find((item) => item.id === id)
     const menuItemArray = []
     menuItemArray.push(nestedTest)
 
@@ -89,13 +95,15 @@ const Categories = () => {
     setAnchorEl(null)
   }
 
+  const categoryClick = (id: string) => category(id)
+
   const open = Boolean(anchorEl)
 
   return (
     <>
       <PaperStyled>
         <MenuList>
-          {categories.map((categorie) => (
+          {data.map((categorie) => (
             <MenuItemStyled
               key={categorie.id}
               onClick={(event) => handleClick(event, categorie.id)}
@@ -116,16 +124,17 @@ const Categories = () => {
           horizontal: 'right'
         }}
       >
-        {test &&
-          [test].map((categori) => (
-            <DivStyled key={categori.id}>
-              {categori.menuItem.map((item) => (
-                <>
-                  <TitleStyled key={item.title}>{item.title}</TitleStyled>
-                </>
-              ))}
-            </DivStyled>
-          ))}
+        {test
+          ? [test].map((categori) => (
+              <DivStyled key={categori.id}>
+                {categori.menuItem.map((item) => (
+                  <TitleStyled key={item.title} onClick={() => categoryClick(item.id)}>
+                    {item.title}
+                  </TitleStyled>
+                ))}
+              </DivStyled>
+            ))
+          : null}
       </Popover>
     </>
   )

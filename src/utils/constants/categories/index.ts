@@ -3,12 +3,13 @@ import Nout from '../../../assets/icons/categories/nout.svg'
 import SmartWatch from '../../../assets/icons/categories/smartWatch.svg'
 import Earphone from '../../../assets/icons/categories/earphone.svg'
 
-export type CategoriTypes = {
+export interface CategoriTypes {
   icon: string
   title: string
   id: string
   menuItem: {
     title: string
+    id: string
   }[]
 }
 
@@ -18,11 +19,11 @@ export const categories: CategoriTypes[] = [
     title: 'Смартфоны',
     id: '1',
     menuItem: [
-      { title: 'Samsung' },
-      { title: 'Apple' },
-      { title: 'Huawei' },
-      { title: 'Honor' },
-      { title: 'Xiaomi' }
+      { id: '1', title: 'Samsung' },
+      { id: '2', title: 'Apple' },
+      { id: '3', title: 'Huawei' },
+      { id: '4', title: 'Honor' },
+      { id: '5', title: 'Xiaomi' }
     ]
   },
   {
@@ -30,16 +31,16 @@ export const categories: CategoriTypes[] = [
     title: 'Ноутбуки и планшеты ',
     id: '2',
     menuItem: [
-      { title: 'Ноутбуки и планшеты ' },
-      { title: 'Acer' },
-      { title: 'Asus' },
-      { title: 'Apple' },
-      { title: 'DELL' },
-      { title: 'Digma' },
-      { title: 'Huawei' },
-      { title: 'HONOR' },
-      { title: 'Lenovo' },
-      { title: 'HP' }
+      { id: '1', title: 'Ноутбуки и планшеты ' },
+      { id: '2', title: 'Acer' },
+      { id: '3', title: 'Asus' },
+      { id: '4', title: 'Apple' },
+      { id: '5', title: 'DELL' },
+      { id: '6', title: 'Digma' },
+      { id: '7', title: 'Huawei' },
+      { id: '8', title: 'HONOR' },
+      { id: '9', title: 'Lenovo' },
+      { id: '10', title: 'HP' }
     ]
   },
   {
@@ -47,11 +48,11 @@ export const categories: CategoriTypes[] = [
     title: 'Смарт-часы и браслеты',
     id: '3',
     menuItem: [
-      { title: 'Смарт-часы и браслеты' },
-      { title: 'Смарт-часы Apple Watch' },
-      { title: 'Умные часы для взрослых' },
-      { title: 'Умные часы для детей' },
-      { title: 'Фитнес браслеты' }
+      { id: '1', title: 'Смарт-часы и браслеты' },
+      { id: '2', title: 'Смарт-часы Apple Watch' },
+      { id: '3', title: 'Умные часы для взрослых' },
+      { id: '4', title: 'Умные часы для детей' },
+      { id: '5', title: 'Фитнес браслеты' }
     ]
   },
   {
@@ -59,16 +60,16 @@ export const categories: CategoriTypes[] = [
     title: 'Аксессуары',
     id: '4',
     menuItem: [
-      { title: 'Аксессуары' },
-      { title: 'Ремешки для часов' },
-      { title: 'Зарядные устройства' },
-      { title: 'Защита экрана' },
-      { title: 'Чехлы и корпусы' },
-      { title: 'Подставки' },
-      { title: 'Кабели и адаптеры' },
-      { title: 'Внешние аккумуляторы' },
-      { title: 'Наушники' },
-      { title: 'Карта памяти и накопители' }
+      { id: '1', title: 'Аксессуары' },
+      { id: '2', title: 'Ремешки для часов' },
+      { id: '3', title: 'Зарядные устройства' },
+      { id: '4', title: 'Защита экрана' },
+      { id: '5', title: 'Чехлы и корпусы' },
+      { id: '6', title: 'Подставки' },
+      { id: '7', title: 'Кабели и адаптеры' },
+      { id: '8', title: 'Внешние аккумуляторы' },
+      { id: '9', title: 'Наушники' },
+      { id: '10', title: 'Карта памяти и накопители' }
     ]
   }
 ]
