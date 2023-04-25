@@ -49,18 +49,6 @@ const StyledCrossIconContainer = styled('div')(() => ({
   top: 15
 }))
 
-const StyledModalHeading = styled('h3')(() => ({
-  textAlign: 'center',
-  marginBottom: '1rem'
-}))
-
-const StyledIconButtonContainer = styled('div')(() => ({
-  position: 'absolute',
-  right: 7,
-  top: 90,
-  zIndex: 10
-}))
-
 const StyledModalContent = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
@@ -74,20 +62,43 @@ const StyledModalContent = styled('div')(() => ({
   position: 'absolute',
   left: '50%',
   top: '50%',
-  transform: 'translate(-50%, -50%)',
-  border: 'none'
+  transform: 'translate(-50%, -50%)'
+}))
+const StyledIconButtonContainer = styled('div')(() => ({
+  position: 'absolute',
+  right: 7,
+  top: 310,
+  zIndex: 10
+}))
+
+const StyledSecondEyeIconButtonContainer = styled('div')(() => ({
+  position: 'absolute',
+  right: 7,
+  top: 385,
+  zIndex: 10
 }))
 
 type PropsType = {
   open: boolean
   onClose: () => void
-  feedback?: boolean
-  hideBackdrop?: boolean
+  hideBackdrop: boolean
 }
 
-const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: PropsType) => {
+const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
+  const [name, setName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
-  const [password, setpassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [password, setPassword] = useState('')
+  //   const [emailError, setEmailError] = useState(false)
+  //   const [passwordError, setPasswordError] = useState(false)
+
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword((prevShowPassword) => !prevShowPassword)
+  }
+
   const [showPassword, setShowPassword] = useState(false)
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword)
@@ -96,24 +107,53 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
   const emailChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
   }
+  const nameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value)
+  }
+
+  const lastNameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLastName(e.target.value)
+  }
+
+  const phoneNumberChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(e.target.value)
+  }
+
   const passwordChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setpassword(e.target.value)
+    setPassword(e.target.value)
+  }
+
+  const confirmPasswordChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value)
   }
   return (
-    <MuiModal hideBackdrop={hideBackdrop} open={open} onClose={onClose}>
+    <MuiModal open={open} onClose={onClose} hideBackdrop={hideBackdrop}>
       <StyledModalContent>
         <div style={{ padding: '3.25rem 2.65rem' }}>
-          {feedback && (
-            <StyledModalHeading>
-              Войдите или зарегистрируйтесь <br /> чтобы опубликовать отзыв
-            </StyledModalHeading>
-          )}
           <StyledCrossIconContainer>
             <IconButtons onClick={onClose} icon={<CrossIcon />} />
           </StyledCrossIconContainer>
-          <StyledBlockName>Войти</StyledBlockName>
+          <StyledBlockName>Регистрация</StyledBlockName>
 
-          <StyledModalForm action="">
+          <StyledModalForm onSubmit={() => {}} action="">
+            <Input
+              value={name}
+              onChange={nameChangeHandler}
+              placeholder="Напишите имя"
+              type="text"
+            />
+            <Input
+              value={lastName}
+              onChange={lastNameChangeHandler}
+              placeholder="Напишите фамилию"
+              type="text"
+            />
+            <Input
+              value={phoneNumber}
+              onChange={phoneNumberChangeHandler}
+              placeholder="+996 (_ _ _) _ _  _ _  _ _"
+              type="text"
+            />
             <Input
               value={email}
               onChange={emailChangeHandler}
@@ -132,13 +172,25 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
                 icon={showPassword ? <EyeIcon /> : <SlashedEyeIcon />}
               />
             </StyledIconButtonContainer>
+            <Input
+              value={confirmPassword}
+              onChange={confirmPasswordChangeHandler}
+              placeholder="Напишите пароль"
+              type={showConfirmPassword ? 'text' : 'password'}
+            />
+            <StyledSecondEyeIconButtonContainer>
+              <IconButtons
+                onClick={toggleConfirmPasswordVisibility}
+                icon={showConfirmPassword ? <EyeIcon /> : <SlashedEyeIcon />}
+              />
+            </StyledSecondEyeIconButtonContainer>
             <Button variant="contained" onClick={() => {}}>
-              Войти
+              Создать Аккаунт
             </Button>
           </StyledModalForm>
 
           <StyledBottomText>
-            Нет аккаунта? <a href="">Зарегистрироваться</a>
+            Уже есть аккаунт? <a href="">Войти</a>
           </StyledBottomText>
         </div>
       </StyledModalContent>
@@ -146,4 +198,4 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
   )
 }
 
-export default SignInModal
+export default SignUpModal
