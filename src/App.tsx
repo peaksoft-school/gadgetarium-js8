@@ -1,21 +1,11 @@
-import { ThemeProvider } from '@mui/material/styles'
-import FrequentlyAskedQuestions from './layout/user/FrequentlyAskedQuestions'
-import { appTheme } from './utils/constants/theme'
-
 const AppContent = () => {
-  return (
-    <div>
-      <FrequentlyAskedQuestions />
-    </div>
-  )
+  return <div></div>
 }
-const App = () => {
-  return (
-    <>
-      <ThemeProvider theme={appTheme}>
-        <AppContent />
-      </ThemeProvider>
-    </>
-  )
+
+
+function App() {
+  return <div>
+  <AppContent />
+  </div>
 }
 export default App
