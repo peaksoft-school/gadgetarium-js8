@@ -2,6 +2,10 @@ const AppContent = () => {
   return <div></div>
 }
 const App = () => {
-  return <div></div>
+  return (
+    <div>
+      <AppContent />
+    </div>
+  )
 }
 export default App
