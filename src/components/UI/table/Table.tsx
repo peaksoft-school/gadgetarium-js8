@@ -5,15 +5,14 @@ import { Column } from '../../../utils/constants/tableColumns'
 type Props<T> = {
   columns: Column<T>[]
   rows: Row[]
+  getId: (id: string) => void
   setHover: (a: boolean) => void
 }
-
 const StyledTable = styled('table')`
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 15px;
 `
-
 const Styledth = styled('th')`
   font-family: 'Inter';
   font-style: normal;
@@ -24,18 +23,14 @@ const Styledth = styled('th')`
   text-transform: capitalize;
   padding: 10px;
   color: #ffffff;
-  border-spacing: 0;
 `
-
 const Styledtd = styled('td')`
   width: 150px;
   text-align: center;
   border-top: 1px solid #cdcdcd;
   border-bottom: 1px solid #cdcdcd;
-
   padding: 10px;
 `
-
 const StyledTr = styled('tr')`
   -webkit-box-shadow: 8px 9px 18px 0px rgba(34, 60, 80, 0.14);
   -moz-box-shadow: 8px 9px 18px 0px rgba(34, 60, 80, 0.14);
@@ -45,12 +40,11 @@ const StyledTr = styled('tr')`
     background-color: #cdcdcd;
   }
 `
-
 const StyledHeaderTr = styled('tr')`
   background-color: rgba(56, 66, 85, 0.9);
 `
 
-const AppTable = <T,>({ columns, rows }: Props<T>) => {
+const AppTable = <T,>({ columns, rows, getId }: Props<T>) => {
   const [localRows, setLocalRows] = useState(rows)
   const hoverRowHandler = (obj: Row) => {
     const index = localRows.findIndex((item) => item.id === obj.id)
@@ -59,6 +53,10 @@ const AppTable = <T,>({ columns, rows }: Props<T>) => {
       newRows[index] = { ...newRows[index], check: !newRows[index].check }
       setLocalRows(newRows)
     }
+  }
+
+  const getIdHandler = (id: string) => {
+    getId(id)
   }
 
   return (
@@ -71,7 +69,11 @@ const AppTable = <T,>({ columns, rows }: Props<T>) => {
       <tbody>
         {localRows?.map((row) => {
           const test = row.check ? (
-            <Checkbox checked={true} onChange={() => hoverRowHandler(row)} />
+            <Checkbox
+              onClick={() => getIdHandler(row.id)}
+              checked={true}
+              onChange={() => hoverRowHandler(row)}
+            />
           ) : (
             <Styledtd>{row.id}</Styledtd>
           )
@@ -97,5 +99,4 @@ const AppTable = <T,>({ columns, rows }: Props<T>) => {
     </StyledTable>
   )
 }
-
 export default AppTable
