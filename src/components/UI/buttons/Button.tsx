@@ -4,16 +4,21 @@ export interface ButtonProps extends MuiButtonProps {
   children: React.ReactNode
 }
 
-const MuiButtonStyled = styled(MuiButton)<ButtonProps>(() => ({
+const MuiButtonStyled = styled(MuiButton)<ButtonProps>(({ theme }) => ({
   textTransform: 'inherit',
   whiteSpace: 'nowrap',
   fontSize: '16px',
+  background: theme.customPalette.primary.main,
   '&.MuiButton-contained': {
     border: 'none',
     color: '#ffffff'
   },
   '&:active': {
-    border: 'none'
+    border: 'none',
+    background: theme.customPalette.primary.mainActive
+  },
+  '&:hover': {
+    background: theme.customPalette.primary.mainHover
   },
   '&.Mui-disabled': {
     backgroundColor: 'rgb(81, 81, 81)',

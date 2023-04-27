@@ -83,6 +83,17 @@ declare module '@mui/material/styles' {
 }
 
 export const appTheme = createTheme({
+  components: {
+    MuiContainer: {
+      styleOverrides: {
+        maxWidthLg: {
+          '&.MuiContainer-maxWidthLg': {
+            maxWidth: '90%'
+          }
+        }
+      }
+    }
+  },
   customPalette: {
     primary: {
       main: '#CB11AB',
