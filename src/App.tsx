@@ -1,11 +1,17 @@
 const AppContent = () => {
-  return <div></div>
+  return (
+    <div>
+      <FrequentlyAskedQuestions />
+    </div>
+  )
 }
 const App = () => {
   return (
-    <div>
-      <AppContent />
-    </div>
+    <>
+      <ThemeProvider theme={appTheme}>
+        <AppContent />
+      </ThemeProvider>
+    </>
   )
 }
 export default App
