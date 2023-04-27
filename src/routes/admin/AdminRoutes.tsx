@@ -1,27 +1,28 @@
 import AdminLayout from '../../layout/admin/AdminLayout'
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
+import { PATHS } from '../../utils/constants/routerConsts'
 
 const AdminRoutes = () => {
   return (
     <div>
       <AdminLayout>
         <Routes>
-          <Route path="" element={<Navigate to="products" />} />
+          <Route path={PATHS.ADMIN.default} element={<Navigate to="products" />} />
 
-          <Route path="products/*" element={<Outlet />}>
+          <Route path={PATHS.ADMIN.products} element={<Outlet />}>
             <Route index element={<p>ProductsPage</p>} />
-            <Route path="addproducts/*" element={<p>AddProductsPage</p>} />
-            <Route path=":productId" element={<p>ProductInnerPage</p>} />
-            <Route path="*" element={<p>Not Found</p>} />
+            <Route path={PATHS.ADMIN.addProducts} element={<p>AddProductsPage</p>} />
+            <Route path={PATHS.ADMIN.productId} element={<p>ProductInnerPage</p>} />
+            <Route path={PATHS.ADMIN.not_found} element={<p>Not Found</p>} />
           </Route>
 
-          <Route path="orders/*" element={<Outlet />}>
+          <Route path={PATHS.ADMIN.orders} element={<Outlet />}>
             <Route index element={<p>OrdersPage</p>} />
-            <Route path=":orderId" element={<p>OrderInfoPage</p>} />
-            <Route path="*" element={<p>Not Found</p>} />
+            <Route path={PATHS.ADMIN.orderId} element={<p>OrderInfoPage</p>} />
+            <Route path={PATHS.ADMIN.orderId} element={<p>Not Found</p>} />
           </Route>
 
-          <Route path="reviews" element={<p>ReviewsPage</p>} />
+          <Route path={PATHS.ADMIN.reviews} element={<p>ReviewsPage</p>} />
         </Routes>
       </AdminLayout>
     </div>

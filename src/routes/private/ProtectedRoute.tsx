@@ -1,15 +1,16 @@
 import { Navigate } from 'react-router-dom'
 import React from 'react'
-import { roles } from '../AppRoutes'
 
 type ProtectedRouteProps = {
   component: React.FC
-  isAllowed: string[]
+  roles: string
 }
 
-const ProtectedRoute = ({ component: Component, isAllowed }: ProtectedRouteProps) => {
-  if (!!isAllowed.includes(roles.admin)) {
-    return <Navigate to="/" replace />
+const ProtectedRoute = ({ component: Component, roles }: ProtectedRouteProps) => {
+  const role = 'asdas'
+  const isAuthenticated = role ? roles.includes(role) : null
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />
   }
   return <Component />
 }
