@@ -7,6 +7,13 @@ import Input from '../inputs/Input'
 import Button from '../buttons/Button'
 import IconButtons from '../IconButtons'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../redux/store'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { signIn } from '../../../redux/store/auth/auth.thunk'
+import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
 
 const StyledBlockName = styled('p')(() => ({
   fontFamily: 'Inter',
@@ -86,18 +93,42 @@ type PropsType = {
 }
 
 const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: PropsType) => {
-  const [email, setEmail] = useState('')
-  const [password, setpassword] = useState('')
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
+
+  const error = useSelector((state: RootState) => state.auth.error)
+  // console.log(error)
+
+  const [loginError, setLoginError] = useState('')
+
+  const schema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6)
+  })
+
+  type FormSchema = (typeof schema)['_output']
+
+  const { handleSubmit, register, formState } = useForm({
+    defaultValues: {
+      email: '',
+      password: ''
+    },
+    mode: 'onBlur',
+    resolver: zodResolver(schema)
+  })
+
+  const submitHandler = (values: FormSchema) => {
+    // console.log(values)
+
+    dispatch(signIn(values))
+      .unwrap()
+      .then(() => navigate('/'))
+      .catch((e: string) => setLoginError(e))
+  }
+
   const [showPassword, setShowPassword] = useState(false)
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword)
-  }
-
-  const emailChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
-  }
-  const passwordChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setpassword(e.target.value)
   }
   return (
     <MuiModal hideBackdrop={hideBackdrop} open={open} onClose={onClose}>
@@ -113,16 +144,20 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
           </StyledCrossIconContainer>
           <StyledBlockName>Войти</StyledBlockName>
 
-          <StyledModalForm action="">
+          <StyledModalForm action="" onSubmit={handleSubmit(submitHandler)}>
             <Input
-              value={email}
-              onChange={emailChangeHandler}
+              {...register('email', {
+                required: 'Please enter your email address'
+              })}
               placeholder="Напишите email"
               type="email"
+              error={!!formState.errors.email}
             />
             <Input
-              value={password}
-              onChange={passwordChangeHandler}
+              error={!!formState.errors.password}
+              {...register('password', {
+                required: 'Please enter your password'
+              })}
               placeholder="Напишите пароль"
               type={showPassword ? 'text' : 'password'}
             />
@@ -132,7 +167,7 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
                 icon={showPassword ? <EyeIcon /> : <SlashedEyeIcon />}
               />
             </StyledIconButtonContainer>
-            <Button variant="contained" onClick={() => {}}>
+            <Button variant="contained" type="submit" onClick={() => {}}>
               Войти
             </Button>
           </StyledModalForm>
@@ -140,6 +175,7 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
           <StyledBottomText>
             Нет аккаунта? <a href="">Зарегистрироваться</a>
           </StyledBottomText>
+          <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>
         </div>
       </StyledModalContent>
     </MuiModal>
