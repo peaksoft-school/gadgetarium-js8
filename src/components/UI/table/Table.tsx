@@ -4,7 +4,7 @@ import { Column } from '../../../utils/constants/tableColumns'
 
 type Props<T> = {
   columns: Column<T>[]
-  rows: Row[]
+  // rows: Row[]
   getId: (id: string) => void
   setHover: (a: boolean) => void
 }
