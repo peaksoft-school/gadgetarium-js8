@@ -14,6 +14,7 @@ import * as z from 'zod'
 import { signIn } from '../../../redux/store/auth/auth.thunk'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
 
 const StyledBlockName = styled('p')(() => ({
   fontFamily: 'Inter',
@@ -93,10 +94,10 @@ type PropsType = {
 }
 
 const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: PropsType) => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const error = useSelector((state: RootState) => state.auth.error)
+  const { error, role } = useAppSelector((state) => state.auth)
   // console.log(error)
 
   const [loginError, setLoginError] = useState('')
@@ -173,7 +174,7 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
           </StyledModalForm>
 
           <StyledBottomText>
-            Нет аккаунта? <a href="">Зарегистрироваться</a>
+            Нет аккаунта? <a href="/signup">Зарегистрироваться</a>
           </StyledBottomText>
           <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>
         </div>

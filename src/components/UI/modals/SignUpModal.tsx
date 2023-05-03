@@ -14,6 +14,7 @@ import * as z from 'zod'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { signUp } from '../../../redux/store/auth/auth.thunk'
+import { PATHS } from '../../../utils/constants/routerConsts'
 
 const StyledBlockName = styled('p')(() => ({
   fontFamily: 'Inter',
@@ -142,7 +143,7 @@ const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
   const submitHandler = (values: FormSchema) => {
     dispatch(signUp(values))
       .unwrap()
-      .then(() => navigate('/'))
+      .then(() => navigate(PATHS.APP.logIn))
       .catch((e) => setSignUpError(e.response.data.message))
   }
 
@@ -218,7 +219,7 @@ const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
           </StyledModalForm>
 
           <StyledBottomText>
-            Уже есть аккаунт? <a href="">Войти</a>
+            Уже есть аккаунт? <a href="/login">Войти</a>
           </StyledBottomText>
           <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>
         </div>
