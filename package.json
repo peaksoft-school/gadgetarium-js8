@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@mui/lab": "^5.0.0-alpha.129",
     "@hookform/resolvers": "^3.1.0",
     "@mui/material": "^5.11.16",
     "@mui/styles": "^5.11.16",
@@ -53,6 +54,8 @@
     ]
   },
   "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.1",
     "@types/react-slick": "^0.23.10",
     "@types/react-table": "^7.7.14",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
@@ -68,6 +71,6 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "prettier": "^2.8.7",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.4"
   }
 }
