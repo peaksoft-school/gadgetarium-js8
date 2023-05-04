@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { signUp } from '../../../redux/store/auth/auth.thunk'
 import { PATHS } from '../../../utils/constants/routerConsts'
@@ -217,7 +217,7 @@ const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
           </StyledModalForm>
 
           <StyledBottomText>
-            Уже есть аккаунт? <a href="/login">Войти</a>
+            Уже есть аккаунт? <Link to="/login">Войти</Link>
           </StyledBottomText>
           <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>
         </div>
