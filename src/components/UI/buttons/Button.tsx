@@ -8,17 +8,17 @@ const MuiButtonStyled = styled(MuiButton)<ButtonProps>(({ theme }) => ({
   textTransform: 'inherit',
   whiteSpace: 'nowrap',
   fontSize: '16px',
-  background: theme.customPalette.primary.main,
+  background: '#CB11AB',
   '&.MuiButton-contained': {
     border: 'none',
     color: '#ffffff'
   },
   '&:active': {
     border: 'none',
-    background: theme.customPalette.primary.mainActive
+    background: '#C90EA9'
   },
   '&:hover': {
-    background: theme.customPalette.primary.mainHover
+    background: '#E313BF'
   },
   '&.Mui-disabled': {
     backgroundColor: 'rgb(81, 81, 81)',

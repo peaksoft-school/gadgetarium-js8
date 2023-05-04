@@ -1,8 +1,8 @@
 import { InputBase, styled } from '@mui/material'
-import { ChangeEvent, forwardRef } from 'react'
+import { forwardRef } from 'react'
 
 type InputProps = {
-  value: string
+  value?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   error?: boolean
   placeholder?: string

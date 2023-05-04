@@ -5,8 +5,16 @@ import MainLayout from '../layout/main/MainLayout'
 import FrequentlyAskedQuestions from '../layout/user/FrequentlyAskedQuestions'
 import Contackts from '../layout/contacts/Contackt'
 import { PATHS } from '../utils/constants/routerConsts'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
+import { UserRoles } from '../utils/common/types'
 
 const MainRoutes = () => {
+  const role = useSelector((state: RootState) => state.auth.role)
+
+  const isAuthenticated = (roles: UserRoles) => {
+    return roles.includes(role)
+  }
   return (
     <MainLayout>
       <Routes>
@@ -25,7 +33,12 @@ const MainRoutes = () => {
 
         <Route
           path={PATHS.MAIN.user}
-          element={<ProtectedRoute roles="USER" component={() => <p>UserPage</p>} />}
+          element={
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated(UserRoles.USER)}
+              component={() => <p>UserPage</p>}
+            />
+          }
         />
 
         <Route path={PATHS.MAIN.about} element={<p>AboutPage</p>} />
