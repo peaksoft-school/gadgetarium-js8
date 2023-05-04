@@ -1,13 +1,13 @@
 import { Routes, Route, Outlet } from 'react-router-dom'
-import ProtectedRoute from './private/ProtectedRoute'
-import Delivery from '../layout/delivery/Delivery'
-import MainLayout from '../layout/main/MainLayout'
-import FrequentlyAskedQuestions from '../layout/user/FrequentlyAskedQuestions'
-import Contackts from '../layout/contacts/Contackt'
-import { PATHS } from '../utils/constants/routerConsts'
+import ProtectedRoute from '../private/ProtectedRoute'
+import Delivery from '../../layout/user/delivery/Delivery'
+import MainLayout from '../../layout/user/main/MainLayout'
+import FrequentlyAskedQuestions from '../../layout/user/FAQ/FrequentlyAskedQuestions'
+import Contackts from '../../layout/user/contacts/Contackt'
+import { PATHS } from '../../utils/constants/router/routerConsts'
 import { useSelector } from 'react-redux'
-import { RootState } from '../redux/store'
-import { UserRoles } from '../utils/common/types'
+import { RootState } from '../../redux/store'
+import { UserRoles } from '../../utils/common/types'
 
 const MainRoutes = () => {
   const role = useSelector((state: RootState) => state.auth.role)

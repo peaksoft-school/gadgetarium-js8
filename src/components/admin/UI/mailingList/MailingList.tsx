@@ -1,5 +1,5 @@
 import React from 'react'
-import Modal from '../../../UI/Modal'
+import Modal from '../../../UI/modals/Modal'
 import Input from '../../../UI/inputs/Input'
 import Button from '../../../UI/buttons/Button'
 import { FormLabel, styled } from '@mui/material'

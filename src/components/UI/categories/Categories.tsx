@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ListItemText, MenuItem, MenuList, Paper, Popover, styled } from '@mui/material'
 import { ReactComponent as Arrow } from '../../assets/icons/categories/arrow.svg'
-import { CategoriTypes } from '../../utils/constants/categories'
+import { CategoriTypes } from '../../../utils/constants/categories'
 
 const PaperStyled = styled(Paper)(({}) => ({
   width: 372,

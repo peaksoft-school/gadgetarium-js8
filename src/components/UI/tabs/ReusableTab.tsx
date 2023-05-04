@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material'
 import { ReactComponent as ShortLine } from '../../assets/icons/tabs-icons/tabicon2.svg'
 import { ReactComponent as LongLine } from '../../assets/icons/tabs-icons/tabsicon3svg.svg'
-import IconButtons from '../IconButtons'
+import IconButtons from '../buttons/IconButtons'
 
 interface TabPanelProps {
   children?: React.ReactNode

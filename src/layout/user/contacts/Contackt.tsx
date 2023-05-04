@@ -1,6 +1,6 @@
 import React from 'react'
-import Input from '../../components/UI/inputs/Input'
-import Button from '../../components/UI/buttons/Button'
+import Input from '../../../components/UI/inputs/Input'
+import Button from '../../../components/UI/buttons/Button'
 import { styled, Divider, TextField } from '@mui/material'
 
 const MainContainer = styled('div')(() => ({

@@ -4,11 +4,6 @@ import { UserRoles } from '../../../utils/common/types'
 import { STORAGE_KEYS } from '../../../utils/constants/storage'
 import { signIn, signOut, signUp } from './auth.thunk'
 
-// const initialState = {
-//   token:
-//     'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhemltYmVrMUBnbWFpbC5jb20iLCJpYXQiOjE2ODMxOTYyNzIsImV4cCI6MTY4MzM0MDI3Mn0.P7PoayHDNz-vS7jkTqNWQ8mKbynjre9CoduDldD6o1E'
-// }
-
 interface AuthState {
   isAuthorized: boolean
   isLoading?: boolean

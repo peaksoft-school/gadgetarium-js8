@@ -1,4 +1,4 @@
-import Modal from '../Modal'
+import Modal from '../modals/Modal'
 import { ReactComponent as Tickicon } from '../../../assets/icons//feedback-icons/TickIcon.svg'
 import { styled } from '@mui/material'
 

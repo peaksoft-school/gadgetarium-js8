@@ -1,7 +1,7 @@
 import { styled } from '@mui/material'
 import BasketPreviewItem from './BasketPreviewItem'
 import { ReactComponent as Triangle } from '../../../assets/icons/basket-preview-icons/triangleIcon.svg'
-import Button from '../buttons/Button'
+import Button from '../../UI/buttons/Button'
 
 const MainContainer = styled('div')(() => ({
   position: 'relative',

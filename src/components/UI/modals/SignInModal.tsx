@@ -5,14 +5,14 @@ import { ReactComponent as EyeIcon } from '../../../assets/icons/input-password-
 import { styled } from '@mui/material'
 import Input from '../inputs/Input'
 import Button from '../buttons/Button'
-import IconButtons from '../IconButtons'
+import IconButtons from '../buttons/IconButtons'
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { signIn } from '../../../redux/store/auth/auth.thunk'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux/redux'
 
 const StyledBlockName = styled('p')(() => ({
   fontFamily: 'Inter',

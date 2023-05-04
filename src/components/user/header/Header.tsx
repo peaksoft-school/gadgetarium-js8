@@ -10,7 +10,7 @@ import { ReactComponent as UnionIcon } from '../../assets/icons/header-icons/uni
 import { ReactComponent as LikeIcon } from '../../assets/icons/header-icons/likeIcon.svg'
 import { ReactComponent as HoveredLikeIcon } from '../../assets/icons/header-icons/hoveredLikeIcon.svg'
 import { ReactComponent as BasketIcon } from '../../assets/icons/header-icons/basketIcon.svg'
-import IconButtons from '../UI/IconButtons'
+import IconButtons from '../../UI/buttons/IconButtons'
 
 const StyledNotificationIcon = styled('span')(() => ({
   display: 'flex',

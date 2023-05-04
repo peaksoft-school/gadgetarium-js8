@@ -1,6 +1,6 @@
 import AdminLayout from '../../layout/admin/AdminLayout'
 import { Routes, Route, Outlet } from 'react-router-dom'
-import { PATHS } from '../../utils/constants/routerConsts'
+import { PATHS } from '../../utils/constants/router/routerConsts'
 
 const AdminRoutes = () => {
   return (

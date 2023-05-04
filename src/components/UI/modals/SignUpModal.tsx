@@ -5,7 +5,7 @@ import { ReactComponent as EyeIcon } from '../../../assets/icons/input-password-
 import { styled } from '@mui/material'
 import Input from '../inputs/Input'
 import Button from '../buttons/Button'
-import IconButtons from '../IconButtons'
+import IconButtons from '../buttons/IconButtons'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
@@ -14,7 +14,7 @@ import * as z from 'zod'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { signUp } from '../../../redux/store/auth/auth.thunk'
-import { PATHS } from '../../../utils/constants/routerConsts'
+import { PATHS } from '../../../utils/constants/router/routerConsts'
 
 const StyledBlockName = styled('p')(() => ({
   fontFamily: 'Inter',
