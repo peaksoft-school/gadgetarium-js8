@@ -1,5 +1,5 @@
-import { UserRoles } from '../utils/common/types'
-import { mainApi } from './instances'
+import { UserRoles } from '../../utils/common/types'
+import { mainApi } from '../../config/instances'
 
 type SignInResponse = {
   token: string

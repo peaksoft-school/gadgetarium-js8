@@ -1,4 +1,4 @@
-import { ReactComponent as ComeraIcon } from '../../../assets/icons/cameraIcon.svg'
+import { ReactComponent as ComeraIcon } from '../../../assets/icons/feedback-icons/CameraIcon.svg'
 import { Rating, TextField, styled } from '@mui/material'
 import Button from '../buttons/Button'
 import Modal from '../Modal'
