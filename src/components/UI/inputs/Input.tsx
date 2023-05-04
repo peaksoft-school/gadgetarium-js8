@@ -2,12 +2,13 @@ import { InputBase, styled } from '@mui/material'
 import { ChangeEvent, forwardRef } from 'react'
 import { InputBaseProps } from '@mui/material'
 type InputProps = InputBaseProps & {
-  value: string
+  value?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   error?: boolean
   placeholder?: string
   type?: string
 }
+
 const InputStyled = styled(InputBase)(() => ({
   '&.input': {
     border: '0.1px solid #909CB5',

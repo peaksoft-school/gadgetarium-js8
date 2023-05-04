@@ -8,5 +8,6 @@ export const store = configureStore({
     [mailingSlice.name]: mailingSlice.reducer
   }
 })
+
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
