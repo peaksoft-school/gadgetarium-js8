@@ -1,5 +1,5 @@
-import Modal from '../Modal'
-import { ReactComponent as Tickicon } from '../../../assets/icons/tickIcon.svg'
+import Modal from '../modals/Modal'
+import { ReactComponent as Tickicon } from '../../../assets/icons//feedback-icons/TickIcon.svg'
 import { styled } from '@mui/material'
 
 type PropsSuccessRequest = {

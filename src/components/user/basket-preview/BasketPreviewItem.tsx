@@ -1,6 +1,6 @@
 import { styled, Divider } from '@mui/material'
 import { ReactComponent as RemoveIcon } from '../../../assets/icons/basket-preview-icons/removeIcon.svg'
-import IconButtons from '../IconButtons'
+import IconButtons from '../../UI/buttons/IconButtons'
 
 const StyledImage = styled('img')(() => ({
   width: '6.25rem',

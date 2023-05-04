@@ -1,8 +1,8 @@
-import { ReactComponent as Telephone } from '../../assets/icons/telephoneIcon.svg'
-import { ReactComponent as Clock } from '../../assets/icons/clock_icon.svg'
-import { ReactComponent as Mail } from '../../assets/icons/mail_icon.svg'
-import { ReactComponent as Location } from '../../assets/icons/location_icon.svg'
-import { ReactComponent as Logo } from '../../assets/images/logo.svg'
+import { ReactComponent as Telephone } from '../../assets/icons/footer-icons/telephoneIcon.svg'
+import { ReactComponent as Clock } from '../../assets/icons/footer-icons/clock_icon.svg'
+import { ReactComponent as Mail } from '../../assets/icons/footer-icons/mail_icon.svg'
+import { ReactComponent as Location } from '../../assets/icons/footer-icons/location_icon.svg'
+import { ReactComponent as Logo } from '../../assets/images/logo/logo.svg'
 import { styled } from '@mui/material'
 
 const StyledFooter = styled('footer')(() => ({

@@ -1,18 +1,18 @@
 import { Modal as MuiModal } from '@mui/material'
-import { ReactComponent as CrossIcon } from '../../../assets/icons/cross_icon.svg'
-import { ReactComponent as SlashedEyeIcon } from '../../../assets/icons/icons_eye-slashed.svg'
-import { ReactComponent as EyeIcon } from '../../../assets/icons/eyeIcon.svg'
+import { ReactComponent as CrossIcon } from '../../../assets/icons/modal-icons/cross_icon.svg'
+import { ReactComponent as SlashedEyeIcon } from '../../../assets/icons/input-password-icons/icons_eye-slashed.svg'
+import { ReactComponent as EyeIcon } from '../../../assets/icons/input-password-icons/eyeIcon.svg'
 import { styled } from '@mui/material'
 import Input from '../inputs/Input'
 import Button from '../buttons/Button'
-import IconButtons from '../IconButtons'
+import IconButtons from '../buttons/IconButtons'
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { signIn } from '../../../redux/store/auth/auth.thunk'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux/redux'
 
 const StyledBlockName = styled('p')(() => ({
   fontFamily: 'Inter',

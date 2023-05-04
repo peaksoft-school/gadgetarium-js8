@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { AxiosError, isAxiosError } from 'axios'
 import { STORAGE_KEYS } from '../../../utils/constants/storage'
 import { SignUpUser } from '../../../utils/common/types'
-import { signInRequest, signUpRequest } from '../../../api/authService'
+import { signInRequest, signUpRequest } from '../../../api/auth/authService'
 
 export const signOut = createAsyncThunk('auth/signOut', async () => {
   return localStorage.removeItem(STORAGE_KEYS.AUTH)

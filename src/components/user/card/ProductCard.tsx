@@ -4,8 +4,8 @@ import { ReactComponent as HeartIcon } from '../../assets/icons/product-icons/sh
 import { ReactComponent as BasketIcon } from '../../assets/icons/product-icons/basket.svg'
 import { ReactComponent as LikeIcon } from '../../assets/icons/product-icons/like_icon.svg'
 import ImageProduct from '../../assets/images/image53.png'
-import Button from '../UI/buttons/Button'
-import IconButtons from '../UI/IconButtons'
+import Button from '../../UI/buttons/Button'
+import IconButtons from '../../UI/buttons/IconButtons'
 import TextWithEllipsis from './CardText'
 import ProductRating from './RatingProduct'
 
