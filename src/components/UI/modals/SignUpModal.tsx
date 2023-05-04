@@ -99,7 +99,6 @@ type PropsType = {
 const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
-  const [signUpError, setSignUpError] = useState('')
 
   const error = useSelector((state: RootState) => state.auth.error)
 
@@ -144,7 +143,6 @@ const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
     dispatch(signUp(values))
       .unwrap()
       .then(() => navigate(PATHS.APP.logIn))
-      .catch((e) => setSignUpError(e.response.data.message))
   }
 
   const confirmPasswordChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

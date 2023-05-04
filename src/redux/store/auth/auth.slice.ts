@@ -8,7 +8,7 @@ interface AuthState {
   isAuthorized: boolean
   isLoading?: boolean
   token: string
-  role: UserRoles
+  role: string
   email: string
   error?: undefined | string
 }
@@ -29,7 +29,7 @@ const getInitialState = () => {
     isLoading: false,
     token: '',
     email: '',
-    role: UserRoles.USER,
+    role: '',
     error: ''
   }
 }
@@ -60,14 +60,10 @@ export const authSlice = createSlice({
         state.role = UserRoles.USER
       }),
       builder.addCase(signIn.rejected, (state, { payload }) => {
-        // console.log(payload, 'payload')
-
         state.isAuthorized = false
         state.error = payload as string | undefined
       }),
       builder.addCase(signUp.rejected, (state, { payload }) => {
-        // console.log(payload, 'payload')
-
         state.isAuthorized = false
         state.error = payload as string | undefined
       })

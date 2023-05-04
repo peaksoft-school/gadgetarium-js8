@@ -1,5 +1,5 @@
 import { InputBase, styled } from '@mui/material'
-import { ChangeEvent, forwardRef } from 'react'
+import { forwardRef } from 'react'
 
 type InputProps = {
   value?: string

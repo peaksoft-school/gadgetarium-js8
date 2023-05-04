@@ -7,8 +7,6 @@ import Input from '../inputs/Input'
 import Button from '../buttons/Button'
 import IconButtons from '../IconButtons'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../../redux/store'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { signIn } from '../../../redux/store/auth/auth.thunk'
@@ -97,10 +95,7 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { error, role } = useAppSelector((state) => state.auth)
-  // console.log(error)
-
-  const [loginError, setLoginError] = useState('')
+  const { error } = useAppSelector((state) => state.auth)
 
   const schema = z.object({
     email: z.string().email(),
@@ -124,7 +119,6 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
     dispatch(signIn(values))
       .unwrap()
       .then(() => navigate('/'))
-      .catch((e: string) => setLoginError(e))
   }
 
   const [showPassword, setShowPassword] = useState(false)

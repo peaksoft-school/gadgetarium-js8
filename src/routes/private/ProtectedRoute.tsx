@@ -1,19 +1,21 @@
 import { Navigate } from 'react-router-dom'
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../redux/store'
 
 type ProtectedRouteProps = {
   component: React.FC
-  roles: string
+  isAuthenticated: boolean
+  fallback?: string
 }
 
-const ProtectedRoute = ({ component: Component, roles }: ProtectedRouteProps) => {
-  const role = useSelector((state: RootState) => state.auth.role)
+const ProtectedRoute = ({
+  component: Component,
+  isAuthenticated,
+  fallback = '/login'
+}: ProtectedRouteProps) => {
+  // console.log('rolesPROTECTED', isAuthenticated)
 
-  const isAuthenticated = role ? roles.includes(role) : null
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+    return <Navigate to={fallback} replace />
   }
   return <Component />
 }
