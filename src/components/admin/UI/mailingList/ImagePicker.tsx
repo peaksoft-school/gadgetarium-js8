@@ -1,11 +1,10 @@
 import { Avatar, IconButton, Stack, styled } from '@mui/material'
-import React, { ChangeEvent, FC, useState } from 'react'
-import { ReactComponent as AvatarIcon } from '.././assets/icons/AvatarIcon.svg'
+import { ChangeEvent, FC, useState } from 'react'
+import { ReactComponent as AvatarIcon } from '../../../../assets/icons/AvatarIcon.svg'
 
 interface ImagePickerProps {
   onSelectImage: (imageUrl: string) => void
 }
-
 const StyledImg = styled('img')`
   width: 60%;
   height: 50%;

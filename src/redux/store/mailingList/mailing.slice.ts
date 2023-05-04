@@ -1,18 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  errors: {
-    message: null
-  },
-  isLoading: '',
-  promiseMessage: null
+  data: {
+    image: '',
+    name: '',
+    description: '',
+    dateOfStart: '',
+    dateOfEnd: ''
+  }
 }
 
 export const mailingSlice = createSlice({
   name: 'mailingSlice',
   initialState,
-  reducers: {},
-  extraReducers: () => {}
+  reducers: {}
 })
 
 export const mailingAction = mailingSlice.actions

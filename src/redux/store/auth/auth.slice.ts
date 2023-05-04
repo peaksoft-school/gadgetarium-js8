@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  token: 'http://ec2-52-28-80-102.eu-central-1.compute.amazonaws.com/api/mailing_lists'
+  token:
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhemltYmVrMUBnbWFpbC5jb20iLCJpYXQiOjE2ODMxNzU5OTUsImV4cCI6MTY4MzMxOTk5NX0.og960BJrjHsdQ_nhGQE2C3vARwKmrju2p1b0hHrP62g'
 }
 
 export const authSlice = createSlice({

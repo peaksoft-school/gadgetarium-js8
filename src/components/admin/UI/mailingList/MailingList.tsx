@@ -1,12 +1,15 @@
 import React from 'react'
-import Modal from '../../UI/Modal'
-import Input from '../../UI/inputs/Input'
-import Button from '../../UI/buttons/Button'
+import Modal from '../../../UI/Modal'
+import Input from '../../../UI/inputs/Input'
+import Button from '../../../UI/buttons/Button'
 import { FormLabel, styled } from '@mui/material'
 import { useState } from 'react'
-import ImagePicker from '../../../hooks/useUploadAvatar'
+import ImagePicker from './ImagePicker'
 
 import { ChangeEvent } from 'react'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../../../../redux/store'
+import { postMailingList } from '../../../../redux/store/mailingList/mailingList.thunk'
 
 type Props = {
   modalHandler: () => void
@@ -28,6 +31,9 @@ const StyledInput = styled(Input)(() => ({
   width: '30rem',
   '&.input': {
     marginTop: '6px'
+  },
+  require: {
+    border: '3px solid red'
   }
 }))
 const StyledHeader = styled('div')`
@@ -99,7 +105,8 @@ const StyledButton = styled(Button)(() => ({
   color: '#CB11AB',
   width: '14rem'
 }))
-const MailingList = ({ modalHandler, modal, data }: Props) => {
+const MailingList = ({ modalHandler, modal }: Props) => {
+  const dispatch = useDispatch<AppDispatch>()
   const [image, setImage] = useState<string | null>(null)
   const [name, setName] = useState('')
   const [description, setDescription] = useState<string>('')
@@ -128,14 +135,28 @@ const MailingList = ({ modalHandler, modal, data }: Props) => {
   }
   const addNewData = (event: any) => {
     event.preventDefault()
-    const newData = {
-      name: name,
-      description: description,
-      image: image,
-      dateOfStart: dateOfStart,
-      dateOfEnd: dateOfEnd
+    if (
+      name.length >= 3 &&
+      description.length >= 3 &&
+      dateOfStart.length >= 3 &&
+      dateOfEnd.length >= 3
+    ) {
+      const newData = {
+        name: name,
+        description: description,
+        image: image,
+        dateOfStart: dateOfStart,
+        dateOfEnd: dateOfEnd
+      }
+      dispatch(postMailingList(newData))
+    } else {
+      return require
     }
-    data(newData)
+    setName('')
+    setImage('')
+    setDescription('')
+    setDateOfEnd('')
+    setDateOfStart('')
   }
 
   return (
@@ -153,6 +174,7 @@ const MailingList = ({ modalHandler, modal, data }: Props) => {
             <StyledInput
               type="text"
               value={name}
+              required
               id="названиеРассылки"
               placeholder="Введите название зассылки"
               onChange={nameChangeHandler}
@@ -164,6 +186,7 @@ const MailingList = ({ modalHandler, modal, data }: Props) => {
             </StyledFormLable>
             <StyledInput
               type="text"
+              required
               id="описаниеРассылки"
               value={description}
               onChange={descriptionChangeHandler}
@@ -180,6 +203,7 @@ const MailingList = ({ modalHandler, modal, data }: Props) => {
                 id="dateStarts"
                 value={dateOfStart}
                 type="date"
+                required
                 onChange={dateOfStartChangeHandler}
               />
             </div>
@@ -191,6 +215,7 @@ const MailingList = ({ modalHandler, modal, data }: Props) => {
                 placeholder="Выберите дату"
                 id="dateEnd"
                 value={dateOfEnd}
+                required
                 type="date"
                 onChange={dateOfEndChangeHandler}
               />

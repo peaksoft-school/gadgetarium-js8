@@ -1,7 +1,8 @@
 export type MailingListType = {
-  image: string
   name: string
   description: string
+  image: string | null
   dateOfStart: string
-  dateOfFinish: string
+
+  dateOfEnd: string
 }
