@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { authSlice } from './auth/auth.slice'
+import { mailingSlice } from './mailingList/mailing.slice'
 
 export const store = configureStore({
   reducer: {
-    [authSlice.name]: authSlice.reducer
+    [authSlice.name]: authSlice.reducer,
+    [mailingSlice.name]: mailingSlice.reducer
   }
 })
 

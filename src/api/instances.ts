@@ -10,9 +10,9 @@ export const mainApi = axios.create({
 mainApi.interceptors.request.use(
   function (config) {
     const newConfig = { ...config }
-    const token = store.getState().auth.token
+    const { token } = store.getState().auth
     if (token) {
-      newConfig.headers.Authorization = `Bearer${token}`
+      newConfig.headers.Authorization = `Bearer ${token}`
     }
     return newConfig
   },
