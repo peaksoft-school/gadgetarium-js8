@@ -1,4 +1,4 @@
-import { ThemeProvider } from '@emotion/react'
+import { ThemeProvider } from '@mui/styles'
 import { appTheme } from './utils/constants/theme'
 
 const AppContent = () => {

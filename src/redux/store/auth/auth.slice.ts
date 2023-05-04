@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   token:
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhemltYmVrMUBnbWFpbC5jb20iLCJpYXQiOjE2ODMxNzU5OTUsImV4cCI6MTY4MzMxOTk5NX0.og960BJrjHsdQ_nhGQE2C3vARwKmrju2p1b0hHrP62g'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhemltYmVrMUBnbWFpbC5jb20iLCJpYXQiOjE2ODMxOTYyNzIsImV4cCI6MTY4MzM0MDI3Mn0.P7PoayHDNz-vS7jkTqNWQ8mKbynjre9CoduDldD6o1E'
 }
 
 export const authSlice = createSlice({

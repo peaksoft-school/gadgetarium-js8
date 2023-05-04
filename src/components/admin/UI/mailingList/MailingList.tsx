@@ -20,7 +20,7 @@ type Props = {
     image: string | null
     dateOfStart: string
 
-    dateOfEnd: string
+    dateOfFinish: string
   }) => void
 }
 const StyledForm = styled('form')`
@@ -105,13 +105,13 @@ const StyledButton = styled(Button)(() => ({
   color: '#CB11AB',
   width: '14rem'
 }))
-const MailingList = ({ modalHandler, modal }: Props) => {
+const CreateMailingList = ({ modalHandler, modal }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
-  const [image, setImage] = useState<string | null>(null)
+  const [image, setImage] = useState<string>('')
   const [name, setName] = useState('')
   const [description, setDescription] = useState<string>('')
   const [dateOfStart, setDateOfStart] = useState('')
-  const [dateOfEnd, setDateOfEnd] = useState('')
+  const [dateOfFinish, setDateOfEnd] = useState('')
 
   const handleImageSelect = (imageUrl: string) => {
     setImage(imageUrl)
@@ -139,14 +139,14 @@ const MailingList = ({ modalHandler, modal }: Props) => {
       name.length >= 3 &&
       description.length >= 3 &&
       dateOfStart.length >= 3 &&
-      dateOfEnd.length >= 3
+      dateOfFinish.length >= 3
     ) {
       const newData = {
         name: name,
         description: description,
         image: image,
         dateOfStart: dateOfStart,
-        dateOfEnd: dateOfEnd
+        dateOfFinish: dateOfFinish
       }
       dispatch(postMailingList(newData))
     } else {
@@ -161,6 +161,7 @@ const MailingList = ({ modalHandler, modal }: Props) => {
 
   return (
     <Modal onClose={modalHandler} open={modal}>
+      <link rel="stylesheet" href="" />
       <StyledForm onSubmit={addNewData}>
         <StyledHeader>
           <StyledTitle>Создать рассылку</StyledTitle>
@@ -214,7 +215,7 @@ const MailingList = ({ modalHandler, modal }: Props) => {
               <StyledDateInput
                 placeholder="Выберите дату"
                 id="dateEnd"
-                value={dateOfEnd}
+                value={dateOfFinish}
                 required
                 type="date"
                 onChange={dateOfEndChangeHandler}
@@ -232,4 +233,4 @@ const MailingList = ({ modalHandler, modal }: Props) => {
   )
 }
 
-export default MailingList
+export default CreateMailingList

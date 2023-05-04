@@ -4,5 +4,5 @@ export type MailingListType = {
   image: string | null
   dateOfStart: string
 
-  dateOfEnd: string
+  dateOfFinish: string
 }

@@ -5,6 +5,7 @@ import { ReactComponent as AvatarIcon } from '../../../../assets/icons/AvatarIco
 interface ImagePickerProps {
   onSelectImage: (imageUrl: string) => void
 }
+
 const StyledImg = styled('img')`
   width: 60%;
   height: 50%;

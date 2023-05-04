@@ -6,7 +6,7 @@ const initialState = {
     name: '',
     description: '',
     dateOfStart: '',
-    dateOfEnd: ''
+    dateOfFinish: ''
   }
 }
 
