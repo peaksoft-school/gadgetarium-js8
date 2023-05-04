@@ -1,10 +1,20 @@
+import { ThemeProvider } from '@mui/material'
+import { appTheme } from './utils/constants/theme'
+import ImageGallery from './components/banners/Banner'
+
 const AppContent = () => {
-  return <div></div>
+  return (
+    <div>
+      <ImageGallery />
+    </div>
+  )
 }
 const App = () => {
   return (
     <div>
-      <AppContent />
+      <ThemeProvider theme={appTheme}>
+        <AppContent />
+      </ThemeProvider>
     </div>
   )
 }
