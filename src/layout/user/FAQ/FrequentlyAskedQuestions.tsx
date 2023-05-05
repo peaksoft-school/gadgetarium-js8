@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Box, styled, Typography } from '@mui/material'
 import FaqAccordion from './Accordion'
-import { accordion } from '../../../src/utils/constants/accordionQuestions'
+import { accordion } from '../../../utils/constants/accordionQuestions'
 
 const ContainerStyled = styled('div')(() => ({
   width: '100%',

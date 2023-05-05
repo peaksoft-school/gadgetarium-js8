@@ -15,9 +15,6 @@ const AppContent = () => {
 const App = () => {
   return (
     <div>
-      <ThemeProvider theme={appTheme}>
-        <AppContent />
-      </ThemeProvider>
       <Provider store={store}>
         <BrowserRouter>
           <ThemeProvider theme={appTheme}>
