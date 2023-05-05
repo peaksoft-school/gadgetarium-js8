@@ -1,9 +1,9 @@
 import { styled, Divider } from '@mui/material'
-import { ReactComponent as DeliveryIcon } from '../../assets/icons/delivery-layout-icons/deliveryIcon.svg'
-import { ReactComponent as WalletIcon } from '../../assets/icons/delivery-layout-icons/walletIcon.svg'
-import { ReactComponent as PayWithCard } from '../../assets/icons/delivery-layout-icons/payWithCardIcon.svg'
-import { ReactComponent as PayWithCash } from '../../assets/icons/delivery-layout-icons/payWithCash.svg'
-import { ReactComponent as PayAfter } from '../../assets/icons/delivery-layout-icons/payAfter.svg'
+import { ReactComponent as DeliveryIcon } from '../../../assets/icons/delivery-layout-icons/deliveryIcon.svg'
+import { ReactComponent as WalletIcon } from '../../../assets/icons/delivery-layout-icons/walletIcon.svg'
+import { ReactComponent as PayWithCard } from '../../../assets/icons/delivery-layout-icons/payWithCardIcon.svg'
+import { ReactComponent as PayWithCash } from '../../../assets/icons/delivery-layout-icons/payWithCash.svg'
+import { ReactComponent as PayAfter } from '../../../assets/icons/delivery-layout-icons/payAfter.svg'
 
 const MainContaner = styled('div')(() => ({
   width: '100%',
