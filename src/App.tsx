@@ -1,20 +1,22 @@
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import AppRoutes from './routes/AppRoutes'
 import { ThemeProvider } from '@mui/material'
-import { appTheme } from './utils/constants/theme'
-import ImageGallery from './components/banners/Banner'
-
+import { appTheme } from './utils/constants/theme/theme'
+import { store } from './redux/store'
 const AppContent = () => {
-  return (
-    <div>
-      <ImageGallery />
-    </div>
-  )
+  return <div>{<AppRoutes />}</div>
 }
 const App = () => {
   return (
     <div>
-      <ThemeProvider theme={appTheme}>
-        <AppContent />
-      </ThemeProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ThemeProvider theme={appTheme}>
+            <AppContent />
+          </ThemeProvider>
+        </BrowserRouter>
+      </Provider>
     </div>
   )
 }
