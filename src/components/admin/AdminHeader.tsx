@@ -10,9 +10,9 @@ import {
 } from '@mui/material'
 import { ReactComponent as LogoIcon } from '../../assets/icons/header-icons/logo.svg'
 import { ReactComponent as VectorIcon } from '../../assets/icons/admin-header/vector.svg'
-import IconButtons from '../UI/IconButtons'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import Modal from '../UI/Modal'
+import IconButtons from '../UI/buttons/IconButtons'
+import Modal from '../UI/modals/Modal'
 
 const MainContainer = styled('div')(() => ({
   position: 'fixed',

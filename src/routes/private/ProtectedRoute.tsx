@@ -3,14 +3,19 @@ import React from 'react'
 
 type ProtectedRouteProps = {
   component: React.FC
-  roles: string
+  isAuthenticated: boolean
+  fallback?: string
 }
 
-const ProtectedRoute = ({ component: Component, roles }: ProtectedRouteProps) => {
-  const role = 'ADMIN'
-  const isAuthenticated = role ? roles.includes(role) : null
+const ProtectedRoute = ({
+  component: Component,
+  isAuthenticated,
+  fallback = '/login'
+}: ProtectedRouteProps) => {
+  // console.log('rolesPROTECTED', isAuthenticated)
+
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+    return <Navigate to={fallback} replace />
   }
   return <Component />
 }

@@ -1,4 +1,4 @@
-import { ReactComponent as Logo } from '../../assets/images/logo.svg'
+import { ReactComponent as Logo } from '../../assets/images/logo/logo.svg'
 import { styled } from '@mui/material'
 import SignUpModal from '../../components/UI/modals/SignUpModal'
 

@@ -1,7 +1,9 @@
+import { store } from './redux/store'
 import { BrowserRouter } from 'react-router-dom'
-import AdminHeader from './components/admin/AdminHeader'
-import ProductsPage from './containers/admin/products/ProductsPage'
+import { Provider } from 'react-redux'
 import AppRoutes from './routes/AppRoutes'
+import { ThemeProvider } from '@mui/material'
+import { appTheme } from './utils/constants/theme/theme'
 
 const AppContent = () => {
   return (
@@ -12,11 +14,15 @@ const AppContent = () => {
 }
 const App = () => {
   return (
-    <BrowserRouter>
-      <div>
-        <AppContent />
-      </div>
-    </BrowserRouter>
+    <div>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ThemeProvider theme={appTheme}>
+            <AppContent />
+          </ThemeProvider>
+        </BrowserRouter>
+      </Provider>
+    </div>
   )
 }
 export default App

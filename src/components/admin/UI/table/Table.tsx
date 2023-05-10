@@ -2,13 +2,13 @@ import { useState } from 'react'
 import { Checkbox, Pagination, Box, styled } from '@mui/material'
 import { Column } from '../../../../utils/constants/tableColumns'
 import { useClientSidePagination } from './usePagination'
-import IconButtons from '../../../UI/IconButtons'
 import { ReactComponent as DeleteIcon } from '../../../../assets/icons/admin-products/deleteIcon.svg'
 import { ReactComponent as EditIcon } from '../../../../assets/icons/admin-products/editIcon.svg'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { AppDispatch } from '../../../../redux/store'
 import { deleteProductById } from '../../../../redux/store/products/products.thunk'
+import IconButtons from '../../../UI/buttons/IconButtons'
 
 type RowType = {
   createdAt: string

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Button, InputBase, Paper, Grid, styled } from '@mui/material'
-import IconButtons from '../../../components/UI/IconButtons'
 import ProductsTab from '../../../components/admin/UI/tabs/ProductTab'
 import Infographics from '../../../components/admin/product-infographics/Infographics'
 import AllProducts from '../../../components/admin/tab-components/AllProducts'
@@ -9,12 +8,13 @@ import FavoriteProducts from '../../../components/admin/tab-components/FavoriteP
 import BasketProducts from '../../../components/admin/tab-components/BasketProducts'
 import { ReactComponent as SearchIcon } from '../../../assets/icons/header-icons/searchIcon.svg'
 import { Link } from 'react-router-dom'
-import { PATHS } from '../../../utils/constants/routerConsts'
 import { useSelector, useDispatch } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { getInfographics } from '../../../redux/store/infographics/infographicsThunk'
 import { getAllProducts } from '../../../redux/store/products/products.thunk'
 import { format, parseISO } from 'date-fns'
+import IconButtons from '../../../components/UI/buttons/IconButtons'
+import { PATHS } from '../../../utils/constants/router/routerConsts'
 
 const FirstContainer = styled('div')(() => ({
   width: '81.5625rem',

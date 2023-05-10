@@ -1,6 +1,6 @@
 import AdminLayout from '../../layout/admin/AdminLayout'
-import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
-import { PATHS } from '../../utils/constants/routerConsts'
+import { Routes, Route, Outlet } from 'react-router-dom'
+import { PATHS } from '../../utils/constants/router/routerConsts'
 import ProductsPage from '../../containers/admin/products/ProductsPage'
 
 const AdminRoutes = () => {
@@ -8,7 +8,7 @@ const AdminRoutes = () => {
     <div>
       <AdminLayout>
         <Routes>
-          <Route path={PATHS.ADMIN.default} element={<Navigate to="products" />} />
+          <Route path={PATHS.ADMIN.default} element={<p>Admin</p>} />
 
           <Route path={PATHS.ADMIN.products} element={<Outlet />}>
             <Route index element={<ProductsPage />} />

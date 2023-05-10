@@ -1,12 +1,20 @@
-import { Modal as MuiModal } from '@mui/material'
-import { ReactComponent as CrossIcon } from '../../../assets/icons/cross_icon.svg'
-import { ReactComponent as SlashedEyeIcon } from '../../../assets/icons/icons_eye-slashed.svg'
-import { ReactComponent as EyeIcon } from '../../../assets/icons/eyeIcon.svg'
+import { Modal as MuiModal, Typography } from '@mui/material'
+import { ReactComponent as CrossIcon } from '../../../assets/icons/modal-icons/cross_icon.svg'
+import { ReactComponent as SlashedEyeIcon } from '../../../assets/icons/input-password-icons/icons_eye-slashed.svg'
+import { ReactComponent as EyeIcon } from '../../../assets/icons/input-password-icons/eyeIcon.svg'
 import { styled } from '@mui/material'
 import Input from '../inputs/Input'
 import Button from '../buttons/Button'
-import IconButtons from '../IconButtons'
+import IconButtons from '../buttons/IconButtons'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../redux/store'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { signUp } from '../../../redux/store/auth/auth.thunk'
+import { PATHS } from '../../../utils/constants/router/routerConsts'
 
 const StyledBlockName = styled('p')(() => ({
   fontFamily: 'Inter',
@@ -71,6 +79,10 @@ const StyledIconButtonContainer = styled('div')(() => ({
   zIndex: 10
 }))
 
+const Error = styled(Typography)(() => ({
+  color: '#980606'
+}))
+
 const StyledSecondEyeIconButtonContainer = styled('div')(() => ({
   position: 'absolute',
   right: 7,
@@ -85,42 +97,52 @@ type PropsType = {
 }
 
 const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
-  const [name, setName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [email, setEmail] = useState('')
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
+
+  const error = useSelector((state: RootState) => state.auth.error)
+
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [password, setPassword] = useState('')
-  //   const [emailError, setEmailError] = useState(false)
-  //   const [passwordError, setPasswordError] = useState(false)
 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword((prevShowPassword) => !prevShowPassword)
   }
-
   const [showPassword, setShowPassword] = useState(false)
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword)
   }
 
-  const emailChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
-  }
-  const nameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
-  }
+  const schema = z.object({
+    firstName: z.string().min(2),
+    lastName: z.string().min(2),
+    phoneNumber: z.string().min(2),
+    email: z.string().email(),
+    password: z.string().min(6)
+  })
+  // .refine((data) => data.password === data.confirm, {
+  //   message: "Passwords don't match",
+  //   path: ['confirm']
+  // })
 
-  const lastNameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLastName(e.target.value)
-  }
+  type FormSchema = (typeof schema)['_output']
 
-  const phoneNumberChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneNumber(e.target.value)
-  }
+  const { handleSubmit, formState, register } = useForm({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      email: '',
+      password: ''
+    },
+    mode: 'onBlur',
+    resolver: zodResolver(schema)
+  })
 
-  const passwordChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value)
+  const submitHandler = (values: FormSchema) => {
+    dispatch(signUp(values))
+      .unwrap()
+      .then(() => navigate(PATHS.APP.logIn))
   }
 
   const confirmPasswordChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,37 +157,42 @@ const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
           </StyledCrossIconContainer>
           <StyledBlockName>Регистрация</StyledBlockName>
 
-          <StyledModalForm onSubmit={() => {}} action="">
+          <StyledModalForm onSubmit={handleSubmit(submitHandler)} action="">
             <Input
-              value={name}
-              onChange={nameChangeHandler}
+              error={!!formState.errors.firstName}
+              {...register('firstName')}
               placeholder="Напишите имя"
               type="text"
             />
+            {formState.errors.firstName && <Error>{formState.errors.firstName?.message}</Error>}
             <Input
-              value={lastName}
-              onChange={lastNameChangeHandler}
+              error={!!formState.errors.lastName}
+              {...register('lastName')}
               placeholder="Напишите фамилию"
               type="text"
             />
+            {formState.errors.lastName && <Error>{formState.errors.lastName?.message}</Error>}
             <Input
-              value={phoneNumber}
-              onChange={phoneNumberChangeHandler}
+              error={!!formState.errors.phoneNumber}
+              {...register('phoneNumber')}
               placeholder="+996 (_ _ _) _ _  _ _  _ _"
               type="text"
             />
+            {formState.errors.phoneNumber && <Error>{formState.errors.phoneNumber?.message}</Error>}
             <Input
-              value={email}
-              onChange={emailChangeHandler}
+              error={!!formState.errors.email}
+              {...register('email')}
               placeholder="Напишите email"
               type="email"
             />
+            {formState.errors.email && <Error>{formState.errors.email?.message}</Error>}
             <Input
-              value={password}
-              onChange={passwordChangeHandler}
+              error={!!formState.errors.password}
+              {...register('password')}
               placeholder="Напишите пароль"
               type={showPassword ? 'text' : 'password'}
             />
+            {formState.errors.password && <Error>{formState.errors.password?.message}</Error>}
             <StyledIconButtonContainer>
               <IconButtons
                 onClick={togglePasswordVisibility}
@@ -184,14 +211,15 @@ const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
                 icon={showConfirmPassword ? <EyeIcon /> : <SlashedEyeIcon />}
               />
             </StyledSecondEyeIconButtonContainer>
-            <Button variant="contained" onClick={() => {}}>
+            <Button variant="contained" type="submit">
               Создать Аккаунт
             </Button>
           </StyledModalForm>
 
           <StyledBottomText>
-            Уже есть аккаунт? <a href="">Войти</a>
+            Уже есть аккаунт? <Link to="/login">Войти</Link>
           </StyledBottomText>
+          <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>
         </div>
       </StyledModalContent>
     </MuiModal>
