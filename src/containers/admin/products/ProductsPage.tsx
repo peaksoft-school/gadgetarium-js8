@@ -119,11 +119,17 @@ const ProductsPage = () => {
   }
 
   const handleStartDateChange = (start: string) => {
-    console.log(start)
+    const startDate = new Date(start)
+    // const formattadDate = `${startDate.getFullYear()}-${startDate.getMonth()}-${startDate.getDay()}`
+    // console.log(formattadDate)
+    const formattedDate = format(startDate, 'yyyy-MM-dd')
+
+    console.log(formattedDate)
     setQueryParams((prev: any) => {
       return {
-        ...prev,
-        from: format(parseISO('yyyy-MM-dd'), start)
+        ...prev
+        // TODO need to change
+        // from: formattedDate,
         // from: format(start, 'yy.MM.dd')
       }
     })
