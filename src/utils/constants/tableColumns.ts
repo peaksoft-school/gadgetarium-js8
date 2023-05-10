@@ -7,4 +7,5 @@ export type Column<T> = {
   style?: string
   render?: (product: T) => JSX.Element
   checked?: boolean
+  align?: 'left' | 'right' | 'center'
 }

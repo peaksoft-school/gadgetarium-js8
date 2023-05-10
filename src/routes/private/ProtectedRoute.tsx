@@ -7,7 +7,7 @@ type ProtectedRouteProps = {
 }
 
 const ProtectedRoute = ({ component: Component, roles }: ProtectedRouteProps) => {
-  const role = 'asdas'
+  const role = 'ADMIN'
   const isAuthenticated = role ? roles.includes(role) : null
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
