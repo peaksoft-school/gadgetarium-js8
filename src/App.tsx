@@ -5,7 +5,11 @@ import { ThemeProvider } from '@mui/material'
 import { appTheme } from './utils/constants/theme/theme'
 import { store } from './redux/store'
 const AppContent = () => {
-  return <div>{<AppRoutes />}</div>
+  return (
+    <div>
+      <AppRoutes />
+    </div>
+  )
 }
 const App = () => {
   return (

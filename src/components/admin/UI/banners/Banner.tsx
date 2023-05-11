@@ -181,6 +181,9 @@ const Banner = ({ isOpen, onClose }: PropsType) => {
     dispatch(bannerAction.deleteImageAll([]))
     onClose()
   }
+  const disableButtonHandler = () => {
+    return bannerImageUrls.length <= 0
+  }
   return (
     <div>
       <>
@@ -223,7 +226,9 @@ const Banner = ({ isOpen, onClose }: PropsType) => {
             </ContainerImages>
             <ContainerButton>
               <StyledButton onClick={closeModalHandler}>Отменить</StyledButton>
-              <StyledButton onClick={uploadImagerUrlsHandler}>Загрузить</StyledButton>
+              <StyledButton onClick={uploadImagerUrlsHandler} disabled={disableButtonHandler()}>
+                Загрузить
+              </StyledButton>
             </ContainerButton>
           </Container>
         </Modal>
