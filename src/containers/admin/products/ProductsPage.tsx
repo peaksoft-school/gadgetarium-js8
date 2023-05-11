@@ -7,7 +7,7 @@ import ProductsOnSale from '../../../components/admin/tab-components/ProductsOnS
 import FavoriteProducts from '../../../components/admin/tab-components/FavoriteProducts'
 import BasketProducts from '../../../components/admin/tab-components/BasketProducts'
 import { ReactComponent as SearchIcon } from '../../../assets/icons/header-icons/searchIcon.svg'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { getInfographics } from '../../../redux/store/infographics/infographicsThunk'
@@ -92,6 +92,8 @@ const ProductsPage = () => {
     before: null
   })
 
+  const [searchParams, setSearchParams] = useSearchParams()
+
   useEffect(() => {
     dispatch(
       getAllProducts({
@@ -115,7 +117,10 @@ const ProductsPage = () => {
     })
   }
 
-  const handleChangePage = (newPage: number) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleChangePage = (newPage: any) => {
+    searchParams.set('page', newPage)
+    setSearchParams(searchParams)
     setQueryParams((prev) => {
       return {
         ...prev,

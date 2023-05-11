@@ -145,7 +145,7 @@ const AllProducts = ({
         <AppTable
           onChange={handleChangePage}
           page={products.currentPage}
-          totalPages={products.totalPages}
+          pageSize={products.totalPages}
           columns={columns}
           rows={products.elements}
           withPagination={true}

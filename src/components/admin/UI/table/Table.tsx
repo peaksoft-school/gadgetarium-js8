@@ -27,7 +27,7 @@ type Props<T> = {
   rows: RowType[]
   withPagination: boolean
   page: number
-  totalPages: number
+  pageSize: number
   onChange: (newPage: number) => void
 }
 const StyledTable = styled('table')`
@@ -106,7 +106,7 @@ const TotalPrice = styled('p')(() => ({
 const AppTable = <T,>({
   onChange,
   page,
-  totalPages,
+  pageSize,
   columns,
   rows,
   withPagination = true
@@ -198,7 +198,6 @@ const AppTable = <T,>({
           <Pagination
             count={page}
             onChange={(event: React.ChangeEvent<unknown>, newPage) => onChange(newPage)}
-            page={totalPages}
             color="secondary"
           />
         </Box>
