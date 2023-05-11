@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Checkbox, Pagination, Box, styled } from '@mui/material'
 import { Column } from '../../../../utils/constants/tableColumns'
-import { useClientSidePagination } from './usePagination'
+import { useClientSidePagination } from '../../../../hooks/pagination/usePagination'
 import { ReactComponent as DeleteIcon } from '../../../../assets/icons/admin-products/deleteIcon.svg'
 import { ReactComponent as EditIcon } from '../../../../assets/icons/admin-products/editIcon.svg'
 import { useDispatch } from 'react-redux'
@@ -30,6 +30,7 @@ type Props<T> = {
   pageSize: number
   onChange: (newPage: number) => void
 }
+
 const StyledTable = styled('table')`
   width: 100%;
   border-collapse: separate;
@@ -151,7 +152,7 @@ const AppTable = <T,>({
             {
               return (
                 <StyledTr
-                  key={row.subProductId}
+                  key={Math.random().toString()}
                   onMouseEnter={() => handleRowHover(row.subProductId)}
                   onMouseLeave={() => handleRowHover(null)}
                 >
@@ -196,9 +197,10 @@ const AppTable = <T,>({
       {withPagination && (
         <Box justifyContent="center" alignItems="center" display="flex" marginTop="2rem">
           <Pagination
-            count={page}
+            count={pageSize}
             onChange={(event: React.ChangeEvent<unknown>, newPage) => onChange(newPage)}
             color="secondary"
+            page={page}
           />
         </Box>
       )}

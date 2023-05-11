@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react'
 import { Button, InputBase, Paper, Grid, styled } from '@mui/material'
 import ProductsTab from '../../../components/admin/UI/tabs/ProductTab'
@@ -15,6 +16,7 @@ import { getAllProducts } from '../../../redux/store/products/products.thunk'
 import { format } from 'date-fns'
 import IconButtons from '../../../components/UI/buttons/IconButtons'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
+import { useDebounce } from '../../../hooks/useDebounced/useDebounce'
 
 const FirstContainer = styled('div')(() => ({
   width: '81.5625rem',
@@ -79,20 +81,20 @@ const StyledLink = styled(Link)(() => ({
 }))
 
 const ProductsPage = () => {
-  const [search, setSearch] = useState('')
   const dispatch = useDispatch<AppDispatch>()
+  const [searchParams, setSearchParams] = useSearchParams()
   const infographics = useSelector((state: RootState) => state.infographics.items)
   const [queryParams, setQueryParams] = useState({
     status: 'все продукты',
     page: 1,
-    keyWord: 'keyWord',
+    keyWord: '',
     pageSize: 7,
     sortBy: null,
     from: null,
     before: null
   })
-
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchTerm, setSearchTerm] = useState('')
+  const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
   useEffect(() => {
     dispatch(
@@ -108,6 +110,21 @@ const ProductsPage = () => {
     dispatch(getInfographics())
   }, [])
 
+  const searchCharacters = (word: string) => {
+    setQueryParams((prev) => {
+      return {
+        ...prev,
+        keyWord: word
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (debouncedSearchTerm.length != 0) {
+      searchCharacters(debouncedSearchTerm)
+    }
+  }, [debouncedSearchTerm])
+
   const onChangeHandler = (keyWord: string, value: string | number | boolean) => {
     setQueryParams((prev) => {
       return {
@@ -117,10 +134,10 @@ const ProductsPage = () => {
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChangePage = (newPage: any) => {
-    searchParams.set('page', newPage)
+  const handlerChangePage = (newPage: number) => {
+    searchParams.set('page', `${newPage}`)
     setSearchParams(searchParams)
+
     setQueryParams((prev) => {
       return {
         ...prev,
@@ -132,7 +149,6 @@ const ProductsPage = () => {
   const handleStartDateChange = (start: Date) => {
     const startDate = new Date(start)
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setQueryParams((prev: any) => {
       return {
         ...prev,
@@ -144,7 +160,6 @@ const ProductsPage = () => {
   const handleEndDateChange = (end: Date) => {
     const endDate = new Date(end)
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setQueryParams((prev: any) => {
       return {
         ...prev,
@@ -171,7 +186,7 @@ const ProductsPage = () => {
           queryParams={queryParams}
           setQueryParams={setQueryParams}
           onChangeHandler={onChangeHandler}
-          handleChangePage={handleChangePage}
+          handlerChangePage={handlerChangePage}
           onFirstChange={onFirstChange}
           onSecondChange={onSecondChange}
         />
@@ -202,8 +217,8 @@ const ProductsPage = () => {
         <StyledGrid>
           <StyledPaper>
             <InputBase
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Поиск по артикулу или ..."
             />
             <IconButtons icon={<StyledSearchIcon />} />
@@ -212,7 +227,7 @@ const ProductsPage = () => {
             <StyledLink to={PATHS.ADMIN.addProducts}>
               <StyledButton>Добавить товар</StyledButton>
             </StyledLink>
-            <StyledButton>Создать скидку</StyledButton>
+            <StyledButton onClick={() => {}}>Создать скидку</StyledButton>
           </div>
         </StyledGrid>
         <ProductsTabContainer>

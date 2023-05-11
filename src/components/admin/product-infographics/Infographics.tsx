@@ -132,10 +132,10 @@ const Infographics = ({ infographicsData }: InfographicsProps) => {
       <PricesInfoContainer>
         <FirstPriceContainer>
           <FirstPrice>
-            {infographicsData.countRedeemed} <span>С</span>
+            {infographicsData.redeemedForTheAmount} <span>С</span>
           </FirstPrice>
           <FirstDescription>Выкупили на сумму</FirstDescription>
-          <FirstAmount>{infographicsData.redeemedForTheAmount} шт</FirstAmount>
+          <FirstAmount>{infographicsData.countRedeemed} шт</FirstAmount>
         </FirstPriceContainer>
         <StyledDivider orientation="vertical" />
         <SecondPriceContainer>
@@ -146,7 +146,7 @@ const Infographics = ({ infographicsData }: InfographicsProps) => {
           <SecondAmount>{infographicsData.orderedForTheAmount} шт</SecondAmount>
         </SecondPriceContainer>
       </PricesInfoContainer>
-      <InfographicsTab />
+      <InfographicsTab infographicsData={infographicsData} />
     </MainContainer>
   )
 }

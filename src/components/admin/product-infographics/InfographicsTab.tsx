@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Box, styled, Tabs, Tab } from '@mui/material'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../redux/store'
+import { InfographicsTypes } from '../../../api/infographics/infographicsService'
 
 const StyledBox = styled(Box)(() => ({
   width: '100%',
@@ -130,9 +129,12 @@ function a11yProps(index: number) {
   }
 }
 
-const InfographicsTab = () => {
+type InfographicsPropTypes = {
+  infographicsData: InfographicsTypes
+}
+
+const InfographicsTab = ({ infographicsData }: InfographicsPropTypes) => {
   const [value, setValue] = useState(0)
-  const infographics = useSelector((state: RootState) => state.infographics.items)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -164,13 +166,13 @@ const InfographicsTab = () => {
               <PricesContainer>
                 <div>
                   <Price1>
-                    {infographics.currentPeriod} <span>c</span>
+                    {infographicsData.currentPeriod} <span>c</span>
                   </Price1>
                   <Description>Текущий период</Description>
                 </div>
                 <div>
                   <Price2>
-                    {infographics.previousPeriod} <span>c</span>
+                    {infographicsData.previousPeriod} <span>c</span>
                   </Price2>
                   <Description>Предыдущий период</Description>
                 </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { styled, Divider } from '@mui/material'
 import AppTable from '../UI/table/Table'
 import { Column } from '../../../utils/constants/tableColumns'
@@ -58,7 +59,7 @@ type Props = {
     }>
   >
   onChangeHandler: (keyWord: string, value: string | number | boolean) => void
-  handleChangePage: (newPage: number) => void
+  handlerChangePage: (newPage: number) => void
   onFirstChange: (newValue: any) => void
   onSecondChange: (newValue: any) => void
 }
@@ -66,7 +67,7 @@ type Props = {
 const AllProducts = ({
   queryParams,
   onChangeHandler,
-  handleChangePage,
+  handlerChangePage,
   onFirstChange,
   onSecondChange
 }: Props) => {
@@ -143,7 +144,7 @@ const AllProducts = ({
           <Sorting onChange={onChangeHandler} />
         </SearchSortContainer>
         <AppTable
-          onChange={handleChangePage}
+          onChange={handlerChangePage}
           page={products.currentPage}
           pageSize={products.totalPages}
           columns={columns}

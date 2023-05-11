@@ -13,6 +13,7 @@ import { ReactComponent as VectorIcon } from '../../assets/icons/admin-header/ve
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import IconButtons from '../UI/buttons/IconButtons'
 import Modal from '../UI/modals/Modal'
+import CreateMailingList from './UI/mailingList/MailingList'
 
 const MainContainer = styled('div')(() => ({
   position: 'fixed',
@@ -204,6 +205,9 @@ const AdminHeader = () => {
   const [openModal, setOpenModal] = useState(false)
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
+  const [openMailing, setOpenMailing] = useState(false)
+  const handleOpen = () => setOpenMailing(true)
+  const handleClose = () => setOpenMailing(false)
 
   const openModalHandler = () => {
     setOpenModal(true)
@@ -221,7 +225,7 @@ const AdminHeader = () => {
   }
 
   const logOutHandler = () => {
-    navigate('/')
+    navigate('/login')
   }
   return (
     <header>
@@ -242,7 +246,7 @@ const AdminHeader = () => {
         </div>
         <ActionContainer>
           <ButtonsContainer>
-            <StyledButton onClick={() => {}}>Создать рассылку</StyledButton>
+            <StyledButton onClick={handleOpen}>Создать рассылку</StyledButton>
           </ButtonsContainer>
           <StyledDivider orientation="vertical" />
           <ClickAwayListener onClickAway={handleTooltipClose}>
@@ -274,6 +278,7 @@ const AdminHeader = () => {
           </ModalButtonContainers>
         </ModalContainer>
       </Modal>
+      <CreateMailingList modal={openMailing} modalHandler={handleClose} />
     </header>
   )
 }

@@ -27,6 +27,7 @@ type AllProductsResponse = {
 const getAllProductsRequest = (queryParams: any) => {
   return mainApi.get<AllProductsResponse>('/api/admin/products', {
     params: {
+      keyWord: queryParams.keyWord,
       status: queryParams.status,
       page: queryParams.page,
       pageSize: queryParams.pageSize,
