@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { getInfographics } from '../../../redux/store/infographics/infographicsThunk'
 import { getAllProducts } from '../../../redux/store/products/products.thunk'
-import { format, parseISO } from 'date-fns'
+import { format } from 'date-fns'
 import IconButtons from '../../../components/UI/buttons/IconButtons'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
 
@@ -93,7 +93,13 @@ const ProductsPage = () => {
   })
 
   useEffect(() => {
-    dispatch(getAllProducts(queryParams))
+    dispatch(
+      getAllProducts({
+        ...queryParams,
+        from: queryParams.from ? format(queryParams.from, 'yyyy-MM-dd') : null,
+        before: queryParams.before ? format(queryParams.before, 'yyyy-MM-dd') : null
+      })
+    )
   }, [queryParams])
 
   useEffect(() => {
@@ -118,39 +124,35 @@ const ProductsPage = () => {
     })
   }
 
-  const handleStartDateChange = (start: string) => {
+  const handleStartDateChange = (start: Date) => {
     const startDate = new Date(start)
-    // const formattadDate = `${startDate.getFullYear()}-${startDate.getMonth()}-${startDate.getDay()}`
-    // console.log(formattadDate)
-    const formattedDate = format(startDate, 'yyyy-MM-dd')
 
-    console.log(formattedDate)
-    setQueryParams((prev: any) => {
-      return {
-        ...prev
-        // TODO need to change
-        // from: formattedDate,
-        // from: format(start, 'yy.MM.dd')
-      }
-    })
-  }
-
-  const handleEndDateChange = (end: string) => {
-    console.log(end)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setQueryParams((prev: any) => {
       return {
         ...prev,
-        before: format(parseISO('yyyy-MM-dd'), end)
-        // before: format(end, 'yy.MM.dd')
+        from: startDate
       }
     })
   }
 
-  const onFirstChange = (newValue: any) => {
+  const handleEndDateChange = (end: Date) => {
+    const endDate = new Date(end)
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setQueryParams((prev: any) => {
+      return {
+        ...prev,
+        before: endDate
+      }
+    })
+  }
+
+  const onFirstChange = (newValue: Date) => {
     handleStartDateChange(newValue)
   }
 
-  const onSecondChange = (newValue: any) => {
+  const onSecondChange = (newValue: Date) => {
     handleEndDateChange(newValue)
   }
 

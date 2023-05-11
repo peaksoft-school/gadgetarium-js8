@@ -31,21 +31,20 @@ const StyledDatePicker = styled(MuiDatePicker)(() => ({
 }))
 
 type Props = {
-  value: Date | null
-  onChange: (date: Date | null) => void
+  value: Date | string | null
+  onChange: (date: Date | string | null) => void
   placeholder: string
 }
 
 const ProductsDatePicker = forwardRef(
   ({ value, onChange, placeholder }: Props, ref?: React.Ref<HTMLDivElement> | undefined) => {
     return (
-      <LocalizationProvider adapterLocale={ru} dateAdapter={AdapterDateFns}>
+      <LocalizationProvider adapterLocale={ru} dateAdapter={AdapterDateFns} ref={ref}>
         <Container>
           <StyledDatePicker
             format="dd.MM.yy"
             views={['day']}
             value={value}
-            ref={ref}
             sx={{
               '& button.Mui-selected': {
                 backgroundColor: '#000'
