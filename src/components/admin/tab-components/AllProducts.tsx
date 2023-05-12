@@ -39,7 +39,7 @@ const SearchSortContainer = styled('div')(() => ({
 
 type Props = {
   queryParams: {
-    keyWord: string
+    keyWord: string | null
     status: string
     page: number
     pageSize: number
@@ -49,7 +49,7 @@ type Props = {
   }
   setQueryParams: React.Dispatch<
     React.SetStateAction<{
-      keyWord: string
+      keyWord: null
       status: string
       page: number
       pageSize: number

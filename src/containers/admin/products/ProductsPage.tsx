@@ -85,9 +85,9 @@ const ProductsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const infographics = useSelector((state: RootState) => state.infographics.items)
   const [queryParams, setQueryParams] = useState({
-    status: 'все продукты',
+    status: 'Все товары',
     page: 1,
-    keyWord: '',
+    keyWord: null,
     pageSize: 7,
     sortBy: null,
     from: null,
@@ -110,7 +110,7 @@ const ProductsPage = () => {
     dispatch(getInfographics())
   }, [])
 
-  const searchCharacters = (word: string) => {
+  const searchCharacters = (word: any) => {
     setQueryParams((prev) => {
       return {
         ...prev,
