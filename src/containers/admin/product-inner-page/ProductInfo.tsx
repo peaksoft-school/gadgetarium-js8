@@ -187,15 +187,16 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [currentAnswer, setCurrentAnswer] = useState('')
 
-  const commentModalHandler = () => {
-    setModalOpen((prevState) => !prevState)
+  const commentModalHandler = (comment: string) => {
+    setCurrentAnswer(comment)
+    setModalOpen(true)
   }
 
   const [isAnswerModalOpen, setAnswerModalOpen] = useState(false)
 
   const commentAnswerModalHandler = (answer: string) => {
-    setAnswerModalOpen((prevState) => !prevState)
     setCurrentAnswer(answer)
+    setAnswerModalOpen(true)
   }
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -555,7 +556,7 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
                             background: 'none',
                             marginRight: '1rem'
                           }}
-                          onClick={commentModalHandler}
+                          onClick={() => commentModalHandler(item.commentary)}
                         >
                           Ответить
                         </button>
@@ -603,13 +604,20 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
               </div>
             </div>
           </div>
+          {/* {isAnswerModalOpen ? ( */}
           <CommentModal
             open={isAnswerModalOpen}
             onClose={() => setAnswerModalOpen(false)}
             edit={true}
             value={currentAnswer}
           />
-          <CommentModal open={isModalOpen} onClose={commentModalHandler} />
+          {/* ) : null} */}
+          <CommentModal
+            open={isModalOpen}
+            onClose={() => setModalOpen(false)}
+            value={currentAnswer}
+            edit={true}
+          />
         </TabPanel>
       </section>
     </div>

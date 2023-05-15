@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import Modal from '../../../UI/modals/Modal'
 import Input from '../../../UI/inputs/Input'
 import { Button } from '@mui/material'
@@ -11,12 +11,16 @@ type CommentModalPropsType = {
 }
 
 const CommentModal = ({ open, onClose, edit = false, value = '' }: CommentModalPropsType) => {
-  const [inputValue, setInputValue] = useState(value)
+  const [inputValue, setInputValue] = useState('')
+
+  useLayoutEffect(() => {
+    setInputValue(value)
+  }, [value])
 
   const inputValueChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value)
   }
-  console.log(value)
+
   return (
     <Modal onClose={onClose} open={open}>
       <div style={{ width: '34rem' }}>
