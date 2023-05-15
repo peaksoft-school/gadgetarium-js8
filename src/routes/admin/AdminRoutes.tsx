@@ -1,6 +1,7 @@
 import AdminLayout from '../../layout/admin/AdminLayout'
 import { Routes, Route, Outlet } from 'react-router-dom'
 import { PATHS } from '../../utils/constants/router/routerConsts'
+import OrderPage from '../../containers/orders/OrderPage'
 
 const AdminRoutes = () => {
   return (
@@ -17,7 +18,7 @@ const AdminRoutes = () => {
           </Route>
 
           <Route path={PATHS.ADMIN.orders} element={<Outlet />}>
-            <Route index element={<p>OrdersPage</p>} />
+            <Route index element={<OrderPage />} />
             <Route path={PATHS.ADMIN.orderId} element={<p>OrderInfoPage</p>} />
             <Route path={PATHS.ADMIN.orderId} element={<p>Not Found</p>} />
           </Route>

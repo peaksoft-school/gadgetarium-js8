@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 import { Outlet } from 'react-router-dom'
+import OrderPage from '../../containers/orders/OrderPage'
 
 type AdminLayoutProps = {
   children?: ReactNode
@@ -8,7 +9,7 @@ type AdminLayoutProps = {
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (
     <div>
-      <p>AdminLayout</p>
+      <OrderPage />
       <div>
         {children}
         <Outlet />
