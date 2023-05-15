@@ -148,6 +148,9 @@ const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
   const confirmPasswordChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(e.target.value)
   }
+
+  // const enabled = formState.defaultValues?.password === confirmPassword
+
   return (
     <MuiModal open={open} onClose={onClose} hideBackdrop={hideBackdrop}>
       <StyledModalContent>
@@ -211,6 +214,7 @@ const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
                 icon={showConfirmPassword ? <EyeIcon /> : <SlashedEyeIcon />}
               />
             </StyledSecondEyeIconButtonContainer>
+
             <Button variant="contained" type="submit">
               Создать Аккаунт
             </Button>

@@ -4,11 +4,13 @@ import { Provider } from 'react-redux'
 import AppRoutes from './routes/AppRoutes'
 import { ThemeProvider } from '@mui/material'
 import { appTheme } from './utils/constants/theme/theme'
+import ProductInnerPage from './containers/admin/product-inner-page/ProductInnerPage'
 
 const AppContent = () => {
   return (
     <div>
       <AppRoutes />
+      <ProductInnerPage />
     </div>
   )
 }
