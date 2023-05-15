@@ -605,14 +605,12 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
               </div>
             </div>
           </div>
-          {isAnswerModalOpen ? (
-            <CommentModal
-              open={isAnswerModalOpen}
-              onClose={() => setAnswerModalOpen(false)}
-              edit={true}
-              value={currentAnswer}
-            />
-          ) : null}
+          <CommentModal
+            open={isAnswerModalOpen}
+            onClose={() => setAnswerModalOpen(false)}
+            edit={true}
+            value={currentAnswer}
+          />
         </TabPanel>
       </section>
     </div>
