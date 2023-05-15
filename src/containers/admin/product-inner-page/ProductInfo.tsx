@@ -185,6 +185,7 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
   })
 
   const [isModalOpen, setModalOpen] = useState(false)
+  const [currentAnswer, setCurrentAnswer] = useState('')
 
   const commentModalHandler = () => {
     setModalOpen((prevState) => !prevState)
@@ -192,8 +193,9 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
 
   const [isAnswerModalOpen, setAnswerModalOpen] = useState(false)
 
-  const commentAnswerModalHandler = () => {
+  const commentAnswerModalHandler = (answer: string) => {
     setAnswerModalOpen((prevState) => !prevState)
+    setCurrentAnswer(answer)
   }
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -238,7 +240,7 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
       console.log(error)
     }
   }
-
+  console.log(currentAnswer)
   return (
     <div>
       <section
@@ -524,14 +526,6 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
                     {isModalOpen ? (
                       <CommentModal open={isModalOpen} onClose={commentModalHandler} />
                     ) : null}
-                    {isAnswerModalOpen ? (
-                      <CommentModal
-                        open={isAnswerModalOpen}
-                        onClose={commentAnswerModalHandler}
-                        edit={true}
-                        value={item.answer}
-                      />
-                    ) : null}
                     <div
                       style={{
                         display: 'flex',
@@ -549,7 +543,7 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
                             background: 'none',
                             marginRight: '1rem'
                           }}
-                          onClick={commentAnswerModalHandler}
+                          onClick={() => commentAnswerModalHandler(item.answer)}
                         >
                           Редактировать
                         </button>
@@ -611,6 +605,14 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
               </div>
             </div>
           </div>
+          {isAnswerModalOpen ? (
+            <CommentModal
+              open={isAnswerModalOpen}
+              onClose={() => setAnswerModalOpen(false)}
+              edit={true}
+              value={currentAnswer}
+            />
+          ) : null}
         </TabPanel>
       </section>
     </div>
