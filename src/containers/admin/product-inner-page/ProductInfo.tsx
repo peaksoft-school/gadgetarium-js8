@@ -523,9 +523,7 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
                         </div>
                       ) : null}
                     </div>
-                    {isModalOpen ? (
-                      <CommentModal open={isModalOpen} onClose={commentModalHandler} />
-                    ) : null}
+
                     <div
                       style={{
                         display: 'flex',
@@ -611,6 +609,7 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
             edit={true}
             value={currentAnswer}
           />
+          <CommentModal open={isModalOpen} onClose={commentModalHandler} />
         </TabPanel>
       </section>
     </div>
