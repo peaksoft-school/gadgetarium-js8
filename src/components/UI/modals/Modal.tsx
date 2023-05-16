@@ -22,9 +22,9 @@ type PropsModal = {
   children?: JSX.Element | JSX.Element[] | string
 }
 
-const Modal = ({ children, onClose, open }: PropsModal) => {
+const Modal = ({ children, onClose, open, ...restProps }: PropsModal) => {
   return (
-    <MuiModal open={open} onClose={onClose}>
+    <MuiModal open={open} onClose={onClose} {...restProps}>
       <StyledModalContent>{children}</StyledModalContent>
     </MuiModal>
   )

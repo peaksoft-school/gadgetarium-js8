@@ -11,6 +11,7 @@ import {
   getProductReviewsRatingByIdRequest
 } from '../../../api/product-id/product-rating'
 import CommentModal from '../../../components/admin/UI/modals/CommentModal'
+import ReviewItem from '../../../components/admin/product-inner-page/ReviewItem'
 type ProductPropType = {
   product: {
     subProductId: number
@@ -184,20 +185,6 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
     totalReviews: 0
   })
 
-  const [isModalOpen, setModalOpen] = useState(false)
-  const [currentAnswer, setCurrentAnswer] = useState('')
-
-  const commentModalHandler = () => {
-    setModalOpen((prevState) => !prevState)
-  }
-
-  const [isAnswerModalOpen, setAnswerModalOpen] = useState(false)
-
-  const commentAnswerModalHandler = (answer: string) => {
-    setAnswerModalOpen((prevState) => !prevState)
-    setCurrentAnswer(answer)
-  }
-
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
@@ -240,7 +227,6 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
       console.log(error)
     }
   }
-  console.log(currentAnswer)
   return (
     <div>
       <section
@@ -441,128 +427,7 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
             <div style={{ width: '55%', border: '1px solid' }}>
               <h2>Отзывы</h2>
               {reviews.map((item) => {
-                return (
-                  <div
-                    style={{
-                      marginTop: '3.75rem',
-                      borderBottom: '1px solid #CDCDCD',
-                      padding: '0.5rem 0'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <img
-                        style={{ width: '2.5rem', borderRadius: '50%', height: '2.5rem' }}
-                        src={item.image}
-                        alt="profile-photo"
-                      />
-                      <div style={{ marginLeft: '0.75rem' }}>
-                        <p style={{ fontWeight: 'bold' }}>{item.fullName}</p>
-                        <p
-                          style={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 400,
-                            fontSize: '14px',
-                            lineHeight: '140%',
-                            color: 'rgba(0, 0, 0, 0.5)'
-                          }}
-                        >
-                          {item.createdAt}
-                        </p>
-                      </div>
-                    </div>
-                    <div style={{ marginLeft: '3rem' }}>
-                      <p
-                        style={{
-                          fontWeight: 'bold',
-                          margin: '0.75rem 0',
-                          display: 'flex',
-                          alignItems: 'center'
-                        }}
-                      >
-                        Oценка
-                        <Rating readOnly value={item.grade} />
-                      </p>
-                      <p
-                        style={{
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: 400,
-                          fontSize: '16px',
-                          lineHeight: '140%',
-                          color: '#384255',
-                          margin: '0.3rem 0'
-                        }}
-                      >
-                        {item.commentary}
-                      </p>
-                      {item.answer !== null ? (
-                        <div
-                          style={{
-                            background: '#E8E8E8',
-                            borderRadius: '6px',
-                            margin: '10px 0',
-                            padding: '1.25rem',
-                            width: '95%'
-                          }}
-                        >
-                          <p style={{ fontWeight: 700 }}>Ответ от представителя</p>
-                          <p
-                            style={{
-                              fontFamily: 'Inter',
-                              fontStyle: 'normal',
-                              fontWeight: 400,
-                              fontSize: '16px',
-                              lineHeight: '140%',
-                              color: '#384255',
-                              margin: '0.3rem 0'
-                            }}
-                          >
-                            {item.answer}
-                          </p>
-                        </div>
-                      ) : null}
-                    </div>
-
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'flex-end',
-                        justifyContent: 'flex-end'
-                      }}
-                    >
-                      {item.answer !== null ? (
-                        <button
-                          style={{
-                            border: 'none',
-                            color: '#CB11AB',
-                            fontWeight: '600',
-                            fontSize: '14px',
-                            background: 'none',
-                            marginRight: '1rem'
-                          }}
-                          onClick={() => commentAnswerModalHandler(item.answer)}
-                        >
-                          Редактировать
-                        </button>
-                      ) : (
-                        <button
-                          style={{
-                            border: 'none',
-                            color: '#CB11AB',
-                            fontWeight: '600',
-                            fontSize: '14px',
-                            background: 'none',
-                            marginRight: '1rem'
-                          }}
-                          onClick={commentModalHandler}
-                        >
-                          Ответить
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                )
+                return <ReviewItem item={item} />
               })}
               <div style={{ display: 'flex', justifyContent: 'center', margin: '4rem 0' }}>
                 <Button onClick={() => {}}>Показать еще</Button>
@@ -603,13 +468,6 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
               </div>
             </div>
           </div>
-          <CommentModal
-            open={isAnswerModalOpen}
-            onClose={() => setAnswerModalOpen(false)}
-            edit={true}
-            value={currentAnswer}
-          />
-          <CommentModal open={isModalOpen} onClose={commentModalHandler} />
         </TabPanel>
       </section>
     </div>

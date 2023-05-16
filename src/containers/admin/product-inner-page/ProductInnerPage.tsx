@@ -103,7 +103,7 @@ const ProductInnerPage = () => {
   const obj = {
     productId: 2,
     color: 'red',
-    page: 3
+    page: 10
   }
   const getOneProduct = async (req: ProductIdRequestType) => {
     try {
