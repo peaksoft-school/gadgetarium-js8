@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Box, styled, Tabs, Tab } from '@mui/material'
 import { InfographicsTypes } from '../../../api/infographics/infographicsService'
+import TabPanel from './InfograficsTabPanel'
 
 const StyledBox = styled(Box)(() => ({
   width: '100%',
@@ -88,12 +89,6 @@ const PricesContainer = styled('div')(() => ({
   justifyContent: 'space-between'
 }))
 
-interface TabPanelProps {
-  children?: React.ReactNode
-  index: number
-  value: number
-}
-
 const info = [
   {
     id: 0,
@@ -108,20 +103,6 @@ const info = [
     value: 3
   }
 ]
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props
-
-  return (
-    <div role="tabpanel" id={`simple-tabpanel-${index}`} hidden={value !== index} {...other}>
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <div>{children}</div>
-        </Box>
-      )}
-    </div>
-  )
-}
 
 function a11yProps(index: number) {
   return {

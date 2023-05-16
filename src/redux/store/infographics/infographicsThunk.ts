@@ -1,13 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import infographicsService from '../../../api/infographics/infographicsService'
 import { AxiosError, isAxiosError } from 'axios'
+import { getInfographicsRequest } from '../../../api/infographics/infographicsService'
 
 export const getInfographics = createAsyncThunk(
   'infographics/getInfographics',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await infographicsService.getInfographicsRequest()
-      return data
+      const { data } = await getInfographicsRequest()
+      if (data !== undefined || null) {
+        return data
+      }
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{

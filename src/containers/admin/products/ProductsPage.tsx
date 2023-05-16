@@ -17,6 +17,7 @@ import { format } from 'date-fns'
 import IconButtons from '../../../components/UI/buttons/IconButtons'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
 import { useDebounce } from '../../../hooks/useDebounced/useDebounce'
+import CustomizedSnackbars from '../../../components/admin/UI/error-snackbar/ErrorSnackbar'
 
 const FirstContainer = styled('div')(() => ({
   width: '81.5625rem',
@@ -94,6 +95,8 @@ const ProductsPage = () => {
     before: null
   })
   const [searchTerm, setSearchTerm] = useState('')
+  const [isOpen, setOpen] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('Error')
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
   useEffect(() => {
@@ -104,6 +107,12 @@ const ProductsPage = () => {
         before: queryParams.before ? format(queryParams.before, 'yyyy-MM-dd') : null
       })
     )
+      .unwrap()
+      .then()
+      .catch((e) => {
+        setErrorMessage(JSON.stringify(e))
+        setOpen(true)
+      })
   }, [queryParams])
 
   useEffect(() => {
@@ -212,32 +221,35 @@ const ProductsPage = () => {
     }
   ]
   return (
-    <Main>
-      <FirstContainer>
-        <StyledGrid>
-          <StyledPaper>
-            <InputBase
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Поиск по артикулу или ..."
-            />
-            <IconButtons icon={<StyledSearchIcon />} />
-          </StyledPaper>
-          <div>
-            <StyledLink to={PATHS.ADMIN.addProducts}>
-              <StyledButton>Добавить товар</StyledButton>
-            </StyledLink>
-            <StyledButton onClick={() => {}}>Создать скидку</StyledButton>
-          </div>
-        </StyledGrid>
-        <ProductsTabContainer>
-          <ProductsTab tabs={tabs} defaultValue="Все товары" />
-        </ProductsTabContainer>
-      </FirstContainer>
-      <div>
-        <Infographics infographicsData={infographics} />
-      </div>
-    </Main>
+    <>
+      <CustomizedSnackbars message={errorMessage} open={isOpen} onClose={() => setOpen(false)} />
+      <Main>
+        <FirstContainer>
+          <StyledGrid>
+            <StyledPaper>
+              <InputBase
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Поиск по артикулу или ..."
+              />
+              <IconButtons icon={<StyledSearchIcon />} />
+            </StyledPaper>
+            <div>
+              <StyledLink to={PATHS.ADMIN.addProducts}>
+                <StyledButton>Добавить товар</StyledButton>
+              </StyledLink>
+              <StyledButton onClick={() => {}}>Создать скидку</StyledButton>
+            </div>
+          </StyledGrid>
+          <ProductsTabContainer>
+            <ProductsTab tabs={tabs} defaultValue="Все товары" />
+          </ProductsTabContainer>
+        </FirstContainer>
+        <div>
+          <Infographics infographicsData={infographics} />
+        </div>
+      </Main>
+    </>
   )
 }
 

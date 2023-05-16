@@ -24,7 +24,7 @@ type AllProductsResponse = {
   data: Product
 }
 
-const getAllProductsRequest = (queryParams: any) => {
+export const getAllProductsRequest = (queryParams: any) => {
   return mainApi.get<AllProductsResponse>('/api/admin/products', {
     params: {
       keyWord: queryParams.keyWord,
@@ -38,11 +38,6 @@ const getAllProductsRequest = (queryParams: any) => {
   })
 }
 
-const deleteProductById = (id: number) => {
+export const deleteProductByIdRequest = (id: number) => {
   return mainApi.delete<AllProductsResponse>(`/api/admin/products/${id}`)
-}
-
-export default {
-  getAllProductsRequest,
-  deleteProductById
 }

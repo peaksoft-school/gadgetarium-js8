@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { AppDispatch } from '../../../../redux/store'
 import { deleteProductById } from '../../../../redux/store/products/products.thunk'
 import IconButtons from '../../../UI/buttons/IconButtons'
+import CustomizedSnackbars from '../error-snackbar/ErrorSnackbar'
 
 type RowType = {
   createdAt: string
@@ -48,7 +49,6 @@ const Styledth = styled('th')`
   color: #ffffff;
 `
 const Styledtd = styled('td')`
-  width: 150px;
   text-align: center;
   border-top: 1px solid #cdcdcd;
   border-bottom: 1px solid #cdcdcd;
@@ -67,8 +67,7 @@ const StyledHeaderTr = styled('tr')`
   background-color: rgba(56, 66, 85, 0.9);
 `
 const StyledCheckbox = styled(Checkbox)(() => ({
-  marginTop: '1.5rem',
-  marginLeft: '1.5rem'
+  paddingTop: '2rem'
 }))
 
 const StyledImage = styled('img')(() => ({
@@ -104,6 +103,13 @@ const TotalPrice = styled('p')(() => ({
   lineHeight: '1.1875rem'
 }))
 
+const StyledIdtd = styled('td')`
+  text-align: center;
+  border-top: 1px solid #cdcdcd;
+  border-bottom: 1px solid #cdcdcd;
+  padding: 10px 23px 10px 10px;
+`
+
 const AppTable = <T,>({
   onChange,
   page,
@@ -114,6 +120,8 @@ const AppTable = <T,>({
 }: Props<T>) => {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [hoveredId, setHoveredId] = useState<number | null>(null)
+  const [isOpen, setOpen] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('Error')
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const { paginate } = useClientSidePagination()
@@ -133,6 +141,12 @@ const AppTable = <T,>({
 
   const deleteHandler = (id: number) => {
     dispatch(deleteProductById(id))
+      .unwrap()
+      .then()
+      .catch((e) => {
+        setErrorMessage(JSON.stringify(e.message))
+        setOpen(true)
+      })
   }
 
   const navigateToInnerPageHandler = (id: number) => {
@@ -141,6 +155,7 @@ const AppTable = <T,>({
 
   return (
     <>
+      <CustomizedSnackbars message={errorMessage} open={isOpen} onClose={() => setOpen(false)} />
       <StyledTable>
         <StyledHeaderTr>
           {columns?.map((column) => (
@@ -162,7 +177,9 @@ const AppTable = <T,>({
                       onChange={() => handleSelect(row.subProductId)}
                     />
                   ) : (
-                    <Styledtd>{row.subProductId}</Styledtd>
+                    <>
+                      <StyledIdtd>{row.subProductId}</StyledIdtd>
+                    </>
                   )}
                   <Styledtd>
                     <StyledImage src={row.image} alt="phoneImage" />

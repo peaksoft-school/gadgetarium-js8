@@ -1,14 +1,19 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import productService from '../../../api/product/productService'
 import { AxiosError, isAxiosError } from 'axios'
+import {
+  deleteProductByIdRequest,
+  getAllProductsRequest
+} from '../../../api/product/productService'
 
 export const getAllProducts = createAsyncThunk(
   'products/getProducts',
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async (queryParams: any, { rejectWithValue }) => {
     try {
-      const { data } = await productService.getAllProductsRequest(queryParams)
-      return data
+      const { data } = await getAllProductsRequest(queryParams)
+      if (data !== undefined || null) {
+        return data
+      }
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{
@@ -36,7 +41,7 @@ export const deleteProductById = createAsyncThunk(
   'products/deleteProduct',
   async (id: number, { dispatch, rejectWithValue }) => {
     try {
-      await productService.deleteProductById(id)
+      await deleteProductByIdRequest(id)
       // eslint-disable-next-line @typescript-eslint/return-await
       return dispatch(getAllProducts(queryParams))
     } catch (e) {
