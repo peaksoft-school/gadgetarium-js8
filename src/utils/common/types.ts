@@ -31,6 +31,6 @@ export type Column<T> = {
   checked?: boolean
 }
 export interface BannerListType {
-  bannerList: UrlsType
+  bannerList: ImageUrlsType
 }
-export type UrlsType = string[]
+export type ImageUrlsType = string[]

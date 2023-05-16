@@ -1,13 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { authSlice } from './auth/auth.slice'
 import { mailingSlice } from './mailingList/mailing.slice'
-import { bannerSlice } from './banner/banner.slice'
 
 export const store = configureStore({
   reducer: {
     [authSlice.name]: authSlice.reducer,
-    [mailingSlice.name]: mailingSlice.reducer,
-    [bannerSlice.name]: bannerSlice.reducer
+    [mailingSlice.name]: mailingSlice.reducer
   }
 })
 

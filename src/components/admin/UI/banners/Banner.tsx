@@ -3,11 +3,7 @@ import Button from '../../../UI/buttons/Button'
 import Modal from '../../../UI/modals/Modal'
 import { ReactComponent as UploadPicture } from '../../../../assets/images/add_picture.svg'
 import { Box, Grid, IconButton, Stack, styled } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../../../redux/store'
-import { bannerAction } from '../../../../redux/store/banner/banner.slice'
-import { postBannerList } from '../../../../redux/store/banner/banner.thunk'
-
+import { useBanner } from '../../../../hooks/banner/useBanner'
 interface PropsType {
   isOpen: boolean
   onClose: () => void
@@ -140,100 +136,72 @@ const ContainerButton = styled('div')(() => ({
 }))
 
 const Banner = ({ isOpen, onClose }: PropsType) => {
-  const dispatch = useDispatch<AppDispatch>()
-  const bannerImageUrls = useSelector((state: RootState) => state.banner.bannerList)
-  const imagesClassname = () => {
-    if (bannerImageUrls.length === 1) {
-      return 'first-image'
-    } else if (bannerImageUrls.length === 2) {
-      return 'second-image'
-    } else if (bannerImageUrls.length === 3) {
-      return 'third-image'
-    } else if (bannerImageUrls.length === 4) {
-      return 'fourth-image'
-    } else if (bannerImageUrls.length === 5) {
-      return 'fifth-image'
-    } else if (bannerImageUrls.length === 6) {
-      return 'sixth-image'
-    }
-  }
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-
-      reader.onload = () => {
-        const imageUrl = reader.result as string
-        dispatch(bannerAction.addItemImage(imageUrl))
-      }
-      event.target.value = ''
-      reader.readAsDataURL(file)
-    }
-  }
-
-  const uploadImagerUrlsHandler = () => {
-    const newBannerList = {
-      bannerList: bannerImageUrls
-    }
-    dispatch(postBannerList(newBannerList))
-  }
+  const {
+    imagesClassname,
+    bannerImages,
+    setBannerImages,
+    handleImageUpload,
+    deleteImage,
+    postRequestBanner,
+    disableButtonHandler
+  } = useBanner()
   const closeModalHandler = () => {
-    dispatch(bannerAction.deleteImageAll([]))
+    setBannerImages([])
     onClose()
   }
-  const disableButtonHandler = () => {
-    return bannerImageUrls.length <= 0
+  const uploadImagerUrlsHandler = () => {
+    postRequestBanner()
+    setBannerImages([])
+    onClose()
   }
   return (
-    <div>
-      <>
-        <Modal open={isOpen} onClose={onClose}>
-          <Container>
-            <StyledTitle>Загрузить баннер</StyledTitle>
-            <ContainerImages className={`image ${imagesClassname()}`}>
-              {bannerImageUrls.length >= 0 && bannerImageUrls.length <= 5 && (
-                <div>
-                  <IconButton color="primary" aria-label="upload picture" component="label">
-                    <StyledStack className={`default-image ${imagesClassname()}`}>
-                      <div>
-                        <UploadPicture />
-                      </div>
-                      <TextBanner>
-                        {bannerImageUrls.length > 0
-                          ? 'Добавить фото'
-                          : 'Нажмите для добавления фотографии'}
-                      </TextBanner>
-                    </StyledStack>
-                    <input
-                      hidden
-                      type="file"
-                      onChange={handleImageUpload}
-                      multiple
-                      accept="image/*"
-                    />
-                  </IconButton>
-                </div>
-              )}
+    <>
+      <Modal open={isOpen} onClose={onClose}>
+        <Container>
+          <StyledTitle>Загрузить баннер</StyledTitle>
+          <ContainerImages className={`image ${imagesClassname()}`}>
+            {bannerImages.length >= 0 && bannerImages.length <= 5 && (
+              <div>
+                <IconButton color="primary" aria-label="upload picture" component="label">
+                  <StyledStack className={`default-image ${imagesClassname()}`}>
+                    <div>
+                      <UploadPicture />
+                    </div>
+                    <TextBanner>
+                      {bannerImages.length > 0
+                        ? 'Добавить фото'
+                        : 'Нажмите для добавления фотографии'}
+                    </TextBanner>
+                  </StyledStack>
+                  <input
+                    hidden
+                    type="file"
+                    onChange={handleImageUpload}
+                    multiple
+                    accept="image/*"
+                  />
+                </IconButton>
+              </div>
+            )}
 
-              {bannerImageUrls.length >= 0 &&
-                bannerImageUrls.map((url, index) => {
-                  return (
-                    <Grid key={index} style={{ width: '100%', height: '150px' }}>
-                      <BannerItem url={url} id={index} />
-                    </Grid>
-                  )
-                })}
-            </ContainerImages>
-            <ContainerButton>
-              <StyledButton onClick={closeModalHandler}>Отменить</StyledButton>
-              <StyledButton onClick={uploadImagerUrlsHandler} disabled={disableButtonHandler()}>
-                Загрузить
-              </StyledButton>
-            </ContainerButton>
-          </Container>
-        </Modal>
-      </>
-    </div>
+            {bannerImages.length >= 0 &&
+              bannerImages?.map((url, index) => {
+                return (
+                  <Grid key={index} style={{ width: '100%', height: '150px' }}>
+                    <BannerItem url={url} id={index} deleteImage={deleteImage} />
+                  </Grid>
+                )
+              })}
+          </ContainerImages>
+          <ContainerButton>
+            <StyledButton onClick={closeModalHandler}>Отменить</StyledButton>
+            <StyledButton onClick={uploadImagerUrlsHandler} disabled={disableButtonHandler()}>
+              Загрузить
+            </StyledButton>
+          </ContainerButton>
+        </Container>
+      </Modal>
+    </>
   )
 }
 export default Banner

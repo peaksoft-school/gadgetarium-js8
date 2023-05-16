@@ -4,10 +4,18 @@ import AppRoutes from './routes/AppRoutes'
 import { ThemeProvider } from '@mui/material'
 import { appTheme } from './utils/constants/theme/theme'
 import { store } from './redux/store'
+import { useState } from 'react'
+import Banner from './components/admin/UI/banners/Banner'
 const AppContent = () => {
+  const [state, setState] = useState(false)
+  const render = () => {
+    setState((prevState) => !prevState)
+  }
   return (
     <div>
-      <AppRoutes />
+      <Banner isOpen={state} onClose={render} />
+      <button onClick={render}>click me</button>
+      {/* <AppRoutes /> */}
     </div>
   )
 }
