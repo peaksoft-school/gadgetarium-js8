@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { Outlet } from 'react-router-dom'
-import OrderPage from '../../containers/orders/OrderPage'
+import AdminHeader from '../../components/admin/AdminHeader'
 
 type AdminLayoutProps = {
   children?: ReactNode
@@ -8,13 +8,13 @@ type AdminLayoutProps = {
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (
-    <div>
-      <OrderPage />
-      <div>
+    <>
+      <AdminHeader />
+      <main>
         {children}
         <Outlet />
-      </div>
-    </div>
+      </main>
+    </>
   )
 }
 

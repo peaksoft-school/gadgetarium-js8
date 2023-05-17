@@ -14,7 +14,7 @@ import { postMailingList } from '../../../../redux/store/mailingList/mailingList
 type Props = {
   modalHandler: () => void
   modal: boolean
-  data: (newData: {
+  data?: (newData: {
     name: string
     description: string
     image: string | null
