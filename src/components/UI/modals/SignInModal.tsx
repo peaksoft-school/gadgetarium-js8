@@ -1,12 +1,18 @@
 import { Modal as MuiModal } from '@mui/material'
-import { ReactComponent as CrossIcon } from '../../../assets/icons/cross_icon.svg'
-import { ReactComponent as SlashedEyeIcon } from '../../../assets/icons/icons_eye-slashed.svg'
-import { ReactComponent as EyeIcon } from '../../../assets/icons/eyeIcon.svg'
+import { ReactComponent as CrossIcon } from '../../../assets/icons/modal-icons/cross_icon.svg'
+import { ReactComponent as SlashedEyeIcon } from '../../../assets/icons/input-password-icons/icons_eye-slashed.svg'
+import { ReactComponent as EyeIcon } from '../../../assets/icons/input-password-icons/eyeIcon.svg'
 import { styled } from '@mui/material'
 import Input from '../inputs/Input'
 import Button from '../buttons/Button'
-import IconButtons from '../IconButtons'
+import IconButtons from '../buttons/IconButtons'
 import { useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { signIn } from '../../../redux/store/auth/auth.thunk'
+import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux/redux'
 
 const StyledBlockName = styled('p')(() => ({
   fontFamily: 'Inter',
@@ -86,18 +92,38 @@ type PropsType = {
 }
 
 const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: PropsType) => {
-  const [email, setEmail] = useState('')
-  const [password, setpassword] = useState('')
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  const { error } = useAppSelector((state) => state.auth)
+
+  const schema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6)
+  })
+
+  type FormSchema = (typeof schema)['_output']
+
+  const { handleSubmit, register, formState } = useForm({
+    defaultValues: {
+      email: '',
+      password: ''
+    },
+    mode: 'onBlur',
+    resolver: zodResolver(schema)
+  })
+
+  const submitHandler = (values: FormSchema) => {
+    // console.log(values)
+
+    dispatch(signIn(values))
+      .unwrap()
+      .then(() => navigate('/'))
+  }
+
   const [showPassword, setShowPassword] = useState(false)
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword)
-  }
-
-  const emailChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
-  }
-  const passwordChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setpassword(e.target.value)
   }
   return (
     <MuiModal hideBackdrop={hideBackdrop} open={open} onClose={onClose}>
@@ -113,16 +139,20 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
           </StyledCrossIconContainer>
           <StyledBlockName>Войти</StyledBlockName>
 
-          <StyledModalForm action="">
+          <StyledModalForm action="" onSubmit={handleSubmit(submitHandler)}>
             <Input
-              value={email}
-              onChange={emailChangeHandler}
+              {...register('email', {
+                required: 'Please enter your email address'
+              })}
               placeholder="Напишите email"
               type="email"
+              error={!!formState.errors.email}
             />
             <Input
-              value={password}
-              onChange={passwordChangeHandler}
+              error={!!formState.errors.password}
+              {...register('password', {
+                required: 'Please enter your password'
+              })}
               placeholder="Напишите пароль"
               type={showPassword ? 'text' : 'password'}
             />
@@ -132,14 +162,15 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
                 icon={showPassword ? <EyeIcon /> : <SlashedEyeIcon />}
               />
             </StyledIconButtonContainer>
-            <Button variant="contained" onClick={() => {}}>
+            <Button variant="contained" type="submit" onClick={() => {}}>
               Войти
             </Button>
           </StyledModalForm>
 
           <StyledBottomText>
-            Нет аккаунта? <a href="">Зарегистрироваться</a>
+            Нет аккаунта? <Link to="/signup">Зарегистрироваться</Link>
           </StyledBottomText>
+          <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>
         </div>
       </StyledModalContent>
     </MuiModal>

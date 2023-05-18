@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Box, styled } from '@mui/material'
 import Button from '../UI/buttons/Button'
 import Input from '../UI/inputs/Input'
-import Modal from '../UI/Modal'
+import Modal from '../UI/modals/Modal'
+import { DiscountType, postDiscountRequest } from '../../api/discount/discountService'
 
 const StyledModal = styled(Box)(() => ({
   width: '34rem',
@@ -74,22 +75,34 @@ const PStyled = styled('span')`
   color: red;
 `
 
-const CreateDiscount = () => {
-  const [openModal, setOpenModal] = useState(false)
-  const [amountOfDiscount, setAmountOfDiscount] = useState(0)
+type PropsDiscount = {
+  onClose: () => void
+  open: boolean
+  selectedIds: number[]
+}
+
+const CreateDiscount = ({ open, onClose, selectedIds }: PropsDiscount) => {
+  const [amountOfDiscount, setAmountOfDiscount] = useState<number>()
   const [discountStartDate, setDiscountStartDate] = useState<string>('')
   const [discountEndDate, setDiscountEndDate] = useState<string>('')
 
-  const onCloseHandler = () => {
-    setOpenModal(false)
+  const addDiscount = async (req: DiscountType) => {
+    try {
+      await postDiscountRequest(req)
+      onClose()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const addHandler = () => {
     const productData = {
-      amountOfDiscount,
-      discountStartDate,
-      discountEndDate
+      productsId: selectedIds,
+      percentOfDiscount: amountOfDiscount,
+      dateOfStart: discountStartDate,
+      dateOfFinish: discountEndDate
     }
+    addDiscount(productData)
   }
 
   const setAmountOfDiscountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,53 +119,44 @@ const CreateDiscount = () => {
 
   return (
     <>
-      <Button
-        sx={{ color: '#fff' }}
-        onClick={() => {
-          setOpenModal(true)
-        }}
-      >
-        Open Modal
-      </Button>
-      {openModal ? (
-        <Modalka open={true} onClose={onCloseHandler}>
-          <StyledModal>
-            <TextStyled>Создать скидку</TextStyled>
+      <Modalka open={open} onClose={onClose}>
+        <StyledModal>
+          <TextStyled>Создать скидку</TextStyled>
+          <LabelStyled htmlFor="">
+            Размер скидки <PStyled>*</PStyled>
+            <InputStyled
+              type="number"
+              value={amountOfDiscount}
+              placeholder="0%"
+              onChange={setAmountOfDiscountChange}
+            />
+          </LabelStyled>
+          <InputData>
             <LabelStyled htmlFor="">
-              Размер скидки <PStyled>*</PStyled>
-              <InputStyled
-                value={amountOfDiscount}
-                placeholder="0%"
-                onChange={setAmountOfDiscountChange}
+              Дата начала скидки <PStyled>*</PStyled>
+              <DataInput
+                value={discountStartDate}
+                placeholder="04.07.22"
+                type="date"
+                onChange={setDiscountStartDateChange}
               />
             </LabelStyled>
-            <InputData>
-              <LabelStyled htmlFor="">
-                Дата начала скидки <PStyled>*</PStyled>
-                <DataInput
-                  value={discountStartDate}
-                  placeholder="04.07.22"
-                  type="date"
-                  onChange={setDiscountStartDateChange}
-                />
-              </LabelStyled>
-              <LabelStyled>
-                Дата окончания скидки <PStyled>*</PStyled>
-                <DataInput
-                  value={discountEndDate}
-                  placeholder="Выберите дату"
-                  type="date"
-                  onChange={setDiscountEndDateChange}
-                />
-              </LabelStyled>
-            </InputData>
-            <CommonButton>
-              <ButtonStyled onClick={onCloseHandler}>Отменить</ButtonStyled>
-              <ButtonStyled onClick={addHandler}>Добавить</ButtonStyled>
-            </CommonButton>
-          </StyledModal>
-        </Modalka>
-      ) : null}
+            <LabelStyled>
+              Дата окончания скидки <PStyled>*</PStyled>
+              <DataInput
+                value={discountEndDate}
+                placeholder="Выберите дату"
+                type="date"
+                onChange={setDiscountEndDateChange}
+              />
+            </LabelStyled>
+          </InputData>
+          <CommonButton>
+            <ButtonStyled onClick={onClose}>Отменить</ButtonStyled>
+            <ButtonStyled onClick={addHandler}>Добавить</ButtonStyled>
+          </CommonButton>
+        </StyledModal>
+      </Modalka>
     </>
   )
 }
