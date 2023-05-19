@@ -58,7 +58,7 @@ const ButtonStyled = styled(Button)(() => ({
   }
 }))
 
-const Modalka = styled(Modal)(() => ({
+const MainModal = styled(Modal)(() => ({
   background: 'red'
 }))
 
@@ -124,7 +124,7 @@ const CreateDiscount = ({ open, onClose, selectedIds }: PropsDiscount) => {
 
   return (
     <>
-      <Modalka open={open} onClose={onClose}>
+      <MainModal open={open} onClose={onClose}>
         <StyledModal>
           <TextStyled>Создать скидку</TextStyled>
           <LabelStyled htmlFor="">
@@ -161,7 +161,7 @@ const CreateDiscount = ({ open, onClose, selectedIds }: PropsDiscount) => {
             <ButtonStyled onClick={addHandler}>Добавить</ButtonStyled>
           </CommonButton>
         </StyledModal>
-      </Modalka>
+      </MainModal>
     </>
   )
 }
