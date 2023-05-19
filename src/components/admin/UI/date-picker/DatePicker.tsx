@@ -50,8 +50,8 @@ const ProductsDatePicker = forwardRef(
                 backgroundColor: '#000'
               }
             }}
-            popperProps={{ strategy: 'fixed' }}
-            onChange={onChange}
+            // popperProps={{ strategy: 'fixed' }}
+            // onChange={onChange}
             slotProps={{ textField: { variant: 'outlined', placeholder } }}
           />
         </Container>

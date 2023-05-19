@@ -106,7 +106,12 @@ const CreateDiscount = ({ open, onClose, selectedIds }: PropsDiscount) => {
   }
 
   const setAmountOfDiscountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmountOfDiscount(+event.target.value)
+    const value = +event.target.value
+    if (value === 0) {
+      setAmountOfDiscount(undefined)
+    } else {
+      setAmountOfDiscount(value)
+    }
   }
 
   const setDiscountStartDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
