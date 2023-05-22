@@ -14,7 +14,7 @@ import { postMailingList } from '../../../../redux/store/mailingList/mailingList
 type Props = {
   modalHandler: () => void
   modal: boolean
-  data: (newData: {
+  data?: (newData: {
     name: string
     description: string
     image: string | null
@@ -24,8 +24,9 @@ type Props = {
   }) => void
 }
 const StyledForm = styled('form')`
+  width: 100%;
   align-items: center;
-  padding-bottom: 10px;
+  padding: 1rem;
 `
 const StyledInput = styled(Input)(() => ({
   width: '30rem',
@@ -37,6 +38,7 @@ const StyledInput = styled(Input)(() => ({
   }
 }))
 const StyledHeader = styled('div')`
+  width: 30rem;
   text-align: center;
   margin-bottom: 30px;
 `
@@ -161,7 +163,6 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
 
   return (
     <Modal onClose={modalHandler} open={modal}>
-      <link rel="stylesheet" href="" />
       <StyledForm onSubmit={addNewData}>
         <StyledHeader>
           <StyledTitle>Создать рассылку</StyledTitle>

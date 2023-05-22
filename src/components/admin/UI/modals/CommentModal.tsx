@@ -1,22 +1,85 @@
 import { useState } from 'react'
 import Modal from '../../../UI/modals/Modal'
 import Input from '../../../UI/inputs/Input'
-import { Button } from '@mui/material'
+import Button from '../../../UI/buttons/Button'
+import { styled } from '@mui/material'
+import {
+  ProductReviewPostType,
+  ProductReviewsResquestType,
+  postProductReviewByIdRequest,
+  updateProductReviewAnswerByIdRequest
+} from '../../../../api/product-id/product_idService'
+// import { Button, styled } from '@mui/material'
+
+const StyledOutlinedButton = styled(Button)(({ theme }) => ({
+  borderColor: theme.customPalette.primary.main,
+  color: theme.customPalette.primary.main,
+  background: 'none',
+  width: '48%',
+  '&:hover': {
+    borderColor: theme.customPalette.primary.main,
+    color: theme.customPalette.primary.mainHover,
+    background: 'none'
+  }
+}))
+
+const StyledContainedButton = styled(Button)(({ theme }) => ({
+  width: '48%',
+  '&:hover': {
+    border: `1 px solid ${theme.customPalette.primary.main}`,
+    background: theme.customPalette.primary.mainHover
+  }
+}))
 
 type CommentModalPropsType = {
   onClose: () => void
+  getProductReviews: (reviewRequestObject: ProductReviewsResquestType) => Promise<void>
+  reviewId: number
   open: boolean
   edit?: boolean
   value?: string
+  reviewsRequestObject: {
+    productId: number
+    page: number
+  }
 }
 
-const CommentModal = ({ open, onClose, edit = false, value = '' }: CommentModalPropsType) => {
+const CommentModal = ({
+  reviewId,
+  open,
+  onClose,
+  edit = false,
+  value = '',
+  getProductReviews,
+  reviewsRequestObject
+}: CommentModalPropsType) => {
   const [inputValue, setInputValue] = useState(value)
 
   const inputValueChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
   }
-  console.log(value)
+
+  const addCommentAnswer = async (req: ProductReviewPostType) => {
+    try {
+      const { data } = await postProductReviewByIdRequest(req)
+      console.log(data)
+
+      getProductReviews(reviewsRequestObject)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const updateCommentAnswer = async (req: ProductReviewPostType) => {
+    try {
+      const { data } = await updateProductReviewAnswerByIdRequest(req)
+      console.log(data)
+
+      getProductReviews(reviewsRequestObject)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <Modal onClose={onClose} open={open}>
       <div style={{ width: '34rem', padding: '2.5rem 2rem', textAlign: 'center' }}>
@@ -56,8 +119,38 @@ const CommentModal = ({ open, onClose, edit = false, value = '' }: CommentModalP
           onChange={inputValueChangeHandler}
           multiline
         />
-        <Button onClick={onClose}>Отменить</Button>
-        {edit ? <Button>Добавить</Button> : <Button>Сохранить</Button>}
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2rem' }}>
+          <StyledOutlinedButton variant="outlined" onClick={onClose}>
+            ОТМЕНИТЬ
+          </StyledOutlinedButton>
+          {edit ? (
+            <StyledContainedButton
+              onClick={() => {
+                const answerObject = {
+                  reviewId,
+                  answer: inputValue
+                }
+                updateCommentAnswer(answerObject)
+                onClose()
+              }}
+            >
+              ДОБАВИТЬ
+            </StyledContainedButton>
+          ) : (
+            <StyledContainedButton
+              onClick={() => {
+                const answerObject = {
+                  reviewId,
+                  answer: inputValue
+                }
+                addCommentAnswer(answerObject)
+                onClose()
+              }}
+            >
+              СОХРАНИТЬ
+            </StyledContainedButton>
+          )}
+        </div>
       </div>
     </Modal>
   )

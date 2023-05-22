@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-
 import { AxiosError, isAxiosError } from 'axios'
 import { MailingListType } from '../../../utils/common/types'
 import { mailingData } from '../../../api/mail/mailingService'

@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
 import {
+  ProductDetailsResponse,
   ProductIdRequestType,
   ProductResponse,
-  getProductByIdRequest
+  getProductByIdRequest,
+  getProductDetailsByIdRequest
 } from '../../../api/product-id/product_idService'
 import { Box, Tab, Tabs, Typography, styled } from '@mui/material'
 import ProductInfo from './ProductInfo'
+import { useParams } from 'react-router-dom'
+import ProductDetails from './ProductDetails'
 
 const StyledTopLink = styled('a')(() => ({
   color: '#91969E',
@@ -76,11 +80,27 @@ function a11yProps(index: number) {
 
 const ProductInnerPage = () => {
   const [value, setValue] = useState(0)
+  const [details, setDetails] = useState([
+    {
+      id: 0,
+      image: '',
+      name: '',
+      colour: '',
+      characteristics: {
+        da: 'ss'
+      },
+      quantity: 0,
+      price: 0
+    }
+  ])
+  const { productId } = useParams()
+  const convertedProductId = Number(productId)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
   const [product, setProduct] = useState<ProductResponse>({
+    productId: 0,
     subProductId: 0,
     logo: '',
     images: [],
@@ -97,13 +117,12 @@ const ProductInnerPage = () => {
     dateOfIssue: '',
     characteristics: {},
     description: '',
-    video: '',
-    reviews: []
+    video: ''
   })
+
   const obj = {
-    productId: 2,
-    color: 'red',
-    page: 10
+    productId: convertedProductId,
+    colour: ''
   }
   const getOneProduct = async (req: ProductIdRequestType) => {
     try {
@@ -114,13 +133,22 @@ const ProductInnerPage = () => {
       console.log(error)
     }
   }
+
+  const getProductDetails = async (req: number) => {
+    try {
+      const { data } = await getProductDetailsByIdRequest(req)
+      console.log(data)
+      // setDetails(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
     getOneProduct(obj)
   }, [])
-  console.log(product, 'product')
 
   return (
-    <main style={{ width: '90%', margin: '0 auto' }}>
+    <main style={{ width: '90%', margin: '7rem auto' }}>
       <p style={{ fontSize: '14px' }}>
         <StyledTopLink href="/admin">Товары</StyledTopLink> » {product.name}
       </p>
@@ -131,14 +159,20 @@ const ProductInnerPage = () => {
       <div style={{ padding: '2.5rem 0 1rem' }}>
         <StyledTabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <StyledTab label="Товар" {...a11yProps(0)} />
-          <StyledTab label="Детали товара" {...a11yProps(1)} />
+          <StyledTab
+            onClick={() => {
+              getProductDetails(product.productId)
+            }}
+            label="Детали товара"
+            {...a11yProps(1)}
+          />
         </StyledTabs>
       </div>
       <TabPanel value={value} index={0}>
         <ProductInfo getOneProduct={getOneProduct} product={product} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Детали товара
+        <ProductDetails />
       </TabPanel>
     </main>
   )

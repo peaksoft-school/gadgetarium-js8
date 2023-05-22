@@ -1,5 +1,10 @@
 import { Box, Rating, Tab, Tabs, Typography, styled } from '@mui/material'
-import { ProductIdRequestType, ReviewType } from '../../../api/product-id/product_idService'
+import {
+  ProductIdRequestType,
+  ProductReviewsResquestType,
+  ReviewType,
+  getProductReviewsByIdRequest
+} from '../../../api/product-id/product_idService'
 import { ReactComponent as DeleteIcon } from '../../../assets/icons/product-inner-page-icons/delete-icon.svg'
 import { ReactComponent as DocumentPDF } from '../../../assets/icons/product-inner-page-icons/document-list-icon.svg'
 import IconButtons from '../../../components/UI/buttons/IconButtons'
@@ -9,11 +14,11 @@ import PreviewSlider from '../../../components/UI/preview-slider/PreviewSlider'
 import {
   ProductReviewsRatingResponseType,
   getProductReviewsRatingByIdRequest
-} from '../../../api/product-id/product-rating'
-import CommentModal from '../../../components/admin/UI/modals/CommentModal'
+} from '../../../api/product-id/product_idService'
 import ReviewItem from '../../../components/admin/product-inner-page/ReviewItem'
 type ProductPropType = {
   product: {
+    productId: number
     subProductId: number
     logo: string
     images: string[]
@@ -33,7 +38,6 @@ type ProductPropType = {
     }
     description: string | null
     video: string | null
-    reviews: ReviewType[]
   }
   getOneProduct: (req: ProductIdRequestType) => Promise<void>
 }
@@ -49,7 +53,6 @@ const StyledColorSpan = styled('div')(({ color }) => ({
   width: '30px',
   height: '30px',
   borderRadius: '100%'
-  //   padding: '1rem 0.5rem'
 }))
 
 const StyledPrice = styled('p')(() => ({
@@ -61,7 +64,6 @@ const StyledPrice = styled('p')(() => ({
   textDecorationLine: 'line-through',
   color: '#858FA4',
   marginTop: '0.5rem'
-  //   alignSelf: 'flex-end'
 }))
 
 const StyledPriceHeadingWithDiscount = styled('h2')(() => ({
@@ -185,6 +187,8 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
     totalReviews: 0
   })
 
+  const [reviews, setReviews] = useState<ReviewType[]>([])
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
@@ -199,9 +203,8 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
     color,
     characteristics,
     description,
-    reviews,
     images,
-    subProductId
+    productId
   } = product
 
   let productWithDiscount = price
@@ -221,12 +224,29 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
   const getProductReviewsRating = async (req: number) => {
     try {
       const { data } = await getProductReviewsRatingByIdRequest(req)
-      console.log(data)
       setReviewsRating(data)
     } catch (error) {
       console.log(error)
     }
   }
+
+  // eslint-disable-next-line prefer-const
+  let reviewRequestPage = 3
+
+  const reviewsRequestObject = {
+    productId,
+    page: reviewRequestPage
+  }
+
+  const getProductReviews = async (reviewRequestObject: ProductReviewsResquestType) => {
+    try {
+      const { data } = await getProductReviewsByIdRequest(reviewRequestObject)
+      setReviews(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div>
       <section
@@ -236,8 +256,17 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
           justifyContent: 'space-between'
         }}
       >
-        <article style={{ maxWidth: '38%', border: '1px solid' }}>
-          <PreviewSlider images={images} />
+        <article
+          style={{
+            maxWidth: '38%',
+            minWidth: '38%',
+            border: '1px solid',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          {images.length > 0 ? <PreviewSlider images={images} /> : <h1>ФОТО НЕ НАЙДЕНЫ!</h1>}
         </article>
         <article style={{ width: '55%', border: '1px solid' }}>
           <StyledProductNameHeading>{name}</StyledProductNameHeading>
@@ -262,16 +291,15 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
             <div style={{ width: '60%', border: '1px solid', paddingTop: '2rem' }}>
               <div>
                 <p style={{ fontWeight: 700 }}>Цвет товара: </p>
-                {colours.map((item) => {
+                {colours?.map((item) => {
                   return (
                     <StyledColorButton
                       className={`${color === item ? 'current' : 'default'}`}
                       icon={<StyledColorSpan color={item} />}
                       onClick={() => {
                         const obj = {
-                          productId: 2,
-                          color: item,
-                          page: 1
+                          productId: productId,
+                          colour: item
                         }
                         getOneProduct(obj)
                       }}
@@ -284,7 +312,7 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
               <p style={{ fontWeight: 700, paddingTop: '0.5rem' }}>Коротко о товаре:</p>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ width: '60%' }}>
-                  {characteristicsKeys.map((elem) => {
+                  {characteristicsKeys?.map((elem) => {
                     return (
                       <p
                         style={{
@@ -313,6 +341,7 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
               <div
                 style={{
                   display: 'flex',
+                  flexWrap: 'wrap',
                   alignItems: 'center',
                   justifyContent: 'space-around',
                   borderBottom: '2px solid rgba(133, 143, 164, 0.2)',
@@ -366,7 +395,8 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
             <StyledTab label="Характеристики" {...a11yProps(1)} />
             <StyledTab
               onClick={() => {
-                getProductReviewsRating(subProductId)
+                getProductReviewsRating(productId)
+                getProductReviews(reviewsRequestObject)
               }}
               label="Отзывы"
               {...a11yProps(2)}
@@ -426,11 +456,33 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div style={{ width: '55%', border: '1px solid' }}>
               <h2>Отзывы</h2>
-              {reviews.map((item) => {
-                return <ReviewItem item={item} />
-              })}
+              {reviews.length > 0 ? (
+                reviews.map((item, index) => {
+                  return (
+                    <ReviewItem
+                      reviewsRequestObject={reviewsRequestObject}
+                      getProductReviews={getProductReviews}
+                      item={item}
+                      key={index}
+                    />
+                  )
+                })
+              ) : (
+                <h1>Комментарии не найдены</h1>
+              )}
+
               <div style={{ display: 'flex', justifyContent: 'center', margin: '4rem 0' }}>
-                <Button onClick={() => {}}>Показать еще</Button>
+                <Button
+                  onClick={() => {
+                    const reviewsPaginationObject = {
+                      productId,
+                      page: (reviewRequestPage += 3)
+                    }
+                    getProductReviews(reviewsPaginationObject)
+                  }}
+                >
+                  Показать еще
+                </Button>
               </div>
             </div>
             <div style={{ width: '38%', border: '1px solid' }}>

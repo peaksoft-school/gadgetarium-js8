@@ -1,19 +1,42 @@
 import React, { useState } from 'react'
-import { ReviewType } from '../../../api/product-id/product_idService'
-import { Rating } from '@mui/material'
+import { ProductReviewsResquestType, ReviewType } from '../../../api/product-id/product_idService'
+import { Rating, styled } from '@mui/material'
 import CommentModal from '../UI/modals/CommentModal'
 
 type ReviewItemPropsType = {
   item: ReviewType
+  getProductReviews: (reviewRequestObject: ProductReviewsResquestType) => Promise<void>
+  reviewsRequestObject: {
+    productId: number
+    page: number
+  }
 }
 
-const ReviewItem = ({ item }: ReviewItemPropsType) => {
+const StyledButton = styled('button')(() => ({
+  border: 'none',
+  color: '#CB11AB',
+  fontWeight: '600',
+  fontSize: '16px',
+  background: 'none',
+  marginRight: '1rem',
+  padding: '0.5rem',
+  '&:hover': {
+    color: '#eb17c8'
+  },
+  '&:active': {
+    color: '#d8d3d3'
+  }
+}))
+
+const ReviewItem = ({ item, getProductReviews, reviewsRequestObject }: ReviewItemPropsType) => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [currentAnswer, setCurrentAnswer] = useState('')
 
   const commentModalHandler = () => {
     setModalOpen((prevState) => !prevState)
   }
+
+  // console.log(item.reviewsId)
 
   const [isAnswerModalOpen, setAnswerModalOpen] = useState(false)
 
@@ -112,40 +135,29 @@ const ReviewItem = ({ item }: ReviewItemPropsType) => {
           }}
         >
           {item.answer !== null ? (
-            <button
-              style={{
-                border: 'none',
-                color: '#CB11AB',
-                fontWeight: '600',
-                fontSize: '14px',
-                background: 'none',
-                marginRight: '1rem'
-              }}
-              onClick={() => commentAnswerModalHandler(item.answer)}
-            >
+            <StyledButton onClick={() => commentAnswerModalHandler(item.answer)}>
               Редактировать
-            </button>
+            </StyledButton>
           ) : (
-            <button
-              style={{
-                border: 'none',
-                color: '#CB11AB',
-                fontWeight: '600',
-                fontSize: '14px',
-                background: 'none',
-                marginRight: '1rem'
-              }}
-              onClick={commentModalHandler}
-            >
-              Ответить
-            </button>
+            <StyledButton onClick={commentModalHandler}>Ответить</StyledButton>
           )}
         </div>
       </div>
-      {isModalOpen ? <CommentModal open={isModalOpen} onClose={commentModalHandler} /> : null}
+      {isModalOpen ? (
+        <CommentModal
+          reviewsRequestObject={reviewsRequestObject}
+          reviewId={item.reviewsId}
+          getProductReviews={getProductReviews}
+          open={isModalOpen}
+          onClose={commentModalHandler}
+        />
+      ) : null}
 
       {isAnswerModalOpen ? (
         <CommentModal
+          reviewsRequestObject={reviewsRequestObject}
+          reviewId={item.reviewsId}
+          getProductReviews={getProductReviews}
           open={isAnswerModalOpen}
           onClose={() => setAnswerModalOpen(false)}
           edit={true}
