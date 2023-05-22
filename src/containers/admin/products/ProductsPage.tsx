@@ -18,6 +18,7 @@ import IconButtons from '../../../components/UI/buttons/IconButtons'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
 import { useDebounce } from '../../../hooks/useDebounced/useDebounce'
 import CustomizedSnackbars from '../../../components/admin/UI/error-snackbar/ErrorSnackbar'
+import CreateDiscount from '../../../components/discount/CreateDiscount'
 
 const FirstContainer = styled('div')(() => ({
   width: '81.5625rem',
@@ -97,6 +98,8 @@ const ProductsPage = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [isOpen, setOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState('Error')
+  const [openDiscount, setOpenDiscount] = useState(false)
+  const [selectedIds, setSelectedIds] = useState<number[]>([])
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
   useEffect(() => {
@@ -113,7 +116,7 @@ const ProductsPage = () => {
         setErrorMessage(JSON.stringify(e))
         setOpen(true)
       })
-  }, [queryParams])
+  }, [queryParams, openDiscount])
 
   useEffect(() => {
     dispatch(getInfographics())
@@ -185,6 +188,22 @@ const ProductsPage = () => {
     handleEndDateChange(newValue)
   }
 
+  const closeDiscountHandler = () => {
+    setOpenDiscount(false)
+  }
+
+  const openDiscountHandler = () => {
+    if (selectedIds.length === 0) {
+      setOpenDiscount(false)
+    } else {
+      setOpenDiscount(true)
+    }
+  }
+
+  const collectSelectedIds = (ids: number[]) => {
+    setSelectedIds(ids)
+  }
+
   const tabs = [
     {
       id: 1,
@@ -192,6 +211,7 @@ const ProductsPage = () => {
       value: 'Все товары',
       Component: (
         <AllProducts
+          collectSelectedIds={collectSelectedIds}
           queryParams={queryParams}
           setQueryParams={setQueryParams}
           onChangeHandler={onChangeHandler}
@@ -238,7 +258,14 @@ const ProductsPage = () => {
               <StyledLink to={PATHS.ADMIN.addProducts}>
                 <StyledButton>Добавить товар</StyledButton>
               </StyledLink>
-              <StyledButton onClick={() => {}}>Создать скидку</StyledButton>
+              <StyledButton onClick={openDiscountHandler}>Создать скидку</StyledButton>
+              {openDiscount ? (
+                <CreateDiscount
+                  selectedIds={selectedIds}
+                  open={true}
+                  onClose={closeDiscountHandler}
+                />
+              ) : null}
             </div>
           </StyledGrid>
           <ProductsTabContainer>
@@ -246,7 +273,7 @@ const ProductsPage = () => {
           </ProductsTabContainer>
         </FirstContainer>
         <div>
-          <Infographics infographicsData={infographics} />
+          <Infographics infographicsData={infographics} />x
         </div>
       </Main>
     </>
