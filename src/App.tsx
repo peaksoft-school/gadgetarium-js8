@@ -8,7 +8,7 @@ import { store } from './redux/store'
 const AppContent = () => {
   return (
     <div>
-      <AppRoutes />{' '}
+      <AppRoutes />
     </div>
   )
 }
