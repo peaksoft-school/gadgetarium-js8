@@ -4,10 +4,11 @@ import AppRoutes from './routes/AppRoutes'
 import { ThemeProvider } from '@mui/material'
 import { appTheme } from './utils/constants/theme/theme'
 import { store } from './redux/store'
+
 const AppContent = () => {
   return (
     <div>
-      <AppRoutes />
+      <AppRoutes />{' '}
     </div>
   )
 }

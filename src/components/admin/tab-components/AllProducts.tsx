@@ -62,9 +62,11 @@ type Props = {
   handlerChangePage: (newPage: number) => void
   onFirstChange: (newValue: any) => void
   onSecondChange: (newValue: any) => void
+  collectSelectedIds: (ids: number[]) => void
 }
 
 const AllProducts = ({
+  collectSelectedIds,
   queryParams,
   onChangeHandler,
   handlerChangePage,
@@ -144,6 +146,7 @@ const AllProducts = ({
           <Sorting onChange={onChangeHandler} />
         </SearchSortContainer>
         <AppTable
+          collectSelectedIds={collectSelectedIds}
           onChange={handlerChangePage}
           page={products.currentPage}
           pageSize={products.totalPages}

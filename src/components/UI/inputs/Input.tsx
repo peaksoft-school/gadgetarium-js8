@@ -1,12 +1,14 @@
 import { InputBase, styled } from '@mui/material'
 import { ChangeEvent, forwardRef } from 'react'
-import { InputBaseProps } from '@mui/material'
-type InputProps = InputBaseProps & {
-  value?: string
+
+type InputProps = {
+  value?: string | number
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   error?: boolean
   placeholder?: string
   type?: string
+  id?: string
+  required?: boolean
 }
 
 const InputStyled = styled(InputBase)(() => ({
@@ -30,7 +32,19 @@ const InputStyled = styled(InputBase)(() => ({
 }))
 
 const Input = forwardRef(
-  ({ value, type = 'text', onChange, error, placeholder = '', ...props }: InputProps, ref) => {
+  (
+    {
+      value,
+      type = 'text',
+      onChange,
+      error,
+      placeholder = '',
+      id = '',
+      required = false,
+      ...props
+    }: InputProps,
+    ref
+  ) => {
     return (
       <InputStyled
         {...props}

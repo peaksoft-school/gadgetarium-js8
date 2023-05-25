@@ -217,6 +217,7 @@ const AdminHeader = () => {
   }
 
   const logOutHandler = () => {
+    localStorage.removeItem('AUTH')
     navigate('/login')
   }
   return (
