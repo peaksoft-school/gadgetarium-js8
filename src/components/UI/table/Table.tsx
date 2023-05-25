@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Checkbox, styled } from '@mui/material'
 import { Column } from '../../../utils/constants/tableColumns'
 
-
 type Props<T> = {
   columns: Column<T>[]
   // rows: Row[]

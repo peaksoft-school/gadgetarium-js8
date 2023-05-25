@@ -9,7 +9,7 @@ type SearchInputProps = React.DetailedHTMLProps<
   HTMLInputElement
 >
 
-const Container = styled('div')(() => ({
+export const Container = styled('div')(() => ({
   width: '100%',
   background: 'none',
   height: '42px',
@@ -37,7 +37,7 @@ const Container = styled('div')(() => ({
   }
 }))
 
-const StyledInput = styled('input')(() => ({
+export const StyledInput = styled('input')(() => ({
   background: 'none',
   color: '#b8afaf',
   width: '95%',
