@@ -1,0 +1,253 @@
+import Collapse from '@mui/material/Collapse'
+import IconButton from '@mui/material/IconButton'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import { ReactComponent as DeleteIcon } from '../../../assets/icons/feedback-icons/admin_delete_icon.svg'
+import React, { ChangeEvent, useEffect, useState } from 'react'
+import { Rating, TableCell, TableRow, TextField, Typography, styled } from '@mui/material'
+import IconButtons from '../../UI/buttons/IconButtons'
+import Button from '../../UI/buttons/Button'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../../../redux/store'
+import {
+  deleteReviewById,
+  postReviews,
+  updateReviews
+} from '../../../redux/store/reviews/reviews.thunk'
+import CutTextReviews from './CutTextReviews'
+
+type AllReviewsType = {
+  id: number
+  productImg: string
+  productItemNumber: number
+  productName: string
+  date: string | null
+  commentary: string
+  grade: number
+  answer: string
+  images: string[]
+  userName: string
+  userEmail: string
+  userImg: string
+}
+interface PropsType {
+  item: AllReviewsType
+  index: number
+  page: string
+}
+const StyledTableBodyCell = styled(TableCell)(() => ({
+  padding: '1.25rem 0rem',
+  textAlign: 'left',
+  verticalAlign: 'top'
+}))
+
+const StyledTypographyOne = styled(Typography)(() => ({
+  fontWeight: 600,
+  fontSize: ' .875rem'
+}))
+const StyledTypographyTwoAndThree = styled(Typography)(() => ({
+  fontWeight: 500,
+  fontSize: '.875rem',
+  lineHeight: ' 1.25rem',
+  color: '#909CB5'
+}))
+const ImageContainer = styled('div')(() => ({
+  width: '2.625rem',
+  height: '2.625rem',
+  borderRadius: '100%',
+  backgroundColor: '#D9D9D9',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginRight: '1rem'
+}))
+const NameOfUser = styled(Typography)(() => ({
+  fontWeight: 600,
+  fontSize: '.875rem',
+  lineHeight: '1.0625rem',
+  color: '#292929'
+}))
+const ContainerUserInfo = styled('div')(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between'
+}))
+const EmailOfUser = styled(Typography)(() => ({
+  marginTop: '.25rem',
+  fontWeight: 500,
+  fontSize: '.9375rem',
+  lineHeight: '1.0625rem',
+  color: '#91969E'
+}))
+const ContainerImageAndTitle = styled('div')(() => ({
+  display: 'flex'
+}))
+const ContainerIconButtons = styled('div')(() => ({
+  display: 'flex',
+  alignItems: 'center'
+}))
+const StyledIconButton = styled(IconButtons)(() => ({
+  marginBottom: '.875rem'
+}))
+const Label = styled('label')(() => ({
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '.875rem',
+  lineHeight: ' 120%',
+  color: '#292929'
+}))
+const StyledButton = styled(Button)(({ theme }) => ({
+  fontWeight: 600,
+  fontSize: ' 1rem',
+  lineHeight: '1.1875rem',
+  color: theme.customPalette.primary.main,
+  backgroundColor: '#ffff',
+  padding: '.75rem 4.5rem',
+  marginTop: '.875rem',
+  float: 'right',
+  border: ` .0625rem solid ${theme.customPalette.primary.main}`,
+  ':hover': {
+    backgroundColor: theme.customPalette.primary.main,
+    color: '#FFFFFF'
+  }
+}))
+const StyledProductImage = styled('img')(() => ({
+  width: '4.375rem',
+  height: '5.125rem'
+}))
+const StyledUserProductImage = styled('img')(() => ({
+  width: '100%',
+  height: '100%',
+  borderRadius: '100%'
+}))
+const ContainerButton = styled('div')(() => ({
+  display: 'flex',
+  justifyContent: 'space-between'
+}))
+const RowTable = ({ item, index, page }: PropsType) => {
+  const dispatch = useDispatch<AppDispatch>()
+  const [inputValue, setInputValue] = useState('')
+  const [open, setOpen] = useState(false)
+  useEffect(() => {
+    setInputValue(item.answer)
+  }, [item.answer])
+  const sendHandleButtonClick = () => {
+    const reviewData = {
+      page: page,
+      id: item.id,
+      answer: inputValue
+    }
+    dispatch(postReviews(reviewData))
+    setOpen(false)
+  }
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setInputValue(event.target.value)
+  }
+  const removeItemById = () => {
+    const reviewData = {
+      id: item.id,
+      page: page
+    }
+    dispatch(deleteReviewById(reviewData))
+  }
+  const updateHandleButtonClick = () => {
+    const updateData = {
+      id: item.id,
+      page: page,
+      answer: inputValue
+    }
+    dispatch(updateReviews(updateData))
+    setOpen(false)
+  }
+  const cancelHandleButtonClick = () => {
+    setOpen(false)
+  }
+  return (
+    <React.Fragment>
+      <TableRow>
+        <StyledTableBodyCell style={{ width: '1.875rem' }}>{index + 1}</StyledTableBodyCell>
+        <StyledTableBodyCell style={{ width: '6.25rem' }}>
+          <StyledProductImage src={item.productImg} />
+        </StyledTableBodyCell>
+        <StyledTableBodyCell style={{ width: '10.625rem', paddingRight: '.9375rem' }}>
+          <StyledTypographyOne>{item.productName}</StyledTypographyOne>
+          <StyledTypographyTwoAndThree>Модель</StyledTypographyTwoAndThree>
+          <StyledTypographyTwoAndThree>{item.productItemNumber}</StyledTypographyTwoAndThree>
+        </StyledTableBodyCell>
+        <StyledTableBodyCell style={{ width: '22.5rem' }}>
+          <CutTextReviews
+            open={open}
+            images={item.images}
+            date={item.date}
+            text={item.commentary}
+            answer={item.answer}
+          />
+        </StyledTableBodyCell>
+        <StyledTableBodyCell sx={{ width: '31.25rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+              marginBottom: '1.875rem'
+            }}
+          >
+            <Rating
+              name="read-only"
+              value={item.grade}
+              readOnly
+              size="small"
+              style={{ width: '40%' }}
+            />
+            <ContainerUserInfo style={{ width: '60%' }}>
+              <ContainerImageAndTitle>
+                <ImageContainer>
+                  <StyledUserProductImage src={item.userImg} alt="images" />
+                </ImageContainer>
+                <div>
+                  <NameOfUser>{item.userName}</NameOfUser>
+                  <EmailOfUser>{item.userEmail}</EmailOfUser>
+                </div>
+              </ContainerImageAndTitle>
+              <ContainerIconButtons>
+                <StyledIconButton icon={<DeleteIcon />} onClick={removeItemById} />
+                <IconButton
+                  aria-label="expand row"
+                  size="small"
+                  onClick={() => setOpen(!open)}
+                  sx={{ marginBottom: '.875rem' }}
+                >
+                  {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                </IconButton>
+              </ContainerIconButtons>
+            </ContainerUserInfo>
+          </div>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <form>
+              <Label>Ответить на комментарий</Label>
+              <TextField
+                multiline
+                rows={4}
+                style={{ width: '100%', marginTop: '.625rem' }}
+                value={inputValue}
+                onChange={handleChange}
+              />
+              {item.answer ? (
+                <ContainerButton>
+                  <StyledButton onClick={cancelHandleButtonClick}>Отменить</StyledButton>
+                  {item.answer !== inputValue ? (
+                    <StyledButton onClick={updateHandleButtonClick}>Сохранить</StyledButton>
+                  ) : null}
+                </ContainerButton>
+              ) : (
+                <StyledButton onClick={sendHandleButtonClick}>Ответить</StyledButton>
+              )}
+            </form>
+          </Collapse>
+        </StyledTableBodyCell>
+      </TableRow>
+    </React.Fragment>
+  )
+}
+export default RowTable
