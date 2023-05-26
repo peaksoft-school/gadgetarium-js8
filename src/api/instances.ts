@@ -9,26 +9,27 @@ export const mainApi = axios.create({
 
 mainApi.interceptors.request.use(
   function (config) {
-    const newConfig = { ...config }
-    const { token } = store.getState().auth
+    const token = store.getState().auth.token
     if (token) {
-      newConfig.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `Bearer ${token}`
     }
-    return newConfig
+    return config
   },
   function (error) {
     return Promise.reject(error)
   }
 )
 
-mainApi.interceptors.response.use(
-  function (response) {
-    return response
+mainApi.interceptors.request.use(
+  function (config) {
+    const newConfig = { ...config }
+    // const token: string = store.getState().auth.token
+    // if (token) {
+    //   newConfig.headers.Authorization = `Bearer ${token}`
+    // }
+    return newConfig
   },
   function (error) {
-    if (error.response.status === 401) {
-      throw new Error('401 unauthorized')
-    }
     return Promise.reject(error)
   }
 )

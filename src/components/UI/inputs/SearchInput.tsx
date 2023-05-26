@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { ReactComponent as WhiteSearchIcon } from '../../../assets/icons/whiteSearchIcon.svg'
+import { ReactComponent as WhiteSearchIcon } from '../../../assets/icons/search-input-icons/whiteSearchIcon.svg'
 import { styled } from '@mui/material'
-import IconButtons from '../IconButtons'
+import IconButtons from '../buttons/IconButtons'
 
 type SearchInputProps = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,

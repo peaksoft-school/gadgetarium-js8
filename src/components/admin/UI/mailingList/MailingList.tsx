@@ -1,25 +1,22 @@
 import React from 'react'
-import Modal from '../../../UI/Modal'
+import Modal from '../../../UI/modals/Modal'
 import Input from '../../../UI/inputs/Input'
 import Button from '../../../UI/buttons/Button'
 import { FormLabel, styled } from '@mui/material'
 import { useState } from 'react'
 import ImagePicker from './ImagePicker'
-
 import { ChangeEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../../../redux/store'
 import { postMailingList } from '../../../../redux/store/mailingList/mailingList.thunk'
-
 type Props = {
   modalHandler: () => void
   modal: boolean
-  data: (newData: {
+  data?: (newData: {
     name: string
     description: string
     image: string | null
     dateOfStart: string
-
     dateOfFinish: string
   }) => void
 }
@@ -49,7 +46,6 @@ export const StyledTitle = styled('h1')`
   margin-top: 20px;
   margin-bottom: 25px;
   text-align: center;
-
   color: #292929;
 `
 const InputConataienr = styled('div')`
@@ -67,7 +63,6 @@ export const StyledFormLable = styled(FormLabel)`
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-
   display: flex;
   align-items: center;
   margin: 0;
@@ -83,8 +78,12 @@ export const StyledButtonContainer = styled('div')`
   justify-content: space-around;
   margin-top: 10px;
 `
+<<<<<<< HEAD
 
 export const StyledButton = styled(Button)(() => ({
+=======
+const StyledButton = styled(Button)(() => ({
+>>>>>>> 1b7b5cad4f3fa541e8cfb804c4d708be7bc6cbfc
   background: '#fff',
   border: '1px solid #CB11AB',
   borderRadius: '4px',
@@ -112,24 +111,19 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
   const [description, setDescription] = useState<string>('')
   const [dateOfStart, setDateOfStart] = useState('')
   const [dateOfFinish, setDateOfEnd] = useState('')
-
   const handleImageSelect = (imageUrl: string) => {
     setImage(imageUrl)
     console.log('Selected image:', imageUrl)
   }
-
   const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
   }
-
   const descriptionChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value)
   }
-
   const dateOfEndChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setDateOfEnd(e.target.value)
   }
-
   const dateOfStartChangeHandler = (e: any) => {
     setDateOfStart(e.target.value)
   }
@@ -158,7 +152,6 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
     setDateOfEnd('')
     setDateOfStart('')
   }
-
   return (
     <Modal onClose={modalHandler} open={modal}>
       <StyledForm onSubmit={addNewData}>
@@ -193,7 +186,6 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
               placeholder="Введите описание рассылки"
             />
           </StyledInputContainer>
-
           <InputConataienr>
             <div>
               <StyledFormLable htmlFor="dateStarts " required>
@@ -221,7 +213,6 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
               />
             </div>
           </InputConataienr>
-
           <StyledButtonContainer>
             <StyledButton onClick={modalHandler}>Отмена</StyledButton>
             <StyledButton type="submit">Отправить</StyledButton>
@@ -231,5 +222,4 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
     </Modal>
   )
 }
-
 export default CreateMailingList

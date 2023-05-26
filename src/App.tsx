@@ -1,8 +1,8 @@
-import { store } from './redux/store'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from '@mui/material'
-import { appTheme } from './utils/constants/theme'
+import { appTheme } from './utils/constants/theme/theme'
+import { store } from './redux/store'
 
 const AppContent = () => {
   return <div></div>

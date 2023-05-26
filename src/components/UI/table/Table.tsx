@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { Checkbox, styled } from '@mui/material'
+<<<<<<< HEAD
 import { Column } from '../../../utils/constants/tableColumns'
+=======
+import { Column } from '../../../utils/common/types'
+>>>>>>> 1b7b5cad4f3fa541e8cfb804c4d708be7bc6cbfc
 
 type Props<T> = {
   columns: Column<T>[]

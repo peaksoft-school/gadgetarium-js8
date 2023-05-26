@@ -1,7 +1,7 @@
 import { ColorResult, SketchPicker } from 'react-color'
 
 import { styled } from '@mui/material'
-import IconButtons from './UI/IconButtons'
+import IconButtons from './UI/buttons/IconButtons'
 import { Palette } from '@mui/icons-material'
 
 type PropsColorPicker = {
