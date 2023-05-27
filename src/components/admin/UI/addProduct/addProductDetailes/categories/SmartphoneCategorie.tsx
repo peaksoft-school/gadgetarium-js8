@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyledInputContainer } from '../../AddTabComponent'
+import { ProductType, StyledInputContainer } from '../../AddTabComponent'
 import { StyledFormLable } from '../../../mailingList/MailingList'
 import ReusableColorPicker from '../../../../../ReusableColorPicker'
 import { styled, SelectChangeEvent } from '@mui/material'
@@ -15,6 +15,7 @@ import {
 type Props = {
   selectedValueFirst: string | number
   setSubProducts: (data: any) => void
+  saveProduct: ProductType
 }
 
 export const StyledInputPalette = styled('input')(() => ({
@@ -33,7 +34,7 @@ export const StyledInputPalette = styled('input')(() => ({
   flexRow: '0'
 }))
 
-const SmartphoneCategorie = ({ selectedValueFirst, setSubProducts }: Props) => {
+const SmartphoneCategorie = ({ selectedValueFirst, setSubProducts, saveProduct }: Props) => {
   const [memorySize, setMemorySize] = useState('')
   const [ram, setRam] = useState('')
   const [simCart, setSIMcart] = useState('')
@@ -45,6 +46,14 @@ const SmartphoneCategorie = ({ selectedValueFirst, setSubProducts }: Props) => {
   useEffect(() => {
     setSubProducts({ image, colour: color, memorySize, ram, simCart })
   }, [memorySize, image, color, ram, simCart])
+
+  useEffect(() => {
+    setImage('')
+    setColor('')
+    setMemorySize('')
+    setRam('')
+    setSIMcart('')
+  }, [saveProduct])
 
   const changeOptions = () => {
     if (selectedValueFirst === 1) {

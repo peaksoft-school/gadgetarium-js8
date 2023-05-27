@@ -1,9 +1,8 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import { Container, StyledInput, StyledInputContainer } from '../../AddTabComponent'
+import React, { useEffect, useState } from 'react'
+import { ProductType, StyledInputContainer } from '../../AddTabComponent'
 import { StyledFormLable } from '../../../mailingList/MailingList'
 import { styled, SelectChangeEvent } from '@mui/material'
-import IconButtons from '../../../../../UI/IconButtons'
-import { ReusableSelect as Select, StyledSelect } from '../../../../../ReusableSelect'
+import { ReusableSelect as Select } from '../../../../../ReusableSelect'
 import ImagePicker from '../../../mailingList/ImagePicker'
 import { ColorResult } from 'react-color'
 import {
@@ -19,6 +18,7 @@ import ReusableColorPicker from '../../../../../ReusableColorPicker'
 type Props = {
   selectedValueFirst: string | number
   setSubProducts: (data: any) => void
+  saveProduct: ProductType
 }
 
 export const StyledInputPalette = styled('input')(() => ({
@@ -37,7 +37,7 @@ export const StyledInputPalette = styled('input')(() => ({
   flexRow: '0'
 }))
 
-const CreatePlanshetCategorie = ({ selectedValueFirst, setSubProducts }: Props) => {
+const CreatePlanshetCategorie = ({ selectedValueFirst, setSubProducts, saveProduct }: Props) => {
   const [additionalProp1, setAdditionalProp1] = useState('')
   const [additionalProp2, setAdditionalProp2] = useState('')
   const [additionalProp3, setAdditionalProp3] = useState('')
@@ -48,6 +48,14 @@ const CreatePlanshetCategorie = ({ selectedValueFirst, setSubProducts }: Props) 
   useEffect(() => {
     setSubProducts({ additionalProp3, additionalProp2, image, colorPlanshet, additionalProp1 })
   }, [additionalProp3, image, colorPlanshet, additionalProp1, additionalProp2])
+
+  useEffect(() => {
+    setImage('')
+    setAdditionalProp1('')
+    setPlanshetColor('')
+    setAdditionalProp2('')
+    setAdditionalProp3('')
+  }, [saveProduct])
 
   const changeOptions = () => {
     if (selectedValueFirst === 2) {

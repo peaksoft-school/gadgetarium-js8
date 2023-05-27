@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { SelectChangeEvent } from '@mui/material'
-import { StyledInputContainer } from '../../AddTabComponent'
+import { ProductType, StyledInputContainer } from '../../AddTabComponent'
 import { StyledFormLable } from '../../../mailingList/MailingList'
 import { ReusableSelect as Select } from '../../../../../ReusableSelect'
 import { ColorResult } from 'react-color'
@@ -11,9 +11,10 @@ import ImagePicker from '../../../mailingList/ImagePicker'
 
 type Props = {
   setSubProducts: (data: any) => void
+  saveProduct: ProductType
 }
 
-const SmartWatchCategorie = ({ setSubProducts }: Props) => {
+const SmartWatchCategorie = ({ setSubProducts, saveProduct }: Props) => {
   const [memory1, setMemory1] = useState('')
   const [material, setMaterial] = useState('')
   const [size, setSize] = useState('')
@@ -55,6 +56,19 @@ const SmartWatchCategorie = ({ setSubProducts }: Props) => {
     wireless,
     shape
   ])
+  useEffect(() => {
+    setMemory1('')
+    setMaterial('')
+    setSize('')
+    setSize2('')
+    setDisplay('')
+    setGender('')
+    setWaterproof('')
+    setWireless('')
+    setShape('')
+    setImage('')
+    setSmartWatchColor('')
+  }, [saveProduct])
 
   const memory1Handler = (event: SelectChangeEvent<typeof memory1>) => {
     setMemory1(event.target.value)

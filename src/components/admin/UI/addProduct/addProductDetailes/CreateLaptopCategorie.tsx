@@ -12,12 +12,13 @@ import {
   ScreenSize,
   laptopProcessor
 } from '../../../../../utils/constants/optionsCategorie'
-import { StyledInputContainer } from '../AddTabComponent'
+import { ProductType, StyledInputContainer } from '../AddTabComponent'
 import ReusableColorPicker from '../../../../ReusableColorPicker'
 
 type Props = {
   selectedValueFirst: string | number
   setSubProducts: (data: any) => void
+  saveProduct: ProductType
 }
 
 export const StyledInputPalette = styled('input')(() => ({
@@ -36,7 +37,7 @@ export const StyledInputPalette = styled('input')(() => ({
   flexRow: '0'
 }))
 
-const CreateLaptopCategorie = ({ selectedValueFirst, setSubProducts }: Props) => {
+const CreateLaptopCategorie = ({ selectedValueFirst, setSubProducts, saveProduct }: Props) => {
   const [laptopProcessor1, setLeptopProcessor] = useState('')
   const [srcean, setScrean] = useState('')
   const [purpose, setPurpose] = useState('')
@@ -66,6 +67,17 @@ const CreateLaptopCategorie = ({ selectedValueFirst, setSubProducts }: Props) =>
       select
     })
   }, [image, purpose, colorLaptop, laptopProcessor1, srcean, sizeScrean, video, select])
+
+  useEffect(() => {
+    setLeptopProcessor('')
+    setScrean('')
+    setPurpose('')
+    setSizeScrean('')
+    setVideo('')
+    setSelect('')
+    setImage('')
+    setLaptopColor('')
+  }, [saveProduct])
 
   const changeOptions = () => {
     if (selectedValueFirst === 3) {

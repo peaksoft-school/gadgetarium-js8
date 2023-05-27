@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react'
-import Modal from '../../../UI/Modal'
 import ImagePicker from '../mailingList/ImagePicker'
+import { styled } from '@mui/material'
 import {
   StyledButton,
   StyledButtonContainer,
@@ -9,10 +9,11 @@ import {
   StyledTitle
 } from '../mailingList/MailingList'
 import { postBrand } from '../../../../api/addProductService'
-import { styled } from '@mui/material'
+import Modal from '../../../UI/modals/Modal'
 type Props = {
   modalHandler: () => void
   modal: boolean
+  getSubCategories: () => void
 }
 const StyledPickerContainer = styled('div')(() => ({
   width: '100%',
@@ -21,7 +22,7 @@ const StyledPickerContainer = styled('div')(() => ({
 const StyledForm = styled('form')(() => ({
   width: '33.75rem'
 }))
-const AddbrandModal = ({ modal, modalHandler }: Props) => {
+const AddbrandModal = ({ modal, modalHandler, getSubCategories }: Props) => {
   const [logo, setLogo] = useState<string>('')
   const [name, setName] = useState<string>('')
 
@@ -41,6 +42,8 @@ const AddbrandModal = ({ modal, modalHandler }: Props) => {
       }
       try {
         await postBrand(newBrand)
+        modalHandler()
+        getSubCategories()
       } catch (error) {
         console.log(error)
       }

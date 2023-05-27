@@ -78,12 +78,7 @@ export const StyledButtonContainer = styled('div')`
   justify-content: space-around;
   margin-top: 10px;
 `
-<<<<<<< HEAD
-
 export const StyledButton = styled(Button)(() => ({
-=======
-const StyledButton = styled(Button)(() => ({
->>>>>>> 1b7b5cad4f3fa541e8cfb804c4d708be7bc6cbfc
   background: '#fff',
   border: '1px solid #CB11AB',
   borderRadius: '4px',

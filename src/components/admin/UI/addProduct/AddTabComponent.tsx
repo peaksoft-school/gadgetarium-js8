@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import { StyledFormLable } from '../mailingList/MailingList'
-import { ReusableSelect as SelectComponent, StyledSelect } from '../../../ReusableSelect'
+import {
+  ReusableSelect as SelectComponent,
+  StyledOption,
+  StyledSelect
+} from '../../../ReusableSelect'
 import { styled, SelectChangeEvent } from '@mui/material'
 import Input from '../../../UI/inputs/Input'
-import IconButtons from '../../../UI/IconButtons'
 import AddbrandModal from './AddbrandModal'
 import { ReactComponent as PlusIcon } from '../../../../assets/icons/Plus.svg'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,6 +20,7 @@ import CreatePlanshetCategorie from './addProductDetailes/categories/Planshet'
 import CreateLaptopCategorie from './addProductDetailes/CreateLaptopCategorie'
 import Button from '../../../UI/buttons/Button'
 import { NavLink } from 'react-router-dom'
+import IconButtons from '../../../UI/buttons/IconButtons'
 
 interface Brand {
   name: string
@@ -150,7 +154,7 @@ const StyledQuantityProduct = styled('div')(() => ({
   gap: '.375rem'
 }))
 
-const StyledButton = styled('button')(() => ({
+const StyledButton = styled('li')(() => ({
   backgroundColor: '#ffff',
   border: '0px',
   fontFamily: 'Inter',
@@ -159,10 +163,13 @@ const StyledButton = styled('button')(() => ({
   fontSize: '20px',
   lineHeight: '24px',
   marginLeft: '15px',
-  color: '#CB11AB'
+  color: '#CB11AB',
+  cursor: 'pointer',
+  position: 'relative',
+  zIndex: 11
 }))
 
-type ProductType = {
+export type ProductType = {
   name: string | number
   brandId: string | number
   subCategoryId: string | number
@@ -194,6 +201,12 @@ const AddTabComponent: React.FC = () => {
       subProducts: [subProducts]
     }
     setSaveProduct([...saveProduct, newProduct])
+    // setSelectedValueFirst('')
+    // setSelectedValueSecond('')
+    // setSelectedValueThird('')
+    // setgaranteeProduct('')
+    // setdateOfIssueProduct('')
+    // setnameProduct('')
   }
   const handleModal = () => {
     setOpenModal((prevState) => !prevState)
@@ -261,7 +274,6 @@ const AddTabComponent: React.FC = () => {
             <StyledFormLable required htmlFor="Бренд *">
               Бренд
             </StyledFormLable>{' '}
-            <AddbrandModal modal={openModal} modalHandler={handleModal} />
             <StyledSelect
               displayEmpty
               value={selectedValueSecond}
@@ -273,9 +285,15 @@ const AddTabComponent: React.FC = () => {
                   {option.name}
                 </StyledItemMenu>
               ))}
-
-              <StyledButton onClick={handleModal}> + Создать новый бренд</StyledButton>
+              <StyledItemMenu>
+                <StyledButton onClick={handleModal}> + Создать новый бренд</StyledButton>
+              </StyledItemMenu>
             </StyledSelect>
+            <AddbrandModal
+              modal={openModal}
+              modalHandler={handleModal}
+              getSubCategories={getSubCategories}
+            />
           </StyledInputContainer>
           <StyledInputContainer>
             <StyledFormLable required htmlFor="Название товара *">
@@ -343,31 +361,33 @@ const AddTabComponent: React.FC = () => {
           </StyledContainer>
           {selectedValueFirst === 1 ? (
             <AddDetailsProduct
+              saveProduct={saveProduct}
               selectedValueFirst={selectedValueFirst}
               setSubProducts={setSubProducts}
             />
           ) : null}
           {selectedValueFirst === 4 ? (
-            <SmartWatchCategorie setSubProducts={setSubProducts} />
+            <SmartWatchCategorie saveProduct={saveProduct} setSubProducts={setSubProducts} />
           ) : null}
           {selectedValueFirst === 2 ? (
             <CreatePlanshetCategorie
+              saveProduct={saveProduct}
               selectedValueFirst={selectedValueFirst}
               setSubProducts={setSubProducts}
             />
           ) : null}
           {selectedValueFirst === 3 ? (
             <CreateLaptopCategorie
+              saveProduct={saveProduct}
               selectedValueFirst={selectedValueFirst}
               setSubProducts={setSubProducts}
             />
           ) : null}
+          <NavLink to={'/'}>
+            <StyledMuiButton>Далее</StyledMuiButton>
+          </NavLink>
         </>
       )}
-
-      <NavLink to={'/'}>
-        <StyledMuiButton>Далее</StyledMuiButton>
-      </NavLink>
     </>
   )
 }
