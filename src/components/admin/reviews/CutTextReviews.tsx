@@ -28,7 +28,7 @@ const Container = styled('div')(() => ({
   paddingRight: '1.375rem'
 }))
 const Span = styled('span')(({ answer }: { answer: string | null }) => ({
-  fontWeight: answer === '' ? 700 : 400
+  fontWeight: answer === null || answer === '' ? 700 : 400
 }))
 const CutTextReviews = ({ text, open, images, answer, date }: Props) => {
   if (text.length <= 1) {

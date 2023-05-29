@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from '@reduxjs/toolkit'
-import { getAllReviews } from './reviews.thunk'
+import { getAllReviews, updateReviews } from './reviews.thunk'
 import { ReviewType } from '../../../api/reviews/reviewsService'
 
 type ItemType = {
   count: number
   reviewResponses: ReviewType
+  error: string
 }
 
 const initialState: ItemType = {
@@ -25,7 +26,8 @@ const initialState: ItemType = {
       date: ''
     }
   ],
-  count: 0
+  count: 0,
+  error: ''
 }
 
 export const reviewsSlice = createSlice({
@@ -36,6 +38,10 @@ export const reviewsSlice = createSlice({
     builder.addCase(getAllReviews.fulfilled, (state, { payload }: { payload: any }) => {
       state.reviewResponses = payload.reviewResponses
       state.count = payload.count
+      state.error = ''
+    })
+    builder.addCase(updateReviews.rejected, (state, { payload }: { payload: any }) => {
+      state.error = payload
     })
   }
 })

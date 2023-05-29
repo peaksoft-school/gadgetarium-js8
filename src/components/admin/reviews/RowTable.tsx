@@ -7,8 +7,8 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Rating, TableCell, TableRow, TextField, Typography, styled } from '@mui/material'
 import IconButtons from '../../UI/buttons/IconButtons'
 import Button from '../../UI/buttons/Button'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../../redux/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../redux/store'
 import {
   deleteReviewById,
   postReviews,
@@ -183,14 +183,27 @@ const ContainerButton = styled('div')(() => ({
   display: 'flex',
   justifyContent: 'space-between'
 }))
+const StyledTextField = styled(TextField)(() => ({
+  width: '100%',
+  marginTop: '.625rem'
+}))
 const RowTable = ({ item, index, page }: PropsType) => {
   const dispatch = useDispatch<AppDispatch>()
+  const { error } = useSelector((state: RootState) => state.reviews)
   const [inputValue, setInputValue] = useState('')
-  const [open, setOpen] = useState(false)
+  const [openArrowIcon, setOpenArrowIcon] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   useEffect(() => {
     setInputValue(item.answer)
   }, [item.answer])
+  const errorHandler = () => {
+    if (error) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   const sendHandleButtonClick = () => {
     const reviewData = {
       page: page,
@@ -198,10 +211,11 @@ const RowTable = ({ item, index, page }: PropsType) => {
       answer: inputValue
     }
     dispatch(postReviews(reviewData))
-    setOpen(false)
+    setOpenArrowIcon(false)
   }
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue(event.target.value)
+    const trimmedValue = event.target.value.trim()
+    setInputValue(trimmedValue)
   }
   const removeItemById = () => {
     const reviewData = {
@@ -209,6 +223,7 @@ const RowTable = ({ item, index, page }: PropsType) => {
       page: page
     }
     dispatch(deleteReviewById(reviewData))
+    setOpenModal(false)
   }
   const updateHandleButtonClick = () => {
     const updateData = {
@@ -216,11 +231,16 @@ const RowTable = ({ item, index, page }: PropsType) => {
       page: page,
       answer: inputValue
     }
+
     dispatch(updateReviews(updateData))
-    setOpen(false)
+    if (inputValue.length >= 2) {
+      setOpenArrowIcon(false)
+    } else {
+      setOpenArrowIcon(true)
+    }
   }
   const cancelHandleButtonClick = () => {
-    setOpen(false)
+    setOpenArrowIcon(false)
   }
   const closeModalHandler = () => {
     setOpenModal(false)
@@ -242,7 +262,7 @@ const RowTable = ({ item, index, page }: PropsType) => {
         </StyledTableBodyCell>
         <StyledTableBodyCell style={{ width: '22.5rem' }}>
           <CutTextReviews
-            open={open}
+            open={openArrowIcon}
             images={item.images}
             date={item.date}
             text={item.commentary}
@@ -280,25 +300,26 @@ const RowTable = ({ item, index, page }: PropsType) => {
                 <IconButton
                   aria-label="expand row"
                   size="small"
-                  onClick={() => setOpen(!open)}
+                  onClick={() => setOpenArrowIcon(!openArrowIcon)}
                   sx={{ marginBottom: '.875rem' }}
                 >
-                  {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                  {openArrowIcon ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </IconButton>
               </ContainerIconButtons>
             </ContainerUserInfo>
           </div>
-          <Collapse in={open} timeout="auto" unmountOnExit>
+          <Collapse in={openArrowIcon} timeout="auto" unmountOnExit>
             <form>
               <Label>Ответить на комментарий</Label>
-              <TextField
+              <StyledTextField
                 multiline
                 rows={4}
-                style={{ width: '100%', marginTop: '.625rem' }}
                 value={inputValue}
                 onChange={handleChange}
+                label={error}
+                error={errorHandler()}
               />
-              {item.answer ? (
+              {item.answer !== null || item.answer !== null ? (
                 <ContainerButton>
                   <StyledButton onClick={cancelHandleButtonClick}>Отменить</StyledButton>
                   {item.answer !== inputValue ? (
