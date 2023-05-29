@@ -11,6 +11,8 @@ import { ReactComponent as LikeIcon } from '../../../assets/icons/header-icons/l
 import { ReactComponent as HoveredLikeIcon } from '../../../assets/icons/header-icons/hoveredLikeIcon.svg'
 import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons/basketIcon.svg'
 import IconButtons from '../../UI/buttons/IconButtons'
+import { NavLink } from 'react-router-dom'
+import { PATHS } from '../../../utils/constants/router/routerConsts'
 
 const StyledNotificationIcon = styled('span')(() => ({
   display: 'flex',
@@ -78,7 +80,7 @@ const NumberContainer = styled('div')(() => ({
   }
 }))
 
-const StyledNavLink = styled('a')(() => ({
+const StyledNavLink = styled(NavLink)(() => ({
   textDecoration: 'none',
   color: '#fff',
   fontFamily: 'Inter, sans-serif',
@@ -204,11 +206,11 @@ const Header = () => {
         </div>
         <div>
           <StyledList>
-            <StyledNavLink href="baac">Главная</StyledNavLink>
-            <StyledNavLink href="sdvs">О магазине</StyledNavLink>
-            <StyledNavLink href="asc">Доставка</StyledNavLink>
-            <StyledNavLink href="sdv">FAQ</StyledNavLink>
-            <StyledNavLink href="svn">Контакты</StyledNavLink>
+            <StyledNavLink to="/">Главная</StyledNavLink>
+            <StyledNavLink to="">О магазине</StyledNavLink>
+            <StyledNavLink to={PATHS.MAIN.delivery}>Доставка</StyledNavLink>
+            <StyledNavLink to={PATHS.MAIN.faq}>FAQ</StyledNavLink>
+            <StyledNavLink to="/PATHS.MAIN.contacts">Контакты</StyledNavLink>
           </StyledList>
         </div>
         <NumberContainer>
