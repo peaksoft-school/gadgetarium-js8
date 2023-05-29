@@ -1,4 +1,4 @@
-import { mainApi } from '../instances'
+import { mainApi } from '../../config/instances'
 
 export interface InfographicsTypes {
   redeemedForTheAmount: number

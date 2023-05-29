@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import { StyledFormLable } from '../mailingList/MailingList'
-import {
-  ReusableSelect as SelectComponent,
-  StyledOption,
-  StyledSelect
-} from '../../../ReusableSelect'
+import { ReusableSelect as SelectComponent, StyledSelect } from '../../../ReusableSelect'
 import { styled, SelectChangeEvent } from '@mui/material'
 import Input from '../../../UI/inputs/Input'
 import AddbrandModal from './AddbrandModal'
@@ -201,12 +197,6 @@ const AddTabComponent: React.FC = () => {
       subProducts: [subProducts]
     }
     setSaveProduct([...saveProduct, newProduct])
-    // setSelectedValueFirst('')
-    // setSelectedValueSecond('')
-    // setSelectedValueThird('')
-    // setgaranteeProduct('')
-    // setdateOfIssueProduct('')
-    // setnameProduct('')
   }
   const handleModal = () => {
     setOpenModal((prevState) => !prevState)

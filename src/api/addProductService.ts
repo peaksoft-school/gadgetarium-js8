@@ -1,5 +1,5 @@
 import { PostBrandType } from '../utils/constants/types'
-import { mainApi } from './instances'
+import { mainApi } from '../config/instances'
 
 export const getProductBrandAndSubCategorieService = (id: string | number) => {
   return mainApi.get<any>(`/api/admin/products/get_all/${id}/brands_and_sub_categories`)

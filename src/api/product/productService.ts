@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { mainApi } from '../instances'
+import { mainApi } from '../../config/instances'
 
 export interface Product {
   foundProducts: number

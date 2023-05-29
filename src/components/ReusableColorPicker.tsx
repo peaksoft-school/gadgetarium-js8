@@ -71,7 +71,7 @@ const ReusableColorPicker = ({
         <StyledInput type="text" value={color} placeholder="Основной цвет" />
         <IconButtons onClick={openColorHandler} icon={<Palette />} />
       </Container>
-      {openColorPicker && <SketchPicker color={color} onChange={colorPickerHandler} />}
+      {openColorPicker ? <SketchPicker color={color} onChange={colorPickerHandler} /> : null}
     </>
   )
 }
