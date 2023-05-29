@@ -4,6 +4,7 @@ import { productsSlice } from './products/products.slice'
 import { infographicsSlice } from './infographics/infographicsSlice'
 import { mailingSlice } from './mailingList/mailing.slice'
 import { reviewsSlice } from './reviews/reviews.slice'
+import { basketSlice } from './basket/basket.slice'
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     [productsSlice.name]: productsSlice.reducer,
     [infographicsSlice.name]: infographicsSlice.reducer,
     [mailingSlice.name]: mailingSlice.reducer,
-    [reviewsSlice.name]: reviewsSlice.reducer
+    [reviewsSlice.name]: reviewsSlice.reducer,
+    [basketSlice.name]: basketSlice.reducer
   }
 })
 

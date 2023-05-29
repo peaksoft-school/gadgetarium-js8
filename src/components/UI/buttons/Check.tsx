@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles'
-import Checkbox from '@mui/material/Checkbox'
-import { ReactComponent as CheckIcon } from '../../../assets/icons/check_icon.svg'
+import Checkbox, { CheckboxProps } from '@mui/material/Checkbox'
+import { ReactComponent as CheckIcon } from '../../../assets/icons/chek-icons/checkbox.svg'
 import { FormControlLabel } from '@mui/material'
 interface CheckBoxType {
   checked?: boolean
@@ -8,7 +8,7 @@ interface CheckBoxType {
   label?: string
   changeColor?: string
 }
-const BpIcon = styled('span')(({ changeColor }: CheckBoxType) => ({
+const BpIcon = styled('span')(({ changeColor }: CheckBoxType & CheckboxProps) => ({
   borderRadius: 2,
   width: 20,
   height: 20,
@@ -42,6 +42,7 @@ export const CustomizeCheckbox = ({
       control={
         <Checkbox
           checked={checked}
+          onChange={onChange}
           checkedIcon={
             <BpCheckedIcon changeColor={changeColor}>
               <StyledCheckIcon />
