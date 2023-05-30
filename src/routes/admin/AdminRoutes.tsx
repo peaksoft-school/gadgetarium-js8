@@ -3,6 +3,7 @@ import { Routes, Route, Outlet } from 'react-router-dom'
 import { PATHS } from '../../utils/constants/router/routerConsts'
 import ProductsPage from '../../containers/admin/products/ProductsPage'
 import AddProductsPage from '../../layout/admin/addProduct/CreateAddProduct'
+import ReviewsPage from '../../components/admin/reviews/ReviewsPage'
 
 const AdminRoutes = () => {
   return (
@@ -24,7 +25,7 @@ const AdminRoutes = () => {
             <Route path={PATHS.ADMIN.orderId} element={<p>Not Found</p>} />
           </Route>
 
-          <Route path={PATHS.ADMIN.reviews} element={<p>ReviewsPage</p>} />
+          <Route path={PATHS.ADMIN.reviews} element={<ReviewsPage />} />
         </Routes>
       </AdminLayout>
     </div>

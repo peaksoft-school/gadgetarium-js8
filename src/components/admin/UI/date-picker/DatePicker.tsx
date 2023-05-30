@@ -4,13 +4,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker'
 import { ru } from 'date-fns/locale'
 import { styled } from '@mui/material'
-
+import { PickerChangeHandlerContext } from '@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue.types'
+import { DateValidationError } from '@mui/x-date-pickers'
+// ...
 const Container = styled('div')(() => ({
   width: '8.6875rem',
   height: '2.1875rem',
   marginTop: '1.5rem'
 }))
-
 const StyledDatePicker = styled(MuiDatePicker)(() => ({
   borderRadius: '6px',
   fontFamily: 'Inter, sans-serif',
@@ -29,13 +30,13 @@ const StyledDatePicker = styled(MuiDatePicker)(() => ({
     borderColor: '#909CB5'
   }
 }))
-
-type Props = {
-  value: Date | string | null
-  onChange: (date: Date | string | null) => void
+interface Props {
+  value: Date | null
   placeholder: string
+  onChange:
+    | ((value: unknown, context: PickerChangeHandlerContext<DateValidationError>) => void)
+    | undefined
 }
-
 const ProductsDatePicker = forwardRef(
   ({ value, onChange, placeholder }: Props, ref?: React.Ref<HTMLDivElement> | undefined) => {
     return (
@@ -50,8 +51,10 @@ const ProductsDatePicker = forwardRef(
                 backgroundColor: '#000'
               }
             }}
+            onChange={onChange}
             // popperProps={{ strategy: 'fixed' }}
             // onChange={onChange}
+
             slotProps={{ textField: { variant: 'outlined', placeholder } }}
           />
         </Container>
@@ -59,5 +62,4 @@ const ProductsDatePicker = forwardRef(
     )
   }
 )
-
 export default ProductsDatePicker
