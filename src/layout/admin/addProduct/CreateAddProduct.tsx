@@ -43,7 +43,7 @@ const StyledDiv = styled('div')(() => ({
   width: '100%'
 }))
 
-const CreateAddProduct = () => {
+const AddProductsPage = () => {
   return (
     <>
       <Container>
@@ -62,4 +62,4 @@ const CreateAddProduct = () => {
   )
 }
 
-export default CreateAddProduct
+export default AddProductsPage

@@ -45,7 +45,7 @@ const AddbrandModal = ({ modal, modalHandler, getSubCategories }: Props) => {
         modalHandler()
         getSubCategories()
       } catch (error) {
-        console.log(error)
+        return error
       }
     } else {
       return require

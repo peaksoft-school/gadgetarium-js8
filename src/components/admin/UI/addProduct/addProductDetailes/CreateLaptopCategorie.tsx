@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { StyledFormLable } from '../../mailingList/MailingList'
 import { styled, SelectChangeEvent } from '@mui/material'
 import { ReusableSelect as Select } from '../../../../../components/ReusableSelect'
-import ImagePicker from '../../../../../components/admin/UI/mailingList/ImagePicker'
 import { ColorResult } from 'react-color'
 import {
   ScreenResolution,
@@ -12,13 +11,16 @@ import {
   ScreenSize,
   laptopProcessor
 } from '../../../../../utils/constants/optionsCategorie'
-import { ProductType, StyledInputContainer } from '../AddTabComponent'
+import { StyledInputContainer } from '../AddTabComponent'
 import ReusableColorPicker from '../../../../ReusableColorPicker'
+import ImagePickerAddProduct from '../ImagePicker'
+import { useBanner } from '../../../../../hooks/banner/useBanner'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../../../redux/store'
+import { addProductActions } from '../../../../../redux/store/addProduct/AddProduct'
 
 type Props = {
   selectedValueFirst: string | number
-  setSubProducts: (data: any) => void
-  saveProduct: ProductType
 }
 
 export const StyledInputPalette = styled('input')(() => ({
@@ -37,7 +39,10 @@ export const StyledInputPalette = styled('input')(() => ({
   flexRow: '0'
 }))
 
-const CreateLaptopCategorie = ({ selectedValueFirst, setSubProducts, saveProduct }: Props) => {
+const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
+  const dispatch = useDispatch<AppDispatch>()
+  const { products } = useSelector((state: RootState) => state.addNewProduct)
+
   const [laptopProcessor1, setLeptopProcessor] = useState('')
   const [srcean, setScrean] = useState('')
   const [purpose, setPurpose] = useState('')
@@ -45,7 +50,8 @@ const CreateLaptopCategorie = ({ selectedValueFirst, setSubProducts, saveProduct
   const [video, setVideo] = useState('')
   const [select, setSelect] = useState('')
 
-  const [image, setImage] = useState<string>('')
+  const { imagesClassname, bannerImages, handleImageUpload, setBannerImages, deleteImage } =
+    useBanner()
   const [colorLaptop, setLaptopColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
 
@@ -56,17 +62,19 @@ const CreateLaptopCategorie = ({ selectedValueFirst, setSubProducts, saveProduct
     setOpenColorPicker((prevState) => !prevState)
   }
   useEffect(() => {
-    setSubProducts({
-      image,
-      purpose,
-      colorLaptop,
-      laptopProcessor1,
-      srcean,
-      sizeScrean,
-      video,
-      select
-    })
-  }, [image, purpose, colorLaptop, laptopProcessor1, srcean, sizeScrean, video, select])
+    dispatch(
+      addProductActions.addSubProduct({
+        bannerImages,
+        purpose,
+        colorLaptop,
+        laptopProcessor1,
+        srcean,
+        sizeScrean,
+        video,
+        select
+      })
+    )
+  }, [bannerImages, purpose, colorLaptop, laptopProcessor1, srcean, sizeScrean, video, select])
 
   useEffect(() => {
     setLeptopProcessor('')
@@ -75,9 +83,9 @@ const CreateLaptopCategorie = ({ selectedValueFirst, setSubProducts, saveProduct
     setSizeScrean('')
     setVideo('')
     setSelect('')
-    setImage('')
+    setBannerImages([])
     setLaptopColor('')
-  }, [saveProduct])
+  }, [products])
 
   const changeOptions = () => {
     if (selectedValueFirst === 3) {
@@ -110,10 +118,6 @@ const CreateLaptopCategorie = ({ selectedValueFirst, setSubProducts, saveProduct
   }
   const laptopProssesorHandler = (event: SelectChangeEvent<typeof laptopProcessor1>) => {
     setLeptopProcessor(event.target.value)
-  }
-
-  const handlerImage = (imageUrl: string) => {
-    setImage(imageUrl)
   }
 
   return (
@@ -205,7 +209,12 @@ const CreateLaptopCategorie = ({ selectedValueFirst, setSubProducts, saveProduct
           />
         </StyledInputContainer>
         <StyledFormLable htmlFor="Добавьте фото">Добавьте фото</StyledFormLable>
-        <ImagePicker onSelectImage={handlerImage} />
+        <ImagePickerAddProduct
+          imagesClassname={imagesClassname}
+          bannerImages={bannerImages}
+          handleImageUpload={handleImageUpload}
+          deleteImage={deleteImage}
+        />
       </StyledInputContainer>
     </>
   )

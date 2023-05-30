@@ -13,6 +13,8 @@ import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons
 import IconButtons from '../../UI/buttons/IconButtons'
 import { NavLink } from 'react-router-dom'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
+import { useState } from 'react'
+import { SearchInput } from '../../UI/inputs/SearchInput'
 
 const StyledNotificationIcon = styled('span')(() => ({
   display: 'flex',
@@ -90,7 +92,7 @@ const StyledNavLink = styled(NavLink)(() => ({
   lineHeight: '140%',
   textAlign: 'center',
   marginRight: '1.5rem',
-  '&:first-of-type': {
+  '&:focus': {
     backgroundColor: '#858FA426',
     padding: '0.75rem 0.857rem',
     borderRadius: '4px'
@@ -135,25 +137,6 @@ const StyledDivider = styled(Divider)(() => ({
   background: '#858FA426'
 }))
 
-const StyledPaper = styled(Paper)(() => ({
-  p: '0.125rem 0.25rem',
-  display: 'flex',
-  alignItems: 'center',
-  width: '45.625rem',
-  border: '1px solid #fff',
-  borderRadius: '10px',
-  background: '#1A1A25'
-}))
-
-const StyledInputBase = styled(InputBase)(() => ({
-  ml: 1,
-  flex: 1,
-  color: '#fff',
-  paddingTop: '0.375rem',
-  paddingBottom: '0.375rem',
-  marginLeft: '1rem'
-}))
-
 const InteractionIcons = styled('ul')(() => ({
   marginRight: '5rem',
   display: 'flex',
@@ -174,7 +157,12 @@ const InteractionIconsItem = styled('li')(() => ({
     }
   }
 }))
-
+const StyledInputContainer = styled('div')(() => ({
+  width: '110rem',
+  height: '10.8125rem',
+  marginTop: '8rem',
+  marginLeft: '1rem'
+}))
 const SocialMediaListItem = styled('li')(() => ({
   'path:hover': {
     fill: '#CB11AB'
@@ -194,8 +182,12 @@ const LikeIconItem = styled('li')(() => ({
     }
   }
 }))
-
 const Header = () => {
+  const [catalog, setCatalog] = useState(false)
+
+  const catalogHandler = () => {
+    setCatalog((prevState) => !prevState)
+  }
   return (
     <header>
       <FirstHeaderContainer>
@@ -207,10 +199,10 @@ const Header = () => {
         <div>
           <StyledList>
             <StyledNavLink to="/">Главная</StyledNavLink>
-            <StyledNavLink to="">О магазине</StyledNavLink>
+            <StyledNavLink to="./">О магазине</StyledNavLink>
             <StyledNavLink to={PATHS.MAIN.delivery}>Доставка</StyledNavLink>
             <StyledNavLink to={PATHS.MAIN.faq}>FAQ</StyledNavLink>
-            <StyledNavLink to="/PATHS.MAIN.contacts">Контакты</StyledNavLink>
+            <StyledNavLink to={PATHS.MAIN.contacts}>Контакты</StyledNavLink>
           </StyledList>
         </div>
         <NumberContainer>
@@ -219,17 +211,14 @@ const Header = () => {
         </NumberContainer>
       </FirstHeaderContainer>
       <SecondHeaderContainer>
-        <StyledButton>
+        <StyledButton onClick={catalogHandler}>
           <CatalogIcon />
           <StyledPContent>Каталог</StyledPContent>
         </StyledButton>
         <StyledDivider orientation="vertical" />
-        <div>
-          <StyledPaper>
-            <StyledInputBase placeholder="Поиск по каталогу магазина" />
-            <IconButtons icon={<SearchIcon />} />
-          </StyledPaper>
-        </div>
+        <StyledInputContainer>
+          <SearchInput />
+        </StyledInputContainer>
         <SocialMediaList>
           <SocialMediaListItem>
             <span>
