@@ -119,7 +119,8 @@ const ProductsPage = () => {
   }, [queryParams, openDiscount])
 
   useEffect(() => {
-    dispatch(getInfographics())
+    const date = 'day'
+    dispatch(getInfographics(date))
   }, [])
 
   const searchCharacters = (word: any) => {

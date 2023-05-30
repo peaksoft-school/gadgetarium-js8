@@ -4,9 +4,9 @@ import { getInfographicsRequest } from '../../../api/infographics/infographicsSe
 
 export const getInfographics = createAsyncThunk(
   'infographics/getInfographics',
-  async (_, { rejectWithValue }) => {
+  async (payload: string | 'day', { rejectWithValue }) => {
     try {
-      const { data } = await getInfographicsRequest()
+      const { data } = await getInfographicsRequest(payload)
       if (data !== undefined || null) {
         return data
       }
