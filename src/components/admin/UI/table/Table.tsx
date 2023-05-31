@@ -182,11 +182,15 @@ const AppTable = <T,>({
                       <StyledIdtd>{row.subProductId}</StyledIdtd>
                     </>
                   )}
-                  <Styledtd>
+                  <Styledtd onClick={() => navigateToInnerPageHandler(row.productId)}>
                     <StyledImage src={row.image} alt="phoneImage" />
                   </Styledtd>
-                  <Styledtd>{row.itemNumber}</Styledtd>
-                  <Styledtd>{row.name}</Styledtd>
+                  <Styledtd onClick={() => navigateToInnerPageHandler(row.productId)}>
+                    {row.itemNumber}
+                  </Styledtd>
+                  <Styledtd onClick={() => navigateToInnerPageHandler(row.productId)}>
+                    {row.name}
+                  </Styledtd>
                   <Styledtd>{row.createdAt}</Styledtd>
                   <Styledtd>{row.quantity}</Styledtd>
                   <Styledtd>
@@ -197,10 +201,7 @@ const AppTable = <T,>({
                     <TotalPrice>{row.totalPrice}c</TotalPrice>
                   </Styledtd>
                   <Styledtd>
-                    <IconButtons
-                      icon={<EditIcon />}
-                      onClick={() => navigateToInnerPageHandler(row.productId)}
-                    />
+                    <IconButtons icon={<EditIcon />} onClick={() => {}} />
                     <IconButtons
                       icon={<DeleteIcon />}
                       onClick={() => deleteHandler(row.subProductId)}

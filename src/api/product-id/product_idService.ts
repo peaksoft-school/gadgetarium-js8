@@ -2,12 +2,13 @@ import { mainApi } from '../../config/instances'
 
 export type ReviewType = {
   reviewsId: number
-  image: string
+  images: string[]
   fullName: string
   createdAt: string
   grade: number
   commentary: string
   answer: string
+  userAvatar: string
 }
 
 export type ProductResponse = {
@@ -97,7 +98,9 @@ export const updateProductReviewAnswerByIdRequest = ({
 }
 
 export const getProductDetailsByIdRequest = (productId: number) => {
-  return mainApi.get<ProductReviewsRatingResponseType>(
-    `/api/admin/products/${productId}/product_details`
-  )
+  return mainApi.get<ProductDetailsResponse[]>(`/api/admin/products/${productId}/product_details`)
+}
+
+export const getProductDocumentPDFByIdRequest = (productId: number) => {
+  return mainApi.get<string>(`/api/user/products/pdf/generate/${productId}`)
 }

@@ -28,6 +28,19 @@ const StyledTabs = styled(Tabs)(() => ({
   }
 }))
 
+const StyledTabsBlock = styled('div')(() => ({
+  padding: '2.5rem 0 1rem'
+}))
+
+const StyledMainBlock = styled('main')(() => ({
+  width: '90%',
+  margin: '7rem auto'
+}))
+
+const StyledProductLogo = styled('img')(() => ({
+  width: '10rem'
+}))
+
 const StyledTab = styled(Tab)(() => ({
   background: '#E0E2E7',
   color: '#384255',
@@ -80,14 +93,14 @@ function a11yProps(index: number) {
 
 const ProductInnerPage = () => {
   const [value, setValue] = useState(0)
-  const [details, setDetails] = useState([
+  const [details, setDetails] = useState<ProductDetailsResponse[]>([
     {
       id: 0,
       image: '',
       name: '',
       colour: '',
       characteristics: {
-        da: 'ss'
+        ['s']: ''
       },
       quantity: 0,
       price: 0
@@ -120,6 +133,8 @@ const ProductInnerPage = () => {
     video: ''
   })
 
+  const productName = product.name !== null ? product.name : 'Name Not Found!'
+
   const obj = {
     productId: convertedProductId,
     colour: ''
@@ -138,7 +153,7 @@ const ProductInnerPage = () => {
     try {
       const { data } = await getProductDetailsByIdRequest(req)
       console.log(data)
-      // setDetails(data)
+      setDetails(data)
     } catch (error) {
       console.log(error)
     }
@@ -148,15 +163,15 @@ const ProductInnerPage = () => {
   }, [])
 
   return (
-    <main style={{ width: '90%', margin: '7rem auto' }}>
+    <StyledMainBlock>
       <p style={{ fontSize: '14px' }}>
-        <StyledTopLink href="/admin">Товары</StyledTopLink> » {product.name}
+        <StyledTopLink href="/admin/products">Товары</StyledTopLink> » {productName}
       </p>
       <div style={{ borderBottom: '1px solid #CDCDCD' }}>
-        <img style={{ width: '10rem' }} src={product.logo} alt="" />
+        <StyledProductLogo src={product.logo} alt="" />
       </div>
 
-      <div style={{ padding: '2.5rem 0 1rem' }}>
+      <StyledTabsBlock>
         <StyledTabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <StyledTab label="Товар" {...a11yProps(0)} />
           <StyledTab
@@ -167,14 +182,14 @@ const ProductInnerPage = () => {
             {...a11yProps(1)}
           />
         </StyledTabs>
-      </div>
+      </StyledTabsBlock>
       <TabPanel value={value} index={0}>
         <ProductInfo getOneProduct={getOneProduct} product={product} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ProductDetails />
+        <ProductDetails details={details} />
       </TabPanel>
-    </main>
+    </StyledMainBlock>
   )
 }
 

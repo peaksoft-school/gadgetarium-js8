@@ -14,6 +14,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import IconButtons from '../UI/buttons/IconButtons'
 import Modal from '../UI/modals/Modal'
 import CreateMailingList from './UI/mailingList/MailingList'
+import { STORAGE_KEYS } from '../../utils/constants/storage'
 
 const MainContainer = styled('div')(() => ({
   position: 'fixed',
@@ -225,7 +226,7 @@ const AdminHeader = () => {
   }
 
   const logOutHandler = () => {
-    localStorage.removeItem('AUTH')
+    localStorage.removeItem(STORAGE_KEYS.AUTH)
     navigate('/login')
   }
   return (

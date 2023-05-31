@@ -3,19 +3,21 @@ import {
   ProductIdRequestType,
   ProductReviewsResquestType,
   ReviewType,
+  getProductDocumentPDFByIdRequest,
   getProductReviewsByIdRequest
 } from '../../../api/product-id/product_idService'
 import { ReactComponent as DeleteIcon } from '../../../assets/icons/product-inner-page-icons/delete-icon.svg'
 import { ReactComponent as DocumentPDF } from '../../../assets/icons/product-inner-page-icons/document-list-icon.svg'
 import IconButtons from '../../../components/UI/buttons/IconButtons'
 import Button from '../../../components/UI/buttons/Button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PreviewSlider from '../../../components/UI/preview-slider/PreviewSlider'
 import {
   ProductReviewsRatingResponseType,
   getProductReviewsRatingByIdRequest
 } from '../../../api/product-id/product_idService'
 import ReviewItem from '../../../components/admin/product-inner-page/ReviewItem'
+import { useSearchParams } from 'react-router-dom'
 type ProductPropType = {
   product: {
     productId: number
@@ -36,8 +38,8 @@ type ProductPropType = {
     characteristics: {
       [key: string]: string
     }
-    description: string | null
-    video: string | null
+    description: string
+    video: string
   }
   getOneProduct: (req: ProductIdRequestType) => Promise<void>
 }
@@ -105,6 +107,169 @@ const StyledTabs = styled(Tabs)(() => ({
   '& .MuiTabs-indicator': {
     display: 'none'
   }
+}))
+
+const StyledFirstSection = styled('section')(() => ({
+  // background: '#E8E8E8',
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'space-between'
+}))
+
+const StyledSliderArticle = styled('article')(() => ({
+  maxWidth: '38%',
+  minWidth: '38%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
+}))
+
+const StyledProductCardArticle = styled('article')(() => ({
+  width: '55%'
+}))
+
+const StyledMainInfoBlock = styled('div')(() => ({
+  width: '65%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '0,875rem 0',
+  marginBottom: '14px'
+}))
+
+const ProductArtikulInfo = styled('p')(() => ({
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '16px',
+  lineHeight: '19px',
+  color: '#292929'
+}))
+
+const ProductRatingInfo = styled('p')(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '16px',
+  lineHeight: '19px',
+  color: '#909CB5'
+}))
+
+const StyledDetailsAndPriceBlock = styled('div')(() => ({
+  display: 'flex',
+  borderTop: '1px solid #CDCDCD'
+}))
+
+const ProductInfoInDetailsBlock = styled('div')(() => ({
+  width: '60%',
+  paddingTop: '2rem'
+}))
+
+const BrieflyAboutProduct = styled('p')(() => ({
+  fontWeight: 700,
+  padding: '0.5rem 0 0.3rem'
+}))
+
+const StyledCharacteristicsBlock = styled('div')(() => ({
+  display: 'flex',
+  justifyContent: 'space-between'
+}))
+
+const StyledCharacteristicKeys = styled('p')(() => ({
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontSize: '16px',
+  lineHeight: '150%',
+  color: '#969696',
+  fontWeight: 400,
+  borderBottom: '1px dashed #969696'
+}))
+
+const StyledPriceInfoBlock = styled('div')(() => ({
+  width: '40%',
+  paddingTop: '1rem'
+}))
+
+const StyledPriceInfoSubBlock = styled('div')(() => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  justifyContent: 'space-around',
+  borderBottom: '2px solid rgba(133, 143, 164, 0.2)',
+  padding: '0.75rem 0'
+}))
+
+const StyledDiscountSpan = styled('span')(() => ({
+  textAlign: 'center',
+  width: '50px',
+  background: '#F53B49',
+  borderRadius: '50%',
+  padding: '1rem 0.5rem',
+  color: '#fff',
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontWeight: 900,
+  fontSize: '14px',
+  lineHeight: '15px'
+}))
+
+const StyledSecondSection = styled('section')(() => ({
+  marginTop: '7.75rem'
+}))
+
+const StyledTabsContainer = styled('div')(() => ({
+  padding: '2.5rem 0 0rem',
+  display: 'flex',
+  borderBottom: '1px solid #CDCDCD'
+}))
+
+const StyledPdfButtonContainer = styled('section')(() => ({
+  width: '20%'
+}))
+
+const StyledCharacteristicsTabBlock = styled('div')(() => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  width: '85%',
+  margin: '0 auto'
+}))
+
+const StyledTabCharacteristicKeys = styled('p')(() => ({
+  borderBottom: '1px solid #CDCDCD',
+  marginBottom: '1rem',
+  fontWeight: 'bold'
+}))
+
+const StyledTabCharacteristicValues = styled('p')(() => ({
+  borderBottom: '1px solid #CDCDCD',
+  textAlign: 'end',
+  marginBottom: '1rem'
+}))
+
+const StyledReviewsTabBlock = styled('div')(() => ({
+  display: 'flex',
+  justifyContent: 'space-between'
+}))
+
+const StyledShowMoreReviewsButtonBlock = styled('div')(() => ({
+  display: 'flex',
+  justifyContent: 'center',
+  margin: '4rem 0'
+}))
+
+const StyledReviewsRatingBlock = styled('div')(() => ({
+  display: 'flex',
+  justifyContent: 'space-around',
+  background: '#F4F4F4',
+  padding: '2rem 2rem'
+}))
+
+const StyledRatingBlock = styled('div')(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '5px'
 }))
 
 const StyledButton = styled('button')(() => ({
@@ -177,6 +342,9 @@ function a11yProps(index: number) {
 
 const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
   const [value, setValue] = useState(0)
+  const [pdfLink, setPdfLink] = useState('')
+  const [reviewRequestPage, setReviewRequestPage] = useState(3)
+
   const [reviewsRating, setReviewsRating] = useState<ProductReviewsRatingResponseType>({
     five: 0,
     four: 0,
@@ -204,7 +372,8 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
     characteristics,
     description,
     images,
-    productId
+    productId,
+    video
   } = product
 
   let productWithDiscount = price
@@ -212,11 +381,15 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
     productWithDiscount = (price / 100) * (100 - percentOfDiscount)
   }
 
-  function addThousandSeparators(num: number) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+  function addThousandSeparators(num: number | string) {
+    return num !== null ? num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : 0
   }
-  const formattedPrice = addThousandSeparators(price)
-  const formattedPriceWithDiscount = addThousandSeparators(productWithDiscount)
+
+  const fixedPrice = price.toFixed(2)
+  const formattedPrice = addThousandSeparators(fixedPrice)
+
+  const fixedPriceWithDiscount = productWithDiscount.toFixed(2)
+  const formattedPriceWithDiscount = addThousandSeparators(fixedPriceWithDiscount)
 
   const characteristicsKeys = Object.keys(characteristics)
   const characteristicsValues = Object.values(characteristics)
@@ -231,7 +404,7 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
   }
 
   // eslint-disable-next-line prefer-const
-  let reviewRequestPage = 3
+  // let reviewRequestPage = 3
 
   const reviewsRequestObject = {
     productId,
@@ -241,54 +414,61 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
   const getProductReviews = async (reviewRequestObject: ProductReviewsResquestType) => {
     try {
       const { data } = await getProductReviewsByIdRequest(reviewRequestObject)
+      setReviewRequestPage(reviewRequestPage + 3)
       setReviews(data)
     } catch (error) {
       console.log(error)
     }
   }
 
-  return (
-    <div>
-      <section
-        style={{
-          display: 'flex',
-          width: '100%',
-          justifyContent: 'space-between'
-        }}
-      >
-        <article
-          style={{
-            maxWidth: '38%',
-            minWidth: '38%',
-            border: '1px solid',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          {images.length > 0 ? <PreviewSlider images={images} /> : <h1>ФОТО НЕ НАЙДЕНЫ!</h1>}
-        </article>
-        <article style={{ width: '55%', border: '1px solid' }}>
-          <StyledProductNameHeading>{name}</StyledProductNameHeading>
-          <div
-            style={{
-              width: '62%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '0,875rem 0',
-              marginBottom: '14px'
-            }}
-          >
-            <StyledAvailableAmount>В наличии ({quantity})</StyledAvailableAmount>
-            <p>Артикул: {itemNumber}</p>
-            <p style={{ display: 'flex', alignItems: 'center' }}>
-              <Rating readOnly value={4.5} /> ({countOfReviews})
-            </p>
-          </div>
+  const getProductDocumentPDF = async (id: number) => {
+    try {
+      const { data } = await getProductDocumentPDFByIdRequest(id)
 
-          <div style={{ display: 'flex' }}>
-            <div style={{ width: '60%', border: '1px solid', paddingTop: '2rem' }}>
+      console.log(data)
+
+      setPdfLink(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    console.log('pdf')
+  }, [pdfLink])
+
+  const handleDownload = () => {
+    const link = document.createElement('a')
+    link.href = pdfLink
+    link.setAttribute('download', `${name}.pdf`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    getProductDocumentPDF(product.subProductId)
+  }
+
+  return (
+    <>
+      <StyledFirstSection>
+        <StyledSliderArticle>
+          {images.length > 0 ? (
+            <PreviewSlider images={images} />
+          ) : (
+            <h1 style={{ color: 'red' }}>ФОТО НЕ НАЙДЕНЫ!</h1>
+          )}
+        </StyledSliderArticle>
+        <StyledProductCardArticle>
+          <StyledProductNameHeading>{name}</StyledProductNameHeading>
+          <StyledMainInfoBlock>
+            <StyledAvailableAmount>В наличии ({quantity})</StyledAvailableAmount>
+            <ProductArtikulInfo>Артикул: {itemNumber}</ProductArtikulInfo>
+            <ProductRatingInfo>
+              <Rating readOnly value={4.5} /> ({countOfReviews})
+            </ProductRatingInfo>
+          </StyledMainInfoBlock>
+
+          <StyledDetailsAndPriceBlock>
+            <ProductInfoInDetailsBlock>
               <div>
                 <p style={{ fontWeight: 700 }}>Цвет товара: </p>
                 {colours?.map((item) => {
@@ -305,29 +485,14 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
                       }}
                     />
                   )
-                  //  <StyledColorSpan color={item} />
                 })}
               </div>
 
-              <p style={{ fontWeight: 700, paddingTop: '0.5rem' }}>Коротко о товаре:</p>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <BrieflyAboutProduct>Коротко о товаре:</BrieflyAboutProduct>
+              <StyledCharacteristicsBlock>
                 <div style={{ width: '60%' }}>
                   {characteristicsKeys?.map((elem) => {
-                    return (
-                      <p
-                        style={{
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontSize: '16px',
-                          lineHeight: '150%',
-                          color: '#969696',
-                          fontWeight: 400,
-                          borderBottom: '1px dashed #969696'
-                        }}
-                      >
-                        {elem}
-                      </p>
-                    )
+                    return <StyledCharacteristicKeys>{elem}</StyledCharacteristicKeys>
                   })}
                 </div>
                 <div style={{ width: '40%' }}>
@@ -335,61 +500,30 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
                     return <p>{elem}</p>
                   })}
                 </div>
-              </div>
-            </div>
-            <div style={{ width: '40%', border: '1px solid', paddingTop: '1rem' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  alignItems: 'center',
-                  justifyContent: 'space-around',
-                  borderBottom: '2px solid rgba(133, 143, 164, 0.2)',
-                  padding: '0.75rem 0'
-                }}
-              >
+              </StyledCharacteristicsBlock>
+            </ProductInfoInDetailsBlock>
+            <StyledPriceInfoBlock>
+              <StyledPriceInfoSubBlock>
                 {percentOfDiscount > 0 ? (
-                  <span
-                    style={{
-                      textAlign: 'center',
-                      width: '50px',
-                      background: '#F53B49',
-                      borderRadius: '50%',
-                      padding: '1rem 0.5rem',
-                      color: '#fff',
-                      fontFamily: 'Inter',
-                      fontStyle: 'normal',
-                      fontWeight: 900,
-                      fontSize: '14px',
-                      lineHeight: '15px'
-                    }}
-                  >
-                    {percentOfDiscount}%
-                  </span>
+                  <StyledDiscountSpan>{percentOfDiscount}%</StyledDiscountSpan>
                 ) : null}
                 <StyledPriceHeadingWithDiscount>
                   {formattedPriceWithDiscount}
                   <span style={{ borderBottom: '3px solid' }}>c</span>
                 </StyledPriceHeadingWithDiscount>
                 {percentOfDiscount > 0 ? <StyledPrice>{formattedPrice}с</StyledPrice> : null}
-              </div>
+              </StyledPriceInfoSubBlock>
               <div style={{ padding: '1.25rem 0' }}>
                 <IconButtons icon={<DeleteIcon />} onClick={() => {}} />
                 <Button onClick={() => {}}>РЕДАКТИРОВАТЬ</Button>
               </div>
-            </div>
-          </div>
-        </article>
-      </section>
+            </StyledPriceInfoBlock>
+          </StyledDetailsAndPriceBlock>
+        </StyledProductCardArticle>
+      </StyledFirstSection>
 
-      <section style={{ marginTop: '7.75rem' }}>
-        <div
-          style={{
-            padding: '2.5rem 0 0rem',
-            display: 'flex',
-            borderBottom: '1px solid #CDCDCD'
-          }}
-        >
+      <StyledSecondSection style={{ marginTop: '7.75rem' }}>
+        <StyledTabsContainer>
           <StyledTabs value={value} onChange={handleChange}>
             <StyledTab label="Описание" {...a11yProps(0)} />
             <StyledTab label="Характеристики" {...a11yProps(1)} />
@@ -402,59 +536,33 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
               {...a11yProps(2)}
             />
           </StyledTabs>
-          <div style={{ width: '20%' }}>
-            <StyledButton>
+          <StyledPdfButtonContainer>
+            <StyledButton onClick={handleDownload}>
               <DocumentPDF /> Скачать документ .pdf
             </StyledButton>
-          </div>
-        </div>
+          </StyledPdfButtonContainer>
+        </StyledTabsContainer>
         <TabPanel value={value} index={0}>
+          <iframe src={video} />
           <p>{description}</p>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              width: '85%',
-              margin: '0 auto'
-            }}
-          >
+          <StyledCharacteristicsTabBlock>
             <div style={{ width: '50%' }}>
               {characteristicsKeys.map((elem) => {
-                return (
-                  <p
-                    style={{
-                      borderBottom: '1px solid #CDCDCD',
-                      marginBottom: '1rem',
-                      fontWeight: 'bold'
-                    }}
-                  >
-                    {elem}
-                  </p>
-                )
+                return <StyledTabCharacteristicKeys>{elem}</StyledTabCharacteristicKeys>
               })}
             </div>
             <div style={{ width: '50%' }}>
               {characteristicsValues.map((elem) => {
-                return (
-                  <p
-                    style={{
-                      borderBottom: '1px solid #CDCDCD',
-                      textAlign: 'end',
-                      marginBottom: '1rem'
-                    }}
-                  >
-                    {elem}
-                  </p>
-                )
+                return <StyledTabCharacteristicValues>{elem}</StyledTabCharacteristicValues>
               })}
             </div>
-          </div>
+          </StyledCharacteristicsTabBlock>
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div style={{ width: '55%', border: '1px solid' }}>
+          <StyledReviewsTabBlock>
+            <div style={{ width: '55%' }}>
               <h2>Отзывы</h2>
               {reviews.length > 0 ? (
                 reviews.map((item, index) => {
@@ -468,32 +576,25 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
                   )
                 })
               ) : (
-                <h1>Комментарии не найдены</h1>
+                <h1 style={{ color: 'red' }}>Комментарии не найдены</h1>
               )}
 
-              <div style={{ display: 'flex', justifyContent: 'center', margin: '4rem 0' }}>
+              <StyledShowMoreReviewsButtonBlock>
                 <Button
                   onClick={() => {
                     const reviewsPaginationObject = {
                       productId,
-                      page: (reviewRequestPage += 3)
+                      page: reviewRequestPage
                     }
                     getProductReviews(reviewsPaginationObject)
                   }}
                 >
                   Показать еще
                 </Button>
-              </div>
+              </StyledShowMoreReviewsButtonBlock>
             </div>
-            <div style={{ width: '38%', border: '1px solid' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  background: '#F4F4F4',
-                  padding: '2rem 2rem'
-                }}
-              >
+            <div style={{ width: '38%' }}>
+              <StyledReviewsRatingBlock>
                 <div>
                   <h2>
                     {reviewsRating.rating} <Rating readOnly value={reviewsRating.rating} />
@@ -501,28 +602,28 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
                   <p>{reviewsRating.totalReviews} отзывов</p>
                 </div>
                 <div>
-                  <p style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <StyledRatingBlock>
                     <Rating readOnly value={5} /> {reviewsRating.five} отзывов
-                  </p>
-                  <p style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  </StyledRatingBlock>
+                  <StyledRatingBlock>
                     <Rating readOnly value={4} /> {reviewsRating.four} отзывов
-                  </p>
-                  <p style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  </StyledRatingBlock>
+                  <StyledRatingBlock>
                     <Rating readOnly value={3} /> {reviewsRating.three} отзывов
-                  </p>
-                  <p style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  </StyledRatingBlock>
+                  <StyledRatingBlock>
                     <Rating readOnly value={2} /> {reviewsRating.two} отзывов{' '}
-                  </p>
-                  <p style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  </StyledRatingBlock>
+                  <StyledRatingBlock>
                     <Rating readOnly value={1} /> {reviewsRating.one} отзывов
-                  </p>
+                  </StyledRatingBlock>
                 </div>
-              </div>
+              </StyledReviewsRatingBlock>
             </div>
-          </div>
+          </StyledReviewsTabBlock>
         </TabPanel>
-      </section>
-    </div>
+      </StyledSecondSection>
+    </>
   )
 }
 

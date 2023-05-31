@@ -9,8 +9,6 @@ import {
   postProductReviewByIdRequest,
   updateProductReviewAnswerByIdRequest
 } from '../../../../api/product-id/product_idService'
-// import { Button, styled } from '@mui/material'
-
 const StyledOutlinedButton = styled(Button)(({ theme }) => ({
   borderColor: theme.customPalette.primary.main,
   color: theme.customPalette.primary.main,
@@ -29,6 +27,33 @@ const StyledContainedButton = styled(Button)(({ theme }) => ({
     border: `1 px solid ${theme.customPalette.primary.main}`,
     background: theme.customPalette.primary.mainHover
   }
+}))
+
+const StyledModalHeading = styled('h4')(({}) => ({
+  marginBottom: '2.25rem',
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: ' 24px',
+  lineHeight: '32px',
+  color: '#292929'
+}))
+
+const StyledButtonsBlock = styled('div')(() => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  marginTop: '2rem'
+}))
+
+const StyledInput = styled(Input)(() => ({
+  minHeight: '8rem',
+  width: '100%'
+}))
+
+const StyledModalBox = styled('div')(() => ({
+  width: '34rem',
+  padding: '2.5rem 2rem',
+  textAlign: 'center'
 }))
 
 type CommentModalPropsType = {
@@ -82,44 +107,14 @@ const CommentModal = ({
   }
   return (
     <Modal onClose={onClose} open={open}>
-      <div style={{ width: '34rem', padding: '2.5rem 2rem', textAlign: 'center' }}>
+      <StyledModalBox>
         {edit ? (
-          <h4
-            style={{
-              marginBottom: '2.25rem',
-              fontFamily: 'Inter',
-              fontStyle: 'normal',
-              fontWeight: 500,
-              fontSize: ' 24px',
-              lineHeight: '32px',
-              color: '#292929'
-            }}
-          >
-            Редактировать комментарий
-          </h4>
+          <StyledModalHeading>Редактировать комментарий</StyledModalHeading>
         ) : (
-          <h4
-            style={{
-              marginBottom: '2.25rem',
-              fontFamily: 'Inter',
-              fontStyle: 'normal',
-              fontWeight: 500,
-              fontSize: ' 24px',
-              lineHeight: '32px',
-              color: '#292929'
-            }}
-          >
-            Ответ на комментарий
-          </h4>
+          <StyledModalHeading>Ответ на комментарий</StyledModalHeading>
         )}
-        <Input
-          style={{ minHeight: '8rem', width: '100%' }}
-          rows={5}
-          value={inputValue}
-          onChange={inputValueChangeHandler}
-          multiline
-        />
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2rem' }}>
+        <StyledInput rows={5} value={inputValue} onChange={inputValueChangeHandler} multiline />
+        <StyledButtonsBlock>
           <StyledOutlinedButton variant="outlined" onClick={onClose}>
             ОТМЕНИТЬ
           </StyledOutlinedButton>
@@ -150,8 +145,8 @@ const CommentModal = ({
               СОХРАНИТЬ
             </StyledContainedButton>
           )}
-        </div>
-      </div>
+        </StyledButtonsBlock>
+      </StyledModalBox>
     </Modal>
   )
 }
