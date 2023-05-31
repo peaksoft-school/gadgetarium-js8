@@ -19,11 +19,11 @@ type Props = {
     dateOfFinish: string
   }) => void
 }
-const StyledForm = styled('form')`
+export const StyledForm = styled('form')`
   align-items: center;
   padding-bottom: 10px;
 `
-const StyledInput = styled(Input)(() => ({
+export const StyledInput = styled(Input)(() => ({
   width: '30rem',
   '&.input': {
     marginTop: '6px'
@@ -36,7 +36,7 @@ const StyledHeader = styled('div')`
   text-align: center;
   margin-bottom: 30px;
 `
-const StyledTitle = styled('h1')`
+export const StyledTitle = styled('h1')`
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
@@ -57,7 +57,7 @@ const StyledDateInput = styled(Input)(() => ({
     marginTop: '6px'
   }
 }))
-const StyledFormLable = styled(FormLabel)`
+export const StyledFormLable = styled(FormLabel)`
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
@@ -68,16 +68,16 @@ const StyledFormLable = styled(FormLabel)`
   padding: 0;
   color: #384255;
 `
-const StyledInputContainer = styled('div')`
+export const StyledInputContainer = styled('div')`
   margin-bottom: 15px;
 `
-const StyledButtonContainer = styled('div')`
+export const StyledButtonContainer = styled('div')`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-top: 10px;
 `
-const StyledButton = styled(Button)(() => ({
+export const StyledButton = styled(Button)(() => ({
   background: '#fff',
   border: '1px solid #CB11AB',
   borderRadius: '4px',
@@ -148,7 +148,6 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
   }
   return (
     <Modal onClose={modalHandler} open={modal}>
-      <link rel="stylesheet" href="" />
       <StyledForm onSubmit={addNewData}>
         <StyledHeader>
           <StyledTitle>Создать рассылку</StyledTitle>
