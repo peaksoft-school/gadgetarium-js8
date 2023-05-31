@@ -2,6 +2,7 @@ import AdminLayout from '../../layout/admin/AdminLayout'
 import { Routes, Route, Outlet } from 'react-router-dom'
 import { PATHS } from '../../utils/constants/router/routerConsts'
 import ProductsPage from '../../containers/admin/products/ProductsPage'
+import ThirdPart from '../../components/admin/add-products/third-part/ThirdPart'
 
 const AdminRoutes = () => {
   return (
@@ -12,7 +13,7 @@ const AdminRoutes = () => {
 
           <Route path={PATHS.ADMIN.products} element={<Outlet />}>
             <Route index element={<ProductsPage />} />
-            <Route path={PATHS.ADMIN.addProducts} element={<p>AddProductsPage</p>} />
+            <Route path={PATHS.ADMIN.addProducts} element={<ThirdPart />} />
             <Route path={PATHS.ADMIN.productId} element={<p>ProductInnerPage</p>} />
             <Route path={PATHS.ADMIN.not_found} element={<p>Not Found</p>} />
           </Route>

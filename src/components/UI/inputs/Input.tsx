@@ -2,7 +2,7 @@ import { InputBase, styled } from '@mui/material'
 import { ChangeEvent, forwardRef } from 'react'
 import { InputBaseProps } from '@mui/material'
 type InputProps = InputBaseProps & {
-  value?: string
+  value?: string | number | null
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   error?: boolean
   placeholder?: string
