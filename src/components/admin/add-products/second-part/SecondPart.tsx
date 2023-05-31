@@ -1,15 +1,11 @@
-import React, { useEffect, useState, ChangeEvent } from 'react'
+import React, { useState, ChangeEvent } from 'react'
 import { Button, Input as MuiInput, styled } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../../../redux/store'
-import { getAllProducts } from '../../../../redux/store/products/products.thunk'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../../redux/store'
 import { Column } from '../../../../utils/constants/tableColumns'
 import AddProductsTable from './AddProductsTable'
 import Input from '../../../UI/inputs/Input'
-
-const MainContainer = styled('div')(() => ({
-  margin: '7rem 100px'
-}))
+import { ProductType } from '../../UI/addProduct/AddTabComponent'
 
 const StyledButton = styled(Button)(() => ({
   padding: '12px 26px',
@@ -86,34 +82,10 @@ const StyledSecondButton = styled(Button)(() => ({
   }
 }))
 
-interface ProductsTypes {
-  createdAt: string
-  image: string
-  itemNumber: number
-  name: string
-  percentOfDiscount: number
-  price: number
-  quantity: number
-  subProductId: number
-  totalPrice: number
-}
-
 const SecondPart = () => {
   const [price, setPrice] = useState(0)
-  const [queryParams, setQueryParams] = useState({
-    status: 'Все товары',
-    page: 1,
-    keyWord: null,
-    pageSize: 7,
-    sortBy: null,
-    from: null,
-    before: null
-  })
-  const products = useSelector((state: RootState) => state.products.items)
-  const dispatch = useDispatch<AppDispatch>()
-  useEffect(() => {
-    dispatch(getAllProducts(queryParams))
-  }, [queryParams])
+  const products = useSelector((state: RootState) => state.addNewProduct)
+  console.log(products)
 
   const priceChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setPrice(+e.target.value)
@@ -121,7 +93,7 @@ const SecondPart = () => {
 
   const setPriceToTableHandler = () => {}
 
-  const columns: Column<ProductsTypes>[] = [
+  const columns: Column<ProductType>[] = [
     {
       header: 'Бренд',
       key: 'brand',
@@ -150,7 +122,7 @@ const SecondPart = () => {
     {
       header: 'Дата выпуска',
       key: 'release',
-      render: (product: ProductsTypes) => <p style={{ paddingLeft: '1rem' }}>12.12.2020</p>
+      render: (product: ProductType) => <p style={{ paddingLeft: '1rem' }}>12.12.2020</p>
     },
     {
       header: 'Кол-во товара',
@@ -189,7 +161,7 @@ const SecondPart = () => {
     }
   ]
   return (
-    <MainContainer>
+    <main>
       <div>
         <Title>Общая цена</Title>
         <PriceContainer>
@@ -204,13 +176,13 @@ const SecondPart = () => {
       </div>
       <TableContainer>
         <AddProductsTable
-          rows={products.elements}
+          rows={products}
           columns={columns}
-          getUniqueId={(val: { subProductId: any }) => val.subProductId}
+          getUniqueId={(val: { id: any }) => val.id}
         />
         <StyledSecondButton>Далее</StyledSecondButton>
       </TableContainer>
-    </MainContainer>
+    </main>
   )
 }
 

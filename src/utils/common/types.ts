@@ -30,3 +30,7 @@ export type Column<T> = {
   render?: (product: T) => JSX.Element
   checked?: boolean
 }
+export interface BannerListType {
+  bannerList: ImageUrlsType
+}
+export type ImageUrlsType = string[]

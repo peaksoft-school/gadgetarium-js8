@@ -1,16 +1,13 @@
-import React from 'react'
 import Modal from '../../../UI/modals/Modal'
 import Input from '../../../UI/inputs/Input'
 import Button from '../../../UI/buttons/Button'
 import { FormLabel, styled } from '@mui/material'
 import { useState } from 'react'
 import ImagePicker from './ImagePicker'
-
 import { ChangeEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../../../redux/store'
 import { postMailingList } from '../../../../redux/store/mailingList/mailingList.thunk'
-
 type Props = {
   modalHandler: () => void
   modal: boolean
@@ -19,15 +16,14 @@ type Props = {
     description: string
     image: string | null
     dateOfStart: string
-
     dateOfFinish: string
   }) => void
 }
-const StyledForm = styled('form')`
+export const StyledForm = styled('form')`
   align-items: center;
   padding-bottom: 10px;
 `
-const StyledInput = styled(Input)(() => ({
+export const StyledInput = styled(Input)(() => ({
   width: '30rem',
   '&.input': {
     marginTop: '6px'
@@ -40,7 +36,7 @@ const StyledHeader = styled('div')`
   text-align: center;
   margin-bottom: 30px;
 `
-const StyledTitle = styled('h1')`
+export const StyledTitle = styled('h1')`
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
@@ -49,7 +45,6 @@ const StyledTitle = styled('h1')`
   margin-top: 20px;
   margin-bottom: 25px;
   text-align: center;
-
   color: #292929;
 `
 const InputConataienr = styled('div')`
@@ -62,29 +57,27 @@ const StyledDateInput = styled(Input)(() => ({
     marginTop: '6px'
   }
 }))
-const StyledFormLable = styled(FormLabel)`
+export const StyledFormLable = styled(FormLabel)`
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-
   display: flex;
   align-items: center;
   margin: 0;
   padding: 0;
   color: #384255;
 `
-const StyledInputContainer = styled('div')`
+export const StyledInputContainer = styled('div')`
   margin-bottom: 15px;
 `
-const StyledButtonContainer = styled('div')`
+export const StyledButtonContainer = styled('div')`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-top: 10px;
 `
-
-const StyledButton = styled(Button)(() => ({
+export const StyledButton = styled(Button)(() => ({
   background: '#fff',
   border: '1px solid #CB11AB',
   borderRadius: '4px',
@@ -112,24 +105,19 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
   const [description, setDescription] = useState<string>('')
   const [dateOfStart, setDateOfStart] = useState('')
   const [dateOfFinish, setDateOfEnd] = useState('')
-
   const handleImageSelect = (imageUrl: string) => {
     setImage(imageUrl)
     console.log('Selected image:', imageUrl)
   }
-
   const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
   }
-
   const descriptionChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value)
   }
-
   const dateOfEndChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setDateOfEnd(e.target.value)
   }
-
   const dateOfStartChangeHandler = (e: any) => {
     setDateOfStart(e.target.value)
   }
@@ -158,10 +146,8 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
     setDateOfEnd('')
     setDateOfStart('')
   }
-
   return (
     <Modal onClose={modalHandler} open={modal}>
-      <link rel="stylesheet" href="" />
       <StyledForm onSubmit={addNewData}>
         <StyledHeader>
           <StyledTitle>Создать рассылку</StyledTitle>
@@ -194,7 +180,6 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
               placeholder="Введите описание рассылки"
             />
           </StyledInputContainer>
-
           <InputConataienr>
             <div>
               <StyledFormLable htmlFor="dateStarts " required>
@@ -222,7 +207,6 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
               />
             </div>
           </InputConataienr>
-
           <StyledButtonContainer>
             <StyledButton onClick={modalHandler}>Отмена</StyledButton>
             <StyledButton type="submit">Отправить</StyledButton>
@@ -232,5 +216,4 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
     </Modal>
   )
 }
-
 export default CreateMailingList

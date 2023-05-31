@@ -2,11 +2,6 @@ import React, { useState } from 'react'
 import { Button, IconButton, InputAdornment, TextField, styled } from '@mui/material'
 import { ReactComponent as ImportIcon } from '../../../../assets/icons/admin-add-products/importIcon.svg'
 import TextEditor from './TextEditor'
-import SecondPart from '../second-part/SecondPart'
-
-const MainContainer = styled('div')(() => ({
-  margin: '7rem 100px'
-}))
 
 const StyledLabel = styled('p')`
   font-family: 'Inter';
@@ -124,7 +119,7 @@ const ThirdPart = () => {
   }
   return (
     <>
-      <MainContainer>
+      <main>
         <ImportsContainer>
           <div>
             <StyledLabel>Загрузите видеообзор</StyledLabel>
@@ -174,8 +169,7 @@ const ThirdPart = () => {
           <StyledButton>Отменить</StyledButton>
           <StyledButton2>Добавить</StyledButton2>
         </ButtonsContainer>
-      </MainContainer>
-      <SecondPart />
+      </main>
     </>
   )
 }
