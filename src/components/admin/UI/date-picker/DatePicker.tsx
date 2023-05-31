@@ -14,7 +14,6 @@ const Container = styled('div')(() => ({
   height: '2.1875rem',
   marginTop: '1.5rem'
 }))
-
 const StyledDatePicker = styled(MuiDatePicker)(() => ({
   borderRadius: '6px',
   fontFamily: 'Inter, sans-serif',
@@ -33,7 +32,6 @@ const StyledDatePicker = styled(MuiDatePicker)(() => ({
     borderColor: '#909CB5'
   }
 }))
-
 interface Props {
   value: Date | null
   placeholder: string
@@ -41,7 +39,6 @@ interface Props {
     | ((value: unknown, context: PickerChangeHandlerContext<DateValidationError>) => void)
     | undefined
 }
-
 const ProductsDatePicker = forwardRef(
   ({ value, onChange, placeholder }: Props, ref?: React.Ref<HTMLDivElement> | undefined) => {
     return (
@@ -57,6 +54,9 @@ const ProductsDatePicker = forwardRef(
               }
             }}
             onChange={onChange}
+            // popperProps={{ strategy: 'fixed' }}
+            // onChange={onChange}
+
             slotProps={{ textField: { variant: 'outlined', placeholder } }}
           />
         </Container>
@@ -64,5 +64,4 @@ const ProductsDatePicker = forwardRef(
     )
   }
 )
-
 export default ProductsDatePicker

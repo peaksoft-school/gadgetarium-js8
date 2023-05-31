@@ -67,9 +67,8 @@ interface ProductsTabProps {
   defaultValue: string
 }
 
-const ProductsTab: React.FC<ProductsTabProps> = ({ tabs, defaultValue }) => {
+const FeedbackTab: React.FC<ProductsTabProps> = ({ tabs, defaultValue }) => {
   const [value, setValue] = React.useState(defaultValue)
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
@@ -117,4 +116,4 @@ const ProductsTab: React.FC<ProductsTabProps> = ({ tabs, defaultValue }) => {
   )
 }
 
-export default ProductsTab
+export default FeedbackTab

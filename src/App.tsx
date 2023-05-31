@@ -1,9 +1,9 @@
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import AppRoutes from './routes/AppRoutes'
 import { ThemeProvider } from '@mui/material'
 import { appTheme } from './utils/constants/theme/theme'
 import { store } from './redux/store'
+import AppRoutes from './routes/AppRoutes'
 
 const AppContent = () => {
   return (

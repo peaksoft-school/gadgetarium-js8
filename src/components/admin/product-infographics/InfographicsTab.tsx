@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { Box, styled, Tabs, Tab } from '@mui/material'
 import { InfographicsTypes } from '../../../api/infographics/infographicsService'
 import TabPanel from './InfograficsTabPanel'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../../../redux/store'
+import { getInfographics } from '../../../redux/store/infographics/infographicsThunk'
 
 const StyledBox = styled(Box)(() => ({
   width: '100%',
@@ -54,7 +57,8 @@ const Price1 = styled('p')(() => ({
   letterSpacing: '0.0625rem',
   span: {
     textDecorationLine: 'underline'
-  }
+  },
+  marginRight: '2rem'
 }))
 
 const Price2 = styled('p')(() => ({
@@ -114,12 +118,24 @@ type InfographicsPropTypes = {
 }
 
 const InfographicsTab = ({ infographicsData }: InfographicsPropTypes) => {
+  const dispatch = useDispatch<AppDispatch>()
   const [value, setValue] = useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
-
+  const forDayHandleClick = () => {
+    const date = 'day'
+    dispatch(getInfographics(date))
+  }
+  const forMonthHandleClick = () => {
+    const date = 'month'
+    dispatch(getInfographics(date))
+  }
+  const forYearHandleClick = () => {
+    const date = 'year'
+    dispatch(getInfographics(date))
+  }
   return (
     <StyledBox>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '300px' }}>
@@ -133,9 +149,9 @@ const InfographicsTab = ({ infographicsData }: InfographicsPropTypes) => {
           value={value}
           onChange={handleChange}
         >
-          <StyledTab label="За день" {...a11yProps(0)} />
-          <StyledTab label="За месяц" {...a11yProps(1)} />
-          <StyledTab label="За год" {...a11yProps(2)} />
+          <StyledTab label="За день" {...a11yProps(0)} onClick={forDayHandleClick} />
+          <StyledTab label="За месяц" {...a11yProps(1)} onClick={forMonthHandleClick} />
+          <StyledTab label="За год" {...a11yProps(2)} onClick={forYearHandleClick} />
         </Tabs>
       </Box>
       {info.map((el) => (

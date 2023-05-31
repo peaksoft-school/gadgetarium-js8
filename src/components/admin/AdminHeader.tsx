@@ -1,13 +1,5 @@
 import { useState } from 'react'
-import {
-  styled,
-  Button,
-  Divider,
-  Tooltip,
-  ClickAwayListener,
-  TooltipProps,
-  tooltipClasses
-} from '@mui/material'
+import { styled, Button, Divider, Tooltip, TooltipProps, tooltipClasses } from '@mui/material'
 import { ReactComponent as LogoIcon } from '../../assets/icons/header-icons/logo.svg'
 import { ReactComponent as VectorIcon } from '../../assets/icons/admin-header/vector.svg'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
@@ -251,24 +243,22 @@ const AdminHeader = () => {
             <StyledButton onClick={handleOpen}>Создать рассылку</StyledButton>
           </ButtonsContainer>
           <StyledDivider orientation="vertical" />
-          <ClickAwayListener onClickAway={handleTooltipClose}>
-            <StyledTooltip
-              PopperProps={{
-                disablePortal: true
-              }}
-              onClose={handleTooltipClose}
-              open={open}
-              title={<ExitButton onClick={openModalHandler}>Выйти</ExitButton>}
-            >
-              <Profile>
-                <ProfileCircle>G</ProfileCircle>
-                <p onClick={handleTooltipOpen}>Администратор</p>
-                <span>
-                  <IconButtons onClick={handleTooltipOpen} icon={<VectorIcon />} />
-                </span>
-              </Profile>
-            </StyledTooltip>
-          </ClickAwayListener>
+          <StyledTooltip
+            PopperProps={{
+              disablePortal: true
+            }}
+            onClose={handleTooltipClose}
+            open={open}
+            title={<ExitButton onClick={openModalHandler}>Выйти</ExitButton>}
+          >
+            <Profile>
+              <ProfileCircle>G</ProfileCircle>
+              <p onClick={handleTooltipOpen}>Администратор</p>
+              <span>
+                <IconButtons onClick={handleTooltipOpen} icon={<VectorIcon />} />
+              </span>
+            </Profile>
+          </StyledTooltip>
         </ActionContainer>
       </MainContainer>
       <Modal open={openModal} onClose={closeModalHandler}>
