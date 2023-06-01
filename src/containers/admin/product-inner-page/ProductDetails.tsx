@@ -7,6 +7,9 @@ import { styled } from '@mui/material'
 
 type ProductDetailsType = {
   details: ProductDetailsResponse[]
+  deleteSubProductById: (ids: number[]) => Promise<void>
+  getProductDetails: (id: number) => Promise<void>
+  productId: number
 }
 
 const StyledButton = styled('button')(() => ({
@@ -34,7 +37,12 @@ const StyledButton = styled('button')(() => ({
   }
 }))
 
-const ProductDetails = ({ details }: ProductDetailsType) => {
+const ProductDetails = ({
+  details,
+  deleteSubProductById,
+  getProductDetails,
+  productId
+}: ProductDetailsType) => {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const tableCharacteristicHeaders = Object.keys(details[0].characteristics)
 
@@ -81,7 +89,12 @@ const ProductDetails = ({ details }: ProductDetailsType) => {
   return (
     <div>
       {selectedIds.length > 0 ? (
-        <StyledButton onClick={() => {}}>
+        <StyledButton
+          onClick={async () => {
+            deleteSubProductById(selectedIds)
+            await getProductDetails(productId)
+          }}
+        >
           <DeleteIcon /> Удалить
         </StyledButton>
       ) : null}

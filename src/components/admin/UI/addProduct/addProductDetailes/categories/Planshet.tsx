@@ -3,7 +3,7 @@ import { ColorResult } from 'react-color'
 import { StyledInputContainer } from '../../AddTabComponent'
 import { StyledFormLable } from '../../../mailingList/MailingList'
 import { styled, SelectChangeEvent } from '@mui/material'
-import { ReusableSelect as Select } from '../../../../../ReusableSelect'
+import { ReusableSelect as Select } from '../../../../ReusableSelect'
 import {
   MemoryСapacityForPlanshet,
   RAMForPlanshet,
@@ -12,7 +12,7 @@ import {
   ScreenSizeForPlanshet,
   batteryСapacityForPlanshet
 } from '../../../../../../utils/constants/optionsCategorie'
-import ReusableColorPicker from '../../../../../ReusableColorPicker'
+import ReusableColorPicker from '../../../../ReusableColorPicker'
 import ImagePickerAddProduct from '../../ImagePicker'
 import { useBanner } from '../../../../../../hooks/banner/useBanner'
 import { useDispatch, useSelector } from 'react-redux'

@@ -1,14 +1,13 @@
-import { useEffect, useLayoutEffect, useState } from 'react'
 import Modal from '../../../UI/modals/Modal'
-import Input from '../../../UI/inputs/Input'
 import Button from '../../../UI/buttons/Button'
-import { styled } from '@mui/material'
+import { TextField, styled } from '@mui/material'
 import {
   ProductReviewPostType,
   ProductReviewsResquestType,
   postProductReviewByIdRequest,
   updateProductReviewAnswerByIdRequest
 } from '../../../../api/product-id/product_idService'
+import { useState } from 'react'
 const StyledOutlinedButton = styled(Button)(({ theme }) => ({
   borderColor: theme.customPalette.primary.main,
   color: theme.customPalette.primary.main,
@@ -45,9 +44,15 @@ const StyledButtonsBlock = styled('div')(() => ({
   marginTop: '2rem'
 }))
 
-const StyledInput = styled(Input)(() => ({
+const StyledInput = styled(TextField)(({ theme }) => ({
   minHeight: '8rem',
-  width: '100%'
+  width: '100%',
+  '& .MuiOutlinedInput-root': {
+    '&.Mui-focused fieldset': {
+      borderColor: theme.customPalette.primary.main // Change this to the desired border color
+    }
+  }
+  // outline: theme.customPalette.primary.main
 }))
 
 const StyledModalBox = styled('div')(() => ({

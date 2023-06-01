@@ -17,7 +17,6 @@ import {
   getProductReviewsRatingByIdRequest
 } from '../../../api/product-id/product_idService'
 import ReviewItem from '../../../components/admin/product-inner-page/ReviewItem'
-import { useSearchParams } from 'react-router-dom'
 type ProductPropType = {
   product: {
     productId: number
@@ -42,6 +41,7 @@ type ProductPropType = {
     video: string
   }
   getOneProduct: (req: ProductIdRequestType) => Promise<void>
+  deleteSubProductById: (ids: number[]) => Promise<void>
 }
 
 interface TabPanelProps {
@@ -340,7 +340,7 @@ function a11yProps(index: number) {
   }
 }
 
-const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
+const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPropType) => {
   const [value, setValue] = useState(0)
   const [pdfLink, setPdfLink] = useState('')
   const [reviewRequestPage, setReviewRequestPage] = useState(3)
@@ -373,9 +373,11 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
     description,
     images,
     productId,
-    video
+    video,
+    subProductId
   } = product
 
+  console.log(subProductId)
   let productWithDiscount = price
   if (percentOfDiscount > 0) {
     productWithDiscount = (price / 100) * (100 - percentOfDiscount)
@@ -514,7 +516,12 @@ const ProductInfo = ({ product, getOneProduct }: ProductPropType) => {
                 {percentOfDiscount > 0 ? <StyledPrice>{formattedPrice}с</StyledPrice> : null}
               </StyledPriceInfoSubBlock>
               <div style={{ padding: '1.25rem 0' }}>
-                <IconButtons icon={<DeleteIcon />} onClick={() => {}} />
+                <IconButtons
+                  icon={<DeleteIcon />}
+                  onClick={() => {
+                    deleteSubProductById([subProductId])
+                  }}
+                />
                 <Button onClick={() => {}}>РЕДАКТИРОВАТЬ</Button>
               </div>
             </StyledPriceInfoBlock>

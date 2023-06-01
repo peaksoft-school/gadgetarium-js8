@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from 'react'
 import {
   ProductDetailsResponse,
@@ -8,8 +9,10 @@ import {
 } from '../../../api/product-id/product_idService'
 import { Box, Tab, Tabs, Typography, styled } from '@mui/material'
 import ProductInfo from './ProductInfo'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ProductDetails from './ProductDetails'
+import { deleteProductByIdRequest } from '../../../api/product/productService'
+import { PATHS } from '../../../utils/constants/router/routerConsts'
 
 const StyledTopLink = styled('a')(() => ({
   color: '#91969E',
@@ -139,12 +142,16 @@ const ProductInnerPage = () => {
     productId: convertedProductId,
     colour: ''
   }
+
+  const navigate = useNavigate()
+
   const getOneProduct = async (req: ProductIdRequestType) => {
     try {
       const { data } = await getProductByIdRequest(req)
 
       setProduct(data)
     } catch (error) {
+      navigate(PATHS.ADMIN.products)
       console.log(error)
     }
   }
@@ -156,6 +163,16 @@ const ProductInnerPage = () => {
       setDetails(data)
     } catch (error) {
       console.log(error)
+    }
+  }
+  const deleteSubProductById = async (req: number[]) => {
+    try {
+      const { data } = await deleteProductByIdRequest(req)
+      console.log(data)
+
+      getOneProduct(obj)
+    } catch (e) {
+      console.log(e)
     }
   }
   useEffect(() => {
@@ -184,10 +201,19 @@ const ProductInnerPage = () => {
         </StyledTabs>
       </StyledTabsBlock>
       <TabPanel value={value} index={0}>
-        <ProductInfo getOneProduct={getOneProduct} product={product} />
+        <ProductInfo
+          deleteSubProductById={deleteSubProductById}
+          getOneProduct={getOneProduct}
+          product={product}
+        />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ProductDetails details={details} />
+        <ProductDetails
+          getProductDetails={getProductDetails}
+          productId={product.productId}
+          deleteSubProductById={deleteSubProductById}
+          details={details}
+        />
       </TabPanel>
     </StyledMainBlock>
   )

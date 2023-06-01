@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Box, styled } from '@mui/material'
-import Button from '../UI/buttons/Button'
-import Input from '../UI/inputs/Input'
-import Modal from '../UI/modals/Modal'
-import { DiscountType, postDiscountRequest } from '../../api/discount/discountService'
+import Input from '../../UI/inputs/Input'
+import { DiscountType, postDiscountRequest } from '../../../api/discount/discountService'
+import Button from '../../UI/buttons/Button'
+import Modal from '../../UI/modals/Modal'
 
 const StyledModal = styled(Box)(() => ({
   width: '34rem',
@@ -56,10 +56,6 @@ const ButtonStyled = styled(Button)(() => ({
   '&:hover': {
     color: '#ffff'
   }
-}))
-
-const MainModal = styled(Modal)(() => ({
-  background: 'red'
 }))
 
 const LabelStyled = styled('label')(() => ({
@@ -124,7 +120,7 @@ const CreateDiscount = ({ open, onClose, selectedIds }: PropsDiscount) => {
 
   return (
     <>
-      <MainModal open={open} onClose={onClose}>
+      <Modal open={open} onClose={onClose}>
         <StyledModal>
           <TextStyled>Создать скидку</TextStyled>
           <LabelStyled htmlFor="">
@@ -161,7 +157,7 @@ const CreateDiscount = ({ open, onClose, selectedIds }: PropsDiscount) => {
             <ButtonStyled onClick={addHandler}>Добавить</ButtonStyled>
           </CommonButton>
         </StyledModal>
-      </MainModal>
+      </Modal>
     </>
   )
 }

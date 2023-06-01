@@ -2,9 +2,9 @@ import { ColorResult } from 'react-color'
 import React, { useEffect, useState } from 'react'
 import { StyledInputContainer } from '../../AddTabComponent'
 import { StyledFormLable } from '../../../mailingList/MailingList'
-import ReusableColorPicker from '../../../../../ReusableColorPicker'
+import ReusableColorPicker from '../../../../ReusableColorPicker'
 import { styled, SelectChangeEvent } from '@mui/material'
-import { ReusableSelect as Select } from '../../../../../ReusableSelect'
+import { ReusableSelect as Select } from '../../../../ReusableSelect'
 import {
   additionalProp1,
   additionalProp2,

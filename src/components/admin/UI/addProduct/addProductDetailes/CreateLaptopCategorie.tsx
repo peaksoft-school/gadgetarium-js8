@@ -2,7 +2,7 @@ import { ColorResult } from 'react-color'
 import React, { useEffect, useState } from 'react'
 import { StyledFormLable } from '../../mailingList/MailingList'
 import { styled, SelectChangeEvent } from '@mui/material'
-import { ReusableSelect as Select } from '../../../../../components/ReusableSelect'
+import { ReusableSelect as Select } from '../../../ReusableSelect'
 import {
   ScreenResolution,
   Purpose,
@@ -12,7 +12,7 @@ import {
   laptopProcessor
 } from '../../../../../utils/constants/optionsCategorie'
 import { StyledInputContainer } from '../AddTabComponent'
-import ReusableColorPicker from '../../../../ReusableColorPicker'
+import ReusableColorPicker from '../../../ReusableColorPicker'
 import ImagePickerAddProduct from '../ImagePicker'
 import { useBanner } from '../../../../../hooks/banner/useBanner'
 import { useDispatch, useSelector } from 'react-redux'

@@ -147,8 +147,8 @@ const AppTable = <T,>({
     setHoveredId(id)
   }
 
-  const deleteHandler = (id: number) => {
-    dispatch(deleteProductById(id))
+  const deleteHandler = (ids: number[]) => {
+    dispatch(deleteProductById(ids))
       .unwrap()
       .then()
       .catch((e) => {
@@ -198,8 +198,12 @@ const AppTable = <T,>({
                   <Styledtd onClick={() => navigateToInnerPageHandler(row.productId)}>
                     {row.name}
                   </Styledtd>
-                  <Styledtd>{row.createdAt}</Styledtd>
-                  <Styledtd>{row.quantity}</Styledtd>
+                  <Styledtd onClick={() => navigateToInnerPageHandler(row.productId)}>
+                    {row.createdAt}
+                  </Styledtd>
+                  <Styledtd onClick={() => navigateToInnerPageHandler(row.productId)}>
+                    {row.quantity}
+                  </Styledtd>
                   <Styledtd>
                     <CurrentPrice>{row.price}c</CurrentPrice>
                     <Discount>{row.percentOfDiscount}%</Discount>
@@ -211,7 +215,7 @@ const AppTable = <T,>({
                     <IconButtons icon={<EditIcon />} onClick={() => {}} />
                     <IconButtons
                       icon={<DeleteIcon />}
-                      onClick={() => deleteHandler(row.subProductId)}
+                      onClick={() => deleteHandler([row.subProductId])}
                     />
                   </Styledtd>
                 </StyledTr>

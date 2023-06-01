@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import { StyledFormLable } from '../mailingList/MailingList'
-import { ReusableSelect as SelectComponent, StyledSelect } from '../../../ReusableSelect'
+import { ReusableSelect as SelectComponent, StyledSelect } from '../../ReusableSelect'
 import { styled, SelectChangeEvent } from '@mui/material'
 import Input from '../../../UI/inputs/Input'
 import AddbrandModal from './AddbrandModal'
