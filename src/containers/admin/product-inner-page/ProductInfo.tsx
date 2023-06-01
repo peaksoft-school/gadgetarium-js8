@@ -110,7 +110,6 @@ const StyledTabs = styled(Tabs)(() => ({
 }))
 
 const StyledFirstSection = styled('section')(() => ({
-  // background: '#E8E8E8',
   display: 'flex',
   width: '100%',
   justifyContent: 'space-between'
@@ -377,7 +376,7 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
     subProductId
   } = product
 
-  console.log(subProductId)
+  // console.log(subProductId)
   let productWithDiscount = price
   if (percentOfDiscount > 0) {
     productWithDiscount = (price / 100) * (100 - percentOfDiscount)
@@ -427,7 +426,7 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
     try {
       const { data } = await getProductDocumentPDFByIdRequest(id)
 
-      console.log(data)
+      // console.log(data)
 
       setPdfLink(data)
     } catch (error) {
@@ -435,9 +434,9 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
     }
   }
 
-  useEffect(() => {
-    console.log('pdf')
-  }, [pdfLink])
+  // useEffect(() => {
+  //   console.log('pdf')
+  // }, [pdfLink])
 
   const handleDownload = () => {
     const link = document.createElement('a')

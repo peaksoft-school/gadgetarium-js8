@@ -1,4 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useNavigate, useParams } from 'react-router-dom'
+import { Box, Tab, Tabs, Typography, styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 import {
   ProductDetailsResponse,
@@ -7,9 +9,7 @@ import {
   getProductByIdRequest,
   getProductDetailsByIdRequest
 } from '../../../api/product-id/product_idService'
-import { Box, Tab, Tabs, Typography, styled } from '@mui/material'
 import ProductInfo from './ProductInfo'
-import { useNavigate, useParams } from 'react-router-dom'
 import ProductDetails from './ProductDetails'
 import { deleteProductByIdRequest } from '../../../api/product/productService'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
@@ -148,7 +148,6 @@ const ProductInnerPage = () => {
   const getOneProduct = async (req: ProductIdRequestType) => {
     try {
       const { data } = await getProductByIdRequest(req)
-
       setProduct(data)
     } catch (error) {
       navigate(PATHS.ADMIN.products)
@@ -159,7 +158,7 @@ const ProductInnerPage = () => {
   const getProductDetails = async (req: number) => {
     try {
       const { data } = await getProductDetailsByIdRequest(req)
-      console.log(data)
+      // console.log(data)
       setDetails(data)
     } catch (error) {
       console.log(error)
@@ -169,7 +168,6 @@ const ProductInnerPage = () => {
     try {
       const { data } = await deleteProductByIdRequest(req)
       console.log(data)
-
       getOneProduct(obj)
     } catch (e) {
       console.log(e)

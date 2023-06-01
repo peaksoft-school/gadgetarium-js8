@@ -83,7 +83,7 @@ const ProductDetails = ({
 
   const getSelectedIds = (Ids: number[]) => {
     setSelectedIds(Ids)
-    console.log(tableCharacteristicHeaders)
+    // console.log(tableCharacteristicHeaders)
   }
 
   return (
