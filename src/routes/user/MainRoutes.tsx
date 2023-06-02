@@ -8,6 +8,7 @@ import { PATHS } from '../../utils/constants/router/routerConsts'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { UserRoles } from '../../utils/common/types'
+import BasketPage from '../../components/user/basket/BasketPage'
 
 const MainRoutes = () => {
   const role = useSelector((state: RootState) => state.auth.role)
@@ -30,7 +31,7 @@ const MainRoutes = () => {
           <Route index element={<p>BasketPage</p>} />
           <Route path={PATHS.MAIN.ordering} element={<p>OrderingPage</p>} />
         </Route>
-
+        <Route path={PATHS.MAIN.basket} element={<BasketPage />} />
         <Route
           path={PATHS.MAIN.user}
           element={

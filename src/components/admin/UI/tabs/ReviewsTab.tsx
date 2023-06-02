@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { styled, Tab } from '@mui/material'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
-import FeedbackTable from '../../reviews/ReviewsTable'
+import ReviewsTable from '../../reviews/ReviewsTable'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../../redux/store'
 
@@ -50,26 +50,29 @@ const ReviewsTab: React.FC<ProductsTabProps> = ({ defaultValue, handlerChangePag
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
-  const tabs = [
-    {
-      id: 1,
-      label: 'Все отзывы',
-      value: 'Все отзывы',
-      Component: <FeedbackTable page={page} />
-    },
-    {
-      id: 2,
-      label: 'Неотвеченные',
-      value: 'Неотвеченные',
-      Component: <FeedbackTable page={page} />
-    },
-    {
-      id: 3,
-      label: 'Отвеченные',
-      value: 'Отвеченные',
-      Component: <FeedbackTable page={page} />
-    }
-  ]
+  const tabs = useMemo(
+    () => [
+      {
+        id: 1,
+        label: 'Все отзывы',
+        value: 'Все отзывы',
+        Component: <ReviewsTable page={page} />
+      },
+      {
+        id: 2,
+        label: 'Неотвеченные',
+        value: 'Неотвеченные',
+        Component: <ReviewsTable page={page} />
+      },
+      {
+        id: 3,
+        label: 'Отвеченные',
+        value: 'Отвеченные',
+        Component: <ReviewsTable page={page} />
+      }
+    ],
+    [page]
+  )
   return (
     <TabContainer>
       <TabContext value={value}>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import AdminHeader from '../AdminHeader'
 import Infographics from '../product-infographics/Infographics'
 import { getAllReviews } from '../../../redux/store/reviews/reviews.thunk'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,6 +15,7 @@ const ContainerFeedback = styled('div')(() => ({
   alignItems: 'start',
   justifyContent: 'space-between'
 }))
+
 const Section = styled('section')(() => ({
   marginRight: '1.875rem'
 }))
@@ -29,10 +29,7 @@ const ReviewsPage = () => {
     setSearchParams(searchParams)
     setPage(newPage)
   }
-  const defaultPage = () => {
-    searchParams.set('page', 'AllReviews')
-    setSearchParams(searchParams)
-  }
+
   useEffect(() => {
     dispatch(getAllReviews(page))
   }, [page])
@@ -40,11 +37,9 @@ const ReviewsPage = () => {
   useEffect(() => {
     const date = 'day'
     dispatch(getInfographics(date))
-    defaultPage()
   }, [])
   return (
     <div style={{ width: '100%' }}>
-      <AdminHeader />
       <ContainerFeedback>
         <Section>
           <ReviewsTab defaultValue="Все отзывы" handlerChangePage={handlerChangePage} page={page} />

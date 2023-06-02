@@ -230,11 +230,11 @@ const AdminHeader = () => {
         </div>
         <div>
           <StyledList>
-            <StyledNavLink to="/products" className={({ isActive }) => (isActive ? 'active' : '')}>
+            <StyledNavLink to="products" className={({ isActive }) => (isActive ? 'active' : '')}>
               Товары
             </StyledNavLink>
-            <StyledNavLink to="/orders">Заказы</StyledNavLink>
-            <StyledNavLink to="/reviews">Отзывы и рейтинг</StyledNavLink>
+            <StyledNavLink to="orders">Заказы</StyledNavLink>
+            <StyledNavLink to="reviews">Отзывы и рейтинг</StyledNavLink>
           </StyledList>
         </div>
         <ActionContainer>
