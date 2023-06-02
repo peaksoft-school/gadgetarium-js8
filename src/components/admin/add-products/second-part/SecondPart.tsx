@@ -6,6 +6,7 @@ import { Column } from '../../../../utils/constants/tableColumns'
 import AddProductsTable from './AddProductsTable'
 import Input from '../../../UI/inputs/Input'
 import { ProductType } from '../../UI/addProduct/AddTabComponent'
+import { SelectOptionsCategorie } from '../../../../redux/store/addProduct/AddProduct'
 
 const StyledButton = styled(Button)(() => ({
   padding: '12px 26px',
@@ -84,7 +85,7 @@ const StyledSecondButton = styled(Button)(() => ({
 
 const SecondPart = () => {
   const [price, setPrice] = useState(0)
-  const products = useSelector((state: RootState) => state.addNewProduct)
+  const products = useSelector((state: RootState) => state.addNewProduct.products)
   console.log(products)
 
   const priceChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -178,7 +179,7 @@ const SecondPart = () => {
         <AddProductsTable
           rows={products}
           columns={columns}
-          getUniqueId={(val: { id: any }) => val.id}
+          getUniqueId={(val: any) => val.id}
         />
         <StyledSecondButton>Далее</StyledSecondButton>
       </TableContainer>
