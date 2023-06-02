@@ -11,6 +11,8 @@ import { ReactComponent as LikeIcon } from '../../../assets/icons/header-icons/l
 import { ReactComponent as HoveredLikeIcon } from '../../../assets/icons/header-icons/hoveredLikeIcon.svg'
 import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons/basketIcon.svg'
 import IconButtons from '../../UI/buttons/IconButtons'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../redux/store'
 
 const StyledNotificationIcon = styled('span')(() => ({
   display: 'flex',
@@ -194,6 +196,7 @@ const LikeIconItem = styled('li')(() => ({
 }))
 
 const Header = () => {
+  const { items } = useSelector((state: RootState) => state.basket)
   return (
     <header>
       <FirstHeaderContainer>
@@ -263,7 +266,9 @@ const Header = () => {
           <InteractionIconsItem>
             <span>
               <IconButtons icon={<BasketIcon />} />
-              <StyledNotificationIcon>2</StyledNotificationIcon>
+              {items.length ? (
+                <StyledNotificationIcon>{items.length}</StyledNotificationIcon>
+              ) : null}
             </span>
           </InteractionIconsItem>
         </InteractionIcons>

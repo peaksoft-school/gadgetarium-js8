@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import Image from '../../../assets/images/basket/sammy-shopping-1 1.png'
 import Button from '../../UI/buttons/Button'
 import { styled } from '@mui/material'
@@ -37,6 +38,10 @@ const StyledButton = styled(Button)(() => ({
   padding: '10px 24px'
 }))
 const EmptyBasket = () => {
+  const navigate = useNavigate()
+  const toMainHandler = () => {
+    navigate('/')
+  }
   return (
     <Container>
       <ImageContainer>
@@ -45,7 +50,7 @@ const EmptyBasket = () => {
       <StyledTitle>Ваша корзина пуста</StyledTitle>
       <StyledText>Но вы всегда можете ее наполнить </StyledText>
       <ContainerButton>
-        <StyledButton>К покупкам</StyledButton>
+        <StyledButton onClick={toMainHandler}>К покупкам</StyledButton>
       </ContainerButton>
     </Container>
   )

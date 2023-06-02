@@ -1,9 +1,10 @@
 import Basket from './Basket'
-import { styled } from '@mui/material'
-import { AppDispatch } from '../../../redux/store'
+import { AppDispatch, RootState } from '../../../redux/store'
 import { useEffect } from 'react'
 import { getAllBasket } from '../../../redux/store/basket/basket.thunk'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { Box, CircularProgress, styled } from '@mui/material'
+import EmptyBasket from './EmptyBasket'
 const Container = styled('div')(() => ({
   width: '100%',
   height: '100%',
@@ -37,7 +38,7 @@ const Title = styled('p')(() => ({
 }))
 const BasketPage = () => {
   const dispatch = useDispatch<AppDispatch>()
-
+  const basketData = useSelector((state: RootState) => state.basket)
   useEffect(() => {
     dispatch(getAllBasket())
   }, [])
@@ -47,7 +48,18 @@ const BasketPage = () => {
         <SpanOne>Главная » </SpanOne>
         <SpanTwo>Корзина</SpanTwo>
         <Title>Товары в корзине</Title>
-        <Basket />
+        {basketData.isLoading ? (
+          <Box
+            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            minHeight={'400px'}
+          >
+            <CircularProgress />
+          </Box>
+        ) : basketData.items.length === 0 ? (
+          <EmptyBasket />
+        ) : (
+          <Basket basketData={basketData} />
+        )}
       </Container>
     </>
   )

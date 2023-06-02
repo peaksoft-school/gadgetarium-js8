@@ -2,25 +2,26 @@ import { styled } from '@mui/material/styles'
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox'
 import { ReactComponent as CheckIcon } from '../../../assets/icons/chek-icons/checkbox.svg'
 import { FormControlLabel } from '@mui/material'
+import { ChangeEvent } from 'react'
 interface CheckBoxType {
   checked?: boolean
-  onChange?: () => void
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
   label?: string
-  changeColor?: string
+  changecolor: string
 }
-const BpIcon = styled('span')(({ changeColor }: CheckBoxType & CheckboxProps) => ({
+const BpIcon = styled('span')(({ changecolor }: CheckBoxType) => ({
   borderRadius: 2,
   width: 20,
   height: 20,
   border: '1px solid #858FA4',
   'input:hover ~ &': {
-    border: `1px solid ${changeColor}`
+    border: `1px solid ${changecolor}`
   }
 }))
 
-const BpCheckedIcon = styled(BpIcon)(({ changeColor }: CheckBoxType) => ({
-  border: `1px solid ${changeColor} `,
-  backgroundColor: `${changeColor}`,
+const BpCheckedIcon = styled(BpIcon)(({ changecolor }: CheckBoxType) => ({
+  border: `1px solid ${changecolor} `,
+  backgroundColor: `${changecolor}`,
   color: '#fff'
 }))
 const StyledCheckIcon = styled(CheckIcon)(() => ({
@@ -34,9 +35,9 @@ export const CustomizeCheckbox = ({
   checked,
   onChange,
   label,
-  changeColor = '#CB11AB',
+  changecolor = '#CB11AB',
   ...rest
-}: CheckBoxType) => {
+}: CheckBoxType & CheckboxProps) => {
   return (
     <StyledFormControlLabel
       control={
@@ -44,11 +45,11 @@ export const CustomizeCheckbox = ({
           checked={checked}
           onChange={onChange}
           checkedIcon={
-            <BpCheckedIcon changeColor={changeColor}>
+            <BpCheckedIcon changecolor={changecolor}>
               <StyledCheckIcon />
             </BpCheckedIcon>
           }
-          icon={<BpIcon changeColor={changeColor} />}
+          icon={<BpIcon changecolor={changecolor} />}
           inputProps={{ 'aria-label': 'Checkbox demo' }}
           {...rest}
         />

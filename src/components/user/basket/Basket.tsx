@@ -5,7 +5,19 @@ import { ReactComponent as DeletIcon } from '../../../assets/icons/admin-product
 import BasketItem from './BasketItem'
 import Button from '../../UI/buttons/Button'
 import { Grid, Stack, Typography, styled } from '@mui/material'
-const ListContainer = styled('li')(() => ({
+import { InitType, basketActions } from '../../../redux/store/basket/basket.slice'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../../../redux/store'
+import { ChangeEvent, useState } from 'react'
+import {
+  deleteBasketByChoosenId,
+  moveToFavoritesByChoosenId
+} from '../../../redux/store/basket/basket.thunk'
+import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
+import { DeleteModal } from '../UI/modal/DeleteModal'
+import { useNavigate } from 'react-router-dom'
+
+const ListContainer = styled('ul')(() => ({
   listStyle: 'none',
   display: 'flex',
   alignItems: 'center',
@@ -41,7 +53,9 @@ const ContainerSumOfOrder = styled('div')(() => ({
   height: '280px',
   backgroundColor: '#ffff',
   padding: '1.875rem',
-  borderRadius: '.3125rem'
+  borderRadius: '.3125rem',
+  position: 'fixed',
+  right: '200px'
 }))
 const TitleSumOfOrder = styled('h3')(() => ({
   fontWeight: 500,
@@ -101,64 +115,139 @@ const StyledButton = styled(Button)(() => ({
 const BorderBottom = styled('span')(() => ({
   borderBottom: '2px solid'
 }))
-const Basket = () => {
+const SumPriceStyled = styled('span')(() => ({
+  borderBottom: '2px solid',
+  marginLeft: '5px'
+}))
+const Basket = ({ basketData }: { basketData: InitType }) => {
+  const navigate = useNavigate()
+  const [openModal, setOpenModal] = useState<boolean>(false)
+  const { snackbarHanler, ToastContainer } = useSnackbar({
+    autoClose: 3000,
+    position: 'top-right'
+  })
+  const dispatch = useDispatch<AppDispatch>()
+  const [productId, setProductId] = useState<number[]>([])
+  const checkboxAllHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const isChecked = event.target.checked
+    const dataCheckbox = {
+      id: 'allSelect',
+      checked: isChecked
+    }
+    dispatch(basketActions.toggleCheckbox(dataCheckbox))
+
+    if (!basketData.checkedAll) {
+      const dataId = basketData.items.map((item) => item.subProductId)
+      setProductId(dataId)
+    }
+  }
+  const snackbarHandle = () => {
+    snackbarHanler({
+      message: 'Товар успешно добавлен в избранное!',
+      linkText: '',
+      type: 'success'
+    })
+  }
+  const moveToChoosenProductToFavoritesHandler = () => {
+    if (productId.length > 0) {
+      dispatch(moveToFavoritesByChoosenId({ id: productId, snackbar: snackbarHandle }))
+    }
+  }
+  const deleteChoosenProductHandler = () => {
+    if (productId.length > 0) {
+      dispatch(deleteBasketByChoosenId(productId))
+    }
+    setOpenModal(false)
+  }
+  const openModalHandler = () => {
+    setOpenModal(true)
+  }
+  const goToCheckoutHandler = () => {
+    navigate('checkout')
+  }
   return (
     <Stack>
+      {ToastContainer}
       <ListContainer>
         <List>
           <Label>
-            <StyledCheckbox /> Отметить все
+            <StyledCheckbox
+              checked={basketData.checkedAll}
+              changecolor="#CB11AB"
+              onChange={checkboxAllHandler}
+            />
+            Отметить все
           </Label>
         </List>
         <List>
           <Label>
-            <IconButtons icon={<StyledDeleteIcon />} /> Удалить
+            <IconButtons icon={<StyledDeleteIcon />} onClick={openModalHandler} />
+            Удалить
           </Label>
         </List>
         <List>
           <Label>
-            <IconButtons icon={<StyledLikeIcon />} /> Переместить в избранное
+            <IconButtons
+              icon={<StyledLikeIcon />}
+              onClick={moveToChoosenProductToFavoritesHandler}
+            />
+            Переместить в избранное
           </Label>
         </List>
       </ListContainer>
       <MainContainer>
         <Grid>
-          <BasketItem />
-          <BasketItem />
-          <BasketItem />
+          {basketData.items?.map((item) => {
+            return (
+              <BasketItem
+                item={item}
+                key={item.subProductId}
+                setProductId={setProductId}
+                productId={productId}
+              />
+            )
+          })}
         </Grid>
         <ContainerSumOfOrder>
           <TitleSumOfOrder>Сумма заказа</TitleSumOfOrder>
           <ContainerListOrder>
             <ListOrder>
               <TextOrderStyled>Количество товаров:</TextOrderStyled>
-              <Typography>3 шт.</Typography>
+              <Typography>{basketData.totalQuantity} шт.</Typography>
             </ListOrder>
             <ListOrder>
               <TextOrderStyled>Ваша скидка:</TextOrderStyled>
               <DiscountTitle>
-                – 20 000 <BorderBottom>с</BorderBottom>
+                – {basketData.totalDiscount.toFixed(2)} <BorderBottom>с</BorderBottom>
               </DiscountTitle>
             </ListOrder>
 
             <ListOrder>
               <TextOrderStyled>Сумма:</TextOrderStyled>
               <Typography>
-                220 900 <BorderBottom>с</BorderBottom>
+                {basketData.sumPrice.toFixed(2)}
+                <SumPriceStyled>с</SumPriceStyled>
               </Typography>
             </ListOrder>
             <ListOrder>
               <TitleTotalPriceStyled>Итого</TitleTotalPriceStyled>
               <TitleTotalPriceStyled>
-                200 900 <BorderBottom>с</BorderBottom>
+                {basketData.totalSum.toFixed(2)} <BorderBottom>с</BorderBottom>
               </TitleTotalPriceStyled>
             </ListOrder>
           </ContainerListOrder>
           <ContainerButton>
-            <StyledButton>Перейти к оформлению</StyledButton>
+            <StyledButton onClick={goToCheckoutHandler}>Перейти к оформлению</StyledButton>
           </ContainerButton>
         </ContainerSumOfOrder>
       </MainContainer>
+      <DeleteModal
+        openModal={openModal}
+        closeModalHandler={() => {
+          setOpenModal(false)
+        }}
+        deleteHandler={deleteChoosenProductHandler}
+      />
     </Stack>
   )
 }

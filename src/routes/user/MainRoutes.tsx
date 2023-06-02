@@ -8,7 +8,6 @@ import { PATHS } from '../../utils/constants/router/routerConsts'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { UserRoles } from '../../utils/common/types'
-import BasketPage from '../../components/user/basket/BasketPage'
 
 const MainRoutes = () => {
   const role = useSelector((state: RootState) => state.auth.role)
@@ -19,7 +18,7 @@ const MainRoutes = () => {
   return (
     <MainLayout>
       <Routes>
-        <Route path={PATHS.MAIN.default} element={<BasketPage />} />
+        <Route path={PATHS.MAIN.default} element={<p>main page</p>} />
         <Route path={PATHS.MAIN.catalog} element={<Outlet />}>
           <Route index element={<p>CatalogPage</p>} />
           <Route path={PATHS.MAIN.productId} element={<p>ProductInnerPage</p>} />
