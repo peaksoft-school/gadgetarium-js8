@@ -4,6 +4,7 @@ import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
 import { StepIconProps, StepLabel, Typography, styled } from '@mui/material'
 import { createStyles, makeStyles } from '@mui/styles'
+import { useSearchParams } from 'react-router-dom'
 
 const StyledStepButton = styled(StepLabel)`
   svg {
@@ -72,7 +73,7 @@ const CircleIcon: React.FC<StepIconProps> = ({ active, completed, icon }) => {
   )
 }
 interface StepperTabsProps {
-  steps: string[]
+  steps: { label: string; key: string }[]
   activeStep: number
   setActiveStep: React.Dispatch<React.SetStateAction<number>>
 }
@@ -82,16 +83,23 @@ const HorizontalNonLinearStepper: React.FC<StepperTabsProps> = ({
   activeStep,
   setActiveStep
 }) => {
-  const handleStepClick = (stepIndex: number) => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const handleStepClick = (stepIndex: number, key: string) => {
     setActiveStep(stepIndex)
+    searchParams.set('new-product', key)
+    setSearchParams(searchParams)
   }
 
   return (
     <Box sx={{ width: '850px', marginBottom: '1rem' }}>
       <Stepper activeStep={activeStep}>
         {steps.map((step, index) => (
-          <Step key={index} onClick={() => handleStepClick(index)} completed={index < activeStep}>
-            <StyledStepButton StepIconComponent={CircleIcon}>{step}</StyledStepButton>
+          <Step
+            key={index}
+            onClick={() => handleStepClick(index, step.key)}
+            completed={index < activeStep}
+          >
+            <StyledStepButton StepIconComponent={CircleIcon}>{step.label}</StyledStepButton>
           </Step>
         ))}
       </Stepper>

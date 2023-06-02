@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { Button, IconButton, InputAdornment, TextField, styled } from '@mui/material'
 import { ReactComponent as ImportIcon } from '../../../../assets/icons/admin-add-products/importIcon.svg'
 import TextEditor from './TextEditor'
@@ -105,7 +105,7 @@ const ThirdPart = () => {
   const [pdfFile, setPdfFile] = useState<PdfType | null>()
   const [video, setVideo] = useState('')
 
-  const videoChangeHandler = (event: any) => {
+  const videoChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setVideo(event.target.value)
   }
 
@@ -114,7 +114,7 @@ const ThirdPart = () => {
     setPdfFile(file || null)
   }
 
-  const descriptionChangeHandler = (event: any) => {
+  const descriptionChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setDescription(event.target.value)
   }
   return (

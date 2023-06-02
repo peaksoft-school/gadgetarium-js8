@@ -26,6 +26,7 @@ type SelectProps = {
   placeholder: string
   name: string
   id: string
+  getOptionValue?: (option: Option) => any
 }
 
 export const StyledOption = styled(MenuItem)(() => ({
@@ -83,7 +84,8 @@ export const ReusableSelect: React.FC<SelectProps> = ({
   value,
   onChange,
   placeholder,
-  name
+  name,
+  getOptionValue
 }) => {
   return (
     <FormControl>
@@ -92,7 +94,7 @@ export const ReusableSelect: React.FC<SelectProps> = ({
           {placeholder}
         </StyledOption>
         {options.map((option) => (
-          <StyledOption key={option.id} value={option.id}>
+          <StyledOption key={option.id} value={getOptionValue ? getOptionValue(option) : option.id}>
             {option.name}
           </StyledOption>
         ))}

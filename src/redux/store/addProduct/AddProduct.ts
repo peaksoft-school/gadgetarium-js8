@@ -39,6 +39,10 @@ export const addProductSlice = createSlice({
     },
     addSubProduct: (state, action) => {
       state.subProduct = action.payload
+    },
+    addPriceToSubProduct: (state, action) => {
+      const { index, price } = action.payload
+      state.products[index].subProducts.price = price
     }
   },
   extraReducers: (builder) => {

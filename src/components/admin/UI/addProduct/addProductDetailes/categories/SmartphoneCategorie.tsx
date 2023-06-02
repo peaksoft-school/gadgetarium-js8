@@ -41,7 +41,7 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
   const { products } = useSelector((state: RootState) => state.addNewProduct)
   const [memorySize, setMemorySize] = useState('')
   const [ram, setRam] = useState('')
-  const [simCart, setSIMcart] = useState('')
+  const [simCard, setSIMcard] = useState('')
 
   const { imagesClassname, bannerImages, handleImageUpload, setBannerImages, deleteImage } =
     useBanner()
@@ -51,16 +51,16 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
 
   useEffect(() => {
     dispatch(
-      addProductActions.addSubProduct({ bannerImages, colour: color, memorySize, ram, simCart })
+      addProductActions.addSubProduct({ bannerImages, color: color, memorySize, ram, simCard })
     )
-  }, [memorySize, bannerImages, color, ram, simCart])
+  }, [memorySize, bannerImages, color, ram, simCard])
 
   useEffect(() => {
     setBannerImages([])
     setColor('')
     setMemorySize('')
     setRam('')
-    setSIMcart('')
+    setSIMcard('')
   }, [products])
 
   const changeOptions = () => {
@@ -78,13 +78,15 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
     setOpenColorPicker((prevState) => !prevState)
   }
   const memorySizeHandler = (event: SelectChangeEvent<typeof memorySize>) => {
+    console.log(event.target.value, '=> memorySize')
+
     setMemorySize(event.target.value)
   }
   const RAMHandler = (event: SelectChangeEvent<typeof ram>) => {
     setRam(event.target.value)
   }
-  const SimCartHandler = (event: SelectChangeEvent<typeof simCart>) => {
-    setSIMcart(event.target.value)
+  const SimCardHandler = (event: SelectChangeEvent<typeof simCard>) => {
+    setSIMcard(event.target.value)
   }
 
   return (
@@ -109,6 +111,7 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
           options={changeOptions().item1}
           value={memorySize}
           onChange={memorySizeHandler}
+          getOptionValue={(option) => option}
         />
       </StyledInputContainer>
       <StyledInputContainer>
@@ -121,6 +124,7 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
           options={changeOptions().item2}
           value={ram}
           onChange={RAMHandler}
+          getOptionValue={(option) => option}
         />
       </StyledInputContainer>
       <StyledInputContainer>
@@ -131,8 +135,9 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
           name="Выберите категорию *"
           placeholder="Выберите SIM-карты"
           options={changeOptions().item3}
-          value={simCart}
-          onChange={SimCartHandler}
+          value={simCard}
+          onChange={SimCardHandler}
+          getOptionValue={(option) => option}
         />
       </StyledInputContainer>
       <StyledInputContainer>

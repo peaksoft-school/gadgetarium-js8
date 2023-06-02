@@ -15,7 +15,6 @@ import AddDetailsProduct from './addProductDetailes/categories/SmartphoneCategor
 import CreatePlanshetCategorie from './addProductDetailes/categories/Planshet'
 import CreateLaptopCategorie from './addProductDetailes/CreateLaptopCategorie'
 import Button from '../../../UI/buttons/Button'
-import { NavLink } from 'react-router-dom'
 import IconButtons from '../../../UI/buttons/IconButtons'
 import { addProductActions } from '../../../../redux/store/addProduct/AddProduct'
 
@@ -175,11 +174,16 @@ export type ProductType = {
   subCategoryId: string | number
   dateOfIssue: string
   subProducts: any
-}[]
+}
 
-const AddTabComponent: React.FC = () => {
+type Props = {
+  handleNext: () => void
+}
+
+const AddTabComponent = ({ handleNext }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const { options, products, subProduct } = useSelector((state: RootState) => state.addNewProduct)
+
   const [selectedValueFirst, setSelectedValueFirst] = useState<string | number>('')
   const [selectedValueSecond, setSelectedValueSecond] = useState<string | number>('')
   const [selectedValueThird, setSelectedValueThird] = useState<string | number>(0)
@@ -189,7 +193,6 @@ const AddTabComponent: React.FC = () => {
 
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [categories, setCategories] = useState([])
-  console.log(products)
 
   const saveHandler = () => {
     const newProduct = {
@@ -197,7 +200,7 @@ const AddTabComponent: React.FC = () => {
       brandId: selectedValueSecond,
       subCategoryId: selectedValueThird,
       dateOfIssue,
-      subProducts: [subProduct]
+      subProducts: subProduct
     }
     dispatch(addProductActions.addProduct(newProduct))
   }
@@ -359,9 +362,7 @@ const AddTabComponent: React.FC = () => {
             <CreateLaptopCategorie selectedValueFirst={selectedValueFirst} />
           ) : null}
           <StyledLinkContainer>
-            <NavLink to={'/'}>
-              <StyledMuiButton>Далее</StyledMuiButton>
-            </NavLink>
+            <StyledMuiButton onClick={handleNext}>Далее</StyledMuiButton>
           </StyledLinkContainer>
         </>
       )}

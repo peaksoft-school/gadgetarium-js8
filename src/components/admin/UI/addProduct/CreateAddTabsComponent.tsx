@@ -33,8 +33,50 @@ function TabPanel(props: TabPanelProps) {
 
 export function MyComponent() {
   const [activeTab, setActiveTab] = useState(0)
+  const [completed] = useState<{
+    [k: number]: boolean
+  }>({})
 
-  const steps = ['Добавление товара', 'Установка цены и количества товара', 'Описание и обзор']
+  const steps = [
+    {
+      label: 'Добавление товара',
+      key: 'add'
+    },
+    {
+      label: 'Установка цены и количества товара',
+      key: 'price'
+    },
+    {
+      label: 'Описание и обзор',
+      key: 'description'
+    }
+  ]
+
+  const totalSteps = () => {
+    return steps.length
+  }
+
+  const completedSteps = () => {
+    return Object.keys(completed).length
+  }
+
+  const isLastStep = () => {
+    return activeTab === totalSteps() - 1
+  }
+
+  const allStepsCompleted = () => {
+    return completedSteps() === totalSteps()
+  }
+
+  const handleNext = () => {
+    const newActiveStep =
+      isLastStep() && !allStepsCompleted()
+        ? // It's the last step, but not all steps have been completed,
+          // find the first step that has been completed
+          steps.findIndex((step, i) => !(i in completed))
+        : activeTab + 1
+    setActiveTab(newActiveStep)
+  }
 
   return (
     <Box sx={{ with: '100%', marginTop: '30px' }}>
@@ -44,10 +86,10 @@ export function MyComponent() {
         setActiveStep={setActiveTab}
       />
       <TabPanel value={activeTab} index={0}>
-        <AddTabComponent />
+        <AddTabComponent handleNext={handleNext} />
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
-        <SecondPart />
+        <SecondPart handleNext={handleNext} />
       </TabPanel>
       <TabPanel value={activeTab} index={2}>
         <ThirdPart />

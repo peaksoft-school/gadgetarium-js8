@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Divider, styled } from '@mui/material'
 import { MyComponent } from '../../../components/admin/UI/addProduct/CreateAddTabsComponent'
+import { useSearchParams } from 'react-router-dom'
 
 const StyledNav = styled('nav')(() => ({
   display: 'flex',
@@ -48,16 +49,28 @@ const StyledDiv = styled('div')(() => ({
   width: '100%'
 }))
 
+const OBJECT = {
+  add: 'Добавление товара',
+  price: 'Установка цены и количества',
+  description: 'Описание и обзор'
+}
+
 const AddProductsPage = () => {
+  const [searchParams] = useSearchParams()
+
+  const titleKey: string = searchParams.get('new-product') || 'add'
+
+  const renderedTitle = OBJECT[titleKey as keyof typeof OBJECT]
+
   return (
     <>
       <StyledContainer>
         <StyledNav>
           <StyledNavLink>Товары </StyledNavLink>
-          <StyledNavLink>Добавление товара </StyledNavLink>
+          <StyledNavLink>{renderedTitle}</StyledNavLink>
         </StyledNav>
 
-        <Title>Добавление товара</Title>
+        <Title>{renderedTitle}</Title>
         <StyledDivider orientation="horizontal" />
         <StyledDiv>
           <MyComponent />

@@ -44,7 +44,7 @@ const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
   const { products } = useSelector((state: RootState) => state.addNewProduct)
 
   const [laptopProcessor1, setLeptopProcessor] = useState('')
-  const [srcean, setScrean] = useState('')
+  const [srceen, setScreen] = useState('')
   const [purpose, setPurpose] = useState('')
   const [sizeScrean, setSizeScrean] = useState('')
   const [video, setVideo] = useState('')
@@ -68,17 +68,17 @@ const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
         purpose,
         colorLaptop,
         laptopProcessor1,
-        srcean,
+        srceen,
         sizeScrean,
         video,
         select
       })
     )
-  }, [bannerImages, purpose, colorLaptop, laptopProcessor1, srcean, sizeScrean, video, select])
+  }, [bannerImages, purpose, colorLaptop, laptopProcessor1, srceen, sizeScrean, video, select])
 
   useEffect(() => {
     setLeptopProcessor('')
-    setScrean('')
+    setScreen('')
     setPurpose('')
     setSizeScrean('')
     setVideo('')
@@ -110,8 +110,8 @@ const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
   const sizeScreanHandler = (event: SelectChangeEvent<typeof sizeScrean>) => {
     setSizeScrean(event.target.value)
   }
-  const screanHandler = (event: SelectChangeEvent<typeof srcean>) => {
-    setScrean(event.target.value)
+  const screenHandler = (event: SelectChangeEvent<typeof srceen>) => {
+    setScreen(event.target.value)
   }
   const selectHandler = (event: SelectChangeEvent<typeof select>) => {
     setSelect(event.target.value)
@@ -153,8 +153,8 @@ const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
           name="Разрешение экрана"
           placeholder="Разрешение экрана"
           options={changeOptions().item2}
-          value={srcean}
-          onChange={screanHandler}
+          value={srceen}
+          onChange={screenHandler}
         />
       </StyledInputContainer>
       <StyledInputContainer>

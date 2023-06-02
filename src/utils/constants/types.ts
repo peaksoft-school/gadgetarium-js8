@@ -23,7 +23,7 @@ export type AddProducts = {
   description: string
   subProducts: [
     {
-      colour: string
+      color: string
       characteristics: {
         additionalProp1: string
         additionalProp2: string

@@ -1,11 +1,12 @@
 import React, { useState, ChangeEvent } from 'react'
 import { Button, Input as MuiInput, styled } from '@mui/material'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../../redux/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../../redux/store'
 import { Column } from '../../../../utils/constants/tableColumns'
 import AddProductsTable from './AddProductsTable'
 import Input from '../../../UI/inputs/Input'
 import { ProductType } from '../../UI/addProduct/AddTabComponent'
+import { addProductActions } from '../../../../redux/store/addProduct/AddProduct'
 
 const StyledButton = styled(Button)(() => ({
   padding: '12px 26px',
@@ -82,53 +83,91 @@ const StyledSecondButton = styled(Button)(() => ({
   }
 }))
 
-const SecondPart = () => {
-  const [price, setPrice] = useState(0)
-  const products = useSelector((state: RootState) => state.addNewProduct)
-  console.log(products)
+type Props = {
+  handleNext: () => void
+}
+
+const SecondPart = ({ handleNext }: Props) => {
+  const [transferredValue, setTransferredValue] = useState('')
+  const [quantity, setQuantity] = useState('')
+  const products = useSelector((state: RootState) => state.addNewProduct.products)
+  
+  const dispatch = useDispatch<AppDispatch>()
 
   const priceChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setPrice(+e.target.value)
+    setTransferredValue(e.target.value)
   }
 
-  const setPriceToTableHandler = () => {}
+  const quantityChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setQuantity(e.target.value)
+  }
+
+  const setPriceToTableChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setTransferredValue(e.target.value)
+  }
 
   const columns: Column<ProductType>[] = [
     {
       header: 'Бренд',
       key: 'brand',
-      render: () => <p style={{ paddingLeft: '1rem' }}>154665884</p>
+      render: (product: ProductType) => (
+        <>
+          <p style={{ paddingLeft: '1rem' }}>{product.brandId}</p>
+        </>
+      )
     },
     {
       header: 'Цвет',
       key: 'color',
-      render: () => <p style={{ paddingLeft: '1rem' }}>Черный</p>
+      render: (product: ProductType) => (
+        <>
+          <p style={{ paddingLeft: '1rem' }}>{product.subProducts.color}</p>
+        </>
+      )
     },
     {
       header: 'Объем памяти',
       key: 'memory',
-      render: () => <p style={{ paddingLeft: '1rem' }}>128 ГБ</p>
+      render: (product: ProductType) => (
+        <>
+          <p style={{ paddingLeft: '1.5rem' }}>{product.subProducts.memorySize.label}</p>
+        </>
+      )
     },
     {
       header: 'Оперативная память',
       key: 'ram',
-      render: () => <p style={{ paddingLeft: '1rem' }}>RAM 8ГБ</p>
+      render: (product: ProductType) => (
+        <>
+          <p style={{ paddingLeft: '1.5rem' }}>{product.subProducts.ram.label}</p>
+        </>
+      )
     },
     {
       header: 'Кол-во SIM-карт',
       key: 'sim-cards',
-      render: () => <p style={{ paddingLeft: '1rem' }}>1</p>
+      render: (product: ProductType) => (
+        <>
+          <p style={{ paddingLeft: '1.5rem' }}>{product.subProducts.simCard.label}</p>
+        </>
+      )
     },
     {
       header: 'Дата выпуска',
       key: 'release',
-      render: (product: ProductType) => <p style={{ paddingLeft: '1rem' }}>12.12.2020</p>
+      render: (product: ProductType) => (
+        <>
+          <p style={{ paddingLeft: '1rem' }}>{product.dateOfIssue}</p>
+        </>
+      )
     },
     {
       header: 'Кол-во товара',
       key: 'quantity',
       render: () => (
         <MuiInput
+          value={quantity}
+          onChange={quantityChangeHandler}
           disableUnderline
           type="number"
           style={{
@@ -147,7 +186,8 @@ const SecondPart = () => {
       render: () => (
         <MuiInput
           disableUnderline
-          // value={}
+          value={transferredValue}
+          onChange={setPriceToTableChangeHandler}
           type="number"
           style={{
             paddingLeft: '1rem',
@@ -166,7 +206,7 @@ const SecondPart = () => {
         <Title>Общая цена</Title>
         <PriceContainer>
           <StyledInput
-            value={price}
+            value={transferredValue}
             onChange={priceChangeHandler}
             type="number"
             placeholder="Цена"
@@ -175,12 +215,8 @@ const SecondPart = () => {
         </PriceContainer>
       </div>
       <TableContainer>
-        <AddProductsTable
-          rows={products}
-          columns={columns}
-          getUniqueId={(val: { id: any }) => val.id}
-        />
-        <StyledSecondButton>Далее</StyledSecondButton>
+        <AddProductsTable rows={products} columns={columns} getUniqueId={(val: any) => val.id} />
+        <StyledSecondButton onClick={handleNext}>Далее</StyledSecondButton>
       </TableContainer>
     </main>
   )
