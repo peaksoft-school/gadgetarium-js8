@@ -91,7 +91,7 @@ const SecondPart = ({ handleNext }: Props) => {
   const [transferredValue, setTransferredValue] = useState('')
   const [quantity, setQuantity] = useState('')
   const products = useSelector((state: RootState) => state.addNewProduct.products)
-  
+
   const dispatch = useDispatch<AppDispatch>()
 
   const priceChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
