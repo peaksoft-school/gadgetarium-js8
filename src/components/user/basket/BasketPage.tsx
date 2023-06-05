@@ -8,21 +8,21 @@ import EmptyBasket from './EmptyBasket'
 const Container = styled('div')(() => ({
   width: '100%',
   height: '100%',
-  padding: '60px 195px 120px 195px',
+  padding: '3.75rem 12.1875rem 7.5rem 12.1875rem',
   fontFamily: 'Inter',
   fontStyle: 'normal',
   backgroundColor: '#e1e1e1'
 }))
 const SpanOne = styled('span')(() => ({
   fontWeight: 400,
-  fontSize: '14px',
+  fontSize: '.875rem',
   lineHeight: '140%',
   color: '#91969E;'
 }))
 const SpanTwo = styled('span')(() => ({
   color: '#292929',
   fontWeight: 400,
-  fontSize: '14px',
+  fontSize: '.875rem',
   lineHeight: '140%'
 }))
 const Title = styled('p')(() => ({
@@ -30,11 +30,11 @@ const Title = styled('p')(() => ({
   fontFamily: 'Ubuntu',
   fontStyle: 'normal',
   fontWeight: 500,
-  fontSize: '30px',
+  fontSize: '1.875rem',
   lineHeight: '110%',
-  marginTop: '30px',
-  borderBottom: '2px solid #CDCDCD',
-  paddingBottom: '20px'
+  marginTop: '1.875rem',
+  borderBottom: '.125rem solid #CDCDCD',
+  paddingBottom: '1.25rem'
 }))
 const BasketPage = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -51,7 +51,7 @@ const BasketPage = () => {
         {basketData.isLoading ? (
           <Box
             sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-            minHeight={'400px'}
+            minHeight={'25rem'}
           >
             <CircularProgress />
           </Box>

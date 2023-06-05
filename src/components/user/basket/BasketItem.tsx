@@ -19,47 +19,47 @@ interface PropsType {
   productId: number[] | []
 }
 const ContainerCard = styled('div')(() => ({
-  width: '900px',
-  height: '150px',
-  marginLeft: '14px',
+  width: '56.25rem',
+  height: '9.375rem',
+  marginLeft: '.875rem',
   display: 'flex',
-  padding: '20px 20px 10px 15px',
+  padding: '1.25rem 1.25rem .625rem .9375rem',
   backgroundColor: '#ffff',
-  borderRadius: '4px'
+  borderRadius: '.25rem'
 }))
 const StyledGrid = styled(Grid)(() => ({
   fontFamily: 'Inter',
   fontStyle: 'normal',
   display: 'flex',
   alignItems: 'flex-start',
-  marginBottom: '30px'
+  marginBottom: '1.875rem'
 }))
 const ContainerList = styled('ul')(() => ({
-  width: '370px',
+  width: '23.125rem',
   listStyle: 'none',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-evenly'
 }))
 const StyledCheckbox = styled(CustomizeCheckbox)(() => ({
-  padding: '5px 8px'
+  padding: '.3125rem .5rem'
 }))
 const StyledImage = styled('img')(() => ({
-  width: '110px',
-  height: '100px'
+  width: '6.875rem',
+  height: '6.25rem'
 }))
 const ContainerImage = styled('div')(() => ({
-  marginRight: '15px'
+  marginRight: '.9375rem'
 }))
 const TitleStyled = styled('li')(() => ({
   fontWeight: 400,
-  fontSize: '18px',
+  fontSize: '1.125rem',
   lineHeight: ' 150%'
 }))
 const RatingStyled = styled('li')(() => ({
   fontWeight: 500,
-  fontSize: '12px',
-  lineHeight: ' 15px',
+  fontSize: '.75rem',
+  lineHeight: ' .9375rem',
   color: '#909CB5',
   display: 'flex',
   alignItems: 'center'
@@ -67,14 +67,14 @@ const RatingStyled = styled('li')(() => ({
 
 const CountStyled = styled('li')(() => ({
   fontWeight: 500,
-  fontSize: '12px',
-  lineHeight: ' 15px',
+  fontSize: '.75rem',
+  lineHeight: ' .9375rem',
   color: '#3CDE14'
 }))
 
 const PriceStyled = styled('li')(() => ({
   fontWeight: 400,
-  fontSize: '14px',
+  fontSize: '.875rem',
   lineHeight: ' 140%',
   color: '#384255'
 }))
@@ -84,9 +84,9 @@ const ContainerInfo = styled('div')(() => ({
   justifyContent: 'space-between'
 }))
 const Circle = styled('div')(() => ({
-  width: '25px',
-  height: '25px',
-  border: '1px solid #909CB5',
+  width: '1.5625rem',
+  height: '1.5625rem',
+  border: '.0625rem solid #909CB5',
   borderRadius: '100%',
   display: 'flex',
   alignItems: 'center',
@@ -95,20 +95,20 @@ const Circle = styled('div')(() => ({
 const ContainerAndPrice = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
-  padding: '20px 0px 33px 40px'
+  padding: '1.25rem 0rem 2.0625rem 2.5rem'
 }))
 const StyledTotalPrice = styled('p')(() => ({
-  marginLeft: '25px',
+  marginLeft: '1.5625rem',
   fontWeight: 700,
-  fontSize: '18px',
-  lineHeight: '22px',
+  fontSize: '1.125rem',
+  lineHeight: '1.375rem',
   color: '#292929',
-  width: '200px'
+  width: '12.5rem'
 }))
 const Number = styled('span')(() => ({
-  width: '30px',
+  width: '1.875rem',
   fontWeight: 400,
-  fontSize: '18px',
+  fontSize: '1.125rem',
   lineHeight: '135.94%',
   color: '#909CB5',
   textAlign: 'center'
@@ -118,11 +118,11 @@ const Amount = styled('p')(() => ({
   alignItems: 'center'
 }))
 const StyledIconButton = styled(IconButtons)(() => ({
-  padding: '6px'
+  padding: '.375rem'
 }))
 const TextStyled = styled('span')(() => ({
   fontWeight: 400,
-  fontSize: '14px',
+  fontSize: '.875rem',
   lineHeight: ' 140%',
   color: '#909CB5'
 }))
@@ -130,11 +130,11 @@ const FavoritesContainer = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  gap: '12px'
+  gap: '.75rem'
 }))
 const StyledLikeIcon = styled(LikeIcon)(() => ({
-  width: '16px',
-  height: '13px'
+  width: '1rem',
+  height: '.8125rem'
 }))
 const MiniContainer = styled('label')(() => ({
   display: 'flex',
@@ -241,7 +241,7 @@ const BasketItem = ({ item, setProductId, productId }: PropsType) => {
                   value={item.rating}
                   size="small"
                   readOnly
-                  sx={{ fontSize: '15px', marginLeft: '4px', marginRight: '4px' }}
+                  sx={{ fontSize: '.9375rem', marginLeft: '.25rem', marginRight: '.25rem' }}
                 />
                 ({item.numberOfReviews})
               </RatingStyled>

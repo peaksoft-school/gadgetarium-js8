@@ -6,36 +6,36 @@ const ImageContainer = styled('div')(() => ({
   textAlign: 'center'
 }))
 const Container = styled('div')(() => ({
-  padding: '120px 0px',
+  padding: '7.5rem 0rem',
   fontFamily: 'Inter',
   fontStyle: 'normal'
 }))
 const StyledTitle = styled('p')(() => ({
-  marginTop: '30px',
-  fontWeight: '500px',
-  fontSize: '24px',
+  marginTop: '1.875rem',
+  fontWeight: '31.25rem',
+  fontSize: '1.5rem',
   lineHeight: '110%',
   textAlign: 'center'
 }))
 const StyledText = styled('p')(() => ({
   fontWeight: 400,
-  fontSize: '18px',
+  fontSize: '1.125rem',
   lineHeight: ' 140.02%',
-  marginTop: '16px',
+  marginTop: '1rem',
   textAlign: 'center'
 }))
 const ContainerButton = styled('div')(() => ({
-  marginTop: '24px',
+  marginTop: '1.5rem',
   textAlign: 'center'
 }))
 const StyledButton = styled(Button)(() => ({
   color: '#ffff',
   fontWeight: 700,
-  fontSize: ' 14px',
-  lineHeight: '17px',
+  fontSize: ' .875rem',
+  lineHeight: '1.0625rem',
   textAlign: 'center',
   textTransform: 'uppercase',
-  padding: '10px 24px'
+  padding: '.625rem 1.5rem'
 }))
 const EmptyBasket = () => {
   const navigate = useNavigate()
