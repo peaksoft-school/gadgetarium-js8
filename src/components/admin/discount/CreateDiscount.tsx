@@ -4,6 +4,8 @@ import Input from '../../UI/inputs/Input'
 import { DiscountType, postDiscountRequest } from '../../../api/discount/discountService'
 import Button from '../../UI/buttons/Button'
 import Modal from '../../UI/modals/Modal'
+import { isAxiosError } from 'axios'
+import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 
 const StyledModal = styled(Box)(() => ({
   width: '34rem',
@@ -82,12 +84,28 @@ const CreateDiscount = ({ open, onClose, selectedIds }: PropsDiscount) => {
   const [discountStartDate, setDiscountStartDate] = useState<string>('')
   const [discountEndDate, setDiscountEndDate] = useState<string>('')
 
+  const { snackbarHanler } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
+
   const addDiscount = async (req: DiscountType) => {
     try {
       await postDiscountRequest(req)
       onClose()
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
     }
   }
 

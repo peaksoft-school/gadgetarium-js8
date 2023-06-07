@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import { Box, Rating, Tab, Tabs, Typography, styled } from '@mui/material'
 import {
   ProductIdRequestType,
@@ -10,13 +11,16 @@ import { ReactComponent as DeleteIcon } from '../../../assets/icons/product-inne
 import { ReactComponent as DocumentPDF } from '../../../assets/icons/product-inner-page-icons/document-list-icon.svg'
 import IconButtons from '../../../components/UI/buttons/IconButtons'
 import Button from '../../../components/UI/buttons/Button'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import PreviewSlider from '../../../components/UI/preview-slider/PreviewSlider'
 import {
   ProductReviewsRatingResponseType,
   getProductReviewsRatingByIdRequest
 } from '../../../api/product-id/product_idService'
 import ReviewItem from '../../../components/admin/product-inner-page/ReviewItem'
+import Modal from '../../../components/UI/modals/Modal'
+import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
+import { isAxiosError } from 'axios'
 type ProductPropType = {
   product: {
     productId: number
@@ -312,6 +316,63 @@ const StyledTab = styled(Tab)(() => ({
   color: '#292929'
 }))
 
+const ModalContainer = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  paddingTop: '',
+  paddingLeft: '60px',
+  paddingRight: '60px',
+  p: {
+    color: '#292929',
+    fontFamily: 'Inter, sans-serif',
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: '18px',
+    lineHeight: '140%',
+    textAlign: 'center'
+  }
+}))
+
+const ConfirmModalButton = styled(Button)(() => ({
+  backgroundColor: '#CB11AB',
+  padding: '0.5rem 1.5rem',
+  borderRadius: '4px',
+  color: '#fff',
+  fontFamily: 'Inter, sans-serif',
+  fontStyle: 'normal',
+  fontWeight: '400',
+  fontSize: '1rem',
+  lineHeight: '19px',
+  textTransform: 'none',
+  '&:hover': {
+    backgroundColor: '#991984'
+  }
+}))
+
+const CancelModalButton = styled(Button)(() => ({
+  backgroundColor: '#fff',
+  padding: '0.45rem 1rem',
+  borderRadius: '4px',
+  border: '1px solid #CB11AB',
+  color: '#CB11AB',
+  fontFamily: 'Inter, sans-serif',
+  fontStyle: 'normal',
+  fontWeight: '600',
+  fontSize: '1rem',
+  lineHeight: '19px',
+  textTransform: 'none',
+  '&:hover': {
+    color: '#fff'
+    // backgroundColor: '#fff'
+  }
+}))
+
+const ModalButtonContainers = styled('div')(() => ({
+  marginTop: '1rem',
+  display: 'flex',
+  justifyContent: 'space-around'
+}))
+
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props
 
@@ -341,6 +402,7 @@ function a11yProps(index: number) {
 
 const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPropType) => {
   const [value, setValue] = useState(0)
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [pdfLink, setPdfLink] = useState('')
   const [reviewRequestPage, setReviewRequestPage] = useState(3)
 
@@ -358,6 +420,10 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
+  }
+
+  const openDeleteModalHandler = () => {
+    setDeleteModalOpen((prevState) => !prevState)
   }
   const {
     price,
@@ -395,12 +461,28 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
   const characteristicsKeys = Object.keys(characteristics)
   const characteristicsValues = Object.values(characteristics)
 
+  const { snackbarHanler } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
+
   const getProductReviewsRating = async (req: number) => {
     try {
       const { data } = await getProductReviewsRatingByIdRequest(req)
       setReviewsRating(data)
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
     }
   }
 
@@ -415,10 +497,21 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
   const getProductReviews = async (reviewRequestObject: ProductReviewsResquestType) => {
     try {
       const { data } = await getProductReviewsByIdRequest(reviewRequestObject)
-      setReviewRequestPage(reviewRequestPage + 3)
       setReviews(data)
-    } catch (error) {
-      console.log(error)
+      setReviewRequestPage(reviewRequestPage + 3)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
     }
   }
 
@@ -426,37 +519,52 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
     try {
       const { data } = await getProductDocumentPDFByIdRequest(id)
 
-      // console.log(data)
-
       setPdfLink(data)
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
     }
   }
 
-  // useEffect(() => {
-  //   console.log('pdf')
-  // }, [pdfLink])
+  // const handleDownload = () => {
+  //   const link = document.createElement('a')
+  //   link.href = pdfLink
+  //   link.setAttribute('download', `${name}.pdf`)
+  //   document.body.appendChild(link)
+  //   link.click()
+  //   document.body.removeChild(link)
+  //   getProductDocumentPDF(product.subProductId)
+  // }
 
-  const handleDownload = () => {
-    const link = document.createElement('a')
-    link.href = pdfLink
-    link.setAttribute('download', `${name}.pdf`)
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    getProductDocumentPDF(product.subProductId)
+  const saveFile = (pdflink: string, filename: string) => {
+    fetch(pdflink)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const pdflink = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = pdflink
+        link.setAttribute('download', `${filename}.pdf`)
+        link.click()
+        URL.revokeObjectURL(pdflink)
+      })
+      .catch((error) => console.log(error))
   }
 
   return (
     <>
       <StyledFirstSection>
         <StyledSliderArticle>
-          {images.length > 0 ? (
-            <PreviewSlider images={images} />
-          ) : (
-            <h1 style={{ color: 'red' }}>ФОТО НЕ НАЙДЕНЫ!</h1>
-          )}
+          <PreviewSlider images={images} />
         </StyledSliderArticle>
         <StyledProductCardArticle>
           <StyledProductNameHeading>{name}</StyledProductNameHeading>
@@ -518,7 +626,7 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
                 <IconButtons
                   icon={<DeleteIcon />}
                   onClick={() => {
-                    deleteSubProductById([subProductId])
+                    openDeleteModalHandler()
                   }}
                 />
                 <Button onClick={() => {}}>РЕДАКТИРОВАТЬ</Button>
@@ -543,7 +651,11 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
             />
           </StyledTabs>
           <StyledPdfButtonContainer>
-            <StyledButton onClick={handleDownload}>
+            <StyledButton
+              onClick={() => {
+                saveFile(pdfLink, name)
+              }}
+            >
               <DocumentPDF /> Скачать документ .pdf
             </StyledButton>
           </StyledPdfButtonContainer>
@@ -586,17 +698,19 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
               )}
 
               <StyledShowMoreReviewsButtonBlock>
-                <Button
-                  onClick={() => {
-                    const reviewsPaginationObject = {
-                      productId,
-                      page: reviewRequestPage
-                    }
-                    getProductReviews(reviewsPaginationObject)
-                  }}
-                >
-                  Показать еще
-                </Button>
+                {reviewRequestPage >= reviews.length ? (
+                  <Button
+                    onClick={() => {
+                      const reviewsPaginationObject = {
+                        productId,
+                        page: reviewRequestPage
+                      }
+                      getProductReviews(reviewsPaginationObject)
+                    }}
+                  >
+                    Показать еще
+                  </Button>
+                ) : null}
               </StyledShowMoreReviewsButtonBlock>
             </div>
             <div style={{ width: '38%' }}>
@@ -629,6 +743,25 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
           </StyledReviewsTabBlock>
         </TabPanel>
       </StyledSecondSection>
+
+      <Modal open={isDeleteModalOpen} onClose={openDeleteModalHandler}>
+        <ModalContainer>
+          <p>Вы уверены, что хотите удалить этот продукт?</p>
+          <ModalButtonContainers>
+            <CancelModalButton variant="outlined" onClick={openDeleteModalHandler}>
+              Отменить
+            </CancelModalButton>
+            <ConfirmModalButton
+              onClick={() => {
+                deleteSubProductById([subProductId])
+                setDeleteModalOpen(false)
+              }}
+            >
+              Да
+            </ConfirmModalButton>
+          </ModalButtonContainers>
+        </ModalContainer>
+      </Modal>
     </>
   )
 }

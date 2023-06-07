@@ -14,7 +14,7 @@ import * as z from 'zod'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { signUp } from '../../../redux/store/auth/auth.thunk'
-import { PATHS } from '../../../utils/constants/router/routerConsts'
+import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 
 const StyledBlockName = styled('p')(() => ({
   fontFamily: 'Inter',
@@ -75,18 +75,19 @@ const StyledModalContent = styled('div')(() => ({
 const StyledIconButtonContainer = styled('div')(() => ({
   position: 'absolute',
   right: 7,
-  top: 310,
+  top: 17,
   zIndex: 10
 }))
 
 const Error = styled(Typography)(() => ({
+  fontSize: '13px',
   color: '#980606'
 }))
 
 const StyledSecondEyeIconButtonContainer = styled('div')(() => ({
   position: 'absolute',
   right: 7,
-  top: 385,
+  top: 17,
   zIndex: 10
 }))
 
@@ -113,12 +114,17 @@ const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
     setShowPassword((prevShowPassword) => !prevShowPassword)
   }
 
+  const { snackbarHanler } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
+
   const schema = z.object({
-    firstName: z.string().min(2),
-    lastName: z.string().min(2),
-    phoneNumber: z.string().min(2),
-    email: z.string().email(),
-    password: z.string().min(6)
+    firstName: z.string().min(2, 'Нужно написать больше 2 букв'),
+    lastName: z.string().min(2, 'Нужно написать больше 2 букв'),
+    phoneNumber: z.string().min(2, 'Требуется написать +996 и 13 последующих цифр'),
+    email: z.string().email('Не действительная почта'),
+    password: z.string().min(6, 'Длина пароля должна быть больше 2')
   })
   // .refine((data) => data.password === data.confirm, {
   //   message: "Passwords don't match",
@@ -140,9 +146,17 @@ const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
   })
 
   const submitHandler = (values: FormSchema) => {
-    dispatch(signUp(values))
-      .unwrap()
-      .then(() => navigate(PATHS.APP.logIn))
+    if (values.password === confirmPassword) {
+      dispatch(signUp(values))
+        .unwrap()
+        .then(() => navigate('/'))
+    } else {
+      snackbarHanler({
+        message: 'Пароли не совпадают',
+        linkText: '',
+        type: 'error'
+      })
+    }
   }
 
   const confirmPasswordChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -189,31 +203,35 @@ const SignUpModal = ({ open, onClose, hideBackdrop = false }: PropsType) => {
               type="email"
             />
             {formState.errors.email && <Error>{formState.errors.email?.message}</Error>}
-            <Input
-              error={!!formState.errors.password}
-              {...register('password')}
-              placeholder="Напишите пароль"
-              type={showPassword ? 'text' : 'password'}
-            />
-            {formState.errors.password && <Error>{formState.errors.password?.message}</Error>}
-            <StyledIconButtonContainer>
-              <IconButtons
-                onClick={togglePasswordVisibility}
-                icon={showPassword ? <EyeIcon /> : <SlashedEyeIcon />}
+            <div style={{ width: '100%', position: 'relative' }}>
+              <Input
+                error={!!formState.errors.password}
+                {...register('password')}
+                placeholder="Напишите пароль"
+                type={showPassword ? 'text' : 'password'}
               />
-            </StyledIconButtonContainer>
-            <Input
-              value={confirmPassword}
-              onChange={confirmPasswordChangeHandler}
-              placeholder="Напишите пароль"
-              type={showConfirmPassword ? 'text' : 'password'}
-            />
-            <StyledSecondEyeIconButtonContainer>
-              <IconButtons
-                onClick={toggleConfirmPasswordVisibility}
-                icon={showConfirmPassword ? <EyeIcon /> : <SlashedEyeIcon />}
+              {formState.errors.password && <Error>{formState.errors.password?.message}</Error>}
+              <StyledIconButtonContainer>
+                <IconButtons
+                  onClick={togglePasswordVisibility}
+                  icon={showPassword ? <EyeIcon /> : <SlashedEyeIcon />}
+                />
+              </StyledIconButtonContainer>
+            </div>
+            <div style={{ width: '100%', position: 'relative' }}>
+              <Input
+                value={confirmPassword}
+                onChange={confirmPasswordChangeHandler}
+                placeholder="Напишите пароль"
+                type={showConfirmPassword ? 'text' : 'password'}
               />
-            </StyledSecondEyeIconButtonContainer>
+              <StyledSecondEyeIconButtonContainer>
+                <IconButtons
+                  onClick={toggleConfirmPasswordVisibility}
+                  icon={showConfirmPassword ? <EyeIcon /> : <SlashedEyeIcon />}
+                />
+              </StyledSecondEyeIconButtonContainer>
+            </div>
 
             <Button variant="contained" type="submit">
               Создать Аккаунт

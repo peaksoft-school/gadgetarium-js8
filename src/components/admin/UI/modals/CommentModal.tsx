@@ -8,6 +8,8 @@ import {
   updateProductReviewAnswerByIdRequest
 } from '../../../../api/product-id/product_idService'
 import { useState } from 'react'
+import { useSnackbar } from '../../../../hooks/snackbar/useSnackbar'
+import { isAxiosError } from 'axios'
 const StyledOutlinedButton = styled(Button)(({ theme }) => ({
   borderColor: theme.customPalette.primary.main,
   color: theme.customPalette.primary.main,
@@ -89,25 +91,59 @@ const CommentModal = ({
     setInputValue(e.target.value)
   }
 
+  const { snackbarHanler } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
+
   const addCommentAnswer = async (req: ProductReviewPostType) => {
     try {
-      const { data } = await postProductReviewByIdRequest(req)
-      console.log(data)
-
+      await postProductReviewByIdRequest(req)
+      snackbarHanler({
+        message: 'Ответ успешно добавлен',
+        linkText: '',
+        type: 'success'
+      })
       getProductReviews(reviewsRequestObject)
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
     }
   }
 
   const updateCommentAnswer = async (req: ProductReviewPostType) => {
     try {
-      const { data } = await updateProductReviewAnswerByIdRequest(req)
-      console.log(data)
+      await updateProductReviewAnswerByIdRequest(req)
+      snackbarHanler({
+        message: 'Ответ успешно обновлен',
+        linkText: '',
+        type: 'success'
+      })
 
       getProductReviews(reviewsRequestObject)
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: 'Перейти ко всем товарам',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: 'Перейти ко всем товарам',
+        type: 'error'
+      })
     }
   }
   return (

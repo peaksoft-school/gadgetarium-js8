@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Box, Tab, Tabs, Typography, styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 import {
@@ -12,7 +12,8 @@ import {
 import ProductInfo from './ProductInfo'
 import ProductDetails from './ProductDetails'
 import { deleteProductByIdRequest } from '../../../api/product/productService'
-import { PATHS } from '../../../utils/constants/router/routerConsts'
+import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
+import { isAxiosError } from 'axios'
 
 const StyledTopLink = styled('a')(() => ({
   color: '#91969E',
@@ -95,6 +96,10 @@ function a11yProps(index: number) {
 }
 
 const ProductInnerPage = () => {
+  const { snackbarHanler, ToastContainer } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
   const [value, setValue] = useState(0)
   const [details, setDetails] = useState<ProductDetailsResponse[]>([
     {
@@ -143,77 +148,115 @@ const ProductInnerPage = () => {
     colour: ''
   }
 
-  const navigate = useNavigate()
-
   const getOneProduct = async (req: ProductIdRequestType) => {
     try {
       const { data } = await getProductByIdRequest(req)
       setProduct(data)
-    } catch (error) {
-      navigate(PATHS.ADMIN.products)
-      console.log(error)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
     }
   }
 
   const getProductDetails = async (req: number) => {
     try {
       const { data } = await getProductDetailsByIdRequest(req)
-      // console.log(data)
+
       setDetails(data)
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
     }
   }
   const deleteSubProductById = async (req: number[]) => {
     try {
-      const { data } = await deleteProductByIdRequest(req)
-      console.log(data)
+      await deleteProductByIdRequest(req)
       getOneProduct(obj)
+      snackbarHanler({
+        message: 'Товар Успешно удален!',
+        linkText: '',
+        type: 'success'
+      })
     } catch (e) {
-      console.log(e)
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
     }
   }
+
   useEffect(() => {
     getOneProduct(obj)
   }, [])
 
   return (
-    <StyledMainBlock>
-      <p style={{ fontSize: '14px' }}>
-        <StyledTopLink href="/admin/products">Товары</StyledTopLink> » {productName}
-      </p>
-      <div style={{ borderBottom: '1px solid #CDCDCD' }}>
-        <StyledProductLogo src={product.logo} alt="" />
-      </div>
+    <>
+      <StyledMainBlock>
+        {ToastContainer}
+        <p style={{ fontSize: '14px' }}>
+          <StyledTopLink href="/admin/products">Товары</StyledTopLink> » {productName}
+        </p>
+        <div style={{ borderBottom: '1px solid #CDCDCD' }}>
+          <StyledProductLogo src={product.logo} alt="" />
+        </div>
 
-      <StyledTabsBlock>
-        <StyledTabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <StyledTab label="Товар" {...a11yProps(0)} />
-          <StyledTab
-            onClick={() => {
-              getProductDetails(product.productId)
-            }}
-            label="Детали товара"
-            {...a11yProps(1)}
+        <StyledTabsBlock>
+          <StyledTabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <StyledTab label="Товар" {...a11yProps(0)} />
+            <StyledTab
+              onClick={() => {
+                getProductDetails(product.productId)
+              }}
+              label="Детали товара"
+              {...a11yProps(1)}
+            />
+          </StyledTabs>
+        </StyledTabsBlock>
+        <TabPanel value={value} index={0}>
+          <ProductInfo
+            deleteSubProductById={deleteSubProductById}
+            getOneProduct={getOneProduct}
+            product={product}
           />
-        </StyledTabs>
-      </StyledTabsBlock>
-      <TabPanel value={value} index={0}>
-        <ProductInfo
-          deleteSubProductById={deleteSubProductById}
-          getOneProduct={getOneProduct}
-          product={product}
-        />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <ProductDetails
-          getProductDetails={getProductDetails}
-          productId={product.productId}
-          deleteSubProductById={deleteSubProductById}
-          details={details}
-        />
-      </TabPanel>
-    </StyledMainBlock>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <ProductDetails
+            getProductDetails={getProductDetails}
+            productId={product.productId}
+            deleteSubProductById={deleteSubProductById}
+            details={details}
+          />
+        </TabPanel>
+      </StyledMainBlock>
+    </>
   )
 }
 

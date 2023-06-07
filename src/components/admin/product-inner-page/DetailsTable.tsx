@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import { useClientSidePagination } from '../../../hooks/pagination/usePagination'
 import styled from '@emotion/styled'
-import { deleteProductById } from '../../../redux/store/products/products.thunk'
 import CustomizedSnackbars from '../UI/error-snackbar/ErrorSnackbar'
-import { AppDispatch } from '../../../redux/store'
 import { Box, Checkbox, Pagination } from '@mui/material'
 import { Column } from '../../../utils/constants/tableColumns'
 import { ProductDetailsResponse } from '../../../api/product-id/product_idService'
@@ -85,8 +81,6 @@ const DetailsTable = <T,>({
   const [hoveredId, setHoveredId] = useState<number | null>(null)
   const [isOpen, setOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState('Error')
-  const dispatch = useDispatch<AppDispatch>()
-  //   const navigate = useNavigate()
   const { paginate } = useClientSidePagination()
 
   const handleSelect = (id: number) => {
@@ -158,16 +152,18 @@ const DetailsTable = <T,>({
           })}
         </tbody>
       </StyledTable>
-      {withPagination && (
-        <Box justifyContent="center" alignItems="center" display="flex" marginTop="2rem">
-          <Pagination
-            count={pageSize}
-            onChange={(event: React.ChangeEvent<unknown>, newPage) => onChange(newPage)}
-            color="secondary"
-            page={page}
-          />
-        </Box>
-      )}
+
+      {withPagination &&
+        (rows.length > 7 ? (
+          <Box justifyContent="center" alignItems="center" display="flex" marginTop="2rem">
+            <Pagination
+              count={pageSize}
+              onChange={(event: React.ChangeEvent<unknown>, newPage) => onChange(newPage)}
+              color="secondary"
+              page={page}
+            />
+          </Box>
+        ) : null)}
     </>
   )
 }

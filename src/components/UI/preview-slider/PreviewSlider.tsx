@@ -17,6 +17,11 @@ const ImageSlider = styled('div')(() => ({
   margin: '0 auto'
 }))
 
+const NotFoundblock = styled('div')(() => ({
+  width: '100%',
+  margin: '0 auto'
+}))
+
 const SliderImage = styled('div')(() => ({
   position: 'relative',
   height: '500px',
@@ -93,30 +98,38 @@ const PreviewSlider: React.FC<PreviewSliderProps> = ({ images }) => {
   }
 
   return (
-    <ImageSlider>
-      <Slider ref={sliderRef} {...settings}>
-        {images.map((image) => (
-          <SliderImage key={image}>
-            <img src={image} alt="image" />
-          </SliderImage>
-        ))}
-      </Slider>
-      <SliderButtons>
-        <IconButtons icon={<ArrowLeft onClick={handlePrevClick} />} />
-        <SliderSmallImages>
-          {images.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={`Slide ${index}`}
-              className={`thumbnail ${currentSlide === index ? 'active' : ''}`}
-              onClick={() => handleThumbnailClick(index)}
-            />
-          ))}
-        </SliderSmallImages>
-        <IconButtons icon={<ArrowRight onClick={handleNextClick} />} />
-      </SliderButtons>
-    </ImageSlider>
+    <>
+      {images.length > 0 ? (
+        <ImageSlider>
+          <Slider ref={sliderRef} {...settings}>
+            {images.map((image) => (
+              <SliderImage key={image}>
+                <img src={image} alt="image" />
+              </SliderImage>
+            ))}
+          </Slider>
+          <SliderButtons>
+            <IconButtons icon={<ArrowLeft onClick={handlePrevClick} />} />
+            <SliderSmallImages>
+              {images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Slide ${index}`}
+                  className={`thumbnail ${currentSlide === index ? 'active' : ''}`}
+                  onClick={() => handleThumbnailClick(index)}
+                />
+              ))}
+            </SliderSmallImages>
+            <IconButtons icon={<ArrowRight onClick={handleNextClick} />} />
+          </SliderButtons>
+        </ImageSlider>
+      ) : (
+        <NotFoundblock>
+          <h1 style={{ color: 'red' }}>ФОТО НЕ НАЙДЕНЫ!</h1>
+        </NotFoundblock>
+      )}
+    </>
   )
 }
 
