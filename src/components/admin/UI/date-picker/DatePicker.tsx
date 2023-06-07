@@ -7,6 +7,9 @@ import { styled } from '@mui/material'
 import { PickerChangeHandlerContext } from '@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue.types'
 import { DateValidationError } from '@mui/x-date-pickers'
 // ...
+import { PickerChangeHandlerContext } from '@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue.types'
+import { DateValidationError } from '@mui/x-date-pickers'
+
 const Container = styled('div')(() => ({
   width: '8.6875rem',
   height: '2.1875rem',
@@ -37,6 +40,7 @@ interface Props {
     | ((value: unknown, context: PickerChangeHandlerContext<DateValidationError>) => void)
     | undefined
 }
+
 const ProductsDatePicker = forwardRef(
   ({ value, onChange, placeholder }: Props, ref?: React.Ref<HTMLDivElement> | undefined) => {
     return (
@@ -51,10 +55,8 @@ const ProductsDatePicker = forwardRef(
                 backgroundColor: '#000'
               }
             }}
-            onChange={onChange}
             // popperProps={{ strategy: 'fixed' }}
             // onChange={onChange}
-
             slotProps={{ textField: { variant: 'outlined', placeholder } }}
           />
         </Container>
@@ -62,4 +64,5 @@ const ProductsDatePicker = forwardRef(
     )
   }
 )
+
 export default ProductsDatePicker
