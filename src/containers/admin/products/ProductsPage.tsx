@@ -85,7 +85,7 @@ const StyledLink = styled(Link)(() => ({
 const ProductsPage = () => {
   const dispatch = useDispatch<AppDispatch>()
   const [searchParams, setSearchParams] = useSearchParams()
-  const infographics = useSelector((state: RootState) => state.infographics.items)
+  const infographics: any = useSelector((state: RootState) => state.infographics.items)
   const [queryParams, setQueryParams] = useState({
     status: 'Все товары',
     page: 1,
@@ -119,7 +119,8 @@ const ProductsPage = () => {
   }, [queryParams, openDiscount])
 
   useEffect(() => {
-    dispatch(getInfographics())
+    const date = 'day'
+    dispatch(getInfographics(date))
   }, [])
 
   const searchCharacters = (word: any) => {

@@ -132,3 +132,25 @@ export const appTheme = createTheme({
     fontSize: 16
   }
 })
+
+// export const palette: Color[] = [
+//   { name: 'red', hex: '#ff0000' },
+//   { name: 'orange', hex: '#ffa500' },
+//   { name: 'yellow', hex: '#ffff00' },
+//   { name: 'green', hex: '#008000' },
+//   { name: 'green', hex: '#f9f9f9' },
+//   { name: 'blue', hex: '#0000ff' },
+//   { name: 'aqea', hex: '#00e5ff' },
+//   { name: 'black', hex: '#0f0e0f' },
+//   { name: 'darck-green', hex: '#052f11' },
+//   { name: 'yellow', hex: '#f6ff00' },
+//   { name: 'grey', hex: '#4e4a4a' },
+//   { name: 'bright-green', hex: '#aaff00' },
+//   { name: 'oragne', hex: '#ff6200' },
+//   { name: 'puple', hex: '#ac7ca4' },
+//   { name: 'aqua', hex: '#00ffd5' },
+//   { name: 'grey', hex: '#71888d' },
+//   { name: 'greendark', hex: '#043525' },
+
+//   { name: 'brightS', hex: '#cdd6d7' }
+// ]
