@@ -3,6 +3,7 @@ import { Routes, Route, Outlet } from 'react-router-dom'
 import { PATHS } from '../../utils/constants/router/routerConsts'
 import ProductsPage from '../../containers/admin/products/ProductsPage'
 import OrderPage from '../../containers/orders/OrderPage'
+import OrderInfoPage from '../../containers/orders/OrderInfoPage'
 
 const AdminRoutes = () => {
   return (
@@ -20,7 +21,7 @@ const AdminRoutes = () => {
 
           <Route path={PATHS.ADMIN.orders} element={<Outlet />}>
             <Route index element={<OrderPage />} />
-            <Route path={PATHS.ADMIN.orderId} element={<p>OrderInfoPage</p>} />
+            <Route path={PATHS.ADMIN.orderId} element={<OrderInfoPage />} />
             <Route path={PATHS.ADMIN.orderId} element={<p>Not Found</p>} />
           </Route>
 

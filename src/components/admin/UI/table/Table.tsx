@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Checkbox, Pagination, Box, styled } from '@mui/material'
 import { Column } from '../../../../utils/constants/tableColumns'
 import { useClientSidePagination } from '../../../../hooks/pagination/usePagination'
@@ -30,6 +30,7 @@ type Props<T> = {
   page: number
   pageSize: number
   onChange: (newPage: number) => void
+  collectSelectedIds: (ids: number[]) => void
 }
 
 const StyledTable = styled('table')`
@@ -111,6 +112,7 @@ const StyledIdtd = styled('td')`
 `
 
 const AppTable = <T,>({
+  collectSelectedIds,
   onChange,
   page,
   pageSize,
@@ -128,12 +130,17 @@ const AppTable = <T,>({
 
   const handleSelect = (id: number) => {
     const index = selectedIds.indexOf(id)
+
     if (index === -1) {
       setSelectedIds([...selectedIds, id])
     } else {
       setSelectedIds(selectedIds.filter((itemId) => itemId !== id))
     }
   }
+
+  useEffect(() => {
+    collectSelectedIds(selectedIds)
+  }, [selectedIds, collectSelectedIds])
 
   const handleRowHover = (id: number | null) => {
     setHoveredId(id)

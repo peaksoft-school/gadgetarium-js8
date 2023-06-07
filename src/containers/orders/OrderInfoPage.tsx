@@ -5,7 +5,7 @@ const ContainerStyled = styled('div')(() => ({
   mainHeight: '31.25rem',
   paddingLeft: '12.1875rem',
   paddingRight: '12.1875rem',
-  paddingTop: '3.9375rem',
+  paddingTop: '120px',
   fontFamily: 'inherit'
 }))
 
