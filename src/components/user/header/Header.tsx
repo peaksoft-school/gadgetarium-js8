@@ -10,8 +10,6 @@ import { ReactComponent as LikeIcon } from '../../../assets/icons/header-icons/l
 import { ReactComponent as HoveredLikeIcon } from '../../../assets/icons/header-icons/hoveredLikeIcon.svg'
 import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons/basketIcon.svg'
 import IconButtons from '../../UI/buttons/IconButtons'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../redux/store'
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
@@ -184,10 +182,7 @@ const LikeIconItem = styled('li')(() => ({
   }
 }))
 const Header = () => {
-  const [isBasketVisible, setIsBasketVisible] = useState<boolean>(false)
-
   const navigate = useNavigate()
-  const { items } = useSelector((state: RootState) => state.basket)
   const [catalog, setCatalog] = useState(false)
 
   const catalogHandler = () => {
@@ -195,7 +190,6 @@ const Header = () => {
   }
   const goToBasketHandler = () => {
     navigate('basket')
-    setIsBasketVisible(true)
   }
   return (
     <header>
@@ -263,9 +257,7 @@ const Header = () => {
           <InteractionIconsItem>
             <span>
               <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-              {isBasketVisible ? null : (
-                <StyledNotificationIcon>{items.length}</StyledNotificationIcon>
-              )}
+              <StyledNotificationIcon>2</StyledNotificationIcon>
             </span>
           </InteractionIconsItem>
         </InteractionIcons>

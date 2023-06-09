@@ -160,7 +160,9 @@ const Basket = ({ basketData }: { basketData: InitType }) => {
     setOpenModal(false)
   }
   const openModalHandler = () => {
-    setOpenModal(true)
+    if (productId.length > 0) {
+      setOpenModal(true)
+    }
   }
   const goToCheckoutHandler = () => {
     navigate('checkout')
