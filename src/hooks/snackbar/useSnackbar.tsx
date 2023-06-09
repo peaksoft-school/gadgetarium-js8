@@ -14,6 +14,7 @@ export interface SnackbarType {
     | 'bottom-right'
   type?: 'success' | 'error'
   autoClose?: number
+  link?: string
 }
 
 const Toastify = styled(ToastContainer)(() => ({

@@ -10,12 +10,13 @@ import { ReactComponent as LikeIcon } from '../../../assets/icons/header-icons/l
 import { ReactComponent as HoveredLikeIcon } from '../../../assets/icons/header-icons/hoveredLikeIcon.svg'
 import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons/basketIcon.svg'
 import IconButtons from '../../UI/buttons/IconButtons'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../redux/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../redux/store'
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
 import { SearchInput } from '../../UI/inputs/SearchInput'
+import { favouriteActions } from '../../../redux/store/favourites/favourites.slice'
 
 const StyledNotificationIcon = styled('span')(() => ({
   display: 'flex',
@@ -184,10 +185,9 @@ const LikeIconItem = styled('li')(() => ({
   }
 }))
 const Header = () => {
-  const [isBasketVisible, setIsBasketVisible] = useState<boolean>(false)
-
   const navigate = useNavigate()
-  const { items } = useSelector((state: RootState) => state.basket)
+  const { totalQuantity } = useSelector((state: RootState) => state.favourites)
+  const dispatch = useDispatch<AppDispatch>()
   const [catalog, setCatalog] = useState(false)
 
   const catalogHandler = () => {
@@ -195,7 +195,10 @@ const Header = () => {
   }
   const goToBasketHandler = () => {
     navigate('basket')
-    setIsBasketVisible(true)
+    dispatch(favouriteActions.addCount(0))
+  }
+  const goToFavouritesHandler = () => {
+    navigate('favourites')
   }
   return (
     <header>
@@ -257,15 +260,16 @@ const Header = () => {
               <IconButtons icon={<LikeIcon />} />
             </span>
             <span>
-              <IconButtons icon={<HoveredLikeIcon />} />
+              <IconButtons icon={<HoveredLikeIcon />} onClick={goToFavouritesHandler} />
             </span>
           </LikeIconItem>
           <InteractionIconsItem>
             <span>
               <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-              {isBasketVisible ? null : (
-                <StyledNotificationIcon>{items.length}</StyledNotificationIcon>
-              )}
+
+              {totalQuantity > 0 ? (
+                <StyledNotificationIcon>{totalQuantity}</StyledNotificationIcon>
+              ) : null}
             </span>
           </InteractionIconsItem>
         </InteractionIcons>

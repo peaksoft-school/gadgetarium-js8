@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, styled, Tab } from '@mui/material'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import { ReactComponent as DownloadIcon } from '../../../../assets/icons/admin-products/downloadIcon.svg'
+import Banner from '../banners/Banner'
 
 const StyledTab = styled(Tab)(() => ({
   backgroundColor: '#E0E2E7',
@@ -69,50 +70,59 @@ interface ProductsTabProps {
 
 const FeedbackTab: React.FC<ProductsTabProps> = ({ tabs, defaultValue }) => {
   const [value, setValue] = React.useState(defaultValue)
+  const [openModalBanner, setOpenModalBanner] = React.useState(false)
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
-
+  const openModalBannerHandler = () => {
+    setOpenModalBanner(true)
+  }
+  const closeModalBannerHandler = () => {
+    setOpenModalBanner(false)
+  }
   return (
-    <TabContainer>
-      <TabContext value={value}>
-        <TabList
-          onChange={handleChange}
-          TabIndicatorProps={{ style: { backgroundColor: '#fff' } }}
-          sx={{
-            div: {
-              '& button.Mui-selected': {
-                backgroundColor: '#384255',
-                color: '#fff'
+    <>
+      <TabContainer>
+        <TabContext value={value}>
+          <TabList
+            onChange={handleChange}
+            TabIndicatorProps={{ style: { backgroundColor: '#fff' } }}
+            sx={{
+              div: {
+                '& button.Mui-selected': {
+                  backgroundColor: '#384255',
+                  color: '#fff'
+                }
               }
-            }
-          }}
-          aria-label="lab API tabs example"
-        >
-          {tabs?.map((el) => (
-            <StyledTab key={el.id} label={el.label} value={el.value} />
-          ))}
+            }}
+            aria-label="lab API tabs example"
+          >
+            {tabs?.map((el) => (
+              <StyledTab key={el.id} label={el.label} value={el.value} />
+            ))}
 
-          <DownloadIconContainer>
-            <Link href="#download" color="inherit" underline="none">
-              <DownloadLinkContainer>
-                <DownloadIconCont>
-                  <DownloadIcon />
-                </DownloadIconCont>
-                <p>Загрузить баннер</p>
-              </DownloadLinkContainer>
-            </Link>
-          </DownloadIconContainer>
-        </TabList>
-        {tabs?.map((el) => {
-          return (
-            <StyledTabPanel key={el.id} value={el.value}>
-              {el.Component}
-            </StyledTabPanel>
-          )
-        })}
-      </TabContext>
-    </TabContainer>
+            <DownloadIconContainer>
+              <Link href="#download" color="inherit" underline="none">
+                <DownloadLinkContainer onClick={openModalBannerHandler}>
+                  <DownloadIconCont>
+                    <DownloadIcon />
+                  </DownloadIconCont>
+                  <p>Загрузить баннер</p>
+                </DownloadLinkContainer>
+              </Link>
+            </DownloadIconContainer>
+          </TabList>
+          {tabs?.map((el) => {
+            return (
+              <StyledTabPanel key={el.id} value={el.value}>
+                {el.Component}
+              </StyledTabPanel>
+            )
+          })}
+        </TabContext>
+      </TabContainer>
+      <Banner isOpen={openModalBanner} onClose={closeModalBannerHandler} />
+    </>
   )
 }
 
