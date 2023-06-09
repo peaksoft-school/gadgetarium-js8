@@ -13,6 +13,7 @@ import { deleteBasketById, moveToFavoritesById } from '../../../redux/store/bask
 import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 import { isRejectedWithValue } from '@reduxjs/toolkit'
 import { DeleteModal } from '../UI/modal/DeleteModal'
+import { CustomTooltip } from '../../UI/tooltip/CustomTooltip'
 interface PropsType {
   item: DataType
   setProductId: Dispatch<SetStateAction<number[]>>
@@ -274,14 +275,21 @@ const BasketItem = ({ item, setProductId, productId }: PropsType) => {
                 <StyledTotalPrice>{item.price} с</StyledTotalPrice>
               </ContainerAndPrice>
               <FavoritesContainer>
-                <MiniContainer>
-                  <IconButtons icon={<StyledLikeIcon />} onClick={productMovedToFavoritesHandle} />
-                  <TextStyled>В избранное</TextStyled>
-                </MiniContainer>
-                <MiniContainer>
-                  <IconButtons icon={<DeleteIcon />} onClick={openModalHandler} />
-                  <TextStyled>Удалить</TextStyled>
-                </MiniContainer>
+                <CustomTooltip title="Добавить в избранное">
+                  <MiniContainer>
+                    <IconButtons
+                      icon={<StyledLikeIcon />}
+                      onClick={productMovedToFavoritesHandle}
+                    />
+                    <TextStyled>В избранное</TextStyled>
+                  </MiniContainer>
+                </CustomTooltip>
+                <CustomTooltip title="Удалить из корзины">
+                  <MiniContainer>
+                    <IconButtons icon={<DeleteIcon />} onClick={openModalHandler} />
+                    <TextStyled>Удалить</TextStyled>
+                  </MiniContainer>
+                </CustomTooltip>
               </FavoritesContainer>
             </Grid>
           </ContainerInfo>
