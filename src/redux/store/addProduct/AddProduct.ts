@@ -16,7 +16,7 @@ export interface SelectOptionsCategorie {
   products: any
   loading: boolean
   error: string | null
-  subProduct: object
+  subProduct: object[]
 }
 
 const initialState: SelectOptionsCategorie = {
@@ -27,7 +27,7 @@ const initialState: SelectOptionsCategorie = {
   products: [],
   loading: false,
   error: '',
-  subProduct: {}
+  subProduct: []
 }
 
 export const addProductSlice = createSlice({
@@ -41,8 +41,58 @@ export const addProductSlice = createSlice({
       state.subProduct = action.payload
     },
     addPriceToSubProduct: (state, action) => {
-      const { index, price } = action.payload
-      state.products[index].subProducts.price = price
+      state.products = state.products.map((product: any) => {
+        if (product.id === action.payload.id) {
+          const updatedSubProducts = product.subProducts.map((subProduct: any) => {
+            if (subProduct.id === action.payload.subProductId) {
+              return { ...subProduct, price: action.payload.price }
+            }
+            return subProduct
+          })
+          return { ...product, subProducts: updatedSubProducts }
+        }
+        return product
+      })
+    },
+    addPriceToAllProducts: (state, action) => {
+      state.products = state.products.map((product: any) => {
+        const updatedSubProducts = product.subProducts.map((subProduct: any) => {
+          return { ...subProduct, price: action.payload }
+        })
+        return { ...product, subProducts: updatedSubProducts }
+      })
+    },
+    addQuantityToSubProduct: (state, action) => {
+      state.products = state.products.map((product: any) => {
+        if (product.id === action.payload.id) {
+          const updatedSubProducts = product.subProducts.map((subProduct: any) => {
+            if (subProduct.id === action.payload.subProductId) {
+              return { ...subProduct, quantity: action.payload.quantity }
+            }
+            return subProduct
+          })
+          return { ...product, subProducts: updatedSubProducts }
+        }
+        return product
+      })
+    },
+    addQuantityToAllProducts: (state, action) => {
+      state.products = state.products.map((product: any) => {
+        const updatedSubProducts = product.subProducts.map((subProduct: any) => {
+          return { ...subProduct, quantity: action.payload }
+        })
+        return { ...product, subProducts: updatedSubProducts }
+      })
+    },
+    addDescriptionToProducts: (state, action) => {
+      state.products = state.products.map((product: object) => {
+        return { ...product, description: action.payload.description }
+      })
+    },
+    addVideoLinkToProducts: (state, action) => {
+      state.products = state.products.map((product: object) => {
+        return { ...product, video: action.payload.videoLink }
+      })
     }
   },
   extraReducers: (builder) => {
@@ -54,9 +104,6 @@ export const addProductSlice = createSlice({
     builder.addCase(getProductBrandAndSubCategories.pending, (state) => {
       state.loading = true
     })
-    // builder.addCase(getProductCategories.rejected, (state, action) => {
-    //   state.error = action.payload
-    // })
   }
 })
 export const addProductActions = addProductSlice.actions

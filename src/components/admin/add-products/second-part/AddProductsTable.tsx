@@ -95,7 +95,6 @@ const AddProductsTable = <T,>({ columns, rows, getUniqueId }: Props<T>) => {
                       </StyledTableCell>
                     )
                   })}
-                  <span>test</span>
                 </TableRow>
               )
             })}

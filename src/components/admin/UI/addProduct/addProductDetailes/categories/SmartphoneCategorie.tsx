@@ -51,7 +51,17 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
 
   useEffect(() => {
     dispatch(
-      addProductActions.addSubProduct({ bannerImages, color: color, memorySize, ram, simCard })
+      addProductActions.addSubProduct([
+        {
+          colour: color,
+          images: bannerImages,
+          characteristics: {
+            memorySize: memorySize,
+            ram: ram,
+            simCard: simCard
+          }
+        }
+      ])
     )
   }, [memorySize, bannerImages, color, ram, simCard])
 
@@ -78,8 +88,6 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
     setOpenColorPicker((prevState) => !prevState)
   }
   const memorySizeHandler = (event: SelectChangeEvent<typeof memorySize>) => {
-    console.log(event.target.value, '=> memorySize')
-
     setMemorySize(event.target.value)
   }
   const RAMHandler = (event: SelectChangeEvent<typeof ram>) => {
@@ -116,7 +124,6 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
       </StyledInputContainer>
       <StyledInputContainer>
         <StyledFormLable htmlFor="Оперативная память">Оперативная память</StyledFormLable>
-
         <Select
           id="Оперативная память"
           name="Оперативная память"

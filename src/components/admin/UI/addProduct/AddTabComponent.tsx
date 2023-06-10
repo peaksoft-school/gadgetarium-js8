@@ -174,6 +174,11 @@ export type ProductType = {
   subCategoryId: string | number
   dateOfIssue: string
   subProducts: any
+  price?: number
+  quantity?: number
+  id?: string
+  video?: string
+  pdfFile?: string
 }
 
 type Props = {
@@ -184,26 +189,37 @@ const AddTabComponent = ({ handleNext }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const { options, products, subProduct } = useSelector((state: RootState) => state.addNewProduct)
 
+  console.log(products)
+
   const [selectedValueFirst, setSelectedValueFirst] = useState<string | number>('')
   const [selectedValueSecond, setSelectedValueSecond] = useState<string | number>('')
   const [selectedValueThird, setSelectedValueThird] = useState<string | number>(0)
-  const [garanteeProduct, setgaranteeProduct] = useState<string>('')
+  const [garanteeProduct, setgaranteeProduct] = useState<number>()
   const [dateOfIssue, setdateOfIssueProduct] = useState<string>('')
   const [nameProduct, setnameProduct] = useState<string>('')
 
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [categories, setCategories] = useState([])
 
+  const [quantity] = useState<number>(1)
+
   const saveHandler = () => {
     const newProduct = {
-      name: selectedValueFirst,
+      name: nameProduct,
       brandId: selectedValueSecond,
+      guarantee: garanteeProduct,
       subCategoryId: selectedValueThird,
       dateOfIssue,
       subProducts: subProduct
+      // id: Date.now().toString()
     }
     dispatch(addProductActions.addProduct(newProduct))
   }
+
+  const quantityChangeHandler = () => {
+    dispatch(addProductActions.addQuantityToAllProducts(quantity))
+  }
+
   const handleModal = () => {
     setOpenModal((prevState) => !prevState)
   }
@@ -214,7 +230,7 @@ const AddTabComponent = ({ handleNext }: Props) => {
     setnameProduct(event.target.value)
   }
   const garanteeProductHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setgaranteeProduct(event.target.value)
+    setgaranteeProduct(+event.target.value)
   }
   const dataProductHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setdateOfIssueProduct(event.target.value)
@@ -347,7 +363,7 @@ const AddTabComponent = ({ handleNext }: Props) => {
               Продукт <span>{products.length}</span>
             </StyledQuantityProduct>
             <StyledContainerAddProduct onClick={saveHandler}>
-              <IconButtons icon={<PlusIcon />} />
+              <IconButtons icon={<PlusIcon />} onClick={quantityChangeHandler} />
               <StyledTextAddProduct>Добавить продукт</StyledTextAddProduct>
             </StyledContainerAddProduct>
           </StyledContainer>

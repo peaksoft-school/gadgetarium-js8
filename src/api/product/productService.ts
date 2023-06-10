@@ -38,6 +38,6 @@ export const getAllProductsRequest = (queryParams: any) => {
   })
 }
 
-export const deleteProductByIdRequest = (id: number) => {
-  return mainApi.delete<AllProductsResponse>(`/api/admin/products/${id}`)
+export const deleteProductByIdRequest = (subProductIds: number) => {
+  return mainApi.delete<AllProductsResponse>(`/api/admin/products?subProductIds=${subProductIds}`)
 }

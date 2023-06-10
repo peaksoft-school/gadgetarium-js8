@@ -93,8 +93,11 @@ export const ReusableSelect: React.FC<SelectProps> = ({
         <StyledOption value="" disabled sx={{ display: 'none' }}>
           {placeholder}
         </StyledOption>
-        {options.map((option) => (
-          <StyledOption key={option.id} value={getOptionValue ? getOptionValue(option) : option.id}>
+        {options.map((option: any) => (
+          <StyledOption
+            key={option.id}
+            value={getOptionValue ? getOptionValue(option.name) : option.id}
+          >
             {option.name}
           </StyledOption>
         ))}

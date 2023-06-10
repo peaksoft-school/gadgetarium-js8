@@ -140,10 +140,10 @@ const Infographics = ({ infographicsData }: InfographicsProps) => {
         <StyledDivider orientation="vertical" />
         <SecondPriceContainer>
           <SecondPrice>
-            {infographicsData.countOrdered} <span>С</span>
+            {infographicsData.orderedForTheAmount} <span>С</span>
           </SecondPrice>
           <SecondDescription>Заказали на сумму</SecondDescription>
-          <SecondAmount>{infographicsData.orderedForTheAmount} шт</SecondAmount>
+          <SecondAmount>{infographicsData.countOrdered} шт</SecondAmount>
         </SecondPriceContainer>
       </PricesInfoContainer>
       <InfographicsTab infographicsData={infographicsData} />

@@ -34,19 +34,23 @@ const SmartWatchCategorie = () => {
 
   useEffect(() => {
     dispatch(
-      addProductActions.addSubProduct({
-        shape,
-        colorSmartWatch,
-        memory1,
-        material,
-        size,
-        gender,
-        waterproof,
-        bannerImages,
-        size2,
-        display,
-        wireless
-      })
+      addProductActions.addSubProduct([
+        {
+          characteristics: {
+            shape,
+            memory1,
+            material,
+            size,
+            gender,
+            waterproof,
+            size2,
+            display,
+            wireless
+          },
+          images: bannerImages,
+          colorSmartWatch
+        }
+      ])
     )
   }, [
     colorSmartWatch,

@@ -54,13 +54,17 @@ const CreatePlanshetCategorie = ({ selectedValueFirst }: Props) => {
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
   useEffect(() => {
     dispatch(
-      addProductActions.addSubProduct({
-        additionalProp3,
-        additionalProp2,
-        bannerImages,
-        colorPlanshet,
-        additionalProp1
-      })
+      addProductActions.addSubProduct([
+        {
+          images: bannerImages,
+          characteristics: {
+            additionalProp3,
+            additionalProp2,
+            additionalProp1
+          },
+          colorPlanshet
+        }
+      ])
     )
   }, [additionalProp3, bannerImages, colorPlanshet, additionalProp1, additionalProp2])
 

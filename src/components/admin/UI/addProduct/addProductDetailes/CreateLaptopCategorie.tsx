@@ -63,16 +63,20 @@ const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
   }
   useEffect(() => {
     dispatch(
-      addProductActions.addSubProduct({
-        bannerImages,
-        purpose,
-        colorLaptop,
-        laptopProcessor1,
-        srceen,
-        sizeScrean,
-        video,
-        select
-      })
+      addProductActions.addSubProduct([
+        {
+          images: bannerImages,
+          characteristics: {
+            purpose,
+            laptopProcessor1,
+            srceen,
+            sizeScrean,
+            video,
+            select
+          },
+          colorLaptop
+        }
+      ])
     )
   }, [bannerImages, purpose, colorLaptop, laptopProcessor1, srceen, sizeScrean, video, select])
 

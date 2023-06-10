@@ -1,11 +1,12 @@
 import React, { useState, ChangeEvent } from 'react'
-import { Button, Input as MuiInput, styled } from '@mui/material'
+import { Button, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../redux/store'
 import { Column } from '../../../../utils/constants/tableColumns'
 import AddProductsTable from './AddProductsTable'
 import Input from '../../../UI/inputs/Input'
 import { ProductType } from '../../UI/addProduct/AddTabComponent'
+import { TablePriceInput, TableQuantityInput } from '../../UI/table-inputs/TableInputs'
 import { addProductActions } from '../../../../redux/store/addProduct/AddProduct'
 
 const StyledButton = styled(Button)(() => ({
@@ -87,23 +88,24 @@ type Props = {
   handleNext: () => void
 }
 
+type ItemProps = {
+  price?: number
+  quantity?: number
+  color?: string
+}
+
 const SecondPart = ({ handleNext }: Props) => {
-  const [transferredValue, setTransferredValue] = useState('')
-  const [quantity, setQuantity] = useState('')
+  const dispatch = useDispatch<AppDispatch>()
+  const [transferredValue, setTransferredValue] = useState<number>()
+
   const products = useSelector((state: RootState) => state.addNewProduct.products)
 
-  const dispatch = useDispatch<AppDispatch>()
-
   const priceChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setTransferredValue(e.target.value)
+    setTransferredValue(+e.target.value)
   }
 
-  const quantityChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setQuantity(e.target.value)
-  }
-
-  const setPriceToTableChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setTransferredValue(e.target.value)
+  const handleTransferClick = () => {
+    dispatch(addProductActions.addPriceToAllProducts(transferredValue))
   }
 
   const columns: Column<ProductType>[] = [
@@ -121,7 +123,9 @@ const SecondPart = ({ handleNext }: Props) => {
       key: 'color',
       render: (product: ProductType) => (
         <>
-          <p style={{ paddingLeft: '1rem' }}>{product.subProducts.color}</p>
+          <p style={{ paddingLeft: '1rem' }}>
+            {product.subProducts.map((item: any) => item.colour)}
+          </p>
         </>
       )
     },
@@ -130,7 +134,9 @@ const SecondPart = ({ handleNext }: Props) => {
       key: 'memory',
       render: (product: ProductType) => (
         <>
-          <p style={{ paddingLeft: '1.5rem' }}>{product.subProducts.memorySize.label}</p>
+          <p style={{ paddingLeft: '1.5rem' }}>
+            {product.subProducts.map((item: any) => item.characteristics.ram.name)}
+          </p>
         </>
       )
     },
@@ -139,7 +145,9 @@ const SecondPart = ({ handleNext }: Props) => {
       key: 'ram',
       render: (product: ProductType) => (
         <>
-          <p style={{ paddingLeft: '1.5rem' }}>{product.subProducts.ram.label}</p>
+          <p style={{ paddingLeft: '1.5rem' }}>
+            {product.subProducts.map((item: any) => item.characteristics.memorySize.label)}
+          </p>
         </>
       )
     },
@@ -148,7 +156,9 @@ const SecondPart = ({ handleNext }: Props) => {
       key: 'sim-cards',
       render: (product: ProductType) => (
         <>
-          <p style={{ paddingLeft: '1.5rem' }}>{product.subProducts.simCard.label}</p>
+          <p style={{ paddingLeft: '1.5rem' }}>
+            {product.subProducts.map((item: any) => item.characteristics.additionalProps1)}
+          </p>
         </>
       )
     },
@@ -164,38 +174,20 @@ const SecondPart = ({ handleNext }: Props) => {
     {
       header: 'Кол-во товара',
       key: 'quantity',
-      render: () => (
-        <MuiInput
-          value={quantity}
-          onChange={quantityChangeHandler}
-          disableUnderline
-          type="number"
-          style={{
-            width: '100%',
-            paddingLeft: '1rem',
-            height: '4rem',
-            borderRight: '1px solid #CDCDCD',
-            backgroundColor: 'rgba(203, 17, 171, 0.1)'
-          }}
+      render: (product: ProductType) => (
+        <TableQuantityInput
+          quantity={product.subProducts.map((item: ItemProps) => item.quantity)}
+          id={product.id}
         />
       )
     },
     {
       header: 'Цена',
       key: 'price',
-      render: () => (
-        <MuiInput
-          disableUnderline
-          value={transferredValue}
-          onChange={setPriceToTableChangeHandler}
-          type="number"
-          style={{
-            paddingLeft: '1rem',
-            width: '100%',
-            height: '4rem',
-            border: 'none',
-            backgroundColor: 'rgba(203, 17, 171, 0.1)'
-          }}
+      render: (product: ProductType) => (
+        <TablePriceInput
+          transferredValue={product.subProducts.map((item: ItemProps) => item.price)}
+          id={product.id}
         />
       )
     }
@@ -211,7 +203,7 @@ const SecondPart = ({ handleNext }: Props) => {
             type="number"
             placeholder="Цена"
           />
-          <StyledButton>Установить цену</StyledButton>
+          <StyledButton onClick={handleTransferClick}>Установить цену</StyledButton>
         </PriceContainer>
       </div>
       <TableContainer>

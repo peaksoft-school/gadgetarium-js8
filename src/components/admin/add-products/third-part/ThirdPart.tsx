@@ -1,7 +1,13 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, SetStateAction, useState } from 'react'
 import { Button, IconButton, InputAdornment, TextField, styled } from '@mui/material'
 import { ReactComponent as ImportIcon } from '../../../../assets/icons/admin-add-products/importIcon.svg'
 import TextEditor from './TextEditor'
+import { useAppDispatch } from '../../../../hooks/redux/redux'
+import { addProductActions } from '../../../../redux/store/addProduct/AddProduct'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../../redux/store'
+import { addProducts } from '../../../../redux/store/addProduct/addProduct.thunk'
+import { uploadFileService } from '../../../../api/add-product/addProductService'
 
 const StyledLabel = styled('p')`
   font-family: 'Inter';
@@ -101,22 +107,51 @@ type PdfType = {
 }
 
 const ThirdPart = () => {
-  const [description, setDescription] = useState('')
+  const dispatch = useAppDispatch()
   const [pdfFile, setPdfFile] = useState<PdfType | null>()
-  const [video, setVideo] = useState('')
+  const [url, setUrl] = useState()
 
-  const videoChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setVideo(event.target.value)
+  const products = useSelector((state: RootState) => state.addNewProduct.products)
+
+  const videoChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(addProductActions.addVideoLinkToProducts({ videoLink: e.target.value }))
   }
 
   const pdfFileChangeHandler = (event: any) => {
     const file = event.target.files[0]
-    setPdfFile(file || null)
+    const formData = new FormData()
+    formData.append('file', file)
+    setPdfFile(formData as unknown as SetStateAction<PdfType | null | undefined>)
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        setUrl(reader.result as any)
+      }
+      reader.readAsDataURL(file)
+    }
   }
 
-  const descriptionChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setDescription(event.target.value)
+  const postPdfFileHandler = async () => {
+    const fileResponse = await uploadFileService(pdfFile)
+    const fileUrl = fileResponse.data.link
+    setPdfFile(fileUrl)
+    return fileUrl
   }
+
+  const descriptionChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(addProductActions.addDescriptionToProducts({ description: e.target.value }))
+  }
+
+  const addProductHandler = async () => {
+    const fileResponse = pdfFile && (await postPdfFileHandler())
+    if (fileResponse) {
+      const productss = products.map((item: any) => ({ ...item, PDF: fileResponse }))
+      dispatch(addProducts(productss[0]))
+    }
+  }
+
+  console.log(url)
+
   return (
     <>
       <main>
@@ -124,7 +159,7 @@ const ThirdPart = () => {
           <div>
             <StyledLabel>Загрузите видеообзор</StyledLabel>
             <StyledTextField
-              value={video}
+              value={products.videoLink}
               onChange={videoChangeHandler}
               placeholder="Вставьте ссылку на видеообзор"
               color="secondary"
@@ -141,7 +176,7 @@ const ThirdPart = () => {
           <div>
             <StyledLabel>Загрузите документ PDF</StyledLabel>
             <StyledTextField
-              value={pdfFile?.name}
+              value={url}
               disabled
               placeholder="Вставьте документ в PDF файле"
               color="secondary"
@@ -163,11 +198,11 @@ const ThirdPart = () => {
           <StyledLabel2>
             Описание <StyledSpan>*</StyledSpan>
           </StyledLabel2>
-          <TextEditor onChange={descriptionChangeHandler} value={description} />
+          <TextEditor onChange={descriptionChangeHandler} value={products.description} />
         </DescriptionContainer>
         <ButtonsContainer>
           <StyledButton>Отменить</StyledButton>
-          <StyledButton2>Добавить</StyledButton2>
+          <StyledButton2 onClick={addProductHandler}>Добавить</StyledButton2>
         </ButtonsContainer>
       </main>
     </>
