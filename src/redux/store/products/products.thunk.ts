@@ -39,9 +39,9 @@ const queryParams = {
 
 export const deleteProductById = createAsyncThunk(
   'products/deleteProduct',
-  async (id: number, { dispatch, rejectWithValue }) => {
+  async (ids: number[], { dispatch, rejectWithValue }) => {
     try {
-      await deleteProductByIdRequest(id)
+      await deleteProductByIdRequest(ids)
       // eslint-disable-next-line @typescript-eslint/return-await
       return dispatch(getAllProducts(queryParams))
     } catch (e) {
