@@ -18,10 +18,8 @@ export const CustomTooltip = ({
   children: ReactJSXElement
 }) => {
   return (
-    <>
-      <CustomTooltipStyled title={title} arrow placement="top">
-        {children}
-      </CustomTooltipStyled>
-    </>
+    <CustomTooltipStyled title={title} arrow placement="top">
+      {children}
+    </CustomTooltipStyled>
   )
 }

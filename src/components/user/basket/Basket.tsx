@@ -55,7 +55,7 @@ const ContainerSumOfOrder = styled('div')(() => ({
   padding: '1.875rem',
   borderRadius: '.3125rem',
   position: 'fixed',
-  right: '12.5rem'
+  right: '10.5rem'
 }))
 const TitleSumOfOrder = styled('h3')(() => ({
   fontWeight: 500,
@@ -141,11 +141,11 @@ const Basket = ({ basketData }: { basketData: InitType }) => {
       setProductId(dataId)
     }
   }
-  const snackbarHandle = () => {
+  const snackbarHandle = (message: string, type: 'success' | 'error' | undefined) => {
     snackbarHanler({
-      message: 'Товар успешно добавлен в избранное!',
+      message: message,
       linkText: '',
-      type: 'success'
+      type: type
     })
   }
   const moveToChoosenProductToFavoritesHandler = () => {
@@ -155,7 +155,7 @@ const Basket = ({ basketData }: { basketData: InitType }) => {
   }
   const deleteChoosenProductHandler = () => {
     if (productId.length > 0) {
-      dispatch(deleteBasketByChoosenId(productId))
+      dispatch(deleteBasketByChoosenId({ id: productId, snackbar: snackbarHandle }))
     }
     setOpenModal(false)
   }

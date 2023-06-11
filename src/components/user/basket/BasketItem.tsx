@@ -156,9 +156,9 @@ const BasketItem = ({ item, setProductId, productId }: PropsType) => {
       subProductId: item.subProductId
     }
 
-    dispatch(basketActions.calculateSum())
     dispatch(basketActions.increment(data))
     dispatch(basketActions.decrement(data))
+    dispatch(basketActions.calculateSum())
   }, [])
 
   const addCountHandler = () => {
@@ -172,13 +172,17 @@ const BasketItem = ({ item, setProductId, productId }: PropsType) => {
   }
 
   const subtractCountHandler = () => {
-    const data = {
-      productQuantity: item.quantityProduct - 1,
-      subProductId: item.subProductId
-    }
+    if (item.quantityProduct <= 1) {
+      setOpenModal(true)
+    } else {
+      const data = {
+        productQuantity: item.quantityProduct - 1,
+        subProductId: item.subProductId
+      }
 
-    dispatch(basketActions.decrement(data))
-    dispatch(basketActions.calculateSum())
+      dispatch(basketActions.decrement(data))
+      dispatch(basketActions.calculateSum())
+    }
   }
   const checkboxHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.target.checked
@@ -194,16 +198,15 @@ const BasketItem = ({ item, setProductId, productId }: PropsType) => {
       setProductId(deletedItems)
     }
   }
+  const snackbarDeleteHandler = (message: string, type: 'success' | 'error' | undefined) => {
+    snackbarHanler({
+      message: message,
+      linkText: '',
+      type
+    })
+  }
   const removeByIdBasket = () => {
-    dispatch(deleteBasketById(item.subProductId))
-      .unwrap()
-      .then(() => {
-        snackbarHanler({
-          message: 'Товар успешно добавлен в избранное!',
-          linkText: '',
-          type: 'success'
-        })
-      })
+    dispatch(deleteBasketById({ id: item.subProductId, snackbar: snackbarDeleteHandler }))
     setOpenModal(false)
   }
   const productMovedToFavoritesHandle = () => {
@@ -259,7 +262,6 @@ const BasketItem = ({ item, setProductId, productId }: PropsType) => {
                       </Circle>
                     }
                     onClick={subtractCountHandler}
-                    disabled={item.quantityProduct <= 1}
                   />
                   <Number>{item.quantityProduct}</Number>
                   <StyledIconButton

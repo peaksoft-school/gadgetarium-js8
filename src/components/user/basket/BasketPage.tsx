@@ -8,7 +8,7 @@ import EmptyBasket from './EmptyBasket'
 const Container = styled('div')(() => ({
   width: '100%',
   height: '100%',
-  padding: '3.75rem 12.1875rem 7.5rem 12.1875rem',
+  padding: '3.75rem 10.1875rem 7.5rem 12.1875rem',
   fontFamily: 'Inter',
   fontStyle: 'normal',
   backgroundColor: '#e1e1e1'
