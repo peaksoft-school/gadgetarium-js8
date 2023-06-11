@@ -3,7 +3,8 @@ import { FavouriteType, favouriteActions } from '../../../redux/store/favourites
 import { AppDispatch, RootState } from '../../../redux/store'
 import {
   postOrDeleteFavourites,
-  postToBasketFromFavourite
+  postToBasketFromFavourite,
+  postToComporisonsFromFavourite
 } from '../../../redux/store/favourites/favourites.thunk'
 import { FavouriteCard } from '../card/FavouriteCard'
 import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
@@ -12,6 +13,7 @@ export const Favourites = ({ items }: { items: FavouriteType[] }) => {
   const dispatch = useDispatch<AppDispatch>()
   const totalQuantity = useSelector((state: RootState) => state.favourites.totalQuantity)
   const { snackbarHanler, ToastContainer } = useSnackbar({ autoClose: 2500, position: 'top-right' })
+
   return (
     <>
       {items?.map((item) => {
@@ -28,6 +30,15 @@ export const Favourites = ({ items }: { items: FavouriteType[] }) => {
             rating={item.rating}
             quantityOfPeople={null}
             isFavourite={item.isFavourite}
+            scaleIconOnClick={() => {
+              const data = { id: item.subProductId, isCompare: true }
+              dispatch(postToComporisonsFromFavourite(data))
+              snackbarHanler({
+                message: 'Товар добавлен в список сравнения!',
+                linkText: '',
+                type: 'success'
+              })
+            }}
             basketOnClick={() => {
               const data = { subproductId: item.subProductId, quantity: 1 }
               const count = totalQuantity + 1

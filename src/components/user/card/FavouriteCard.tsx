@@ -139,14 +139,7 @@ const ButtonContainer = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center'
 }))
-const StyledScaleIcon = styled(IconButtons)(() => ({
-  'path:hover': {
-    fill: '#CB11AB'
-  },
-  'path:active': {
-    fill: '#CB11AB'
-  }
-}))
+
 export const FavouriteCard = ({
   isFavourite,
   ellipseChildren = <LikeIcon />,
@@ -170,7 +163,7 @@ export const FavouriteCard = ({
           <StyledEllipseIcon ellipseColor={ellipseColor}>{ellipseChildren}</StyledEllipseIcon>
         ) : null}
         <ContainerTwoIcons>
-          <StyledScaleIcon onClick={scaleIconOnClick} icon={<ScaleIcon />} />
+          <StyledIconButton onClick={scaleIconOnClick} icon={<ScaleIcon />} />
           <StyledIconButton
             onClick={heartIconOnClick}
             icon={isFavourite ? <HoveredLikeIcon /> : <HeartIcon />}

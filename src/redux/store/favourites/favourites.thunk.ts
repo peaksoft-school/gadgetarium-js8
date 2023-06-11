@@ -2,7 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
   deleteFavouritesRequest,
   getFavouritesRequest,
-  postFavouritesRequest
+  postFavouritesRequest,
+  postToComparisonRequest
 } from '../../../api/favourites/favouritesService'
 import { AxiosError, isAxiosError } from 'axios'
 import { FavouriteType } from './favourites.slice'
@@ -78,6 +79,24 @@ export const postToBasketFromFavourite = createAsyncThunk(
   async (payload: { quantity: number; subproductId: number }, { rejectWithValue }) => {
     try {
       await postBasketRequest(payload)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        const error = e as AxiosError<{
+          status: number
+          message: string
+        }>
+        return rejectWithValue(error.response?.data.message)
+      }
+      return rejectWithValue('Something went wrong')
+    }
+  }
+)
+
+export const postToComporisonsFromFavourite = createAsyncThunk(
+  'favourite/postToComparisonsFromFavourite',
+  async (payload: { id: number; isCompare: boolean }, { rejectWithValue }) => {
+    try {
+      await postToComparisonRequest(payload)
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{
