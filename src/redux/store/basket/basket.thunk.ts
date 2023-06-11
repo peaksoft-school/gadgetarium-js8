@@ -50,7 +50,7 @@ export const deleteBasketById = createAsyncThunk(
       dispatch(getAllBasket())
         .unwrap()
         .then(() => {
-          payload.snackbar('Товар успешно добавлен удален!', 'success')
+          payload.snackbar('Товар успешно удален!', 'success')
         })
         .catch((e) => {
           isRejectedWithValue(e)
