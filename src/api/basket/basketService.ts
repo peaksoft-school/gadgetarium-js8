@@ -15,9 +15,9 @@ export const deleteBasketByChoosenIdRequest = (subProductsId: number[]) => {
 }
 
 export const moveToFavoritesByIdRequest = (id: number) => {
-  return mainApi.post(`api/baskets/move_to_favorites_by_id?id=${id}`)
+  return mainApi.post(`api/favourites/${id}?addOrDelete=true`)
 }
 
 export const moveToFavoritesByChoosenIdRequest = (productIds: number[]) => {
-  return mainApi.post(`api/baskets/move_to_favorites`, productIds)
+  return mainApi.post(`api/favourites/move_to_favorites`, productIds)
 }

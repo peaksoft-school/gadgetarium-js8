@@ -19,9 +19,10 @@ type Props = {
     dateOfFinish: string
   }) => void
 }
-export const StyledForm = styled('form')`
+const StyledForm = styled('form')`
+  width: 100%;
   align-items: center;
-  padding-bottom: 10px;
+  padding: 1rem;
 `
 export const StyledInput = styled(Input)(() => ({
   width: '30rem',
@@ -33,6 +34,7 @@ export const StyledInput = styled(Input)(() => ({
   }
 }))
 const StyledHeader = styled('div')`
+  width: 30rem;
   text-align: center;
   margin-bottom: 30px;
 `
