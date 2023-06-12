@@ -135,7 +135,13 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
             </StyledModalHeading>
           )}
           <StyledCrossIconContainer>
-            <IconButtons onClick={onClose} icon={<CrossIcon />} />
+            <IconButtons
+              onClick={() => {
+                onClose()
+                navigate('/')
+              }}
+              icon={<CrossIcon />}
+            />
           </StyledCrossIconContainer>
           <StyledBlockName>Войти</StyledBlockName>
 

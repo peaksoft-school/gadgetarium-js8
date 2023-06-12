@@ -1,13 +1,15 @@
 import { styled } from '@mui/material'
-import { ReactComponent as ScaleIcon } from '../../assets/icons/product-icons/scales.svg'
-import { ReactComponent as HeartIcon } from '../../assets/icons/product-icons/shape.svg'
-import { ReactComponent as BasketIcon } from '../../assets/icons/product-icons/basket.svg'
-import { ReactComponent as LikeIcon } from '../../assets/icons/product-icons/like_icon.svg'
-import ImageProduct from '../../assets/images/image53.png'
+import Tippy from '@tippyjs/react'
+import { ReactComponent as ScaleIcon } from '../../../assets/icons/product-icons/scales.svg'
+import { ReactComponent as HeartIcon } from '../../../assets/icons/product-icons/shape.svg'
+import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons/basketIcon.svg'
+import { ReactComponent as LikeIcon } from '../../../assets/icons/product-icons/like_icon.svg'
+import ImageProduct from '../../../assets/images/image53.png'
 import Button from '../../UI/buttons/Button'
 import IconButtons from '../../UI/buttons/IconButtons'
 import TextWithEllipsis from './CardText'
 import ProductRating from './RatingProduct'
+import { StyledIconButtonCart } from '../header/Header'
 
 interface ProductType {
   ellipseChildren?: string | React.ReactNode
@@ -15,8 +17,8 @@ interface ProductType {
   amount?: number
   productText?: string
   rating?: number
-  newPrice?: number
-  oldPrice?: number
+  newPrice?: number | string
+  oldPrice?: number | string
   basketOnClick?: () => void
   ellipsIconOnClick?: () => void
   scaleIconOnClick?: () => void
@@ -32,7 +34,7 @@ const StyledIconButton = styled(IconButtons)(() => ({
 }))
 
 const CardContainer = styled('div')(() => ({
-  width: '300px',
+  width: '100%',
   borderRadius: '4px',
   boxSizing: 'border-box',
   background: '#fff',
@@ -99,7 +101,7 @@ const StyledButton = styled(Button)(() => ({
   ':hover': {
     backgroundColor: '#CB11AB'
   },
-  padding: '12px 20px',
+  padding: '10px 15px',
   marginRight: '5px'
 }))
 const StyledBasketTitle = styled('span')(() => ({
@@ -113,6 +115,7 @@ const StyledContainerPricesAndButton = styled('div')(() => ({
   marginTop: '16px',
   display: 'flex',
   alignItems: 'center',
+  gap: '5px',
   justifyContent: 'space-between'
 }))
 const StyledContainerPrices = styled('div')(() => ({
@@ -135,6 +138,17 @@ const StyledOldPrice = styled('span')(() => ({
 const ButtonContainer = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center'
+}))
+const StyledTippyForCatalog = styled(Tippy)(() => ({
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontWeight: '400',
+  fontSize: '14px',
+
+  display: 'flex',
+  alignItems: 'center',
+
+  color: '#FFFFFF'
 }))
 export const ProductCard = ({
   ellipseChildren = <LikeIcon />,
@@ -161,8 +175,28 @@ export const ProductCard = ({
           }
         />
         <ContainerTwoIcons>
-          <StyledIconButton onClick={scaleIconOnClick} icon={<ScaleIcon />} />
-          <StyledIconButton onClick={heartIconOnClick} icon={<HeartIcon />} />
+          <StyledTippyForCatalog
+            interactive={true}
+            interactiveBorder={10}
+            delay={20}
+            trigger="mouseenter"
+            content={<h1>Добавить к сравнению</h1>}
+          >
+            <StyledIconButtonCart>
+              <StyledIconButton onClick={scaleIconOnClick} icon={<ScaleIcon />} />
+            </StyledIconButtonCart>
+          </StyledTippyForCatalog>
+          <StyledTippyForCatalog
+            interactive={true}
+            interactiveBorder={10}
+            delay={20}
+            trigger="mouseenter"
+            content={<h1>Добавить в избранное</h1>}
+          >
+            <StyledIconButtonCart>
+              <StyledIconButton onClick={heartIconOnClick} icon={<HeartIcon />} />
+            </StyledIconButtonCart>
+          </StyledTippyForCatalog>
         </ContainerTwoIcons>
       </ContainerIcon>
       <StyledArticle>
@@ -176,8 +210,8 @@ export const ProductCard = ({
         <ProductRating rating={rating} quantityOfPeople={quantityOfPeople} />
         <StyledContainerPricesAndButton>
           <StyledContainerPrices>
-            <StyledNewPrice>{newPrice} с</StyledNewPrice>
-            <StyledOldPrice> {oldPrice}с</StyledOldPrice>
+            <StyledNewPrice>{newPrice}c</StyledNewPrice>
+            <StyledOldPrice> {oldPrice}</StyledOldPrice>
           </StyledContainerPrices>
           <ButtonContainer>
             <StyledButton variant="contained" onClick={basketOnClick}>

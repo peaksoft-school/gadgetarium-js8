@@ -50,9 +50,6 @@ export const addProductSlice = createSlice({
     builder.addCase(getProductBrandAndSubCategories.pending, (state) => {
       state.loading = true
     })
-    // builder.addCase(getProductCategories.rejected, (state, action) => {
-    //   state.error = action.payload
-    // })
   }
 })
 export const addProductActions = addProductSlice.actions

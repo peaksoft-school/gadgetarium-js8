@@ -8,7 +8,7 @@ import AddbrandModal from './AddbrandModal'
 import { ReactComponent as PlusIcon } from '../../../../assets/icons/Plus.svg'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../redux/store'
-import { getProductCategorieService } from '../../../../api/addProductService'
+import { getProductCategorieService } from '../../../../api/addProduct/addProductService'
 import { getProductBrandAndSubCategories } from '../../../../redux/store/addProduct/getCategories.thunk'
 import SmartWatchCategorie from './addProductDetailes/categories/SmartWatchCategorie'
 import AddDetailsProduct from './addProductDetailes/categories/SmartphoneCategorie'
@@ -189,7 +189,6 @@ const AddTabComponent: React.FC = () => {
 
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [categories, setCategories] = useState([])
-  console.log(products)
 
   const saveHandler = () => {
     const newProduct = {

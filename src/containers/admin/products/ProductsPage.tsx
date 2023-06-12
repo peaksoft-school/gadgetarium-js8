@@ -274,7 +274,7 @@ const ProductsPage = () => {
           </ProductsTabContainer>
         </FirstContainer>
         <div>
-          <Infographics infographicsData={infographics} />x
+          <Infographics infographicsData={infographics} />
         </div>
       </Main>
     </>
