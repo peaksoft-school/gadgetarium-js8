@@ -11,9 +11,10 @@ import { AppDispatch } from '../../../redux/store'
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { deleteBasketById, moveToFavoritesById } from '../../../redux/store/basket/basket.thunk'
 import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
-import { isRejectedWithValue } from '@reduxjs/toolkit'
 import { DeleteModal } from '../UI/modal/DeleteModal'
 import { CustomTooltip } from '../../UI/tooltip/CustomTooltip'
+import { ReactComponent as HoveredLikeIcon } from '../../../assets/icons/header-icons/hoveredLikeIcon.svg'
+
 interface PropsType {
   item: DataType
   setProductId: Dispatch<SetStateAction<number[]>>
@@ -137,6 +138,12 @@ const StyledLikeIcon = styled(LikeIcon)(() => ({
   width: '1rem',
   height: '.8125rem'
 }))
+const HoveredLikeIconStyled = styled(HoveredLikeIcon)(() => ({
+  width: '1rem',
+  height: '1rem',
+  margin: '0rem',
+  padding: '0rem'
+}))
 const MiniContainer = styled('label')(() => ({
   display: 'flex',
   alignItems: 'center'
@@ -198,7 +205,7 @@ const BasketItem = ({ item, setProductId, productId }: PropsType) => {
       setProductId(deletedItems)
     }
   }
-  const snackbarDeleteHandler = (message: string, type: 'success' | 'error' | undefined) => {
+  const isSnackbarHandler = (message: string, type: 'success' | 'error' | undefined) => {
     snackbarHanler({
       message: message,
       linkText: '',
@@ -206,22 +213,27 @@ const BasketItem = ({ item, setProductId, productId }: PropsType) => {
     })
   }
   const removeByIdBasket = () => {
-    dispatch(deleteBasketById({ id: item.subProductId, snackbar: snackbarDeleteHandler }))
+    dispatch(deleteBasketById({ id: item.subProductId, snackbar: isSnackbarHandler }))
     setOpenModal(false)
   }
   const productMovedToFavoritesHandle = () => {
-    dispatch(moveToFavoritesById({ id: item.subProductId }))
-      .unwrap()
-      .then(() => {
-        snackbarHanler({
-          message: 'Товар успешно добавлен в избранное!',
-          linkText: '',
-          type: 'success'
+    if (item.inFavorites) {
+      dispatch(
+        moveToFavoritesById({
+          id: item.subProductId,
+          isFavourite: false,
+          snackbar: isSnackbarHandler
         })
-      })
-      .catch((e) => {
-        isRejectedWithValue(e)
-      })
+      )
+    } else {
+      dispatch(
+        moveToFavoritesById({
+          id: item.subProductId,
+          isFavourite: true,
+          snackbar: isSnackbarHandler
+        })
+      )
+    }
   }
   const openModalHandler = () => {
     setOpenModal(true)
@@ -280,7 +292,7 @@ const BasketItem = ({ item, setProductId, productId }: PropsType) => {
                 <CustomTooltip title="Добавить в избранное">
                   <MiniContainer>
                     <IconButtons
-                      icon={<StyledLikeIcon />}
+                      icon={item.inFavorites ? <HoveredLikeIconStyled /> : <StyledLikeIcon />}
                       onClick={productMovedToFavoritesHandle}
                     />
                     <TextStyled>В избранное</TextStyled>

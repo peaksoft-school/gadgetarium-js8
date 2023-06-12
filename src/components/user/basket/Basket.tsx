@@ -119,6 +119,13 @@ const SumPriceStyled = styled('span')(() => ({
   borderBottom: '2px solid',
   marginLeft: '0.3125rem'
 }))
+const StyledIconButton = styled(IconButtons)(() => ({
+  '&:hover': {
+    path: {
+      fill: '#CB11AB'
+    }
+  }
+}))
 const Basket = ({ basketData }: { basketData: InitType }) => {
   const navigate = useNavigate()
   const [openModal, setOpenModal] = useState<boolean>(false)
@@ -183,13 +190,13 @@ const Basket = ({ basketData }: { basketData: InitType }) => {
         </List>
         <List>
           <Label>
-            <IconButtons icon={<StyledDeleteIcon />} onClick={openModalHandler} />
+            <StyledIconButton icon={<StyledDeleteIcon />} onClick={openModalHandler} />
             Удалить
           </Label>
         </List>
         <List>
           <Label>
-            <IconButtons
+            <StyledIconButton
               icon={<StyledLikeIcon />}
               onClick={moveToChoosenProductToFavoritesHandler}
             />

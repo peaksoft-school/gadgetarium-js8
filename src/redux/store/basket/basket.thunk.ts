@@ -50,7 +50,7 @@ export const deleteBasketById = createAsyncThunk(
       dispatch(getAllBasket())
         .unwrap()
         .then(() => {
-          payload.snackbar('Товар успешно удален!', 'success')
+          payload.snackbar('Товар успешно удален из корзины!', 'success')
         })
         .catch((e) => {
           isRejectedWithValue(e)
@@ -70,15 +70,36 @@ export const deleteBasketById = createAsyncThunk(
 )
 export const moveToFavoritesById = createAsyncThunk(
   'basket/moveToFavoritesById',
-  async (payload: { id: number }, { rejectWithValue }) => {
+  async (
+    payload: { id: number; isFavourite: boolean; snackbar: SnackbarHandler },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
-      await moveToFavoritesByIdRequest(payload.id)
+      const dataFavourite = {
+        id: payload.id,
+        isFavourite: payload.isFavourite
+      }
+      await moveToFavoritesByIdRequest(dataFavourite)
+      dispatch(getAllBasket())
+        .unwrap()
+        .then(() => {
+          if (payload.isFavourite) {
+            payload.snackbar('Товар успешно добавлен в избранное!', 'success')
+          } else {
+            payload.snackbar('Товар успешно удален из избранного!', 'success')
+          }
+        })
+        .catch((e) => {
+          isRejectedWithValue(e)
+        })
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{
           status: number
           message: string
         }>
+        payload.snackbar(error.response?.data.message || 'Повторите попытку', 'error')
+
         return rejectWithValue(error.response?.data.message)
       }
       return rejectWithValue('Something went wrong')
@@ -122,7 +143,7 @@ export const deleteBasketByChoosenId = createAsyncThunk(
       dispatch(getAllBasket())
         .unwrap()
         .then(() => {
-          payload.snackbar('Товар успешно добавлен удален!', 'success')
+          payload.snackbar('Товар успешно удален из корзины!', 'success')
         })
         .catch((e) => {
           isRejectedWithValue(e)

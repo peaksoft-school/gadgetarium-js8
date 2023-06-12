@@ -16,6 +16,7 @@ export type DataType = {
   totalPrice: number
   percent: number
   discount: number
+  inFavorites: boolean
 }
 export type ItemType = DataType[]
 export type InitType = {
