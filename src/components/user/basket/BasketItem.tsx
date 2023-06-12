@@ -289,7 +289,9 @@ const BasketItem = ({ item, setProductId, productId }: PropsType) => {
                 <StyledTotalPrice>{item.price} с</StyledTotalPrice>
               </ContainerAndPrice>
               <FavoritesContainer>
-                <CustomTooltip title="Добавить в избранное">
+                <CustomTooltip
+                  title={item.inFavorites ? 'Удалить из избранного' : 'Добавить в избранное'}
+                >
                   <MiniContainer>
                     <IconButtons
                       icon={item.inFavorites ? <HoveredLikeIconStyled /> : <StyledLikeIcon />}
