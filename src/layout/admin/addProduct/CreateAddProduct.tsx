@@ -1,7 +1,8 @@
 import React from 'react'
 import { Container, Divider, styled } from '@mui/material'
 import { MyComponent } from '../../../components/admin/UI/addProduct/CreateAddTabsComponent'
-import { useSearchParams } from 'react-router-dom'
+import { NavLink, useSearchParams } from 'react-router-dom'
+import { PATHS } from '../../../utils/constants/router/routerConsts'
 
 const StyledNav = styled('nav')(() => ({
   display: 'flex',
@@ -13,7 +14,25 @@ const StyledContainer = styled(Container)(() => ({
   marginBottom: '150px'
 }))
 
-const StyledNavLink = styled('a')(() => ({
+const StyledNavLink = styled(NavLink)(() => ({
+  textDecoration: 'none',
+  fontFamily: 'Inter, sans-serif',
+  fontStyle: 'normal',
+  fontWeight: '400',
+  fontSize: '0.875rem',
+  lineHeight: '140%',
+  color: '#292929',
+  '&:not(:last-of-type)': {
+    color: '#91969E'
+  },
+  '&:not(:last-of-type)::after': {
+    margin: '0.25rem',
+    content: "'»'",
+    color: '#91969E'
+  }
+}))
+
+const StyledLink = styled('a')(() => ({
   textDecoration: 'none',
   fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
@@ -66,8 +85,8 @@ const AddProductsPage = () => {
     <>
       <StyledContainer>
         <StyledNav>
-          <StyledNavLink>Товары </StyledNavLink>
-          <StyledNavLink>{renderedTitle}</StyledNavLink>
+          <StyledNavLink to={PATHS.ADMIN.default}>Товары </StyledNavLink>
+          <StyledLink>{renderedTitle}</StyledLink>
         </StyledNav>
 
         <Title>{renderedTitle}</Title>

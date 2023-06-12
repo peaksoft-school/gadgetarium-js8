@@ -50,7 +50,7 @@ const CreatePlanshetCategorie = ({ selectedValueFirst }: Props) => {
   const { imagesClassname, bannerImages, handleImageUpload, deleteImage, setBannerImages } =
     useBanner()
 
-  const [colorPlanshet, setPlanshetColor] = useState<string>('')
+  const [colour, setPlanshetColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
   useEffect(() => {
     dispatch(
@@ -62,11 +62,11 @@ const CreatePlanshetCategorie = ({ selectedValueFirst }: Props) => {
             additionalProp2,
             additionalProp1
           },
-          colorPlanshet
+          colour
         }
       ])
     )
-  }, [additionalProp3, bannerImages, colorPlanshet, additionalProp1, additionalProp2])
+  }, [additionalProp3, bannerImages, colour, additionalProp1, additionalProp2])
 
   useEffect(() => {
     setBannerImages([])
@@ -113,7 +113,7 @@ const CreatePlanshetCategorie = ({ selectedValueFirst }: Props) => {
         <StyledFormLable htmlFor="Основной цвет">Основной цвет</StyledFormLable>
 
         <ReusableColorPicker
-          color={colorPlanshet}
+          color={colour}
           colorPickerHandler={colorPickerHandler}
           openColorHandler={openColorHandler}
           openColorPicker={openColorPicker}

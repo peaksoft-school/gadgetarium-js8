@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent } from 'react'
-import { Button, styled } from '@mui/material'
+import { Button, SelectChangeEvent, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../redux/store'
 import { Column } from '../../../../utils/constants/tableColumns'
@@ -130,35 +130,29 @@ const SecondPart = ({ handleNext }: Props) => {
       )
     },
     {
-      header: 'Объем памяти',
-      key: 'memory',
+      header: 'Название',
+      key: 'name',
       render: (product: ProductType) => (
         <>
-          <p style={{ paddingLeft: '1.5rem' }}>
-            {product.subProducts.map((item: any) => item.characteristics.ram.name)}
-          </p>
+          <p style={{ paddingLeft: '1.5rem' }}>{product.name}</p>
         </>
       )
     },
     {
-      header: 'Оперативная память',
-      key: 'ram',
+      header: 'Гарантия',
+      key: 'guarantee',
       render: (product: ProductType) => (
         <>
-          <p style={{ paddingLeft: '1.5rem' }}>
-            {product.subProducts.map((item: any) => item.characteristics.memorySize.label)}
-          </p>
+          <p style={{ paddingLeft: '1.5rem' }}>{product.guarantee}</p>
         </>
       )
     },
     {
-      header: 'Кол-во SIM-карт',
-      key: 'sim-cards',
+      header: 'Категория',
+      key: 'category',
       render: (product: ProductType) => (
         <>
-          <p style={{ paddingLeft: '1.5rem' }}>
-            {product.subProducts.map((item: any) => item.characteristics.additionalProps1)}
-          </p>
+          <p style={{ paddingLeft: '1.5rem' }}>{product.subCategoryId}</p>
         </>
       )
     },

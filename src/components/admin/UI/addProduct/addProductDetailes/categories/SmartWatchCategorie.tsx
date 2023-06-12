@@ -8,10 +8,10 @@ import { additionalProp2 } from '../../../../../../utils/constants/optionsCatego
 import ReusableColorPicker from '../../../../../ReusableColorPicker'
 import { RadioButton } from '../../../../../UI/RadioButton'
 import ImagePickerAddProduct from '../../ImagePicker'
-import { useBanner } from '../../../../../../hooks/banner/useBanner'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../../../redux/store'
 import { addProductActions } from '../../../../../../redux/store/addProduct/AddProduct'
+import { useAddProductBanner } from '../../../../../../hooks/banner/useAddProductBanner'
 
 const SmartWatchCategorie = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -26,11 +26,23 @@ const SmartWatchCategorie = () => {
   const [waterproof, setWaterproof] = useState<string>('')
   const [wireless, setWireless] = useState('')
   const [shape, setShape] = useState('')
-  const { imagesClassname, bannerImages, handleImageUpload, setBannerImages, deleteImage } =
-    useBanner()
+  const {
+    imagesClassname,
+    bannerImages,
+    handleImageUpload,
+    setBannerImages,
+    deleteImage,
+    postRequestBanner
+  } = useAddProductBanner()
 
-  const [colorSmartWatch, setSmartWatchColor] = useState<string>('')
+  console.log(bannerImages)
+
+  const [colour, setSmartWatchColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
+
+  useEffect(() => {
+    postRequestBanner()
+  }, [bannerImages])
 
   useEffect(() => {
     dispatch(
@@ -48,12 +60,12 @@ const SmartWatchCategorie = () => {
             wireless
           },
           images: bannerImages,
-          colorSmartWatch
+          colour
         }
       ])
     )
   }, [
-    colorSmartWatch,
+    colour,
     memory1,
     material,
     size,
@@ -120,7 +132,7 @@ const SmartWatchCategorie = () => {
       <StyledInputContainer>
         <StyledFormLable htmlFor="Основной цвет">Основной цвет</StyledFormLable>
         <ReusableColorPicker
-          color={colorSmartWatch}
+          color={colour}
           colorPickerHandler={colorPickerHandler}
           openColorHandler={openColorHandler}
           openColorPicker={openColorPicker}

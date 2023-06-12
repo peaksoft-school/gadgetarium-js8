@@ -46,14 +46,14 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
   const { imagesClassname, bannerImages, handleImageUpload, setBannerImages, deleteImage } =
     useBanner()
 
-  const [color, setColor] = useState<string>('')
+  const [colour, setColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
 
   useEffect(() => {
     dispatch(
       addProductActions.addSubProduct([
         {
-          colour: color,
+          colour: colour,
           images: bannerImages,
           characteristics: {
             memorySize: memorySize,
@@ -63,7 +63,7 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
         }
       ])
     )
-  }, [memorySize, bannerImages, color, ram, simCard])
+  }, [memorySize, bannerImages, colour, ram, simCard])
 
   useEffect(() => {
     setBannerImages([])
@@ -102,7 +102,7 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
       <StyledInputContainer>
         <StyledFormLable htmlFor="Основной цвет">Основной цвет</StyledFormLable>
         <ReusableColorPicker
-          color={color}
+          color={colour}
           colorPickerHandler={colorPickerHandler}
           openColorHandler={openColorHandler}
           openColorPicker={openColorPicker}

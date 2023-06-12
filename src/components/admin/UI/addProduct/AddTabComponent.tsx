@@ -68,15 +68,14 @@ export const StyledInput = styled(Input)(() => ({
   border: ' .0625rem solid #CDCDCD',
   borderRadius: '.375rem',
   width: '20.75rem',
-
   color: '#272525',
 
-  height: '3.1875rem',
+  height: '2.3rem',
   '&.MuiInputBase-root': {
     margin: '.3125rem'
   },
   '&.input.focused': {
-    border: '.125rem solid #50a3e7',
+    border: '.125rem solid #CB11AB',
     background: '#F4F4F4',
     color: '#272525'
   },
@@ -84,7 +83,7 @@ export const StyledInput = styled(Input)(() => ({
     border: '.0625rem solid red'
   },
   '&:hover': {
-    border: '.125rem solid #0a0a0a',
+    border: '0.5px solid #CB11AB',
     background: '#F4F4F4',
     color: '#272525'
   }
@@ -179,6 +178,7 @@ export type ProductType = {
   id?: string
   video?: string
   pdfFile?: string
+  guarantee?: number
 }
 
 type Props = {
@@ -210,8 +210,8 @@ const AddTabComponent = ({ handleNext }: Props) => {
       guarantee: garanteeProduct,
       subCategoryId: selectedValueThird,
       dateOfIssue,
-      subProducts: subProduct
-      // id: Date.now().toString()
+      subProducts: subProduct,
+      id: Date.now().toString()
     }
     dispatch(addProductActions.addProduct(newProduct))
   }
@@ -245,9 +245,11 @@ const AddTabComponent = ({ handleNext }: Props) => {
   const getCategories = async () => {
     try {
       const { data } = await getProductCategorieService()
+      console.log(data)
       setCategories(data)
     } catch (error) {}
   }
+
   const getSubCategories = async () => {
     dispatch(getProductBrandAndSubCategories(selectedValueFirst))
   }
@@ -364,7 +366,9 @@ const AddTabComponent = ({ handleNext }: Props) => {
             </StyledQuantityProduct>
             <StyledContainerAddProduct onClick={saveHandler}>
               <IconButtons icon={<PlusIcon />} onClick={quantityChangeHandler} />
-              <StyledTextAddProduct>Добавить продукт</StyledTextAddProduct>
+              <StyledTextAddProduct style={{ cursor: 'pointer' }}>
+                Добавить продукт
+              </StyledTextAddProduct>
             </StyledContainerAddProduct>
           </StyledContainer>
           {selectedValueFirst === 1 ? (
@@ -382,6 +386,7 @@ const AddTabComponent = ({ handleNext }: Props) => {
           </StyledLinkContainer>
         </>
       )}
+      {console.log(selectedValueFirst)}
     </>
   )
 }

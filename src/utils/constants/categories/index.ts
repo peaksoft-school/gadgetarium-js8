@@ -1,7 +1,6 @@
 import Smart from '../../../assets/icons/categories/smart.svg'
 import Nout from '../../../assets/icons/categories/nout.svg'
 import SmartWatch from '../../../assets/icons/categories/smartWatch.svg'
-import Earphone from '../../../assets/icons/categories/earphone.svg'
 
 export interface CategoriTypes {
   icon: string

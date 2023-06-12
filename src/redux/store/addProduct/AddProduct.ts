@@ -45,7 +45,9 @@ export const addProductSlice = createSlice({
         if (product.id === action.payload.id) {
           const updatedSubProducts = product.subProducts.map((subProduct: any) => {
             if (subProduct.id === action.payload.subProductId) {
-              return { ...subProduct, price: action.payload.price }
+              if (action.payload.price !== 0) {
+                return { ...subProduct, price: action.payload.price }
+              }
             }
             return subProduct
           })

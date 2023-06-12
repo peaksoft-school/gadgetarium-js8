@@ -43,8 +43,8 @@ export const StyledOption = styled(MenuItem)(() => ({
   }
 }))
 export const StyledSelect = styled(Select)(() => ({
-  '&.MuiSelect-outlined': {
-    padding: '0px'
+  '.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input': {
+    padding: '8px 14px !important'
   },
 
   border: ' .0625rem solid #CDCDCD',
@@ -54,12 +54,11 @@ export const StyledSelect = styled(Select)(() => ({
   justifyContent: 'space-between',
   flexDirection: 'row',
   alignItems: 'center',
-  // padding: '.30px 8px',
   background: '#F7F7F7',
   margin: '.3125rem',
 
   '&:hover': {
-    border: '.125rem solid #0a0a0a',
+    border: '0.5px solid #CB11AB',
     background: '#F4F4F4',
     color: '#292929',
     path: {
@@ -67,7 +66,7 @@ export const StyledSelect = styled(Select)(() => ({
     }
   },
   '&:focus': {
-    border: '.125rem solid #0a0a0a',
+    border: '.125rem solid #CB11AB',
     background: '#F4F4F4',
     color: '#292929'
   },
@@ -88,7 +87,7 @@ export const ReusableSelect: React.FC<SelectProps> = ({
   getOptionValue
 }) => {
   return (
-    <FormControl>
+    <FormControl required>
       <StyledSelect id={id} name={name} value={value} onChange={onChange} displayEmpty>
         <StyledOption value="" disabled sx={{ display: 'none' }}>
           {placeholder}

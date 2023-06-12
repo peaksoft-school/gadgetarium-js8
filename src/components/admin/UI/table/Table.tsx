@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Checkbox, Pagination, Box, styled } from '@mui/material'
+import { Checkbox, Pagination, Box, styled, Button } from '@mui/material'
 import { Column } from '../../../../utils/constants/tableColumns'
 import { useClientSidePagination } from '../../../../hooks/pagination/usePagination'
 import { ReactComponent as DeleteIcon } from '../../../../assets/icons/admin-products/deleteIcon.svg'
@@ -10,6 +10,7 @@ import { AppDispatch } from '../../../../redux/store'
 import { deleteProductById } from '../../../../redux/store/products/products.thunk'
 import IconButtons from '../../../UI/buttons/IconButtons'
 import CustomizedSnackbars from '../error-snackbar/ErrorSnackbar'
+import Modal from '../../../UI/modals/Modal'
 
 type RowType = {
   createdAt: string
@@ -111,6 +112,60 @@ const StyledIdtd = styled('td')`
   padding: 10px 23px 10px 10px;
 `
 
+const ModalContainer = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  paddingTop: '1rem',
+  paddingLeft: '30px',
+  paddingRight: '30px',
+  paddingBottom: '1rem',
+  p: {
+    color: '#292929',
+    fontFamily: 'Inter, sans-serif',
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: '18px',
+    lineHeight: '140%',
+    textAlign: 'center'
+  }
+}))
+
+const DeleteModalButton = styled(Button)(() => ({
+  backgroundColor: '#CB11AB',
+  padding: '0.5rem 1.5rem',
+  borderRadius: '4px',
+  color: '#fff',
+  fontFamily: 'Inter, sans-serif',
+  fontStyle: 'normal',
+  fontWeight: '400',
+  fontSize: '1rem',
+  lineHeight: '19px',
+  textTransform: 'none',
+  '&:hover': {
+    backgroundColor: '#991984'
+  }
+}))
+
+const CancelModalButton = styled(Button)(() => ({
+  backgroundColor: '#fff',
+  padding: '0.45rem 1rem',
+  borderRadius: '4px',
+  border: '1px solid #CB11AB',
+  color: '#CB11AB',
+  fontFamily: 'Inter, sans-serif',
+  fontStyle: 'normal',
+  fontWeight: '600',
+  fontSize: '1rem',
+  lineHeight: '19px',
+  textTransform: 'none'
+}))
+
+const ModalButtonContainers = styled('div')(() => ({
+  marginTop: '2rem',
+  display: 'flex',
+  justifyContent: 'space-around'
+}))
+
 const AppTable = <T,>({
   collectSelectedIds,
   onChange,
@@ -124,9 +179,11 @@ const AppTable = <T,>({
   const [hoveredId, setHoveredId] = useState<number | null>(null)
   const [isOpen, setOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState('Error')
+  const [openModal, setOpenModal] = useState(false)
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const { paginate } = useClientSidePagination()
+  const [subProductId, setSubProductId] = useState<number>(0)
 
   const handleSelect = (id: number) => {
     const index = selectedIds.indexOf(id)
@@ -138,6 +195,14 @@ const AppTable = <T,>({
     }
   }
 
+  const openModalHandler = (id: number) => {
+    setOpenModal(true)
+    setSubProductId(id)
+  }
+  const closeModalHandler = () => {
+    setOpenModal(false)
+  }
+
   useEffect(() => {
     collectSelectedIds(selectedIds)
   }, [selectedIds, collectSelectedIds])
@@ -146,10 +211,10 @@ const AppTable = <T,>({
     setHoveredId(id)
   }
 
-  const deleteHandler = (id: number) => {
-    dispatch(deleteProductById(id))
+  const deleteHandler = () => {
+    dispatch(deleteProductById(subProductId))
       .unwrap()
-      .then()
+      .then(() => setOpenModal(false))
       .catch((e) => {
         setErrorMessage(JSON.stringify(e.message))
         setOpen(true)
@@ -173,46 +238,50 @@ const AppTable = <T,>({
           {paginate(rows).map((row) => {
             {
               return (
-                <StyledTr
-                  key={Math.random().toString()}
-                  onMouseEnter={() => handleRowHover(row.subProductId)}
-                  onMouseLeave={() => handleRowHover(null)}
-                >
-                  {hoveredId === row.subProductId ? (
-                    <StyledCheckbox
-                      checked={selectedIds.indexOf(row.subProductId) !== -1}
-                      onChange={() => handleSelect(row.subProductId)}
-                    />
-                  ) : (
-                    <>
-                      <StyledIdtd>{row.subProductId}</StyledIdtd>
-                    </>
-                  )}
-                  <Styledtd>
-                    <StyledImage src={row.image} alt="phoneImage" />
-                  </Styledtd>
-                  <Styledtd>{row.itemNumber}</Styledtd>
-                  <Styledtd>{row.name}</Styledtd>
-                  <Styledtd>{row.createdAt}</Styledtd>
-                  <Styledtd>{row.quantity}</Styledtd>
-                  <Styledtd>
-                    <CurrentPrice>{row.price}c</CurrentPrice>
-                    <Discount>{row.percentOfDiscount}%</Discount>
-                  </Styledtd>
-                  <Styledtd>
-                    <TotalPrice>{row.totalPrice}c</TotalPrice>
-                  </Styledtd>
-                  <Styledtd>
-                    <IconButtons
-                      icon={<EditIcon />}
-                      onClick={() => navigateToInnerPageHandler(row.subProductId)}
-                    />
-                    <IconButtons
-                      icon={<DeleteIcon />}
-                      onClick={() => deleteHandler(row.subProductId)}
-                    />
-                  </Styledtd>
-                </StyledTr>
+                <>
+                  <StyledTr
+                    key={Math.random().toString()}
+                    onMouseEnter={() => handleRowHover(row.subProductId)}
+                    onMouseLeave={() => handleRowHover(null)}
+                  >
+                    {hoveredId === row.subProductId ? (
+                      <StyledCheckbox
+                        checked={selectedIds.indexOf(row.subProductId) !== -1}
+                        onChange={() => handleSelect(row.subProductId)}
+                      />
+                    ) : (
+                      <>
+                        <StyledIdtd>{row.subProductId}</StyledIdtd>
+                      </>
+                    )}
+                    <Styledtd>
+                      <StyledImage src={row.image} alt="phoneImage" />
+                    </Styledtd>
+                    <Styledtd>{row.itemNumber}</Styledtd>
+                    <Styledtd>
+                      {row.name.length > 16 ? ` ${row.name.slice(0, 16)}...` : row.name}
+                    </Styledtd>
+                    <Styledtd>{row.createdAt}</Styledtd>
+                    <Styledtd>{row.quantity}</Styledtd>
+                    <Styledtd>
+                      <CurrentPrice>{row.price}c</CurrentPrice>
+                      <Discount>{row.percentOfDiscount}%</Discount>
+                    </Styledtd>
+                    <Styledtd>
+                      <TotalPrice>{row.totalPrice}c</TotalPrice>
+                    </Styledtd>
+                    <Styledtd>
+                      <IconButtons
+                        icon={<EditIcon />}
+                        onClick={() => navigateToInnerPageHandler(row.subProductId)}
+                      />
+                      <IconButtons
+                        icon={<DeleteIcon />}
+                        onClick={() => openModalHandler(row.subProductId)}
+                      />
+                    </Styledtd>
+                  </StyledTr>
+                </>
               )
             }
           })}
@@ -220,14 +289,27 @@ const AppTable = <T,>({
       </StyledTable>
       {withPagination && (
         <Box justifyContent="center" alignItems="center" display="flex" marginTop="2rem">
-          <Pagination
-            count={pageSize}
-            onChange={(event: React.ChangeEvent<unknown>, newPage) => onChange(newPage)}
-            color="secondary"
-            page={page}
-          />
+          {pageSize > 1 ? (
+            <Pagination
+              count={pageSize}
+              onChange={(event: React.ChangeEvent<unknown>, newPage) => onChange(newPage)}
+              color="secondary"
+              page={page}
+            />
+          ) : null}
         </Box>
       )}
+      <>
+        <Modal open={openModal} onClose={closeModalHandler}>
+          <ModalContainer>
+            <p>Вы уверены, что хотите удалить данный товар?</p>
+            <ModalButtonContainers>
+              <CancelModalButton onClick={closeModalHandler}>Нет</CancelModalButton>
+              <DeleteModalButton onClick={deleteHandler}>Да</DeleteModalButton>
+            </ModalButtonContainers>
+          </ModalContainer>
+        </Modal>
+      </>
     </>
   )
 }

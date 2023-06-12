@@ -8,5 +8,5 @@ export const addProductsRequest = (value: AddProducts) => {
 }
 
 export const uploadFileService = (value: any) => {
-  return fileInstance.post('/api/s3_file/upload', value)
+  return fileInstance.post('/api/s3_file/upload', { file: value })
 }

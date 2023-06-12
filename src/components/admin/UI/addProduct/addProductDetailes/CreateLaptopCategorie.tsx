@@ -52,7 +52,7 @@ const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
 
   const { imagesClassname, bannerImages, handleImageUpload, setBannerImages, deleteImage } =
     useBanner()
-  const [colorLaptop, setLaptopColor] = useState<string>('')
+  const [colour, setLaptopColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
 
   const colorPickerHandler = (colorResult: ColorResult | any) => {
@@ -74,11 +74,11 @@ const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
             video,
             select
           },
-          colorLaptop
+          colour
         }
       ])
     )
-  }, [bannerImages, purpose, colorLaptop, laptopProcessor1, srceen, sizeScrean, video, select])
+  }, [bannerImages, purpose, colour, laptopProcessor1, srceen, sizeScrean, video, select])
 
   useEffect(() => {
     setLeptopProcessor('')
@@ -130,7 +130,7 @@ const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
         <StyledFormLable htmlFor="Основной цвет">Основной цвет</StyledFormLable>
 
         <ReusableColorPicker
-          color={colorLaptop}
+          color={colour}
           colorPickerHandler={colorPickerHandler}
           openColorHandler={openColorHandler}
           openColorPicker={openColorPicker}

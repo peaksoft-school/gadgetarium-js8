@@ -120,6 +120,13 @@ const StyledIcon = styled(UploadPicture)(() => ({
   height: '33.33px',
   marginBottom: '20px'
 }))
+
+const StyledIconButton = styled(IconButton)(() => ({
+  '&:hover': {
+    backgroundColor: 'transparent'
+  }
+}))
+
 const ImagePickerAddProduct = ({
   imagesClassname,
   bannerImages,
@@ -132,7 +139,17 @@ const ImagePickerAddProduct = ({
         <ContainerImages className={`image ${imagesClassname()}`}>
           {bannerImages.length >= 0 && bannerImages.length <= 5 && (
             <div>
-              <IconButton color="primary" aria-label="upload picture" component="label">
+              <IconButton
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none'
+                  }
+                }}
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+              >
                 <StyledStack className={`default-image ${imagesClassname()}`}>
                   <div>
                     <StyledIcon />

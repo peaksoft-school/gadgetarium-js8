@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../../../redux/store'
 import { addProducts } from '../../../../redux/store/addProduct/addProduct.thunk'
 import { uploadFileService } from '../../../../api/add-product/addProductService'
+import { useNavigate } from 'react-router-dom'
+import { PATHS } from '../../../../utils/constants/router/routerConsts'
 
 const StyledLabel = styled('p')`
   font-family: 'Inter';
@@ -110,6 +112,7 @@ const ThirdPart = () => {
   const dispatch = useAppDispatch()
   const [pdfFile, setPdfFile] = useState<PdfType | null>()
   const [url, setUrl] = useState()
+  const navigate = useNavigate()
 
   const products = useSelector((state: RootState) => state.addNewProduct.products)
 
@@ -147,6 +150,8 @@ const ThirdPart = () => {
     if (fileResponse) {
       const productss = products.map((item: any) => ({ ...item, PDF: fileResponse }))
       dispatch(addProducts(productss[0]))
+        .unwrap()
+        .then(() => navigate(PATHS.ADMIN.products))
     }
   }
 
