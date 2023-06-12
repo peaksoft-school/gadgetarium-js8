@@ -1,6 +1,5 @@
-import { styled, Button, Paper, InputBase, Divider } from '@mui/material'
+import { styled, Button, Divider } from '@mui/material'
 import { ReactComponent as LogoIcon } from '../../../assets/icons/header-icons/logo.svg'
-import { ReactComponent as SearchIcon } from '../../../assets/icons/header-icons/searchIcon.svg'
 import { ReactComponent as NumberIcon } from '../../../assets/icons/header-icons/numberIcon.svg'
 import { ReactComponent as CatalogIcon } from '../../../assets/icons/header-icons/catalog.svg'
 import { ReactComponent as FacebookIcon } from '../../../assets/icons/header-icons/facebook.svg'
@@ -11,9 +10,9 @@ import { ReactComponent as LikeIcon } from '../../../assets/icons/header-icons/l
 import { ReactComponent as HoveredLikeIcon } from '../../../assets/icons/header-icons/hoveredLikeIcon.svg'
 import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons/basketIcon.svg'
 import IconButtons from '../../UI/buttons/IconButtons'
-import { NavLink } from 'react-router-dom'
-import { PATHS } from '../../../utils/constants/router/routerConsts'
 import { useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { PATHS } from '../../../utils/constants/router/routerConsts'
 import { SearchInput } from '../../UI/inputs/SearchInput'
 
 const StyledNotificationIcon = styled('span')(() => ({
@@ -183,10 +182,14 @@ const LikeIconItem = styled('li')(() => ({
   }
 }))
 const Header = () => {
+  const navigate = useNavigate()
   const [catalog, setCatalog] = useState(false)
 
   const catalogHandler = () => {
     setCatalog((prevState) => !prevState)
+  }
+  const goToBasketHandler = () => {
+    navigate('basket')
   }
   return (
     <header>
@@ -253,7 +256,7 @@ const Header = () => {
           </LikeIconItem>
           <InteractionIconsItem>
             <span>
-              <IconButtons icon={<BasketIcon />} />
+              <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
               <StyledNotificationIcon>2</StyledNotificationIcon>
             </span>
           </InteractionIconsItem>
