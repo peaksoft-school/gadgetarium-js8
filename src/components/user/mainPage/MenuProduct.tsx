@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { ProductCard } from '../card/ProductCard'
+import MuiAlert from '@mui/material/Alert'
 import { ReactComponent as LikeIcon } from '../../../assets/icons/userMainPageIcons/like.svg'
 import {
   getDiscountProductService,
   getNewProductService,
   getRecommendedProductService
 } from '../../../api/mainPage/getProductsService'
-import { Button, styled } from '@mui/material'
+import { Button, Snackbar, styled } from '@mui/material'
 import {
   AddProductToBasketService,
   AddProductToComparisonsService
 } from '../../../api/mainPage/AddProductToBusketService'
+// import Snackbar from '../../UI/snackbar/Snackbar'
 type DiscountProduct =
   | {
       countOfReviews: number
@@ -83,9 +85,18 @@ const MenuProduct = () => {
   const [showAllProduct, setShowAllProduct] = useState(5)
   const [showAllNewProduct, setShowAllNewProduct] = useState(5)
   const [showAllRecomendProduct, setShowRecomendAllProduct] = useState(5)
+  const [showSnackbar, setShowSnackbar] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
 
   const addToBusket = async (id: number) => {
-    await AddProductToBasketService(id)
+    try {
+      await AddProductToBasketService(id)
+      setShowSnackbar(true)
+      setSnackbarMessage('Товар успешно добавлен в корзину!')
+    } catch (error) {
+      setShowSnackbar(true)
+      setSnackbarMessage('In the basket you can add only one product')
+    }
   }
   const addToComparisons = async () => {
     await AddProductToComparisonsService()
@@ -134,6 +145,14 @@ const MenuProduct = () => {
 
   return (
     <>
+      {/* <Snackbar message="Success" linkText="success"></Snackbar> */}
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={3000} // Adjust the duration as needed
+        onClose={() => setShowSnackbar(false)}
+        message={snackbarMessage}
+      ></Snackbar>
+
       <StyledCartContainer>
         <StyledTitle>Акции</StyledTitle>
 

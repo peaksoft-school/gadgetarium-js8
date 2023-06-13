@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { store } from '../redux/store'
+import { signOut } from '../redux/store/auth/auth.thunk'
 
 const BASE_URL = 'http://gadgetarium.peaksoftprojects.com/'
 
@@ -27,6 +28,7 @@ mainApi.interceptors.response.use(
   },
   function (error) {
     if (error.response.status === 401) {
+      store.dispatch(signOut())
       throw new Error('401 unauthorized')
     }
     return Promise.reject(error)

@@ -99,7 +99,7 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
 
   const schema = z.object({
     email: z.string().email(),
-    password: z.string().min(6)
+    password: z.string().min(6, 'Должно быть больше 6 символов')
   })
 
   type FormSchema = (typeof schema)['_output']

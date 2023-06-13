@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import { StyledFormLable } from '../mailingList/MailingList'
-import { ReusableSelect as SelectComponent, StyledSelect } from '../../../ReusableSelect'
+import { ReusableSelect as SelectComponent, StyledSelect } from '../../ReusableSelect'
 import { styled, SelectChangeEvent } from '@mui/material'
 import Input from '../../../UI/inputs/Input'
 import AddbrandModal from './AddbrandModal'
@@ -18,6 +18,8 @@ import Button from '../../../UI/buttons/Button'
 import { NavLink } from 'react-router-dom'
 import IconButtons from '../../../UI/buttons/IconButtons'
 import { addProductActions } from '../../../../redux/store/addProduct/AddProduct'
+import { isAxiosError } from 'axios'
+import { useSnackbar } from '../../../../hooks/snackbar/useSnackbar'
 
 interface Brand {
   name: string
@@ -222,11 +224,29 @@ const AddTabComponent: React.FC = () => {
     setSelectedValueThird(event.target.value)
   }
 
+  const { snackbarHanler } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
+
   const getCategories = async () => {
     try {
       const { data } = await getProductCategorieService()
       setCategories(data)
-    } catch (error) {}
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
+    }
   }
   const getSubCategories = async () => {
     dispatch(getProductBrandAndSubCategories(selectedValueFirst))

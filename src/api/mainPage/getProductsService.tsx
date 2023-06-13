@@ -1,4 +1,4 @@
-import { mainApi } from '../instances'
+import { mainApi } from '../../config/instances'
 
 export const getNewProductService = (showAllNewProduct: any) => {
   return mainApi.get(`/api/user/products/new?pageSize=${showAllNewProduct}`)

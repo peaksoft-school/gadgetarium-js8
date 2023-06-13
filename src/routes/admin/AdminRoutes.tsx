@@ -1,6 +1,7 @@
 import AdminLayout from '../../layout/admin/AdminLayout'
-import { Routes, Route, Outlet } from 'react-router-dom'
+import { Routes, Route, Outlet, Navigate } from 'react-router-dom'
 import { PATHS } from '../../utils/constants/router/routerConsts'
+import ProductInnerPage from '../../containers/admin/product-inner-page/ProductInnerPage'
 import ProductsPage from '../../containers/admin/products/ProductsPage'
 import AddProductsPage from '../../layout/admin/addProduct/CreateAddProduct'
 import ReviewsPage from '../../components/admin/reviews/ReviewsPage'
@@ -10,12 +11,12 @@ const AdminRoutes = () => {
     <div>
       <AdminLayout>
         <Routes>
-          <Route path={PATHS.ADMIN.default} element={<p>Admin</p>} />
+          <Route path={PATHS.ADMIN.default} element={<Navigate to={PATHS.ADMIN.products} />} />
 
           <Route path={PATHS.ADMIN.products} element={<Outlet />}>
             <Route index element={<ProductsPage />} />
+            <Route path={PATHS.ADMIN.productId} element={<ProductInnerPage />} />
             <Route path={PATHS.ADMIN.addProducts} Component={AddProductsPage} />
-            <Route path={PATHS.ADMIN.productId} element={<p>ProductInnerPage</p>} />
             <Route path={PATHS.ADMIN.not_found} element={<p>Not Found</p>} />
           </Route>
 
