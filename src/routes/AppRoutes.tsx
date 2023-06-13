@@ -15,14 +15,6 @@ const AppRoutes = () => {
     return role === roles
   }
 
-  // console.log(
-  //   {
-  //     role,
-  //     isAuthenticated: isAuthenticated(role)
-  //   },
-  //   'isAuthenticated'
-  // )
-
   return (
     <Routes>
       <Route path={PATHS.APP.logIn} element={<SignIn />} />

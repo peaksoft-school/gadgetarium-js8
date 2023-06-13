@@ -13,7 +13,13 @@ export const Favourites = ({ items }: { items: FavouriteType[] }) => {
   const dispatch = useDispatch<AppDispatch>()
   const totalQuantity = useSelector((state: RootState) => state.favourites.totalQuantity)
   const { snackbarHanler, ToastContainer } = useSnackbar({ autoClose: 2500, position: 'top-right' })
-
+  const reusableSnackbarHandle = (message: string, type: 'error' | 'success' | undefined) => {
+    snackbarHanler({
+      message: message,
+      linkText: '',
+      type: type
+    })
+  }
   return (
     <>
       {items?.map((item) => {
@@ -51,7 +57,11 @@ export const Favourites = ({ items }: { items: FavouriteType[] }) => {
               })
             }}
             heartIconOnClick={() => {
-              const data = { id: item.subProductId, isFavourite: !item.isFavourite }
+              const data = {
+                id: item.subProductId,
+                isFavourite: !item.isFavourite,
+                snackbar: reusableSnackbarHandle
+              }
               dispatch(favouriteActions.favourite({ id: item.subProductId }))
               dispatch(postOrDeleteFavourites(data))
             }}

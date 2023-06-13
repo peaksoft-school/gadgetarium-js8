@@ -13,12 +13,12 @@ export const deleteBasketByChoosenIdRequest = (subProductsId: number[]) => {
   return mainApi.delete(`api/baskets/delete_all`, { data: requestData })
 }
 
-export const moveToFavoritesByIdRequest = (id: number) => {
-  return mainApi.post(`api/baskets/move_to_favorites_by_id?id=${id}`)
+export const moveToFavoritesByIdRequest = (dataFavourite: { id: number; isFavourite: boolean }) => {
+  return mainApi.post(`api/favourites/${dataFavourite.id}?addOrDelete=${dataFavourite.isFavourite}`)
 }
 
 export const moveToFavoritesByChoosenIdRequest = (productIds: number[]) => {
-  return mainApi.post(`api/baskets/move_to_favorites`, productIds)
+  return mainApi.post(`api/favourites/move_to_favorites`, productIds)
 }
 export const postBasketRequest = (product: { quantity: number; subproductId: number }) => {
   return mainApi.post(

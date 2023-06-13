@@ -1,4 +1,5 @@
-import { mainApi } from '../instances'
+import { mainApi } from '../../config/instances'
+
 type Type = {
   answer: string
   commentary: string

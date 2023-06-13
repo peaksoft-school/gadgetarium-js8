@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import ImagePicker from '../mailingList/ImagePicker'
 import { styled } from '@mui/material'
 import {

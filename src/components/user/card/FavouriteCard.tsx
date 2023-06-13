@@ -9,6 +9,7 @@ import IconButtons from '../../UI/buttons/IconButtons'
 import TextWithEllipsis from './CardText'
 import ProductRating from './RatingProduct'
 import { styled } from '@mui/material'
+import { CustomTooltip } from '../../UI/tooltip/CustomTooltip'
 
 interface ProductType {
   ellipseChildren?: string | React.ReactNode
@@ -88,7 +89,13 @@ const Title = styled('p')(() => ({
 }))
 const StyledParagraph = styled('p')(() => ({
   paddingRight: '22px',
-  paddingBottom: '8px'
+  paddingBottom: '8px',
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '16px',
+  lineHeight: '22px',
+  textTransform: 'capitalize'
 }))
 const StyledSection = styled('section')(() => ({
   fontFamily: 'Inter',
@@ -103,6 +110,7 @@ const StyledButton = styled(Button)(() => ({
     backgroundColor: '#CB11AB'
   },
   padding: '12px 20px',
+  margin: '0px',
   marginRight: '5px'
 }))
 const StyledBasketTitle = styled('span')(() => ({
@@ -163,11 +171,19 @@ export const FavouriteCard = ({
           <StyledEllipseIcon ellipseColor={ellipseColor}>{ellipseChildren}</StyledEllipseIcon>
         ) : null}
         <ContainerTwoIcons>
-          <StyledIconButton onClick={scaleIconOnClick} icon={<ScaleIcon />} />
-          <StyledIconButton
-            onClick={heartIconOnClick}
-            icon={isFavourite ? <HoveredLikeIcon /> : <HeartIcon />}
-          />
+          <CustomTooltip title="Добавить к сравнению">
+            <div>
+              <StyledIconButton onClick={scaleIconOnClick} icon={<ScaleIcon />} />
+            </div>
+          </CustomTooltip>
+          <CustomTooltip title="Удалить из избранного">
+            <div>
+              <StyledIconButton
+                onClick={heartIconOnClick}
+                icon={isFavourite ? <HoveredLikeIcon /> : <HeartIcon />}
+              />
+            </div>
+          </CustomTooltip>
         </ContainerTwoIcons>
       </ContainerIcon>
       <StyledArticle>

@@ -8,6 +8,7 @@ import {
 import { AxiosError, isAxiosError } from 'axios'
 import { FavouriteType } from './favourites.slice'
 import { postBasketRequest } from '../../../api/basket/basketService'
+import { SnackbarHandler } from '../basket/basket.thunk'
 
 export const getFavourite = createAsyncThunk(
   'favourite/getFavourite',
@@ -37,10 +38,21 @@ export const getFavourite = createAsyncThunk(
 )
 export const postOrDeleteFavourites = createAsyncThunk(
   'favourite/postFavourites',
-  async (payload: { id: number; isFavourite: boolean }, { dispatch, rejectWithValue }) => {
+  async (
+    payload: { id: number; isFavourite: boolean; snackbar: SnackbarHandler },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
       await postFavouritesRequest(payload)
       dispatch(getFavourite())
+        .unwrap()
+        .then(() => {
+          payload.snackbar('Товар успешно удален из избранного!', 'success')
+        })
+        .catch((e) => {
+          payload.snackbar(e, 'error')
+          rejectWithValue(e)
+        })
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{

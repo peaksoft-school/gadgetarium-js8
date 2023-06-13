@@ -106,7 +106,7 @@ export const FavouritesPage = () => {
             <EmptyFavourites />
           ) : (
             <>
-              <Label>
+              <Label sx={{ cursor: 'pointer' }}>
                 <IconButtons icon={<StyledDeleteIcon />} onClick={openModalHandler} /> Очистить
                 список товаров
               </Label>

@@ -8,87 +8,49 @@ import {
 } from '../../../api/basket/basketService'
 import { AxiosError, isAxiosError } from 'axios'
 import { ItemType } from './basket.slice'
+export type SnackbarHandler = (message: string, type: 'error' | 'success' | undefined) => void
 
-export const getAllBasket = createAsyncThunk(
-  'basket/getBasket',
-  async (dispatch, { rejectWithValue }) => {
-    try {
-      const { data } = await getBasketRequest()
+export const getAllBasket = createAsyncThunk('basket/getBasket', async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await getBasketRequest()
 
-      if (data !== undefined || null) {
-        const dataItem = data.map((item: ItemType) => ({
-          ...item,
-          checked: false,
-          totalPrice: 0,
-          discount: 0
-        }))
-        return {
-          dataItem: dataItem,
-          checkedAll: false,
-          totalSum: 0,
-          totalQuantity: 0,
-          totalDiscount: 0,
-          sumPrice: 0
-        }
+    if (data !== undefined || null) {
+      const dataItem = data.map((item: ItemType) => ({
+        ...item,
+        checked: false,
+        totalPrice: 0,
+        discount: 0
+      }))
+      return {
+        dataItem: dataItem,
+        checkedAll: false,
+        totalSum: 0,
+        totalQuantity: 0,
+        totalDiscount: 0,
+        sumPrice: 0
       }
-    } catch (e) {
-      if (isAxiosError(e)) {
-        const error = e as AxiosError<{
-          status: number
-          message: string
-        }>
-        return rejectWithValue(error.response?.data.message)
-      }
-      return rejectWithValue('Something went wrong')
     }
+  } catch (e) {
+    if (isAxiosError(e)) {
+      const error = e as AxiosError<{
+        status: number
+        message: string
+      }>
+      return rejectWithValue(error.response?.data.message)
+    }
+    return rejectWithValue('Something went wrong')
   }
-)
+})
 
 export const deleteBasketById = createAsyncThunk(
   'basket/deleteByIdBasket',
-  async (payload: number, { dispatch, rejectWithValue }) => {
+  async (payload: { id: number; snackbar: SnackbarHandler }, { dispatch, rejectWithValue }) => {
     try {
-      await deleteBasketByIdRequest(payload)
-      dispatch(getAllBasket())
-    } catch (e) {
-      if (isAxiosError(e)) {
-        const error = e as AxiosError<{
-          status: number
-          message: string
-        }>
-        return rejectWithValue(error.response?.data.message)
-      }
-      return rejectWithValue('Something went wrong')
-    }
-  }
-)
-export const moveToFavoritesById = createAsyncThunk(
-  'basket/moveToFavoritesById',
-  async (payload: { id: number }, { rejectWithValue }) => {
-    try {
-      await moveToFavoritesByIdRequest(payload.id)
-    } catch (e) {
-      if (isAxiosError(e)) {
-        const error = e as AxiosError<{
-          status: number
-          message: string
-        }>
-        return rejectWithValue(error.response?.data.message)
-      }
-      return rejectWithValue('Something went wrong')
-    }
-  }
-)
-
-export const moveToFavoritesByChoosenId = createAsyncThunk(
-  'basket/moveToFavoritesByChoosenId',
-  async (payload: { id: number[]; snackbar: () => void }, { dispatch, rejectWithValue }) => {
-    try {
-      await moveToFavoritesByChoosenIdRequest(payload.id)
+      await deleteBasketByIdRequest(payload.id)
       dispatch(getAllBasket())
         .unwrap()
         .then(() => {
-          payload.snackbar()
+          payload.snackbar('Товар успешно удален из корзины!', 'success')
         })
         .catch((e) => {
           isRejectedWithValue(e)
@@ -99,6 +61,73 @@ export const moveToFavoritesByChoosenId = createAsyncThunk(
           status: number
           message: string
         }>
+        payload.snackbar(error.response?.data.message || 'Повторите попытку', 'error')
+        return rejectWithValue(error.response?.data.message)
+      }
+      return rejectWithValue('Something went wrong')
+    }
+  }
+)
+export const moveToFavoritesById = createAsyncThunk(
+  'basket/moveToFavoritesById',
+  async (
+    payload: { id: number; isFavourite: boolean; snackbar: SnackbarHandler },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      const dataFavourite = {
+        id: payload.id,
+        isFavourite: payload.isFavourite
+      }
+      await moveToFavoritesByIdRequest(dataFavourite)
+      dispatch(getAllBasket())
+        .unwrap()
+        .then(() => {
+          if (payload.isFavourite) {
+            payload.snackbar('Товар успешно добавлен в избранное!', 'success')
+          } else {
+            payload.snackbar('Товар успешно удален из избранного!', 'success')
+          }
+        })
+        .catch((e) => {
+          isRejectedWithValue(e)
+        })
+    } catch (e) {
+      if (isAxiosError(e)) {
+        const error = e as AxiosError<{
+          status: number
+          message: string
+        }>
+        payload.snackbar(error.response?.data.message || 'Повторите попытку', 'error')
+
+        return rejectWithValue(error.response?.data.message)
+      }
+      return rejectWithValue('Something went wrong')
+    }
+  }
+)
+
+export const moveToFavoritesByChoosenId = createAsyncThunk(
+  'basket/moveToFavoritesByChoosenId',
+  async (payload: { id: number[]; snackbar: SnackbarHandler }, { dispatch, rejectWithValue }) => {
+    try {
+      await moveToFavoritesByChoosenIdRequest(payload.id)
+      dispatch(getAllBasket())
+        .unwrap()
+        .then(() => {
+          payload.snackbar('Товар успешно добавлен в избранное!', 'success')
+        })
+        .catch((e) => {
+          isRejectedWithValue(e)
+        })
+    } catch (e) {
+      if (isAxiosError(e)) {
+        const error = e as AxiosError<{
+          status: number
+          message: string
+        }>
+        payload.snackbar(error.response?.data.message || 'Повторите попытку', 'error')
+
         return rejectWithValue(error.response?.data.message)
       }
       return rejectWithValue('Something went wrong')
@@ -108,16 +137,24 @@ export const moveToFavoritesByChoosenId = createAsyncThunk(
 
 export const deleteBasketByChoosenId = createAsyncThunk(
   'basket/deleteBasketChoosenById',
-  async (payload: number[], { dispatch, rejectWithValue }) => {
+  async (payload: { id: number[]; snackbar: SnackbarHandler }, { dispatch, rejectWithValue }) => {
     try {
-      await deleteBasketByChoosenIdRequest(payload)
+      await deleteBasketByChoosenIdRequest(payload.id)
       dispatch(getAllBasket())
+        .unwrap()
+        .then(() => {
+          payload.snackbar('Товар успешно удален из корзины!', 'success')
+        })
+        .catch((e) => {
+          isRejectedWithValue(e)
+        })
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{
           status: number
           message: string
         }>
+        payload.snackbar(error.response?.data.message || 'Повторите попытку', 'error')
         return rejectWithValue(error.response?.data.message)
       }
       return rejectWithValue('Something went wrong')

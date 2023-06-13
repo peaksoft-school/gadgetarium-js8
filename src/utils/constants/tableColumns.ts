@@ -1,5 +1,5 @@
 export type Column<T> = {
-  header: string
+  header: string | string[]
   key: string
   width?: string | number
   index?: boolean

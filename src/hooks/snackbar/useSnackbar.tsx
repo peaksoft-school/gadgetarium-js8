@@ -37,7 +37,6 @@ export const useSnackbar = ({ autoClose = 2000, position = 'top-right' }: Snackb
       }
     })
   }
-
   return {
     snackbarHanler,
     ToastContainer: <Toastify position={position} autoClose={autoClose} icon={false} />

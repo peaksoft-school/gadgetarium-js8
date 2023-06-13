@@ -266,7 +266,6 @@ const Header = () => {
           <InteractionIconsItem>
             <span>
               <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-
               {totalQuantity > 0 ? (
                 <StyledNotificationIcon>{totalQuantity}</StyledNotificationIcon>
               ) : null}

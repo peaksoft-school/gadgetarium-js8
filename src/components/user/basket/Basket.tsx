@@ -50,12 +50,12 @@ const Label = styled('label')(() => ({
 }))
 const ContainerSumOfOrder = styled('div')(() => ({
   width: '25rem',
-  height: '280px',
+  height: '17.5rem',
   backgroundColor: '#ffff',
   padding: '1.875rem',
   borderRadius: '.3125rem',
   position: 'fixed',
-  right: '200px'
+  right: '10.5rem'
 }))
 const TitleSumOfOrder = styled('h3')(() => ({
   fontWeight: 500,
@@ -96,28 +96,35 @@ const TitleTotalPriceStyled = styled('p')(() => ({
   fontSize: '1rem',
   lineHeight: '1.18rem',
   color: '#292929',
-  marginTop: '8px'
+  marginTop: '0.5rem'
 }))
 const ContainerButton = styled('div')(() => ({
   width: '100%',
-  marginTop: '20px'
+  marginTop: '1.25rem'
 }))
 const StyledButton = styled(Button)(() => ({
   width: '100%',
   color: '#ffff',
   fontWeight: 700,
-  fontSize: ' 14px',
-  lineHeight: '17px',
+  fontSize: ' 0.875rem',
+  lineHeight: '1.0625rem',
   textAlign: 'center',
   textTransform: 'uppercase',
-  padding: '14px 20px'
+  padding: '0.875rem 1.25rem'
 }))
 const BorderBottom = styled('span')(() => ({
   borderBottom: '2px solid'
 }))
 const SumPriceStyled = styled('span')(() => ({
   borderBottom: '2px solid',
-  marginLeft: '5px'
+  marginLeft: '0.3125rem'
+}))
+const StyledIconButton = styled(IconButtons)(() => ({
+  '&:hover': {
+    path: {
+      fill: '#CB11AB'
+    }
+  }
 }))
 const Basket = ({ basketData }: { basketData: InitType }) => {
   const navigate = useNavigate()
@@ -141,11 +148,11 @@ const Basket = ({ basketData }: { basketData: InitType }) => {
       setProductId(dataId)
     }
   }
-  const snackbarHandle = () => {
+  const snackbarHandle = (message: string, type: 'success' | 'error' | undefined) => {
     snackbarHanler({
-      message: 'Товар успешно добавлен в избранное!',
+      message: message,
       linkText: '',
-      type: 'success'
+      type: type
     })
   }
   const moveToChoosenProductToFavoritesHandler = () => {
@@ -155,12 +162,14 @@ const Basket = ({ basketData }: { basketData: InitType }) => {
   }
   const deleteChoosenProductHandler = () => {
     if (productId.length > 0) {
-      dispatch(deleteBasketByChoosenId(productId))
+      dispatch(deleteBasketByChoosenId({ id: productId, snackbar: snackbarHandle }))
     }
     setOpenModal(false)
   }
   const openModalHandler = () => {
-    setOpenModal(true)
+    if (productId.length > 0) {
+      setOpenModal(true)
+    }
   }
   const goToCheckoutHandler = () => {
     navigate('checkout')
@@ -181,13 +190,13 @@ const Basket = ({ basketData }: { basketData: InitType }) => {
         </List>
         <List>
           <Label>
-            <IconButtons icon={<StyledDeleteIcon />} onClick={openModalHandler} />
+            <StyledIconButton icon={<StyledDeleteIcon />} onClick={openModalHandler} />
             Удалить
           </Label>
         </List>
         <List>
           <Label>
-            <IconButtons
+            <StyledIconButton
               icon={<StyledLikeIcon />}
               onClick={moveToChoosenProductToFavoritesHandler}
             />
