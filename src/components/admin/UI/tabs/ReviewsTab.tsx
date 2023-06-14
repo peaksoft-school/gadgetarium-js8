@@ -84,6 +84,9 @@ const ReviewsTab: React.FC<ProductsTabProps> = ({ defaultValue, handlerChangePag
               '& button.Mui-selected': {
                 backgroundColor: '#CB11AB',
                 color: '#fff'
+              },
+              '& .MuiTabs-indicator': {
+                display: 'none'
               }
             }
           }}

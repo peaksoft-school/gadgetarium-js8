@@ -92,6 +92,9 @@ const FeedbackTab: React.FC<ProductsTabProps> = ({ tabs, defaultValue }) => {
                 '& button.Mui-selected': {
                   backgroundColor: '#384255',
                   color: '#fff'
+                },
+                '& .MuiTabs-indicator': {
+                  display: 'none'
                 }
               }
             }}
