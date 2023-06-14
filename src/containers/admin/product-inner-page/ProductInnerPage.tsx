@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Box, Tab, Tabs, Typography, styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 import {
@@ -141,6 +141,8 @@ const ProductInnerPage = () => {
     video: ''
   })
 
+  const navigate = useNavigate()
+
   const productName = product.name !== null ? product.name : 'Name Not Found!'
 
   const obj = {
@@ -191,12 +193,13 @@ const ProductInnerPage = () => {
   const deleteSubProductById = async (req: number[]) => {
     try {
       await deleteProductByIdRequest(req)
-      getOneProduct(obj)
+      // getOneProduct(obj)
       snackbarHanler({
         message: 'Товар Успешно удален!',
         linkText: '',
         type: 'success'
       })
+      navigate('/admin/products')
     } catch (e) {
       if (isAxiosError(e)) {
         return snackbarHanler({

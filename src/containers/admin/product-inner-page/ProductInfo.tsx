@@ -319,14 +319,12 @@ const StyledTab = styled(Tab)(() => ({
 const ModalContainer = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
-  paddingTop: '',
-  paddingLeft: '60px',
-  paddingRight: '60px',
+  padding: '1rem 1.5rem',
   p: {
     color: '#292929',
     fontFamily: 'Inter, sans-serif',
     fontStyle: 'normal',
-    fontWeight: '400',
+    fontWeight: '600',
     fontSize: '18px',
     lineHeight: '140%',
     textAlign: 'center'
@@ -334,14 +332,16 @@ const ModalContainer = styled('div')(() => ({
 }))
 
 const ConfirmModalButton = styled(Button)(() => ({
+  display: 'block',
+  width: '47%',
   backgroundColor: '#CB11AB',
-  padding: '0.5rem 1.5rem',
+  padding: '0.8rem 1.5rem',
   borderRadius: '4px',
   color: '#fff',
   fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
   fontWeight: '400',
-  fontSize: '1rem',
+  fontSize: '1.2rem',
   lineHeight: '19px',
   textTransform: 'none',
   '&:hover': {
@@ -350,15 +350,17 @@ const ConfirmModalButton = styled(Button)(() => ({
 }))
 
 const CancelModalButton = styled(Button)(() => ({
+  display: 'block',
+  width: '47%',
   backgroundColor: '#fff',
-  padding: '0.45rem 1rem',
+  padding: '0.8rem 1rem',
   borderRadius: '4px',
   border: '1px solid #CB11AB',
   color: '#CB11AB',
   fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
   fontWeight: '600',
-  fontSize: '1rem',
+  fontSize: '1.2rem',
   lineHeight: '19px',
   textTransform: 'none',
   '&:hover': {
@@ -368,9 +370,9 @@ const CancelModalButton = styled(Button)(() => ({
 }))
 
 const ModalButtonContainers = styled('div')(() => ({
-  marginTop: '1rem',
+  marginTop: '1.5rem',
   display: 'flex',
-  justifyContent: 'space-around'
+  justifyContent: 'space-between'
 }))
 
 function TabPanel(props: TabPanelProps) {
