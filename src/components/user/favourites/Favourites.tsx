@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from '../../../redux/store'
 import {
   postOrDeleteFavourites,
   postToBasketFromFavourite,
-  postToComporisonsFromFavourite
+  postToOrDeleteComporisonsFromFavourite
 } from '../../../redux/store/favourites/favourites.thunk'
 import { FavouriteCard } from '../card/FavouriteCard'
 import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
@@ -35,31 +35,30 @@ export const Favourites = ({ items }: { items: FavouriteType[] }) => {
             amount={item.quantity}
             rating={item.rating}
             quantityOfPeople={null}
-            isFavourite={item.isFavourite}
+            isFavourite={item.inFavorites}
+            inComparisons={item.inComparisons}
             scaleIconOnClick={() => {
-              const data = { id: item.subProductId, isCompare: true }
-              dispatch(postToComporisonsFromFavourite(data))
-              snackbarHanler({
-                message: 'Товар добавлен в список сравнения!',
-                linkText: '',
-                type: 'success'
-              })
+              const data = {
+                id: item.subProductId,
+                isCompare: !item.inComparisons,
+                snackbar: reusableSnackbarHandle
+              }
+              dispatch(postToOrDeleteComporisonsFromFavourite(data))
             }}
             basketOnClick={() => {
-              const data = { subproductId: item.subProductId, quantity: 1 }
+              const data = {
+                subproductId: item.subProductId,
+                quantity: 1,
+                snackbar: reusableSnackbarHandle
+              }
               const count = totalQuantity + 1
               dispatch(postToBasketFromFavourite(data))
               dispatch(favouriteActions.addCount(count))
-              snackbarHanler({
-                message: 'Товар успешно добавлен в корзину!',
-                linkText: '',
-                type: 'success'
-              })
             }}
             heartIconOnClick={() => {
               const data = {
                 id: item.subProductId,
-                isFavourite: !item.isFavourite,
+                isFavourite: !item.inFavorites,
                 snackbar: reusableSnackbarHandle
               }
               dispatch(favouriteActions.favourite({ id: item.subProductId }))

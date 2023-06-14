@@ -3,6 +3,7 @@ import { ReactComponent as HeartIcon } from '../../../assets/icons/product-icons
 import { ReactComponent as BasketIcon } from '../../../assets/icons/product-icons/basket.svg'
 import { ReactComponent as LikeIcon } from '../../../assets/icons/product-icons/like_icon.svg'
 import { ReactComponent as HoveredLikeIcon } from '../../../assets/icons/header-icons/hoveredLikeIcon.svg'
+import { ReactComponent as ComparIconFire } from '../../../assets/icons/favourites/fier-on-compare.svg'
 import ImageProduct from '../../../assets/images/image53.png'
 import Button from '../../UI/buttons/Button'
 import IconButtons from '../../UI/buttons/IconButtons'
@@ -26,6 +27,7 @@ interface ProductType {
   image?: string
   quantityOfPeople: number | null
   isFavourite?: boolean
+  inComparisons: boolean
 }
 type EllipseType = {
   ellipseColor: string
@@ -150,6 +152,7 @@ const ButtonContainer = styled('div')(() => ({
 
 export const FavouriteCard = ({
   isFavourite,
+  inComparisons,
   ellipseChildren = <LikeIcon />,
   ellipseColor = '#2C68F5',
   amount = 14,
@@ -171,9 +174,12 @@ export const FavouriteCard = ({
           <StyledEllipseIcon ellipseColor={ellipseColor}>{ellipseChildren}</StyledEllipseIcon>
         ) : null}
         <ContainerTwoIcons>
-          <CustomTooltip title="Добавить к сравнению">
+          <CustomTooltip title={inComparisons ? 'Удалить из сравнений ' : 'Добавить к сравнению'}>
             <div>
-              <StyledIconButton onClick={scaleIconOnClick} icon={<ScaleIcon />} />
+              <StyledIconButton
+                onClick={scaleIconOnClick}
+                icon={inComparisons ? <ComparIconFire /> : <ScaleIcon />}
+              />
             </div>
           </CustomTooltip>
           <CustomTooltip title="Удалить из избранного">
