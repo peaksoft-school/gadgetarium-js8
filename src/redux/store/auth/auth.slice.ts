@@ -42,12 +42,17 @@ export const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(signUp.fulfilled, (state, { payload }) => {
+      state.isLoading = false
       state.isAuthorized = true
       state.token = payload.token
       state.email = payload.email
       state.role = payload.role
     }),
+      builder.addCase(signUp.pending, (state) => {
+        state.isLoading = true
+      }),
       builder.addCase(signIn.fulfilled, (state, { payload }) => {
+        state.isLoading = false
         state.isAuthorized = true
         state.token = payload.token
         state.email = payload.email
@@ -59,11 +64,16 @@ export const authSlice = createSlice({
         state.email = ''
         state.role = UserRoles.USER
       }),
+      builder.addCase(signIn.pending, (state) => {
+        state.isLoading = true
+      }),
       builder.addCase(signIn.rejected, (state, { payload }) => {
+        state.isLoading = false
         state.isAuthorized = false
         state.error = payload as string | undefined
       }),
       builder.addCase(signUp.rejected, (state, { payload }) => {
+        state.isLoading = false
         state.isAuthorized = false
         state.error = payload as string | undefined
       })
