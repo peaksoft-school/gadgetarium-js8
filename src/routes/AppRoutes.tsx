@@ -37,9 +37,7 @@ const AppRoutes = () => {
             component={AdminRoutes}
           />
         }
-      >
-        <Route path={'*'} element={<Navigate to={PATHS.ADMIN.products} />} />
-      </Route>
+      />
       <Route path={PATHS.APP.not_found} element={<p>Not Found</p>} />
     </Routes>
   )
