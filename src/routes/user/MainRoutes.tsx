@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { UserRoles } from '../../utils/common/types'
 import BasketPage from '../../components/user/basket/BasketPage'
+import { FavouritesPage } from '../../components/user/favourites/FavouritesPage'
 
 const MainRoutes = () => {
   const role = useSelector((state: RootState) => state.auth.role)
@@ -28,7 +29,7 @@ const MainRoutes = () => {
         <Route path={PATHS.MAIN.favourites} element={<p>FavouritesPage</p>} />
 
         <Route path={PATHS.MAIN.favourites} element={<Outlet />}>
-          <Route index element={<p>BasketPage</p>} />
+          <Route index element={<FavouritesPage />} />
           <Route path={PATHS.MAIN.ordering} element={<p>OrderingPage</p>} />
         </Route>
         <Route path={PATHS.MAIN.basket} element={<BasketPage />} />

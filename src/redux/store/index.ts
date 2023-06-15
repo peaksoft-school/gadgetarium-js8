@@ -6,6 +6,7 @@ import { mailingSlice } from './mailingList/mailing.slice'
 import { addProductSlice } from './addProduct/AddProduct'
 import { reviewsSlice } from './reviews/reviews.slice'
 import { basketSlice } from './basket/basket.slice'
+import { favouritesSlice } from './favourites/favourites.slice'
 
 export const store = configureStore({
   reducer: {
@@ -16,7 +17,8 @@ export const store = configureStore({
     [infographicsSlice.name]: infographicsSlice.reducer,
     [mailingSlice.name]: mailingSlice.reducer,
     [reviewsSlice.name]: reviewsSlice.reducer,
-    [basketSlice.name]: basketSlice.reducer
+    [basketSlice.name]: basketSlice.reducer,
+    [favouritesSlice.name]: favouritesSlice.reducer
   }
 })
 

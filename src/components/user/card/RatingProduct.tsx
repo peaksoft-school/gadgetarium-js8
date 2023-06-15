@@ -3,7 +3,7 @@ import Rating from '@mui/material/Rating'
 import Typography from '@mui/material/Typography'
 interface Props {
   rating: number
-  quantityOfPeople: number
+  quantityOfPeople: number | null
 }
 const ProductRating = ({ rating, quantityOfPeople }: Props) => {
   return (
@@ -42,7 +42,7 @@ const ProductRating = ({ rating, quantityOfPeople }: Props) => {
           fontSize: '12px'
         }}
       >
-        ({quantityOfPeople})
+        {quantityOfPeople === null ? null : quantityOfPeople}
       </Typography>
     </Box>
   )
