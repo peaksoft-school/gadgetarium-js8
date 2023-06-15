@@ -202,7 +202,7 @@ const Header = () => {
         <div>
           <StyledList>
             <StyledNavLink to="/">Главная</StyledNavLink>
-            <StyledNavLink to="./">О магазине</StyledNavLink>
+            <StyledNavLink to={PATHS.MAIN.about}>О магазине</StyledNavLink>
             <StyledNavLink to={PATHS.MAIN.delivery}>Доставка</StyledNavLink>
             <StyledNavLink to={PATHS.MAIN.faq}>FAQ</StyledNavLink>
             <StyledNavLink to={PATHS.MAIN.contacts}>Контакты</StyledNavLink>
