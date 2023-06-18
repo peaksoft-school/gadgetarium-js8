@@ -2,7 +2,7 @@
 import { mainApi } from '../../config/instances'
 
 export interface Order {
-  foundProducts: number
+  countOfElements: number
   elements: {
     id: number
     fullName: string
@@ -32,6 +32,17 @@ export const getAllOrdersRequest = (queryParams: any) => {
   })
 }
 
-export const deleteOrderByIdRequest = (id: number) => {
+export const deleteOrderByIdRequest = (id: number | null) => {
   return mainApi.delete<AllOrdersResponse>(`api/admin/orders/${id}`)
+}
+
+export const postOrderStatusRequest = (dataStatus: {
+  id: number | null
+  status: string | null
+}) => {
+  return mainApi.post(`api/admin/orders?orderId=${dataStatus.id}&status=${dataStatus.status}`)
+}
+
+export const getByIdProductOrderRequest = (orderId: string | null) => {
+  return mainApi.get(`api/user/products/get-by-id?productId=${orderId}&colour=red`)
 }

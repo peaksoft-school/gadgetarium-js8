@@ -44,15 +44,93 @@ interface Order {
 interface OrderTabProps {
   tabs: Order[]
   defaultValue: string
+  setQueryParams?: React.Dispatch<
+    React.SetStateAction<{
+      keyWord: string
+      status: string
+      page: number
+      pageSize: number
+      from: null
+      before: null
+    }>
+  >
 }
 
-const OrderTab: React.FC<OrderTabProps> = ({ tabs, defaultValue }) => {
+const OrderTab: React.FC<OrderTabProps> = ({ tabs, defaultValue, setQueryParams }) => {
   const [value, setValue] = React.useState(defaultValue)
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
-
+  const changeTabHandler = (tabId: number) => {
+    if (tabId === 1) {
+      if (setQueryParams) {
+        setQueryParams({
+          keyWord: '',
+          status: 'PENDING',
+          page: 1,
+          pageSize: 7,
+          from: null,
+          before: null
+        })
+      }
+    } else if (tabId === 2) {
+      if (setQueryParams) {
+        setQueryParams({
+          keyWord: '',
+          status: 'READY_FOR_DELIVERY',
+          page: 1,
+          pageSize: 7,
+          from: null,
+          before: null
+        })
+      }
+    } else if (tabId === 3) {
+      if (setQueryParams) {
+        setQueryParams({
+          keyWord: '',
+          status: 'COURIER_ON_THE_WAY',
+          page: 1,
+          pageSize: 7,
+          from: null,
+          before: null
+        })
+      }
+    } else if (tabId === 4) {
+      if (setQueryParams) {
+        setQueryParams({
+          keyWord: '',
+          status: 'DELIVERED',
+          page: 1,
+          pageSize: 7,
+          from: null,
+          before: null
+        })
+      }
+    } else if (tabId === 5) {
+      if (setQueryParams) {
+        setQueryParams({
+          keyWord: '',
+          status: 'RECEIVED',
+          page: 1,
+          pageSize: 7,
+          from: null,
+          before: null
+        })
+      }
+    } else if (tabId === 6) {
+      if (setQueryParams) {
+        setQueryParams({
+          keyWord: '',
+          status: 'CANCEL',
+          page: 1,
+          pageSize: 7,
+          from: null,
+          before: null
+        })
+      }
+    }
+  }
   return (
     <TabContainer>
       <TabContext value={value}>
@@ -72,7 +150,12 @@ const OrderTab: React.FC<OrderTabProps> = ({ tabs, defaultValue }) => {
           }}
         >
           {tabs?.map((el) => (
-            <StyledTab key={el.id} label={el.label} value={el.value} />
+            <StyledTab
+              key={el.id}
+              label={el.label}
+              value={el.value}
+              onClick={() => changeTabHandler(el.id)}
+            />
           ))}
 
           <DownloadIconContainer>

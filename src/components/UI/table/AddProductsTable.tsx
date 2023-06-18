@@ -10,6 +10,7 @@ type Props<T> = {
   columns: Column<T>[]
   rows: T[]
   getUniqueId: (val: T) => number
+  onClick: (row: T) => void
 }
 const StyledHeaderTr = styled(TableCell)`
   background-color: rgba(56, 66, 85, 0.9);
@@ -26,6 +27,7 @@ const StyledHeaderTr = styled(TableCell)`
   margin-bottom: 1rem;
 `
 const StyledTableCell = styled(TableCell)`
+  cursor: pointer;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
@@ -41,10 +43,10 @@ const StyledTableCell = styled(TableCell)`
     border-right: 1px solid rgba(224, 224, 224, 1);
   }
 `
-const AddProductsTable = <T,>({ columns, rows, getUniqueId }: Props<T>) => {
+const AddProductsTable = <T,>({ columns, rows, getUniqueId, onClick }: Props<T>) => {
   return (
-    <div style={{ width: '100%', overflow: 'hidden', marginTop: '40px' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+    <div style={{ width: '100%', overflow: 'hidden', marginTop: '10px' }}>
+      <TableContainer sx={{ maxHeight: 640 }}>
         <Table stickyHeader aria-label="sticky table" sx={{ borderSpacing: '0 15px' }}>
           <TableHead>
             <TableRow>
@@ -52,13 +54,13 @@ const AddProductsTable = <T,>({ columns, rows, getUniqueId }: Props<T>) => {
                 <StyledHeaderTr
                   key={column.key}
                   align={column.align || 'left'}
-                  //   style={
-                  //     column.minWidth
-                  //       ? {
-                  //           minWidth: column.minWidth
-                  //         }
-                  //       : {}
-                  //   }
+                  // style={
+                  //   column.minWidth
+                  //     ? {
+                  //         minWidth: column.minWidth
+                  //       }
+                  //     : {}
+                  // }
                 >
                   {column.header}
                 </StyledHeaderTr>
@@ -83,7 +85,11 @@ const AddProductsTable = <T,>({ columns, rows, getUniqueId }: Props<T>) => {
                         //@ts-ignore
                         row[column.key]
                     return (
-                      <StyledTableCell key={column.key} align={column.align}>
+                      <StyledTableCell
+                        key={column.key}
+                        align={column.align}
+                        onClick={() => onClick(row)}
+                      >
                         {value}
                       </StyledTableCell>
                     )

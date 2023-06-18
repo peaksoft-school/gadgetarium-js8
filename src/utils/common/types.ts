@@ -34,3 +34,9 @@ export interface BannerListType {
   bannerList: ImageUrlsType
 }
 export type ImageUrlsType = string[]
+
+export type OrderPaginationType = {
+  currentPage: number
+  totalPages: number
+  countOfElements: number
+}

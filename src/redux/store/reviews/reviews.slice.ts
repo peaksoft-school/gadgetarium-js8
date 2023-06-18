@@ -7,27 +7,14 @@ type ItemType = {
   count: number
   reviewResponses: ReviewType
   error: string
+  isLoading: boolean
 }
 
 const initialState: ItemType = {
-  reviewResponses: [
-    {
-      id: 0,
-      productImg: '',
-      productItemNumber: 0,
-      productName: '',
-      commentary: '',
-      grade: 0,
-      answer: '',
-      images: [],
-      userName: '',
-      userEmail: '',
-      userImg: '',
-      date: ''
-    }
-  ],
+  reviewResponses: [],
   count: 0,
-  error: ''
+  error: '',
+  isLoading: false
 }
 
 export const reviewsSlice = createSlice({
@@ -39,9 +26,13 @@ export const reviewsSlice = createSlice({
       state.reviewResponses = payload.reviewResponses
       state.count = payload.count
       state.error = ''
+      state.isLoading = false
     })
     builder.addCase(updateReviews.rejected, (state, { payload }: { payload: any }) => {
       state.error = payload
+    })
+    builder.addCase(getAllReviews.pending, (state) => {
+      state.isLoading = true
     })
   }
 })

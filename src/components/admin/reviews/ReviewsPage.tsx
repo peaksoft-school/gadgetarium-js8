@@ -7,6 +7,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getInfographics } from '../../../redux/store/infographics/infographicsThunk'
 import ReviewsTab from '../UI/tabs/ReviewsTab'
 import { styled } from '@mui/material'
+import Loading from '../../UI/loading/Loading'
 const ContainerFeedback = styled('div')(() => ({
   fontFamily: 'Inter',
   fontStyle: 'normal',
@@ -22,6 +23,7 @@ const Section = styled('section')(() => ({
 const ReviewsPage = () => {
   const dispatch = useDispatch<AppDispatch>()
   const infographicData = useSelector((state: RootState) => state.infographics)
+  const isLoading = useSelector((state: RootState) => state.reviews.isLoading)
   const [searchParams, setSearchParams] = useSearchParams()
   const [page, setPage] = useState('AllReviews')
   const handlerChangePage = (newPage: string) => {
@@ -29,7 +31,7 @@ const ReviewsPage = () => {
     setSearchParams(searchParams)
     setPage(newPage)
   }
-
+  console.log(isLoading)
   useEffect(() => {
     dispatch(getAllReviews(page))
   }, [page])
@@ -40,12 +42,20 @@ const ReviewsPage = () => {
   }, [])
   return (
     <div style={{ width: '100%' }}>
-      <ContainerFeedback>
-        <Section>
-          <ReviewsTab defaultValue="Все отзывы" handlerChangePage={handlerChangePage} page={page} />
-        </Section>
-        <Infographics infographicsData={infographicData.items} />
-      </ContainerFeedback>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <ContainerFeedback>
+          <Section>
+            <ReviewsTab
+              defaultValue="Все отзывы"
+              handlerChangePage={handlerChangePage}
+              page={page}
+            />
+          </Section>
+          <Infographics infographicsData={infographicData.items} />
+        </ContainerFeedback>
+      )}
     </div>
   )
 }

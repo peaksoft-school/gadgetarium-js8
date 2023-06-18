@@ -16,6 +16,7 @@ import {
 } from '../../../redux/store/reviews/reviews.thunk'
 import CutTextReviews from './CutTextReviews'
 import Modal from '../../UI/modals/Modal'
+import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 
 type AllReviewsType = {
   id: number
@@ -188,6 +189,7 @@ const StyledTextField = styled(TextField)(() => ({
   marginTop: '.625rem'
 }))
 const RowTable = ({ item, index, page }: PropsType) => {
+  const { snackbarHanler, ToastContainer } = useSnackbar({ autoClose: 2500, position: 'top-right' })
   const dispatch = useDispatch<AppDispatch>()
   const { error } = useSelector((state: RootState) => state.reviews)
   const [inputValue, setInputValue] = useState('')
@@ -203,12 +205,15 @@ const RowTable = ({ item, index, page }: PropsType) => {
       return false
     }
   }
-
+  const reviewsSnackbarHandler = (message: string, type: 'error' | 'success' | undefined) => {
+    snackbarHanler({ message, linkText: '', type })
+  }
   const sendHandleButtonClick = () => {
     const reviewData = {
       page: page,
       id: item.id,
-      answer: inputValue
+      answer: inputValue,
+      snackbar: reviewsSnackbarHandler
     }
     dispatch(postReviews(reviewData))
     setOpenArrowIcon(false)
@@ -220,7 +225,8 @@ const RowTable = ({ item, index, page }: PropsType) => {
   const removeItemById = () => {
     const reviewData = {
       id: item.id,
-      page: page
+      page: page,
+      snackbar: reviewsSnackbarHandler
     }
     dispatch(deleteReviewById(reviewData))
     setOpenModal(false)
@@ -229,7 +235,8 @@ const RowTable = ({ item, index, page }: PropsType) => {
     const updateData = {
       id: item.id,
       page: page,
-      answer: inputValue
+      answer: inputValue,
+      snackbar: reviewsSnackbarHandler
     }
 
     dispatch(updateReviews(updateData))
@@ -250,6 +257,7 @@ const RowTable = ({ item, index, page }: PropsType) => {
   }
   return (
     <React.Fragment>
+      {ToastContainer}
       <TableRow>
         <StyledTableBodyCell style={{ width: '1.875rem' }}>{index + 1}</StyledTableBodyCell>
         <StyledTableBodyCell style={{ width: '6.25rem' }}>

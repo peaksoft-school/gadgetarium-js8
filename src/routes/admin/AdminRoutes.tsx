@@ -5,7 +5,8 @@ import ProductInnerPage from '../../containers/admin/product-inner-page/ProductI
 import ProductsPage from '../../containers/admin/products/ProductsPage'
 import AddProductsPage from '../../layout/admin/addProduct/CreateAddProduct'
 import ReviewsPage from '../../components/admin/reviews/ReviewsPage'
-import OrderPage from '../../containers/orders/OrderPage'
+import OrderPage from '../../containers/admin/order/OrderPage'
+import OrderInfoPage from '../../containers/admin/order/OrderInfoPage'
 
 const AdminRoutes = () => {
   return (
@@ -23,7 +24,7 @@ const AdminRoutes = () => {
 
           <Route path={PATHS.ADMIN.orders} element={<Outlet />}>
             <Route index element={<OrderPage />} />
-            <Route path={PATHS.ADMIN.orderId} element={<p>OrderInfoPage</p>} />
+            <Route path={PATHS.ADMIN.orderId} element={<OrderInfoPage />} />
             <Route path={PATHS.ADMIN.orderId} element={<p>Not Found</p>} />
           </Route>
 
