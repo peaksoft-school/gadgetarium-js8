@@ -2,7 +2,7 @@ import { Container, styled } from '@mui/material'
 import ImageSlider from '../../../components/user/mainPage/ImageSlider'
 import MenuProduct from '../../../components/user/mainPage/MenuProduct'
 import ReusableServiceCart from '../../../components/user/UI/ReusableServiceCart'
-const StyledDiv = styled('div')(() => ({
+const StyledFirstContainer = styled('div')(() => ({
   width: '100%',
   height: '700px'
 }))
@@ -10,16 +10,13 @@ const StyledDiv = styled('div')(() => ({
 const MainPage = () => {
   return (
     <>
-      <StyledDiv>
+      <StyledFirstContainer>
         <ImageSlider />
-      </StyledDiv>
+      </StyledFirstContainer>
       <Container>
-        <div>
-          <MenuProduct />
-        </div>
-        <div>
-          <ReusableServiceCart />
-        </div>
+        <MenuProduct />
+
+        <ReusableServiceCart />
       </Container>
     </>
   )

@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { ProductCard } from '../card/ProductCard'
-import MuiAlert from '@mui/material/Alert'
 import { ReactComponent as LikeIcon } from '../../../assets/icons/userMainPageIcons/like.svg'
+import { Button, styled } from '@mui/material'
+import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../redux/store'
 import {
-  getDiscountProductService,
-  getNewProductService,
-  getRecommendedProductService
-} from '../../../api/mainPage/getProductsService'
-import { Button, Snackbar, styled } from '@mui/material'
+  addNewProductToBusket,
+  addNewProductToComparison,
+  addNewProductToFavorite
+} from '../../../redux/store/userMainPage/MainPage.thunk'
 import {
-  AddProductToBasketService,
-  AddProductToComparisonsService
-} from '../../../api/mainPage/AddProductToBusketService'
-// import Snackbar from '../../UI/snackbar/Snackbar'
-type DiscountProduct =
+  getDiscountProduct,
+  getNewProduct,
+  getRecommendedProduct
+} from '../../../redux/store/userMainPage/GetProduct.thunk'
+import { useNavigate } from 'react-router-dom'
+export type DiscountProduct =
   | {
+      inFavorites: boolean
+      inComparisons: boolean
       countOfReviews: number
       discount: number
       image: string
@@ -77,31 +82,53 @@ const StyledCartContainer = styled('div')(() => ({
 }))
 
 const MenuProduct = () => {
-  const [newProduct, setNewProduct] = useState<{ elements: DiscountProduct }>()
-  const [recommendProduct, setRecommendProduct] = useState<{ elements: DiscountProduct }>()
-  const [discoundProduct, setDiscoundProduct] = useState<{
-    elements: DiscountProduct
-  }>()
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
+
+  const { discount, newProduct, recommendProduct } = useSelector(
+    (state: RootState) => state.getProducts
+  )
   const [showAllProduct, setShowAllProduct] = useState(5)
   const [showAllNewProduct, setShowAllNewProduct] = useState(5)
   const [showAllRecomendProduct, setShowRecomendAllProduct] = useState(5)
-  const [showSnackbar, setShowSnackbar] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState('')
+  const { snackbarHanler, ToastContainer } = useSnackbar({
+    autoClose: 3000,
+    position: 'top-right'
+  })
+  const snackbarHandler = (message: string, type: 'success' | 'error' | undefined) => {
+    snackbarHanler({
+      message: message,
+      linkText: '',
+      type: type
+    })
+  }
 
-  const addToBusket = async (id: number) => {
-    try {
-      await AddProductToBasketService(id)
-      setShowSnackbar(true)
-      setSnackbarMessage('Товар успешно добавлен в корзину!')
-    } catch (error) {
-      setShowSnackbar(true)
-      setSnackbarMessage('In the basket you can add only one product')
+  const addProductToBusket = (subProductId: number) => {
+    dispatch(addNewProductToBusket({ id: subProductId, snackbar: snackbarHandler }))
+  }
+  const productMovedToComparisonHandle = (subProductId: number, inComparisons: boolean) => {
+    const dataComparisons = {
+      id: subProductId,
+      isComparisons: !inComparisons,
+      snackbar: snackbarHandler,
+      showAllProduct,
+      showAllNewProduct,
+      showAllRecomendProduct
     }
-  }
-  const addToComparisons = async () => {
-    await AddProductToComparisonsService()
+    dispatch(addNewProductToComparison(dataComparisons))
   }
 
+  const addProductToFavourites = (subProductId: number, inFavorites: boolean) => {
+    const dataFavourite = {
+      id: subProductId,
+      isFavorites: !inFavorites,
+      snackbar: snackbarHandler,
+      showAllProduct,
+      showAllNewProduct,
+      showAllRecomendProduct
+    }
+    dispatch(addNewProductToFavorite(dataFavourite))
+  }
   const showProductHandler = () => {
     setShowAllProduct((prevState) => prevState + 5)
   }
@@ -111,56 +138,30 @@ const MenuProduct = () => {
   const showRecomendProductHandler = () => {
     setShowRecomendAllProduct((prevState) => prevState + 5)
   }
-  const getNewProducts = async () => {
-    try {
-      const { data } = await getNewProductService(showAllNewProduct)
-      return setNewProduct(data)
-    } catch (error) {}
-  }
 
   useEffect(() => {
-    getNewProducts()
+    dispatch(getNewProduct(showAllNewProduct))
   }, [showAllNewProduct])
 
-  const getRecommendedProduct = async () => {
-    try {
-      const { data } = await getRecommendedProductService(showAllRecomendProduct)
-      return setRecommendProduct(data)
-    } catch (error) {}
-  }
-
   useEffect(() => {
-    getRecommendedProduct()
+    dispatch(getRecommendedProduct(showAllRecomendProduct))
   }, [showAllRecomendProduct])
 
-  const getDiscoundProduct = async () => {
-    try {
-      const { data } = await getDiscountProductService(showAllProduct)
-      return setDiscoundProduct(data)
-    } catch (error) {}
-  }
   useEffect(() => {
-    getDiscoundProduct()
+    dispatch(getDiscountProduct(showAllProduct))
   }, [showAllProduct])
 
   return (
     <>
-      {/* <Snackbar message="Success" linkText="success"></Snackbar> */}
-      <Snackbar
-        open={showSnackbar}
-        autoHideDuration={3000} // Adjust the duration as needed
-        onClose={() => setShowSnackbar(false)}
-        message={snackbarMessage}
-      ></Snackbar>
-
+      {ToastContainer}
       <StyledCartContainer>
         <StyledTitle>Акции</StyledTitle>
-
         <div>
           <StyledProduct>
-            {discoundProduct?.elements.map((product) => (
-              <>
+            {discount?.map((product) => (
+              <div onClick={() => navigate(`/user/product/${product.subProductId}`)}>
                 <ProductCard
+                  id={product.subProductId}
                   ellipseChildren={`-${product.discount}%`}
                   ellipseColor="#F10000"
                   amount={product.quantity}
@@ -174,14 +175,20 @@ const MenuProduct = () => {
                       : 0
                   }
                   oldPrice={`${product.price}c`}
-                  basketOnClick={() => addToBusket(product.subProductId)}
+                  basketOnClick={() => addProductToBusket(product.subProductId)}
                   ellipsIconOnClick={() => {}}
-                  scaleIconOnClick={() => addToComparisons()}
-                  heartIconOnClick={() => {}}
+                  scaleIconOnClick={() =>
+                    productMovedToComparisonHandle(product.subProductId, product.inComparisons)
+                  }
+                  heartIconOnClick={() =>
+                    addProductToFavourites(product.subProductId, product.inFavorites)
+                  }
                   image={product.image}
                   quantityOfPeople={product.countOfReviews}
+                  inComparisons={product.inComparisons}
+                  inFavorites={product.inFavorites}
                 />
-              </>
+              </div>
             ))}
           </StyledProduct>
           <ButtonContainer>
@@ -195,24 +202,31 @@ const MenuProduct = () => {
         <StyledTitle>Новинки</StyledTitle>
         <div>
           <StyledProduct>
-            {newProduct?.elements.map((product) => (
-              <>
+            {newProduct?.map((product) => (
+              <div onClick={() => navigate(`/user/product/${product.subProductId}`)}>
                 <ProductCard
                   ellipseChildren="new"
+                  id={product.subProductId}
                   ellipseColor="#2FC509"
                   amount={product.quantity}
                   productText={product.productInfo}
                   rating={product.rating}
                   newPrice={`${product.price}`}
                   oldPrice=""
-                  basketOnClick={() => addToBusket(product.subProductId)}
+                  basketOnClick={() => addProductToBusket(product.subProductId)}
                   ellipsIconOnClick={() => {}}
-                  scaleIconOnClick={() => addToComparisons()}
-                  heartIconOnClick={() => {}}
+                  scaleIconOnClick={() =>
+                    productMovedToComparisonHandle(product.subProductId, product.inComparisons)
+                  }
+                  heartIconOnClick={() =>
+                    addProductToFavourites(product.subProductId, product.inFavorites)
+                  }
                   image={product.image}
                   quantityOfPeople={product.countOfReviews}
+                  inComparisons={product.inComparisons}
+                  inFavorites={product.inFavorites}
                 />
-              </>
+              </div>
             ))}
           </StyledProduct>
           <ButtonContainer>
@@ -226,9 +240,10 @@ const MenuProduct = () => {
         <StyledTitle>Мы рекомендуем</StyledTitle>
         <div>
           <StyledProduct>
-            {recommendProduct?.elements.map((product) => (
-              <>
+            {recommendProduct.map((product) => (
+              <div onClick={() => navigate(`/user/product/${product.subProductId}`)}>
                 <ProductCard
+                  id={product.subProductId}
                   ellipseChildren={<LikeIcon />}
                   ellipseColor="#2C68F5"
                   amount={product.quantity}
@@ -242,14 +257,20 @@ const MenuProduct = () => {
                       : 0
                   }
                   oldPrice={`${product.price}c`}
-                  basketOnClick={() => addToBusket(product.subProductId)}
+                  basketOnClick={() => addProductToBusket(product.subProductId)}
                   ellipsIconOnClick={() => {}}
-                  scaleIconOnClick={() => addToComparisons()}
-                  heartIconOnClick={() => {}}
+                  scaleIconOnClick={() =>
+                    productMovedToComparisonHandle(product.subProductId, product.inComparisons)
+                  }
+                  heartIconOnClick={() =>
+                    addProductToFavourites(product.subProductId, product.inFavorites)
+                  }
                   image={product.image}
                   quantityOfPeople={product.countOfReviews}
+                  inComparisons={product.inComparisons}
+                  inFavorites={product.inFavorites}
                 />
-              </>
+              </div>
             ))}
           </StyledProduct>
           <ButtonContainer>

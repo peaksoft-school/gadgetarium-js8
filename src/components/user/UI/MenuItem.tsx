@@ -13,6 +13,7 @@ const StyledMenuItem = styled('ul')(() => ({
   boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.1)',
   borderRadius: '4px',
   position: 'fixed',
+  zIndex: '100',
   top: '3.125rem',
   right: '1.5625rem',
   fontFamily: 'Inter',
