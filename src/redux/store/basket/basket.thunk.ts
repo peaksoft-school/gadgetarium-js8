@@ -8,7 +8,7 @@ import {
 } from '../../../api/basket/basketService'
 import { AxiosError, isAxiosError } from 'axios'
 import { ItemType } from './basket.slice'
-type SnackbarHandler = (message: string, type: 'error' | 'success' | undefined) => void
+export type SnackbarHandler = (message: string, type: 'error' | 'success' | undefined) => void
 
 export const getAllBasket = createAsyncThunk('basket/getBasket', async (_, { rejectWithValue }) => {
   try {

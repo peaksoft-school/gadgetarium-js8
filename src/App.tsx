@@ -4,13 +4,11 @@ import { ThemeProvider } from '@mui/material'
 import { appTheme } from './utils/constants/theme/theme'
 import { store } from './redux/store'
 import AppRoutes from './routes/AppRoutes'
-import Snackbar from './components/UI/snackbar/Snackbar'
 
 const AppContent = () => {
   return (
     <div>
       <AppRoutes />
-      <Snackbar />
     </div>
   )
 }

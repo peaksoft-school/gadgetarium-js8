@@ -10,6 +10,8 @@ import { RootState } from '../../redux/store'
 import { UserRoles } from '../../utils/common/types'
 import MainPage from '../../layout/user/main/MainPage'
 import BasketPage from '../../components/user/basket/BasketPage'
+import AboutStore from '../../layout/user/about/AboutStore'
+import { FavouritesPage } from '../../components/user/favourites/FavouritesPage'
 
 const MainRoutes = () => {
   const role = useSelector((state: RootState) => state.auth.role)
@@ -29,7 +31,7 @@ const MainRoutes = () => {
         <Route path={PATHS.MAIN.favourites} element={<p>FavouritesPage</p>} />
 
         <Route path={PATHS.MAIN.favourites} element={<Outlet />}>
-          <Route index element={<p>BasketPage</p>} />
+          <Route index element={<FavouritesPage />} />
           <Route path={PATHS.MAIN.ordering} element={<p>OrderingPage</p>} />
         </Route>
         <Route path={PATHS.MAIN.basket} element={<BasketPage />} />
@@ -43,7 +45,7 @@ const MainRoutes = () => {
           }
         />
 
-        <Route path={PATHS.MAIN.about} element={<p>AboutPage</p>} />
+        <Route path={PATHS.MAIN.about} Component={AboutStore} />
         <Route path={PATHS.MAIN.delivery} Component={Delivery} />
         <Route path={PATHS.MAIN.faq} Component={FrequentlyAskedQuestions} />
         <Route path={PATHS.MAIN.contacts} Component={Contackts} />

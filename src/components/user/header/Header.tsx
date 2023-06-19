@@ -12,8 +12,7 @@ import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons
 import IconButtons from '../../UI/buttons/IconButtons'
 import Categories from '../../../components/UI/categories/Categories'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
-import { useCallback, useEffect, useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useCallback, useEffect } from 'react'
 import ReusableHoverModal from '../UI/ReusableHoverModal'
 import Tippy from '@tippyjs/react'
 import 'tippy.js/dist/tippy.css'
@@ -21,6 +20,11 @@ import { categories } from '../../../utils/constants/categories'
 import { getAllBusketProductService } from '../../../api/mainPage/AddProductToBusketService'
 import MenuItem from '../UI/MenuItem'
 import SearchItem from '../UI/SearchItem'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../redux/store'
+import { useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { favouriteActions } from '../../../redux/store/favourites/favourites.slice'
 
 const StyledNotificationIcon = styled('span')(() => ({
   display: 'flex',
@@ -219,6 +223,9 @@ export type QueryParams = {
 }
 
 const Header: React.FC = () => {
+  const { totalQuantity } = useSelector((state: RootState) => state.favourites)
+  const dispatch = useDispatch<AppDispatch>()
+  const [catalog, setCatalog] = useState(false)
   const [isScroll, setIsScroll] = useState(false)
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -245,6 +252,10 @@ const Header: React.FC = () => {
 
   const goToBasketHandler = () => {
     navigate('basket')
+    dispatch(favouriteActions.addCount(0))
+  }
+  const goToFavouritesHandler = () => {
+    navigate('favourites')
   }
 
   const scrollHandler = useCallback(() => {
