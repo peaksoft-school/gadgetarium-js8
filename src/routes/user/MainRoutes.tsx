@@ -8,6 +8,7 @@ import { PATHS } from '../../utils/constants/router/routerConsts'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { UserRoles } from '../../utils/common/types'
+import MainPage from '../../layout/user/main/MainPage'
 import BasketPage from '../../components/user/basket/BasketPage'
 import AboutStore from '../../layout/user/about/AboutStore'
 import { FavouritesPage } from '../../components/user/favourites/FavouritesPage'
@@ -21,7 +22,7 @@ const MainRoutes = () => {
   return (
     <MainLayout>
       <Routes>
-        <Route path={PATHS.MAIN.default} element={<p>main page</p>} />
+        <Route path={PATHS.MAIN.default} Component={MainPage} />
         <Route path={PATHS.MAIN.catalog} element={<Outlet />}>
           <Route index element={<p>CatalogPage</p>} />
           <Route path={PATHS.MAIN.productId} element={<p>ProductInnerPage</p>} />

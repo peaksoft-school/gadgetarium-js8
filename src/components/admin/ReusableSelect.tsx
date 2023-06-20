@@ -53,7 +53,6 @@ export const StyledSelect = styled(Select)(() => ({
   justifyContent: 'space-between',
   flexDirection: 'row',
   alignItems: 'center',
-  // padding: '.30px 8px',
   background: '#F7F7F7',
   margin: '.3125rem',
 
