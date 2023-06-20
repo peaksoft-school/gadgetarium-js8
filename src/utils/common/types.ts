@@ -14,7 +14,7 @@ export type SignUpUser = {
 export type MailingListType = {
   name: string
   description: string
-  image: string | null
+  image: string | File
   dateOfStart: string
 
   dateOfFinish: string

@@ -3,7 +3,7 @@ import { ChangeEvent, FC, useState } from 'react'
 import { ReactComponent as AvatarIcon } from '../../../../assets/icons/AvatarIcon.svg'
 
 interface ImagePickerProps {
-  onSelectImage: (imageUrl: string) => void
+  onSelectImage: (selectedFile: File) => void
 }
 
 const StyledImg = styled('img')`
@@ -42,7 +42,7 @@ const ImagePicker: FC<ImagePickerProps> = ({ onSelectImage }) => {
       reader.onload = () => {
         const imageUrl = reader.result as string
         setSelectedImage(imageUrl)
-        onSelectImage(imageUrl)
+        onSelectImage(selectedFile)
       }
     }
   }

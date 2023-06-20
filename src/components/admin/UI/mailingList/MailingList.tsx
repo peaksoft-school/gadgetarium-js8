@@ -8,7 +8,10 @@ import ImagePicker from './ImagePicker'
 import { ChangeEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../../../redux/store'
-import { postMailingList } from '../../../../redux/store/mailingList/mailingList.thunk'
+import {
+  postMailingList,
+  postS3fileImage
+} from '../../../../redux/store/mailingList/mailingList.thunk'
 type Props = {
   modalHandler: () => void
   modal: boolean
@@ -21,30 +24,31 @@ type Props = {
   }) => void
 }
 export const StyledForm = styled('form')`
+  width: 34rem;
   align-items: center;
-  padding-bottom: 10px;
+  padding: 0.625rem 0.625rem 30px 0.625rem;
 `
 export const StyledInput = styled(Input)(() => ({
-  width: '30rem',
+  width: '100%',
   '&.input': {
-    marginTop: '6px'
+    marginTop: '.375rem'
   },
   require: {
-    border: '3px solid red'
+    border: '.1875rem solid red'
   }
 }))
 const StyledHeader = styled('div')`
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 1.875rem;
 `
 export const StyledTitle = styled('h1')`
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
-  font-size: 24px;
-  line-height: 32px;
-  margin-top: 20px;
-  margin-bottom: 25px;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.5625rem;
   text-align: center;
   color: #292929;
 `
@@ -53,16 +57,16 @@ const InputConataienr = styled('div')`
   justify-content: space-between;
 `
 const StyledDateInput = styled(Input)(() => ({
-  width: '14rem',
+  width: '16rem',
   '&.input': {
-    marginTop: '6px'
+    marginTop: '.375rem'
   }
 }))
 export const StyledFormLable = styled(FormLabel)`
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
   margin: 0;
@@ -70,24 +74,25 @@ export const StyledFormLable = styled(FormLabel)`
   color: #384255;
 `
 export const StyledInputContainer = styled('div')`
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem;
 `
 export const StyledButtonContainer = styled('div')`
   width: 100%;
   display: flex;
   justify-content: space-around;
-  margin-top: 10px;
+  gap: 0.3125rem;
+  margin-top: 20px;
 `
 export const StyledButton = styled(Button)(() => ({
   background: '#fff',
-  border: '1px solid #CB11AB',
-  borderRadius: '4px',
+  border: '.0625rem solid #CB11AB',
+  borderRadius: '.25rem',
   fontFamily: 'Inter',
   fontStyle: 'normal',
   fontWeight: '500',
-  fontSize: '14px',
-  lineHeight: '17px',
-  padding: '10px',
+  fontSize: '.875rem',
+  lineHeight: '1.0625rem',
+  padding: '.625rem',
   textTransform: 'uppercase',
   '&:active': {
     border: 'none',
@@ -97,19 +102,20 @@ export const StyledButton = styled(Button)(() => ({
     color: '#fff'
   },
   color: '#CB11AB',
-  width: '14rem'
+  width: '16rem'
 }))
 const CreateMailingList = ({ modalHandler, modal }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
-  const [image, setImage] = useState<string>('')
+  const [image, setImage] = useState<string | File>('')
   const [name, setName] = useState('')
   const [description, setDescription] = useState<string>('')
   const [dateOfStart, setDateOfStart] = useState('')
   const [dateOfFinish, setDateOfEnd] = useState('')
-  const handleImageSelect = (imageUrl: string) => {
+
+  const handleImageSelect = (imageUrl: File) => {
     setImage(imageUrl)
-    console.log('Selected image:', imageUrl)
   }
+
   const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
   }
@@ -122,7 +128,7 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
   const dateOfStartChangeHandler = (e: any) => {
     setDateOfStart(e.target.value)
   }
-  const addNewData = (event: any) => {
+  const addNewData = async (event: any) => {
     event.preventDefault()
     if (
       name.length >= 3 &&
@@ -130,14 +136,21 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
       dateOfStart.length >= 3 &&
       dateOfFinish.length >= 3
     ) {
-      const newData = {
-        name: name,
-        description: description,
-        image: image,
-        dateOfStart: dateOfStart,
-        dateOfFinish: dateOfFinish
-      }
-      dispatch(postMailingList(newData))
+      const formData = new FormData()
+      formData.append('file', image)
+      dispatch(postS3fileImage(formData))
+        .unwrap()
+        .then((data) => {
+          const newData = {
+            name: name,
+            description: description,
+            image: data.link,
+            dateOfStart: dateOfStart,
+            dateOfFinish: dateOfFinish
+          }
+
+          dispatch(postMailingList(newData))
+        })
     } else {
       return require
     }
@@ -146,6 +159,7 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
     setDescription('')
     setDateOfEnd('')
     setDateOfStart('')
+    modalHandler()
   }
   return (
     <Modal onClose={modalHandler} open={modal}>
@@ -164,7 +178,7 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
               value={name}
               required
               id="названиеРассылки"
-              placeholder="Введите название зассылки"
+              placeholder="Введите название рассылки"
               onChange={nameChangeHandler}
             />
           </StyledInputContainer>
@@ -199,11 +213,10 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
                 Дата окончания акции
               </StyledFormLable>
               <StyledDateInput
-                placeholder="Выберите дату"
-                id="dateEnd"
+                id="dateStarts"
                 value={dateOfFinish}
-                required
                 type="date"
+                required
                 onChange={dateOfEndChangeHandler}
               />
             </div>
