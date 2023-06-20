@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { ProductType, StyledInputContainer } from '../../AddTabComponent'
+import { ColorResult } from 'react-color'
+import { StyledInputContainer } from '../../AddTabComponent'
 import { StyledFormLable } from '../../../mailingList/MailingList'
 import { styled, SelectChangeEvent } from '@mui/material'
-import { ReusableSelect as Select } from '../../../../../ReusableSelect'
-import ImagePicker from '../../../mailingList/ImagePicker'
-import { ColorResult } from 'react-color'
+import { ReusableSelect as Select } from '../../../../ReusableSelect'
 import {
   MemoryСapacityForPlanshet,
   RAMForPlanshet,
@@ -13,12 +12,15 @@ import {
   ScreenSizeForPlanshet,
   batteryСapacityForPlanshet
 } from '../../../../../../utils/constants/optionsCategorie'
-import ReusableColorPicker from '../../../../../ReusableColorPicker'
+import ReusableColorPicker from '../../../../ReusableColorPicker'
+import ImagePickerAddProduct from '../../ImagePicker'
+import { useBanner } from '../../../../../../hooks/banner/useBanner'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../../../../redux/store'
+import { addProductActions } from '../../../../../../redux/store/addProduct/AddProduct'
 
 type Props = {
   selectedValueFirst: string | number
-  setSubProducts: (data: any) => void
-  saveProduct: ProductType
 }
 
 export const StyledInputPalette = styled('input')(() => ({
@@ -37,25 +39,38 @@ export const StyledInputPalette = styled('input')(() => ({
   flexRow: '0'
 }))
 
-const CreatePlanshetCategorie = ({ selectedValueFirst, setSubProducts, saveProduct }: Props) => {
+const CreatePlanshetCategorie = ({ selectedValueFirst }: Props) => {
+  const dispatch = useDispatch<AppDispatch>()
+  const { products } = useSelector((state: RootState) => state.addNewProduct)
+
   const [additionalProp1, setAdditionalProp1] = useState('')
   const [additionalProp2, setAdditionalProp2] = useState('')
   const [additionalProp3, setAdditionalProp3] = useState('')
 
-  const [image, setImage] = useState<string>('')
+  const { imagesClassname, bannerImages, handleImageUpload, deleteImage, setBannerImages } =
+    useBanner()
+
   const [colorPlanshet, setPlanshetColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
   useEffect(() => {
-    setSubProducts({ additionalProp3, additionalProp2, image, colorPlanshet, additionalProp1 })
-  }, [additionalProp3, image, colorPlanshet, additionalProp1, additionalProp2])
+    dispatch(
+      addProductActions.addSubProduct({
+        additionalProp3,
+        additionalProp2,
+        bannerImages,
+        colorPlanshet,
+        additionalProp1
+      })
+    )
+  }, [additionalProp3, bannerImages, colorPlanshet, additionalProp1, additionalProp2])
 
   useEffect(() => {
-    setImage('')
+    setBannerImages([])
     setAdditionalProp1('')
     setPlanshetColor('')
     setAdditionalProp2('')
     setAdditionalProp3('')
-  }, [saveProduct])
+  }, [products])
 
   const changeOptions = () => {
     if (selectedValueFirst === 2) {
@@ -82,9 +97,6 @@ const CreatePlanshetCategorie = ({ selectedValueFirst, setSubProducts, saveProdu
     setAdditionalProp1(event.target.value)
   }
 
-  const handlerImage = (imageUrl: string) => {
-    setImage(imageUrl)
-  }
   const colorPickerHandler = (colorResult: ColorResult | any) => {
     setPlanshetColor(colorResult.hex)
   }
@@ -142,7 +154,12 @@ const CreatePlanshetCategorie = ({ selectedValueFirst, setSubProducts, saveProdu
       </StyledInputContainer>
       <StyledInputContainer>
         <StyledFormLable htmlFor="Добавьте фото">Добавьте фото</StyledFormLable>
-        <ImagePicker onSelectImage={handlerImage} />
+        <ImagePickerAddProduct
+          imagesClassname={imagesClassname}
+          bannerImages={bannerImages}
+          handleImageUpload={handleImageUpload}
+          deleteImage={deleteImage}
+        />
       </StyledInputContainer>
     </>
   )

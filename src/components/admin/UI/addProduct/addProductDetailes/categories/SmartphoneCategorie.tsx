@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { ProductType, StyledInputContainer } from '../../AddTabComponent'
-import { StyledFormLable } from '../../../mailingList/MailingList'
-import ReusableColorPicker from '../../../../../ReusableColorPicker'
-import { styled, SelectChangeEvent } from '@mui/material'
-import { ReusableSelect as Select } from '../../../../../ReusableSelect'
-import ImagePicker from '../../../mailingList/ImagePicker'
 import { ColorResult } from 'react-color'
+import React, { useEffect, useState } from 'react'
+import { StyledInputContainer } from '../../AddTabComponent'
+import { StyledFormLable } from '../../../mailingList/MailingList'
+import ReusableColorPicker from '../../../../ReusableColorPicker'
+import { styled, SelectChangeEvent } from '@mui/material'
+import { ReusableSelect as Select } from '../../../../ReusableSelect'
 import {
   additionalProp1,
   additionalProp2,
   additionalProp3
 } from '../../../../../../utils/constants/optionsCategorie'
+import ImagePickerAddProduct from '../../ImagePicker'
+import { useBanner } from '../../../../../../hooks/banner/useBanner'
+import { addProductActions } from '../../../../../../redux/store/addProduct/AddProduct'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../../../../redux/store'
 
 type Props = {
   selectedValueFirst: string | number
-  setSubProducts: (data: any) => void
-  saveProduct: ProductType
 }
 
 export const StyledInputPalette = styled('input')(() => ({
@@ -34,26 +36,32 @@ export const StyledInputPalette = styled('input')(() => ({
   flexRow: '0'
 }))
 
-const SmartphoneCategorie = ({ selectedValueFirst, setSubProducts, saveProduct }: Props) => {
+const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
+  const dispatch = useDispatch<AppDispatch>()
+  const { products } = useSelector((state: RootState) => state.addNewProduct)
   const [memorySize, setMemorySize] = useState('')
   const [ram, setRam] = useState('')
   const [simCart, setSIMcart] = useState('')
 
-  const [image, setImage] = useState<string>('')
+  const { imagesClassname, bannerImages, handleImageUpload, setBannerImages, deleteImage } =
+    useBanner()
+
   const [color, setColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
 
   useEffect(() => {
-    setSubProducts({ image, colour: color, memorySize, ram, simCart })
-  }, [memorySize, image, color, ram, simCart])
+    dispatch(
+      addProductActions.addSubProduct({ bannerImages, colour: color, memorySize, ram, simCart })
+    )
+  }, [memorySize, bannerImages, color, ram, simCart])
 
   useEffect(() => {
-    setImage('')
+    setBannerImages([])
     setColor('')
     setMemorySize('')
     setRam('')
     setSIMcart('')
-  }, [saveProduct])
+  }, [products])
 
   const changeOptions = () => {
     if (selectedValueFirst === 1) {
@@ -77,10 +85,6 @@ const SmartphoneCategorie = ({ selectedValueFirst, setSubProducts, saveProduct }
   }
   const SimCartHandler = (event: SelectChangeEvent<typeof simCart>) => {
     setSIMcart(event.target.value)
-  }
-
-  const handlerImage = (imageUrl: string) => {
-    setImage(imageUrl)
   }
 
   return (
@@ -133,7 +137,12 @@ const SmartphoneCategorie = ({ selectedValueFirst, setSubProducts, saveProduct }
       </StyledInputContainer>
       <StyledInputContainer>
         <StyledFormLable htmlFor="Добавьте фото">Добавьте фото</StyledFormLable>
-        <ImagePicker onSelectImage={handlerImage} />
+        <ImagePickerAddProduct
+          imagesClassname={imagesClassname}
+          bannerImages={bannerImages}
+          handleImageUpload={handleImageUpload}
+          deleteImage={deleteImage}
+        />
       </StyledInputContainer>
     </>
   )

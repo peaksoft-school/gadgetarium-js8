@@ -1,4 +1,7 @@
-import React from 'react'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { formatISO } from 'date-fns'
 import Modal from '../../../UI/modals/Modal'
 import Input from '../../../UI/inputs/Input'
 import Button from '../../../UI/buttons/Button'
@@ -23,8 +26,9 @@ type Props = {
     dateOfFinish: string
   }) => void
 }
-export const StyledForm = styled('form')`
-  width: 34rem;
+
+const StyledForm = styled('form')`
+  width: 100%;
   align-items: center;
   padding: 0.625rem 0.625rem 30px 0.625rem;
 `
@@ -38,6 +42,7 @@ export const StyledInput = styled(Input)(() => ({
   }
 }))
 const StyledHeader = styled('div')`
+  width: 30rem;
   text-align: center;
   margin-bottom: 1.875rem;
 `
@@ -56,12 +61,7 @@ const InputConataienr = styled('div')`
   display: flex;
   justify-content: space-between;
 `
-const StyledDateInput = styled(Input)(() => ({
-  width: '16rem',
-  '&.input': {
-    marginTop: '.375rem'
-  }
-}))
+
 export const StyledFormLable = styled(FormLabel)`
   font-family: 'Inter';
   font-style: normal;
@@ -102,16 +102,41 @@ export const StyledButton = styled(Button)(() => ({
     color: '#fff'
   },
   color: '#CB11AB',
-  width: '16rem'
+  width: '15rem'
+}))
+const StyledDatePicker = styled(DatePicker)(() => ({
+  borderRadius: '.25rem',
+  fontFamily: 'Roboto',
+  fontWeight: '400',
+  fontSize: '.875rem',
+  border: '.0625rem solid #292929',
+  input: {
+    width: '10rem',
+    padding: '8px 15px 8px 15px',
+    fontSize: '14px',
+    color: '#4D4E51'
+  },
+  '.MuiOutlinedInput-notchedOutline': {
+    border: 'none'
+  },
+  '&:hover': {
+    border: '1px solid #CB11AB'
+  }
 }))
 const CreateMailingList = ({ modalHandler, modal }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const [image, setImage] = useState<string | File>('')
   const [name, setName] = useState('')
   const [description, setDescription] = useState<string>('')
-  const [dateOfStart, setDateOfStart] = useState('')
-  const [dateOfFinish, setDateOfEnd] = useState('')
+  const [dateOfStart, setDateOfStart] = useState<Date | null>(null)
+  const [dateOfFinish, setDateOfEnd] = useState<Date | null>(null)
 
+  const formattedStart: string = dateOfStart
+    ? formatISO(dateOfStart, { representation: 'date' })
+    : ''
+  const formattedFinish: string = dateOfFinish
+    ? formatISO(dateOfFinish, { representation: 'date' })
+    : ''
   const handleImageSelect = (imageUrl: File) => {
     setImage(imageUrl)
   }
@@ -122,20 +147,15 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
   const descriptionChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value)
   }
-  const dateOfEndChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setDateOfEnd(e.target.value)
+  const dateOfEndChangeHandler = (date: any) => {
+    setDateOfEnd(date)
   }
-  const dateOfStartChangeHandler = (e: any) => {
-    setDateOfStart(e.target.value)
+  const dateOfStartChangeHandler = (date: any) => {
+    setDateOfStart(date)
   }
   const addNewData = async (event: any) => {
     event.preventDefault()
-    if (
-      name.length >= 3 &&
-      description.length >= 3 &&
-      dateOfStart.length >= 3 &&
-      dateOfFinish.length >= 3
-    ) {
+    if (name.length >= 3 && description.length >= 3 && dateOfStart && dateOfFinish) {
       const formData = new FormData()
       formData.append('file', image)
       dispatch(postS3fileImage(formData))
@@ -145,8 +165,8 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
             name: name,
             description: description,
             image: data.link,
-            dateOfStart: dateOfStart,
-            dateOfFinish: dateOfFinish
+            dateOfStart: formattedStart,
+            dateOfFinish: formattedFinish
           }
 
           dispatch(postMailingList(newData))
@@ -157,77 +177,78 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
     setName('')
     setImage('')
     setDescription('')
-    setDateOfEnd('')
-    setDateOfStart('')
+    setDateOfEnd(null)
+    setDateOfStart(null)
     modalHandler()
   }
+
   return (
-    <Modal onClose={modalHandler} open={modal}>
-      <StyledForm onSubmit={addNewData}>
-        <StyledHeader>
-          <StyledTitle>Создать рассылку</StyledTitle>
-          <ImagePicker onSelectImage={handleImageSelect} />
-        </StyledHeader>
-        <div>
-          <StyledInputContainer>
-            <StyledFormLable required htmlFor="названиеРассылки">
-              Название рассылки
-            </StyledFormLable>
-            <StyledInput
-              type="text"
-              value={name}
-              required
-              id="названиеРассылки"
-              placeholder="Введите название рассылки"
-              onChange={nameChangeHandler}
-            />
-          </StyledInputContainer>
-          <StyledInputContainer>
-            <StyledFormLable required htmlFor="описаниеРассылки">
-              Описание рассылки
-            </StyledFormLable>
-            <StyledInput
-              type="text"
-              required
-              id="описаниеРассылки"
-              value={description}
-              onChange={descriptionChangeHandler}
-              placeholder="Введите описание рассылки"
-            />
-          </StyledInputContainer>
-          <InputConataienr>
-            <div>
-              <StyledFormLable htmlFor="dateStarts " required>
-                Дата начала акции
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Modal onClose={modalHandler} open={modal}>
+        <StyledForm onSubmit={addNewData}>
+          <StyledHeader>
+            <StyledTitle>Создать рассылку</StyledTitle>
+            <ImagePicker onSelectImage={handleImageSelect} />
+          </StyledHeader>
+          <div>
+            <StyledInputContainer>
+              <StyledFormLable required htmlFor="названиеРассылки">
+                Название рассылки
               </StyledFormLable>
-              <StyledDateInput
-                id="dateStarts"
-                value={dateOfStart}
-                type="date"
+              <StyledInput
+                type="text"
+                value={name}
                 required
-                onChange={dateOfStartChangeHandler}
+                id="названиеРассылки"
+                placeholder="Введите название рассылки"
+                onChange={nameChangeHandler}
               />
-            </div>
-            <div>
-              <StyledFormLable htmlFor="dateEnd" required>
-                Дата окончания акции
+            </StyledInputContainer>
+            <StyledInputContainer>
+              <StyledFormLable required htmlFor="описаниеРассылки">
+                Описание рассылки
               </StyledFormLable>
-              <StyledDateInput
-                id="dateStarts"
-                value={dateOfFinish}
-                type="date"
+              <StyledInput
+                type="text"
                 required
-                onChange={dateOfEndChangeHandler}
+                id="описаниеРассылки"
+                value={description}
+                onChange={descriptionChangeHandler}
+                placeholder="Введите описание рассылки"
               />
-            </div>
-          </InputConataienr>
-          <StyledButtonContainer>
-            <StyledButton onClick={modalHandler}>Отмена</StyledButton>
-            <StyledButton type="submit">Отправить</StyledButton>
-          </StyledButtonContainer>
-        </div>
-      </StyledForm>
-    </Modal>
+            </StyledInputContainer>
+            <InputConataienr>
+              <div>
+                <StyledFormLable htmlFor="dateStarts " required>
+                  Дата начала акции
+                </StyledFormLable>
+                <StyledDatePicker
+                  value={dateOfStart}
+                  onChange={(date) => dateOfStartChangeHandler(date)}
+                  maxDate={dateOfStart}
+                  minDate={dateOfFinish}
+                />
+              </div>
+              <div>
+                <StyledFormLable htmlFor="dateEnd" required>
+                  Дата окончания акции
+                </StyledFormLable>
+                <StyledDatePicker
+                  value={dateOfFinish}
+                  onChange={(date) => dateOfEndChangeHandler(date)}
+                  maxDate={dateOfFinish}
+                  minDate={dateOfStart}
+                />
+              </div>
+            </InputConataienr>
+            <StyledButtonContainer>
+              <StyledButton onClick={modalHandler}>Отмена</StyledButton>
+              <StyledButton type="submit">Отправить</StyledButton>
+            </StyledButtonContainer>
+          </div>
+        </StyledForm>
+      </Modal>
+    </LocalizationProvider>
   )
 }
 export default CreateMailingList

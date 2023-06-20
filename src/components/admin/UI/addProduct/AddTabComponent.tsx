@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import { StyledFormLable } from '../mailingList/MailingList'
-import { ReusableSelect as SelectComponent, StyledSelect } from '../../../ReusableSelect'
+import { ReusableSelect as SelectComponent, StyledSelect } from '../../ReusableSelect'
 import { styled, SelectChangeEvent } from '@mui/material'
 import Input from '../../../UI/inputs/Input'
 import AddbrandModal from './AddbrandModal'
@@ -17,6 +17,9 @@ import CreateLaptopCategorie from './addProductDetailes/CreateLaptopCategorie'
 import Button from '../../../UI/buttons/Button'
 import { NavLink } from 'react-router-dom'
 import IconButtons from '../../../UI/buttons/IconButtons'
+import { addProductActions } from '../../../../redux/store/addProduct/AddProduct'
+import { isAxiosError } from 'axios'
+import { useSnackbar } from '../../../../hooks/snackbar/useSnackbar'
 
 interface Brand {
   name: string
@@ -164,6 +167,9 @@ const StyledButton = styled('li')(() => ({
   position: 'relative',
   zIndex: 11
 }))
+const StyledLinkContainer = styled('div')(() => ({
+  marginLeft: '20rem'
+}))
 
 export type ProductType = {
   name: string | number
@@ -175,7 +181,7 @@ export type ProductType = {
 
 const AddTabComponent: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const { options } = useSelector((state: RootState) => state.addNewProduct)
+  const { options, products, subProduct } = useSelector((state: RootState) => state.addNewProduct)
   const [selectedValueFirst, setSelectedValueFirst] = useState<string | number>('')
   const [selectedValueSecond, setSelectedValueSecond] = useState<string | number>('')
   const [selectedValueThird, setSelectedValueThird] = useState<string | number>(0)
@@ -185,8 +191,6 @@ const AddTabComponent: React.FC = () => {
 
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [categories, setCategories] = useState([])
-  const [saveProduct, setSaveProduct] = useState<ProductType>([])
-  const [subProducts, setSubProducts] = useState({})
 
   const saveHandler = () => {
     const newProduct = {
@@ -194,9 +198,9 @@ const AddTabComponent: React.FC = () => {
       brandId: selectedValueSecond,
       subCategoryId: selectedValueThird,
       dateOfIssue,
-      subProducts: [subProducts]
+      subProducts: [subProduct]
     }
-    setSaveProduct([...saveProduct, newProduct])
+    dispatch(addProductActions.addProduct(newProduct))
   }
   const handleModal = () => {
     setOpenModal((prevState) => !prevState)
@@ -220,15 +224,30 @@ const AddTabComponent: React.FC = () => {
     setSelectedValueThird(event.target.value)
   }
 
+  const { snackbarHanler } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
+
   const getCategories = async () => {
     try {
       const { data } = await getProductCategorieService()
       setCategories(data)
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
     }
   }
-
   const getSubCategories = async () => {
     dispatch(getProductBrandAndSubCategories(selectedValueFirst))
   }
@@ -339,10 +358,9 @@ const AddTabComponent: React.FC = () => {
       </StyledForm>
       {selectedValueFirst === '' ? null : (
         <>
-          {' '}
           <StyledContainer>
             <StyledQuantityProduct>
-              Продукт <span>{saveProduct.length}</span>
+              Продукт <span>{products.length}</span>
             </StyledQuantityProduct>
             <StyledContainerAddProduct onClick={saveHandler}>
               <IconButtons icon={<PlusIcon />} />
@@ -350,32 +368,20 @@ const AddTabComponent: React.FC = () => {
             </StyledContainerAddProduct>
           </StyledContainer>
           {selectedValueFirst === 1 ? (
-            <AddDetailsProduct
-              saveProduct={saveProduct}
-              selectedValueFirst={selectedValueFirst}
-              setSubProducts={setSubProducts}
-            />
+            <AddDetailsProduct selectedValueFirst={selectedValueFirst} />
           ) : null}
-          {selectedValueFirst === 4 ? (
-            <SmartWatchCategorie saveProduct={saveProduct} setSubProducts={setSubProducts} />
-          ) : null}
+          {selectedValueFirst === 4 ? <SmartWatchCategorie /> : null}
           {selectedValueFirst === 2 ? (
-            <CreatePlanshetCategorie
-              saveProduct={saveProduct}
-              selectedValueFirst={selectedValueFirst}
-              setSubProducts={setSubProducts}
-            />
+            <CreatePlanshetCategorie selectedValueFirst={selectedValueFirst} />
           ) : null}
           {selectedValueFirst === 3 ? (
-            <CreateLaptopCategorie
-              saveProduct={saveProduct}
-              selectedValueFirst={selectedValueFirst}
-              setSubProducts={setSubProducts}
-            />
+            <CreateLaptopCategorie selectedValueFirst={selectedValueFirst} />
           ) : null}
-          <NavLink to={'/'}>
-            <StyledMuiButton>Далее</StyledMuiButton>
-          </NavLink>
+          <StyledLinkContainer>
+            <NavLink to={'/'}>
+              <StyledMuiButton>Далее</StyledMuiButton>
+            </NavLink>
+          </StyledLinkContainer>
         </>
       )}
     </>

@@ -13,6 +13,6 @@ type InfographicssResponse = {
   data: InfographicsTypes
 }
 
-export const getInfographicsRequest = () => {
-  return mainApi.get<InfographicssResponse>('/api/infographics/infographic')
+export const getInfographicsRequest = (date: string) => {
+  return mainApi.get<InfographicssResponse>(`/api/infographics/infographic?period=${date}`)
 }

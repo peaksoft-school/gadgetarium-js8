@@ -13,6 +13,7 @@ import { signIn } from '../../../redux/store/auth/auth.thunk'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux/redux'
+import LoadingSpinner from '../loading/LoadingSpinner'
 
 const StyledBlockName = styled('p')(() => ({
   fontFamily: 'Inter',
@@ -95,11 +96,11 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { error } = useAppSelector((state) => state.auth)
+  const { error, isLoading } = useAppSelector((state) => state.auth)
 
   const schema = z.object({
     email: z.string().email(),
-    password: z.string().min(6)
+    password: z.string().min(6, 'Должно быть больше 6 символов')
   })
 
   type FormSchema = (typeof schema)['_output']
@@ -162,9 +163,14 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
                 icon={showPassword ? <EyeIcon /> : <SlashedEyeIcon />}
               />
             </StyledIconButtonContainer>
-            <Button variant="contained" type="submit" onClick={() => {}}>
-              Войти
-            </Button>
+
+            {isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <Button variant="contained" type="submit" onClick={() => {}}>
+                Войти
+              </Button>
+            )}
           </StyledModalForm>
 
           <StyledBottomText>

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { getProductBrandAndSubCategories } from './getCategories.thunk'
 
-interface SelectOptionsCategorie {
+export interface SelectOptionsCategorie {
   options: {
     subCategories: {
       name: string
@@ -13,8 +13,10 @@ interface SelectOptionsCategorie {
       logo: string
     }[]
   }
+  products: any
   loading: boolean
   error: string | null
+  subProduct: object
 }
 
 const initialState: SelectOptionsCategorie = {
@@ -22,14 +24,23 @@ const initialState: SelectOptionsCategorie = {
     subCategories: [],
     brands: []
   },
+  products: [],
   loading: false,
-  error: ''
+  error: '',
+  subProduct: {}
 }
 
 export const addProductSlice = createSlice({
   name: 'addNewProduct',
   initialState,
-  reducers: {},
+  reducers: {
+    addProduct: (state, { payload }) => {
+      state.products.push(payload)
+    },
+    addSubProduct: (state, action) => {
+      state.subProduct = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(getProductBrandAndSubCategories.fulfilled, (state, action) => {
       state.options = action.payload

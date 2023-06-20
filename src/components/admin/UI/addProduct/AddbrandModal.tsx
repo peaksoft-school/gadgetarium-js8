@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import ImagePicker from '../mailingList/ImagePicker'
 import { styled } from '@mui/material'
 import {
@@ -26,7 +26,7 @@ const AddbrandModal = ({ modal, modalHandler, getSubCategories }: Props) => {
   const [logo, setLogo] = useState<string>('')
   const [name, setName] = useState<string>('')
 
-  const handleImageSelect = (imageUrl: string) => {
+  const handleImageSelect = (imageUrl: string | any) => {
     setLogo(imageUrl)
   }
   const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +45,7 @@ const AddbrandModal = ({ modal, modalHandler, getSubCategories }: Props) => {
         modalHandler()
         getSubCategories()
       } catch (error) {
-        console.log(error)
+        return error
       }
     } else {
       return require

@@ -1,20 +1,22 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import { SelectChangeEvent } from '@mui/material'
-import { ProductType, StyledInputContainer } from '../../AddTabComponent'
-import { StyledFormLable } from '../../../mailingList/MailingList'
-import { ReusableSelect as Select } from '../../../../../ReusableSelect'
 import { ColorResult } from 'react-color'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { SelectChangeEvent } from '@mui/material'
+import { StyledInputContainer } from '../../AddTabComponent'
+import { StyledFormLable } from '../../../mailingList/MailingList'
+import { ReusableSelect as Select } from '../../../../ReusableSelect'
 import { additionalProp2 } from '../../../../../../utils/constants/optionsCategorie'
-import ReusableColorPicker from '../../../../../ReusableColorPicker'
+import ReusableColorPicker from '../../../../ReusableColorPicker'
 import { RadioButton } from '../../../../../UI/RadioButton'
-import ImagePicker from '../../../mailingList/ImagePicker'
+import ImagePickerAddProduct from '../../ImagePicker'
+import { useBanner } from '../../../../../../hooks/banner/useBanner'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../../../../redux/store'
+import { addProductActions } from '../../../../../../redux/store/addProduct/AddProduct'
 
-type Props = {
-  setSubProducts: (data: any) => void
-  saveProduct: ProductType
-}
+const SmartWatchCategorie = () => {
+  const dispatch = useDispatch<AppDispatch>()
+  const { products } = useSelector((state: RootState) => state.addNewProduct)
 
-const SmartWatchCategorie = ({ setSubProducts, saveProduct }: Props) => {
   const [memory1, setMemory1] = useState('')
   const [material, setMaterial] = useState('')
   const [size, setSize] = useState('')
@@ -24,25 +26,28 @@ const SmartWatchCategorie = ({ setSubProducts, saveProduct }: Props) => {
   const [waterproof, setWaterproof] = useState<string>('')
   const [wireless, setWireless] = useState('')
   const [shape, setShape] = useState('')
-  const [image, setImage] = useState('')
+  const { imagesClassname, bannerImages, handleImageUpload, setBannerImages, deleteImage } =
+    useBanner()
 
   const [colorSmartWatch, setSmartWatchColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
 
   useEffect(() => {
-    setSubProducts({
-      shape,
-      colorSmartWatch,
-      memory1,
-      material,
-      size,
-      gender,
-      waterproof,
-      image,
-      size2,
-      display,
-      wireless
-    })
+    dispatch(
+      addProductActions.addSubProduct({
+        shape,
+        colorSmartWatch,
+        memory1,
+        material,
+        size,
+        gender,
+        waterproof,
+        bannerImages,
+        size2,
+        display,
+        wireless
+      })
+    )
   }, [
     colorSmartWatch,
     memory1,
@@ -50,7 +55,7 @@ const SmartWatchCategorie = ({ setSubProducts, saveProduct }: Props) => {
     size,
     gender,
     waterproof,
-    image,
+    bannerImages,
     size2,
     display,
     wireless,
@@ -66,9 +71,9 @@ const SmartWatchCategorie = ({ setSubProducts, saveProduct }: Props) => {
     setWaterproof('')
     setWireless('')
     setShape('')
-    setImage('')
+    setBannerImages([])
     setSmartWatchColor('')
-  }, [saveProduct])
+  }, [products])
 
   const memory1Handler = (event: SelectChangeEvent<typeof memory1>) => {
     setMemory1(event.target.value)
@@ -105,9 +110,7 @@ const SmartWatchCategorie = ({ setSubProducts, saveProduct }: Props) => {
   const openColorHandler = () => {
     setOpenColorPicker((prevState) => !prevState)
   }
-  const handlerImage = (imageUrl: string) => {
-    setImage(imageUrl)
-  }
+
   return (
     <form>
       <StyledInputContainer>
@@ -292,7 +295,12 @@ const SmartWatchCategorie = ({ setSubProducts, saveProduct }: Props) => {
       </StyledInputContainer>
       <StyledInputContainer>
         <StyledFormLable htmlFor="Добавьте фото">Добавьте фото</StyledFormLable>
-        <ImagePicker onSelectImage={handlerImage} />
+        <ImagePickerAddProduct
+          imagesClassname={imagesClassname}
+          bannerImages={bannerImages}
+          handleImageUpload={handleImageUpload}
+          deleteImage={deleteImage}
+        />
       </StyledInputContainer>
     </form>
   )

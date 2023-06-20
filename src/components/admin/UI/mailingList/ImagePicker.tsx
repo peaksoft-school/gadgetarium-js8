@@ -38,6 +38,7 @@ const ImagePicker: FC<ImagePickerProps> = ({ onSelectImage }) => {
     const selectedFile = e.target.files?.[0]
     if (selectedFile) {
       const reader = new FileReader()
+
       reader.readAsDataURL(selectedFile)
       reader.onload = () => {
         const imageUrl = reader.result as string

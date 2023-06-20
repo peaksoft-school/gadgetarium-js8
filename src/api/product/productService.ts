@@ -12,6 +12,7 @@ export interface Product {
       percentOfDiscount: number
       price: number
       quantity: number
+      productId: number
       subProductId: number
       totalPrice: number
     }
@@ -38,6 +39,6 @@ export const getAllProductsRequest = (queryParams: any) => {
   })
 }
 
-export const deleteProductByIdRequest = (id: number) => {
-  return mainApi.delete<AllProductsResponse>(`/api/admin/products/${id}`)
+export const deleteProductByIdRequest = (ids: number[]) => {
+  return mainApi.delete<AllProductsResponse>(`/api/admin/products?subProductIds=${ids}`)
 }

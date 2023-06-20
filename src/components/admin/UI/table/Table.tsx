@@ -19,6 +19,7 @@ type RowType = {
   percentOfDiscount: number
   price: number
   quantity: number
+  productId: number
   subProductId: number
   totalPrice: number
 }
@@ -146,8 +147,8 @@ const AppTable = <T,>({
     setHoveredId(id)
   }
 
-  const deleteHandler = (id: number) => {
-    dispatch(deleteProductById(id))
+  const deleteHandler = (ids: number[]) => {
+    dispatch(deleteProductById(ids))
       .unwrap()
       .then()
       .catch((e) => {
@@ -188,13 +189,21 @@ const AppTable = <T,>({
                       <StyledIdtd>{row.subProductId}</StyledIdtd>
                     </>
                   )}
-                  <Styledtd>
+                  <Styledtd onClick={() => navigateToInnerPageHandler(row.productId)}>
                     <StyledImage src={row.image} alt="phoneImage" />
                   </Styledtd>
-                  <Styledtd>{row.itemNumber}</Styledtd>
-                  <Styledtd>{row.name}</Styledtd>
-                  <Styledtd>{row.createdAt}</Styledtd>
-                  <Styledtd>{row.quantity}</Styledtd>
+                  <Styledtd onClick={() => navigateToInnerPageHandler(row.productId)}>
+                    {row.itemNumber}
+                  </Styledtd>
+                  <Styledtd onClick={() => navigateToInnerPageHandler(row.productId)}>
+                    {row.name}
+                  </Styledtd>
+                  <Styledtd onClick={() => navigateToInnerPageHandler(row.productId)}>
+                    {row.createdAt}
+                  </Styledtd>
+                  <Styledtd onClick={() => navigateToInnerPageHandler(row.productId)}>
+                    {row.quantity}
+                  </Styledtd>
                   <Styledtd>
                     <CurrentPrice>{row.price}c</CurrentPrice>
                     <Discount>{row.percentOfDiscount}%</Discount>
@@ -203,13 +212,10 @@ const AppTable = <T,>({
                     <TotalPrice>{row.totalPrice}c</TotalPrice>
                   </Styledtd>
                   <Styledtd>
-                    <IconButtons
-                      icon={<EditIcon />}
-                      onClick={() => navigateToInnerPageHandler(row.subProductId)}
-                    />
+                    <IconButtons icon={<EditIcon />} onClick={() => {}} />
                     <IconButtons
                       icon={<DeleteIcon />}
-                      onClick={() => deleteHandler(row.subProductId)}
+                      onClick={() => deleteHandler([row.subProductId])}
                     />
                   </Styledtd>
                 </StyledTr>

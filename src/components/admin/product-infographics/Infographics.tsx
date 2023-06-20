@@ -3,7 +3,7 @@ import InfographicsTab from './InfographicsTab'
 import { InfographicsTypes } from '../../../api/infographics/infographicsService'
 
 const MainContainer = styled('div')(() => ({
-  width: '20.625rem'
+  // width: '20.625rem'
 }))
 
 const StyledTitle = styled('p')(() => ({

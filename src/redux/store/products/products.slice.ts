@@ -19,6 +19,7 @@ const initialState: ProductsState = {
         percentOfDiscount: 20,
         price: 120000,
         quantity: 1,
+        productId: 1,
         subProductId: 1,
         totalPrice: 96000
       }

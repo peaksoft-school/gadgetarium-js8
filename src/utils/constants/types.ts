@@ -35,3 +35,9 @@ export type AddProducts = {
     }
   ]
 }
+
+export type ErrorMessageType = {
+  httpStatus: string
+  exceptionClassName: string
+  message: string
+}
