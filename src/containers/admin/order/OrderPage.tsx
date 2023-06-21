@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { Grid, InputBase, Paper, styled } from '@mui/material'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import IconButtons from '../../../components/UI/buttons/IconButtons'
 import { ReactComponent as SearchIcon } from '../../../assets/icons/header-icons/searchIcon.svg'
 import Infographics from '../../../components/admin/product-infographics/Infographics'
@@ -12,7 +12,6 @@ import { DeliveryMenu } from '../../../components/admin/UI/menu-list/DeliveryMen
 import PickupMenu from '../../../components/admin/UI/menu-list/PickupMenu'
 import { DeleteModalOrder } from './DeleteModalOrder'
 import { useOrderAdmin } from '../../../hooks/order/useOrderAdmin'
-import Loading from '../../../components/UI/loading/Loading'
 
 const FirstContainer = styled('div')(() => ({
   width: '81.5625rem',
@@ -57,6 +56,7 @@ const StyledSearchIcon = styled(SearchIcon)(() => ({
 
 const OrderPage = () => {
   const dispatch = useDispatch<AppDispatch>()
+  const [changeTabColor, setChangeTabColor] = useState('В обработке')
   const { ToastContainer } = useSnackbar({
     autoClose: 2500,
     position: 'bottom-right'
@@ -80,8 +80,7 @@ const OrderPage = () => {
     searchTerm,
     delivered,
     anchorEl,
-    setQueryParams,
-    isLoading
+    setQueryParams
   } = useOrderAdmin()
   useEffect(() => {
     dispatch(getInfographics('day'))
@@ -90,63 +89,61 @@ const OrderPage = () => {
     getOrder()
   }, [queryParams])
   useEffect(() => {
-    if (debouncedSearchTerm.length) {
+    if (debouncedSearchTerm.length != 0) {
       searchCharacters(debouncedSearchTerm)
     }
   }, [debouncedSearchTerm])
   return (
     <>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          <DeleteModalOrder
-            openModal={openModal}
-            closeModalHandler={closeModalHandler}
-            deleteHandler={() => deleteProductHandler(getIdProduct)}
-            text={`Вы уверены, что хотите удалить товар
+      <>
+        <DeleteModalOrder
+          openModal={openModal}
+          closeModalHandler={closeModalHandler}
+          deleteHandler={() => deleteProductHandler(getIdProduct)}
+          text={`Вы уверены, что хотите удалить товар
     ${getNameProduct}?`}
-          />
-          <Main>
-            <FirstContainer>
-              <StyledGrid>
-                <StyledPaper>
-                  <InputBase
-                    value={searchTerm}
-                    onChange={searchTermHandler}
-                    placeholder="Поиск по артикулу или ..."
-                  />
-                  <IconButtons icon={<StyledSearchIcon />} />
-                </StyledPaper>
-              </StyledGrid>
-              {delivered ? (
-                <DeliveryMenu
-                  open={openList}
-                  anchorEl={anchorEl}
-                  onClick={chooseDeliveryTypeHandler}
-                  onClose={handleClose}
+        />
+        <Main>
+          <FirstContainer>
+            <StyledGrid>
+              <StyledPaper>
+                <InputBase
+                  value={searchTerm}
+                  onChange={searchTermHandler}
+                  placeholder="Поиск по артикулу или ..."
                 />
-              ) : (
-                <PickupMenu
-                  open={openList}
-                  anchorEl={anchorEl}
-                  onClick={chooseDeliveryTypeHandler}
-                  onClose={handleClose}
-                />
-              )}
-              <ProductsTabContainer>
-                <OrderTab
-                  tabs={updatedTab}
-                  defaultValue="В обработке"
-                  setQueryParams={setQueryParams}
-                />
-              </ProductsTabContainer>
-            </FirstContainer>
-            <Infographics infographicsData={infographics} />
-          </Main>
-          {ToastContainer}
-        </>
-      )}
+                <IconButtons icon={<StyledSearchIcon />} />
+              </StyledPaper>
+            </StyledGrid>
+            {delivered ? (
+              <DeliveryMenu
+                open={openList}
+                anchorEl={anchorEl}
+                onClick={chooseDeliveryTypeHandler}
+                onClose={handleClose}
+              />
+            ) : (
+              <PickupMenu
+                open={openList}
+                anchorEl={anchorEl}
+                onClick={chooseDeliveryTypeHandler}
+                onClose={handleClose}
+              />
+            )}
+            <ProductsTabContainer>
+              <OrderTab
+                tabs={updatedTab}
+                defaultValue={changeTabColor}
+                setQueryParams={setQueryParams}
+                setChangeTabColor={setChangeTabColor}
+              />
+            </ProductsTabContainer>
+          </FirstContainer>
+          <Infographics infographicsData={infographics} />
+        </Main>
+      </>
+
+      {ToastContainer}
     </>
   )
 }

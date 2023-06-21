@@ -1,5 +1,9 @@
 import { Box, Grid, styled, Typography } from '@mui/material'
-
+import { OrderDataType } from './OrderInfoPage'
+import { NavLink } from 'react-router-dom'
+type Props = {
+  getInfoOrder: OrderDataType | null
+}
 const ContainerStyled = styled('div')(() => ({
   width: '100%',
   mainHeight: '31.25rem',
@@ -9,7 +13,7 @@ const ContainerStyled = styled('div')(() => ({
   fontFamily: 'inherit'
 }))
 
-const StyledNavLink = styled('a')(() => ({
+const StyledNavLink = styled(NavLink)(() => ({
   textDecoration: 'none',
   fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
@@ -26,7 +30,23 @@ const StyledNavLink = styled('a')(() => ({
     color: '#91969E'
   }
 }))
-
+const Title = styled('a')(() => ({
+  textDecoration: 'none',
+  fontFamily: 'Inter, sans-serif',
+  fontStyle: 'normal',
+  fontWeight: '400',
+  fontSize: '.875rem',
+  lineHeight: '140%',
+  color: '#292929',
+  '&:not(:last-of-type)': {
+    color: '#91969E'
+  },
+  '&:not(:last-of-type)::after': {
+    margin: '.25rem',
+    content: "'»'",
+    color: '#91969E'
+  }
+}))
 const StyledNav = styled('nav')(() => ({
   display: 'flex',
   marginBottom: '33px'
@@ -143,58 +163,62 @@ const StyledFirstTypography = styled(Typography)(() => ({
   borderBottom: '2px solid  #CDCDCD  ',
   paddingBottom: '18px'
 }))
-const OrderInfoItem = () => {
+const OrderInfoItem = ({ getInfoOrder }: Props) => {
   return (
     <ContainerStyled>
       <StyledNav>
-        <StyledNavLink>Заказы </StyledNavLink>
-        <StyledNavLink>Айзат Жумагулова</StyledNavLink>
+        <StyledNavLink to={'/admin/orders'}>Заказы </StyledNavLink>
+        <Title>{getInfoOrder?.customerName}</Title>
       </StyledNav>
       <BoxStyled>
-        <TypographyStyled variant="h5">Оплата заказа 000000-455247</TypographyStyled>
+        <TypographyStyled variant="h5">Оплата заказа {getInfoOrder?.orderNumber}</TypographyStyled>
       </BoxStyled>
       <StyledGridContainer>
-        <CardContainer>
-          <Container>
-            <CardList>
-              <List>Наименование:</List>
-              <List>Кол-во товара:</List>
+        {getInfoOrder?.products.map((product) => {
+          return (
+            <CardContainer>
+              <Container>
+                <CardList>
+                  <List>Наименование:</List>
+                  <List>Кол-во товара:</List>
 
-              <List>
-                <p>Общая сумма заказа:</p>
-                <StyledDiscount>Скидка:15%</StyledDiscount>
-              </List>
-              <List>Сумма скидки:</List>
-            </CardList>
-            <CardList>
-              <li>Samsung Galaxy S21 128gb синий 9(MLP3RU)</li>
-              <li>1шт</li>
-              <li>60 000 с</li>
-              <li>
-                <StyledDicountNumber>9 000 с</StyledDicountNumber>
-              </li>
-            </CardList>
-          </Container>
-          <StyledTotal>
-            <StyledSpan>Итого:</StyledSpan>
-            51 000 с
-          </StyledTotal>
-        </CardContainer>
+                  <List>
+                    <p>Общая сумма заказа:</p>
+                    <StyledDiscount>Скидка:{`${product.percentOfDiscount}%`}</StyledDiscount>
+                  </List>
+                  <List>Сумма скидки:</List>
+                </CardList>
+                <CardList>
+                  <li>{product.name}</li>
+                  <li>{getInfoOrder.quantity}</li>
+                  <li>{getInfoOrder.totalPrice.toFixed(2)}</li>
+                  <li>
+                    <StyledDicountNumber>{product.sumOfDiscount.toFixed(2)}</StyledDicountNumber>
+                  </li>
+                </CardList>
+              </Container>
+              <StyledTotal>
+                <StyledSpan>Итого:</StyledSpan>
+                {(getInfoOrder.totalPrice - product.sumOfDiscount).toFixed(2)}
+              </StyledTotal>
+            </CardContainer>
+          )
+        })}
         <InfoOrderContainer>
           <StyledFirstTypography>Информация о заказе</StyledFirstTypography>
           <StyledTypography>
-            Заказ № <StyledNumberOfOrder>000000-455247</StyledNumberOfOrder>
+            Заказ № <StyledNumberOfOrder>{getInfoOrder?.orderNumber}</StyledNumberOfOrder>
           </StyledTypography>
           <StyledTypography>
-            Состояние: <StyledNumberOfOrder>Завершено</StyledNumberOfOrder>{' '}
+            Состояние: <StyledNumberOfOrder>Завершено</StyledNumberOfOrder>
           </StyledTypography>
           <StyledTypography>
             Контактный телефон:
-            <StyledText>+996 (400) 00-00-00</StyledText>
+            <StyledText>{getInfoOrder?.phoneNumber}</StyledText>
           </StyledTypography>
           <StyledTypography>
             Адрес доставки:
-            <StyledText>г.Бишкек, Токтоналиева, 145/7 кв 24, дом 5</StyledText>
+            <StyledText>{getInfoOrder?.address}</StyledText>
           </StyledTypography>
         </InfoOrderContainer>
       </StyledGridContainer>

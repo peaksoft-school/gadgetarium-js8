@@ -13,8 +13,7 @@ const AdminRoutes = () => {
     <div>
       <AdminLayout>
         <Routes>
-          <Route path={PATHS.ADMIN.default} element={<Navigate to={PATHS.ADMIN.products} />} />
-
+          <Route path={'*'} element={<Navigate to={PATHS.ADMIN.products} />} />
           <Route path={PATHS.ADMIN.products} element={<Outlet />}>
             <Route index element={<ProductsPage />} />
             <Route path={PATHS.ADMIN.productId} element={<ProductInnerPage />} />

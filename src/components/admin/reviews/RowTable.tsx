@@ -189,7 +189,10 @@ const StyledTextField = styled(TextField)(() => ({
   marginTop: '.625rem'
 }))
 const RowTable = ({ item, index, page }: PropsType) => {
-  const { snackbarHanler, ToastContainer } = useSnackbar({ autoClose: 2500, position: 'top-right' })
+  const { snackbarHanler, ToastContainer } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
   const dispatch = useDispatch<AppDispatch>()
   const { error } = useSelector((state: RootState) => state.reviews)
   const [inputValue, setInputValue] = useState('')
@@ -219,7 +222,7 @@ const RowTable = ({ item, index, page }: PropsType) => {
     setOpenArrowIcon(false)
   }
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const trimmedValue = event.target.value.trim()
+    const trimmedValue = event.target.value
     setInputValue(trimmedValue)
   }
   const removeItemById = () => {
@@ -235,7 +238,7 @@ const RowTable = ({ item, index, page }: PropsType) => {
     const updateData = {
       id: item.id,
       page: page,
-      answer: inputValue,
+      answer: inputValue.trim(),
       snackbar: reviewsSnackbarHandler
     }
 
@@ -340,16 +343,16 @@ const RowTable = ({ item, index, page }: PropsType) => {
             </form>
           </Collapse>
         </StyledTableBodyCell>
+        <Modal open={openModal} onClose={closeModalHandler}>
+          <ModalContainer>
+            <p>Вы уверены, что хотите удалить?</p>
+            <ModalButtonContainers>
+              <CancelModalButton onClick={closeModalHandler}>Отменить</CancelModalButton>
+              <DeleteModalButton onClick={removeItemById}>Удалить</DeleteModalButton>
+            </ModalButtonContainers>
+          </ModalContainer>
+        </Modal>
       </TableRow>
-      <Modal open={openModal} onClose={closeModalHandler}>
-        <ModalContainer>
-          <p>Вы уверены, что хотите удалить?</p>
-          <ModalButtonContainers>
-            <CancelModalButton onClick={closeModalHandler}>Отменить</CancelModalButton>
-            <DeleteModalButton onClick={removeItemById}>Удалить</DeleteModalButton>
-          </ModalButtonContainers>
-        </ModalContainer>
-      </Modal>
     </React.Fragment>
   )
 }

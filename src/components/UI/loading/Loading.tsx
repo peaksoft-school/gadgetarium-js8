@@ -14,7 +14,7 @@ const StyledLogo = styled(Logo)`
   position: absolute;
   top: 50%;
   right: 50%;
-  animation: ${rotateAnimation} 2s infinite linear;
+  animation: ${rotateAnimation} 0.5s infinite linear;
   background-color: #cb11ab;
   padding: 0.375rem;
   border-radius: 100%;

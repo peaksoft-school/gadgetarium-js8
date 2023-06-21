@@ -43,6 +43,6 @@ export const postOrderStatusRequest = (dataStatus: {
   return mainApi.post(`api/admin/orders?orderId=${dataStatus.id}&status=${dataStatus.status}`)
 }
 
-export const getByIdProductOrderRequest = (orderId: string | null) => {
-  return mainApi.get(`api/user/products/get-by-id?productId=${orderId}&colour=red`)
+export const getByIdProductOrderRequest = (orderId: number | null) => {
+  return mainApi.get(`api/admin/orders/${orderId}`)
 }

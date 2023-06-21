@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { UserRoles } from '../../utils/common/types'
 import BasketPage from '../../components/user/basket/BasketPage'
+import AboutStore from '../../layout/user/about/AboutStore'
 import { FavouritesPage } from '../../components/user/favourites/FavouritesPage'
 
 const MainRoutes = () => {
@@ -43,7 +44,7 @@ const MainRoutes = () => {
           }
         />
 
-        <Route path={PATHS.MAIN.about} element={<p>AboutPage</p>} />
+        <Route path={PATHS.MAIN.about} Component={AboutStore} />
         <Route path={PATHS.MAIN.delivery} Component={Delivery} />
         <Route path={PATHS.MAIN.faq} Component={FrequentlyAskedQuestions} />
         <Route path={PATHS.MAIN.contacts} Component={Contackts} />

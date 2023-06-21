@@ -19,7 +19,6 @@ export const getFavourite = createAsyncThunk(
         const updatedData = data.map((item: FavouriteType) => ({
           ...item,
           newPrice: 0,
-          isFavourite: true,
           quantityBasket: 0
         }))
         return { updatedData, totalQuantity: 0 }
@@ -88,15 +87,21 @@ export const removeAllFavourites = createAsyncThunk(
 
 export const postToBasketFromFavourite = createAsyncThunk(
   'favourite/postToBasketFromFavourite',
-  async (payload: { quantity: number; subproductId: number }, { rejectWithValue }) => {
+  async (
+    payload: { quantity: number; subproductId: number; snackbar: SnackbarHandler },
+    { rejectWithValue }
+  ) => {
     try {
       await postBasketRequest(payload)
+      payload.snackbar('Товар успешно добавлен в корзину!', 'success')
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{
           status: number
           message: string
         }>
+        payload.snackbar(error.response?.data.message || 'Повторите попытку', 'error')
+
         return rejectWithValue(error.response?.data.message)
       }
       return rejectWithValue('Something went wrong')
@@ -104,11 +109,20 @@ export const postToBasketFromFavourite = createAsyncThunk(
   }
 )
 
-export const postToComporisonsFromFavourite = createAsyncThunk(
+export const postToOrDeleteComporisonsFromFavourite = createAsyncThunk(
   'favourite/postToComparisonsFromFavourite',
-  async (payload: { id: number; isCompare: boolean }, { rejectWithValue }) => {
+  async (
+    payload: { id: number; isCompare: boolean; snackbar: SnackbarHandler },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
       await postToComparisonRequest(payload)
+      if (payload.isCompare) {
+        payload.snackbar('Товар добавлен в список сравнения!', 'success')
+      } else {
+        payload.snackbar('Товар успешно удален из сравнений!', 'success')
+      }
+      dispatch(getFavourite())
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{

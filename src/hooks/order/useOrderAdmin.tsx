@@ -65,12 +65,12 @@ export const useOrderAdmin = () => {
   const [pagePagination, setPagePagination] = useState<OrderPaginationType>({
     currentPage: 1,
     totalPages: 1,
-    countOfElements: 1
+    countOfElements: 0
   })
   const [queryParams, setQueryParams] = useState({
     status: 'READY_FOR_DELIVERY',
     page: 1,
-    keyWord: '',
+    keyWord: null,
     pageSize: 7,
     from: null,
     before: null
@@ -153,7 +153,7 @@ export const useOrderAdmin = () => {
   }
 
   const searchCharacters = (word: string) => {
-    setQueryParams((prev) => {
+    setQueryParams((prev: any) => {
       return {
         ...prev,
         keyWord: word
@@ -424,6 +424,7 @@ export const useOrderAdmin = () => {
     delivered,
     anchorEl,
     setQueryParams,
-    isLoading
+    isLoading,
+    setSearchTerm
   }
 }

@@ -39,7 +39,10 @@ export const deleteReviewById = createAsyncThunk(
     try {
       await deleteReviewByIdRequest(payload.id)
       dispatch(getAllReviews(payload.page))
-      payload.snackbar('Kомментарий удален из обзоров', 'success')
+        .unwrap()
+        .then(() => {
+          payload.snackbar('Kомментарий удален из обзоров', 'success')
+        })
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{
@@ -68,7 +71,10 @@ export const postReviews = createAsyncThunk(
       }
       await postReviewsRequest(postData)
       dispatch(getAllReviews(payload.page))
-      payload.snackbar('Ответ успешно сохранен!', 'success')
+        .unwrap()
+        .then(() => {
+          payload.snackbar('Ответ успешно сохранен!', 'success')
+        })
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{
@@ -95,7 +101,10 @@ export const updateReviews = createAsyncThunk(
       }
       await updateRequest(postData)
       dispatch(getAllReviews(payload.page))
-      payload.snackbar('Ответ успешно обновлен!', 'success')
+        .unwrap()
+        .then(() => {
+          payload.snackbar('Ответ успешно обновлен!', 'success')
+        })
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{

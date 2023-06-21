@@ -46,7 +46,7 @@ interface OrderTabProps {
   defaultValue: string
   setQueryParams?: React.Dispatch<
     React.SetStateAction<{
-      keyWord: string
+      keyWord: null
       status: string
       page: number
       pageSize: number
@@ -54,9 +54,15 @@ interface OrderTabProps {
       before: null
     }>
   >
+  setChangeTabColor: React.Dispatch<React.SetStateAction<string>>
 }
 
-const OrderTab: React.FC<OrderTabProps> = ({ tabs, defaultValue, setQueryParams }) => {
+const OrderTab: React.FC<OrderTabProps> = ({
+  tabs,
+  defaultValue,
+  setQueryParams,
+  setChangeTabColor
+}) => {
   const [value, setValue] = React.useState(defaultValue)
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -66,68 +72,74 @@ const OrderTab: React.FC<OrderTabProps> = ({ tabs, defaultValue, setQueryParams 
     if (tabId === 1) {
       if (setQueryParams) {
         setQueryParams({
-          keyWord: '',
+          keyWord: null,
           status: 'PENDING',
           page: 1,
           pageSize: 7,
           from: null,
           before: null
         })
+        setChangeTabColor('В ожидании')
       }
     } else if (tabId === 2) {
       if (setQueryParams) {
         setQueryParams({
-          keyWord: '',
+          keyWord: null,
           status: 'READY_FOR_DELIVERY',
           page: 1,
           pageSize: 7,
           from: null,
           before: null
         })
+        setChangeTabColor('В обработке')
       }
     } else if (tabId === 3) {
       if (setQueryParams) {
         setQueryParams({
-          keyWord: '',
+          keyWord: null,
           status: 'COURIER_ON_THE_WAY',
           page: 1,
           pageSize: 7,
           from: null,
           before: null
         })
+        setChangeTabColor('Курьер в пути')
       }
     } else if (tabId === 4) {
       if (setQueryParams) {
         setQueryParams({
-          keyWord: '',
+          keyWord: null,
           status: 'DELIVERED',
           page: 1,
           pageSize: 7,
           from: null,
           before: null
         })
+        setChangeTabColor('Доставлены')
       }
     } else if (tabId === 5) {
       if (setQueryParams) {
         setQueryParams({
-          keyWord: '',
+          keyWord: null,
           status: 'RECEIVED',
           page: 1,
           pageSize: 7,
           from: null,
           before: null
         })
+        setChangeTabColor('Полученный')
       }
     } else if (tabId === 6) {
       if (setQueryParams) {
         setQueryParams({
-          keyWord: '',
+          keyWord: null,
           status: 'CANCEL',
           page: 1,
           pageSize: 7,
           from: null,
           before: null
         })
+        setChangeTabColor('Отменены')
       }
     }
   }
@@ -148,6 +160,7 @@ const OrderTab: React.FC<OrderTabProps> = ({ tabs, defaultValue, setQueryParams 
               }
             }
           }}
+          aria-label="lab API tabs example"
         >
           {tabs?.map((el) => (
             <StyledTab

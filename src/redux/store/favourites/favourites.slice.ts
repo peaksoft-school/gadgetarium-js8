@@ -11,8 +11,9 @@ export type FavouriteType = {
   rating: number
   subProductId: number
   newPrice: number
-  isFavourite: boolean
   quantityBasket: number
+  inComparisons: boolean
+  inFavorites: boolean
 }
 
 type ItemsFavouriteType = FavouriteType[]
@@ -34,7 +35,7 @@ export const favouritesSlice = createSlice({
     favourite(state, { payload }) {
       state.items.map((item) => {
         if (item.subProductId === payload.id) {
-          return (item.isFavourite = !item.isFavourite)
+          return (item.inFavorites = !item.inFavorites)
         }
       })
     },

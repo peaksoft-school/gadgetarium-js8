@@ -24,6 +24,7 @@ const ReviewsPage = () => {
   const dispatch = useDispatch<AppDispatch>()
   const infographicData = useSelector((state: RootState) => state.infographics)
   const isLoading = useSelector((state: RootState) => state.reviews.isLoading)
+  const [changeTab, setChangeTab] = useState('Все отзывы')
   const [searchParams, setSearchParams] = useSearchParams()
   const [page, setPage] = useState('AllReviews')
   const handlerChangePage = (newPage: string) => {
@@ -31,7 +32,6 @@ const ReviewsPage = () => {
     setSearchParams(searchParams)
     setPage(newPage)
   }
-  console.log(isLoading)
   useEffect(() => {
     dispatch(getAllReviews(page))
   }, [page])
@@ -48,9 +48,10 @@ const ReviewsPage = () => {
         <ContainerFeedback>
           <Section>
             <ReviewsTab
-              defaultValue="Все отзывы"
+              defaultValue={changeTab}
               handlerChangePage={handlerChangePage}
               page={page}
+              setChangeTab={setChangeTab}
             />
           </Section>
           <Infographics infographicsData={infographicData.items} />

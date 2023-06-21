@@ -3,6 +3,8 @@ import ReusabletTable from '../../../../components/UI/table/AddProductsTable'
 import { Box, Pagination, styled } from '@mui/material'
 import ProductsDatePicker from '../../../../components/admin/UI/date-picker/DatePicker'
 import { OrderPaginationType } from '../../../../utils/common/types'
+import { useOrderAdmin } from '../../../../hooks/order/useOrderAdmin'
+import Loading from '../../../../components/UI/loading/Loading'
 const DatePickerContainer = styled('div')(() => ({
   display: 'flex',
   justifyContent: 'space-between',
@@ -63,38 +65,51 @@ const InProcessingOrders = ({
   pagePagination,
   goToInnerPageHandler
 }: Props) => {
+  const { isLoading } = useOrderAdmin()
   return (
-    <div>
-      <DatePickerContainer>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
         <div>
-          <ProductsDatePicker value={queryParams.from} onChange={onFirstChange} placeholder="От" />
-        </div>
-        <div>
-          <ProductsDatePicker
-            value={queryParams.before}
-            onChange={onSecondChange}
-            placeholder="До"
+          <DatePickerContainer>
+            <div>
+              <ProductsDatePicker
+                value={queryParams.from}
+                onChange={onFirstChange}
+                placeholder="От"
+              />
+            </div>
+            <div>
+              <ProductsDatePicker
+                value={queryParams.before}
+                onChange={onSecondChange}
+                placeholder="До"
+              />
+            </div>
+          </DatePickerContainer>
+          <FindedProduct>Найдено {pagePagination.countOfElements} заказов</FindedProduct>
+          <ReusabletTable
+            columns={columns}
+            rows={order}
+            getUniqueId={(value: any) => value.id}
+            onClick={goToInnerPageHandler}
           />
+          {pagePagination?.countOfElements > 7 ? (
+            <Box justifyContent="center" alignItems="center" display="flex" marginTop="2rem">
+              <Pagination
+                count={pagePagination?.totalPages}
+                onChange={(event: React.ChangeEvent<unknown>, newPage) =>
+                  handlerChangePage(newPage)
+                }
+                color="secondary"
+                page={pagePagination?.currentPage}
+              />
+            </Box>
+          ) : null}
         </div>
-      </DatePickerContainer>
-      <FindedProduct>Найдено {pagePagination.countOfElements} заказов</FindedProduct>
-      <ReusabletTable
-        columns={columns}
-        rows={order}
-        getUniqueId={(value: any) => value}
-        onClick={goToInnerPageHandler}
-      />
-      {pagePagination?.countOfElements > 7 ? (
-        <Box justifyContent="center" alignItems="center" display="flex" marginTop="2rem">
-          <Pagination
-            count={pagePagination?.totalPages}
-            onChange={(event: React.ChangeEvent<unknown>, newPage) => handlerChangePage(newPage)}
-            color="secondary"
-            page={pagePagination?.currentPage}
-          />
-        </Box>
-      ) : null}
-    </div>
+      )}
+    </>
   )
 }
 

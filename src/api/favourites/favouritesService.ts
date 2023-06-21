@@ -12,5 +12,5 @@ export const postFavouritesRequest = (postData: { id: number; isFavourite: boole
   return mainApi.post(`api/favourites/${postData.id}?addOrDelete=${postData.isFavourite}`)
 }
 export const postToComparisonRequest = (compareData: { id: number; isCompare: boolean }) => {
-  return mainApi.post(`api/comparisons/save?id=${compareData.id}&kurstan=${compareData.isCompare}`)
+  return mainApi.post(`api/comparisons?id=${compareData.id}&addOrDelete=${compareData.isCompare}`)
 }

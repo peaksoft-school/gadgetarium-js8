@@ -86,7 +86,7 @@ const AddProductsTable = <T,>({ columns, rows, getUniqueId, onClick }: Props<T>)
                         row[column.key]
                     return (
                       <StyledTableCell
-                        key={column.key}
+                        key={column.key + 'fdsafa'}
                         align={column.align}
                         onClick={() => onClick(row)}
                       >
