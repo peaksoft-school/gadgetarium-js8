@@ -4,13 +4,12 @@ import { Column } from '../../../../utils/constants/tableColumns'
 import { useClientSidePagination } from '../../../../hooks/pagination/usePagination'
 import { ReactComponent as DeleteIcon } from '../../../../assets/icons/admin-products/deleteIcon.svg'
 import { ReactComponent as EditIcon } from '../../../../assets/icons/admin-products/editIcon.svg'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { AppDispatch } from '../../../../redux/store'
-import { deleteProductById } from '../../../../redux/store/products/products.thunk'
 import IconButtons from '../../../UI/buttons/IconButtons'
-import CustomizedSnackbars from '../error-snackbar/ErrorSnackbar'
 import Modal from '../../../UI/modals/Modal'
+import { isAxiosError } from 'axios'
+import { useSnackbar } from '../../../../hooks/snackbar/useSnackbar'
+import { deleteProductByIdRequest2 } from '../../../../api/product/productService'
 
 type RowType = {
   createdAt: string
@@ -20,6 +19,7 @@ type RowType = {
   percentOfDiscount: number
   price: number
   quantity: number
+  productId: number
   subProductId: number
   totalPrice: number
 }
@@ -177,13 +177,14 @@ const AppTable = <T,>({
 }: Props<T>) => {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [hoveredId, setHoveredId] = useState<number | null>(null)
-  const [isOpen, setOpen] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('Error')
   const [openModal, setOpenModal] = useState(false)
-  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const { paginate } = useClientSidePagination()
   const [subProductId, setSubProductId] = useState<number>(0)
+  const { snackbarHanler, ToastContainer } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
 
   const handleSelect = (id: number) => {
     const index = selectedIds.indexOf(id)
@@ -211,14 +212,30 @@ const AppTable = <T,>({
     setHoveredId(id)
   }
 
-  const deleteHandler = () => {
-    dispatch(deleteProductById(subProductId))
-      .unwrap()
-      .then(() => setOpenModal(false))
-      .catch((e) => {
-        setErrorMessage(JSON.stringify(e.message))
-        setOpen(true)
+  const deleteHandler = async () => {
+    try {
+      await deleteProductByIdRequest2(subProductId)
+      snackbarHanler({
+        message: 'Товар Успешно удален!',
+        linkText: '',
+        type: 'success'
       })
+      setOpenModal(false)
+    } catch (e) {
+      if (isAxiosError(e)) {
+        setOpenModal(false)
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
+    }
   }
 
   const navigateToInnerPageHandler = (id: number) => {
@@ -227,7 +244,7 @@ const AppTable = <T,>({
 
   return (
     <>
-      <CustomizedSnackbars message={errorMessage} open={isOpen} onClose={() => setOpen(false)} />
+      {ToastContainer}
       <StyledTable>
         <StyledHeaderTr>
           {columns?.map((column) => (
@@ -254,15 +271,36 @@ const AppTable = <T,>({
                         <StyledIdtd>{row.subProductId}</StyledIdtd>
                       </>
                     )}
-                    <Styledtd>
+                    <Styledtd
+                      sx={{ cursor: 'pointer' }}
+                      onClick={() => navigateToInnerPageHandler(row.productId)}
+                    >
                       <StyledImage src={row.image} alt="phoneImage" />
                     </Styledtd>
-                    <Styledtd>{row.itemNumber}</Styledtd>
-                    <Styledtd>
+                    <Styledtd
+                      sx={{ cursor: 'pointer' }}
+                      onClick={() => navigateToInnerPageHandler(row.productId)}
+                    >
+                      {row.itemNumber}
+                    </Styledtd>
+                    <Styledtd
+                      sx={{ cursor: 'pointer' }}
+                      onClick={() => navigateToInnerPageHandler(row.productId)}
+                    >
                       {row.name.length > 16 ? ` ${row.name.slice(0, 16)}...` : row.name}
                     </Styledtd>
-                    <Styledtd>{row.createdAt}</Styledtd>
-                    <Styledtd>{row.quantity}</Styledtd>
+                    <Styledtd
+                      sx={{ cursor: 'pointer' }}
+                      onClick={() => navigateToInnerPageHandler(row.productId)}
+                    >
+                      {row.createdAt}
+                    </Styledtd>
+                    <Styledtd
+                      sx={{ cursor: 'pointer' }}
+                      onClick={() => navigateToInnerPageHandler(row.productId)}
+                    >
+                      {row.quantity}
+                    </Styledtd>
                     <Styledtd>
                       <CurrentPrice>{row.price}c</CurrentPrice>
                       <Discount>{row.percentOfDiscount}%</Discount>
@@ -271,10 +309,7 @@ const AppTable = <T,>({
                       <TotalPrice>{row.totalPrice}c</TotalPrice>
                     </Styledtd>
                     <Styledtd>
-                      <IconButtons
-                        icon={<EditIcon />}
-                        onClick={() => navigateToInnerPageHandler(row.subProductId)}
-                      />
+                      <IconButtons icon={<EditIcon />} onClick={() => {}} />
                       <IconButtons
                         icon={<DeleteIcon />}
                         onClick={() => openModalHandler(row.subProductId)}

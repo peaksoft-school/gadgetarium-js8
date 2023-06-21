@@ -1,3 +1,3 @@
 export const STORAGE_KEYS = {
-  AUTH: 'AUTH'
+  AUTH: 'GADGETARIUM_AUTH_USER_KEY'
 }

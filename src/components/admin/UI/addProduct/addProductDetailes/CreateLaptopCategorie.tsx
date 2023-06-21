@@ -1,8 +1,8 @@
+import { ColorResult } from 'react-color'
 import React, { useEffect, useState } from 'react'
 import { StyledFormLable } from '../../mailingList/MailingList'
 import { styled, SelectChangeEvent } from '@mui/material'
-import { ReusableSelect as Select } from '../../../../../components/ReusableSelect'
-import { ColorResult } from 'react-color'
+import { ReusableSelect as Select } from '../../../ReusableSelect'
 import {
   ScreenResolution,
   Purpose,
@@ -12,7 +12,7 @@ import {
   laptopProcessor
 } from '../../../../../utils/constants/optionsCategorie'
 import { StyledInputContainer } from '../AddTabComponent'
-import ReusableColorPicker from '../../../../ReusableColorPicker'
+import ReusableColorPicker from '../../../ReusableColorPicker'
 import ImagePickerAddProduct from '../ImagePicker'
 import { useBanner } from '../../../../../hooks/banner/useBanner'
 import { useDispatch, useSelector } from 'react-redux'
@@ -63,20 +63,18 @@ const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
   }
   useEffect(() => {
     dispatch(
-      addProductActions.addSubProduct([
-        {
-          images: bannerImages,
-          characteristics: {
-            purpose,
-            laptopProcessor1,
-            srceen,
-            sizeScrean,
-            video,
-            select
-          },
-          colour
-        }
-      ])
+      addProductActions.addSubProduct({
+        images: bannerImages,
+        characteristics: {
+          Назначение: purpose,
+          'Процессор ноутбука': laptopProcessor1,
+          'Разрешение экрана': srceen,
+          'Размер экрана': sizeScrean,
+          'Объем видеопамяти': video,
+          память: select
+        },
+        colour
+      })
     )
   }, [bannerImages, purpose, colour, laptopProcessor1, srceen, sizeScrean, video, select])
 

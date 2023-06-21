@@ -5,6 +5,8 @@ export interface ButtonProps extends MuiButtonProps {
 }
 
 const MuiButtonStyled = styled(MuiButton)<ButtonProps>(({ theme }) => ({
+  color: '#fff',
+  padding: '10px 30px',
   textTransform: 'inherit',
   whiteSpace: 'nowrap',
   fontSize: '16px',

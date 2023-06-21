@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { mainApi } from '../instances'
+import { mainApi } from '../../config/instances'
 
 export interface Product {
-  foundProducts: number
+  countOfElements: number
   elements: [
     {
       createdAt: string
@@ -12,6 +12,7 @@ export interface Product {
       percentOfDiscount: number
       price: number
       quantity: number
+      productId: number
       subProductId: number
       totalPrice: number
     }
@@ -38,6 +39,10 @@ export const getAllProductsRequest = (queryParams: any) => {
   })
 }
 
-export const deleteProductByIdRequest = (subProductIds: number) => {
-  return mainApi.delete<AllProductsResponse>(`/api/admin/products?subProductIds=${subProductIds}`)
+export const deleteProductByIdRequest = (ids: number[]) => {
+  return mainApi.delete<AllProductsResponse>(`/api/admin/products?subProductIds=${ids}`)
+}
+
+export const deleteProductByIdRequest2 = (subProductId: number) => {
+  return mainApi.delete<AllProductsResponse>(`/api/admin/products?subProductIds=${subProductId}`)
 }

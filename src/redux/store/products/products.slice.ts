@@ -8,7 +8,7 @@ type ProductsState = {
 
 const initialState: ProductsState = {
   items: {
-    foundProducts: 0,
+    countOfElements: 0,
     elements: [
       {
         createdAt: '2023-04-01',
@@ -19,6 +19,7 @@ const initialState: ProductsState = {
         percentOfDiscount: 20,
         price: 120000,
         quantity: 1,
+        productId: 1,
         subProductId: 1,
         totalPrice: 96000
       }

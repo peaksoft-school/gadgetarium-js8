@@ -1,17 +1,17 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import { SelectChangeEvent } from '@mui/material'
-import { ProductType, StyledInputContainer } from '../../AddTabComponent'
-import { StyledFormLable } from '../../../mailingList/MailingList'
-import { ReusableSelect as Select } from '../../../../../ReusableSelect'
 import { ColorResult } from 'react-color'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { SelectChangeEvent } from '@mui/material'
+import { StyledInputContainer } from '../../AddTabComponent'
+import { StyledFormLable } from '../../../mailingList/MailingList'
+import { ReusableSelect as Select } from '../../../../ReusableSelect'
 import { additionalProp2 } from '../../../../../../utils/constants/optionsCategorie'
-import ReusableColorPicker from '../../../../../ReusableColorPicker'
+import ReusableColorPicker from '../../../../ReusableColorPicker'
 import { RadioButton } from '../../../../../UI/RadioButton'
 import ImagePickerAddProduct from '../../ImagePicker'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../../../redux/store'
 import { addProductActions } from '../../../../../../redux/store/addProduct/AddProduct'
-import { useAddProductBanner } from '../../../../../../hooks/banner/useAddProductBanner'
+import { useBanner } from '../../../../../../hooks/banner/useBanner'
 
 const SmartWatchCategorie = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -33,36 +33,28 @@ const SmartWatchCategorie = () => {
     setBannerImages,
     deleteImage,
     postRequestBanner
-  } = useAddProductBanner()
-
-  console.log(bannerImages)
+  } = useBanner()
 
   const [colour, setSmartWatchColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
 
   useEffect(() => {
-    postRequestBanner()
-  }, [bannerImages])
-
-  useEffect(() => {
     dispatch(
-      addProductActions.addSubProduct([
-        {
-          characteristics: {
-            shape,
-            memory1,
-            material,
-            size,
-            gender,
-            waterproof,
-            size2,
-            display,
-            wireless
-          },
-          images: bannerImages,
-          colour
-        }
-      ])
+      addProductActions.addSubProduct({
+        characteristics: {
+          память: shape,
+          'Материал браслета/ремешка': memory1,
+          'Материал корпуса': material,
+          'Размер смарт часов': size,
+          Пол: gender,
+          Водонепрницаемость: waterproof,
+          'Диагональ дисплея': size2,
+          'Форма корпуса': display,
+          'Беспроводные интерфейсы': wireless
+        },
+        images: bannerImages,
+        colour
+      })
     )
   }, [
     colour,

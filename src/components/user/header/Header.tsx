@@ -1,6 +1,5 @@
-import { styled, Button, Paper, InputBase, Divider } from '@mui/material'
+import { styled, Button, Divider } from '@mui/material'
 import { ReactComponent as LogoIcon } from '../../../assets/icons/header-icons/logo.svg'
-import { ReactComponent as SearchIcon } from '../../../assets/icons/header-icons/searchIcon.svg'
 import { ReactComponent as NumberIcon } from '../../../assets/icons/header-icons/numberIcon.svg'
 import { ReactComponent as CatalogIcon } from '../../../assets/icons/header-icons/catalog.svg'
 import { ReactComponent as FacebookIcon } from '../../../assets/icons/header-icons/facebook.svg'

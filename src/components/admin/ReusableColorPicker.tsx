@@ -1,8 +1,9 @@
 import { ColorResult, PhotoshopPicker } from 'react-color'
 
 import { styled } from '@mui/material'
-import IconButtons from './UI/buttons/IconButtons'
+
 import { Palette } from '@mui/icons-material'
+import IconButtons from '../UI/buttons/IconButtons'
 
 type PropsColorPicker = {
   openColorPicker: boolean
@@ -68,7 +69,7 @@ const ReusableColorPicker = ({
   return (
     <>
       <Container onClick={openColorHandler}>
-        <StyledInput type="text" value={color} placeholder="Основной цвет" />
+        <StyledInput required type="text" value={color} placeholder="Основной цвет" />
         <IconButtons icon={<Palette />} />
       </Container>
       {openColorPicker && (

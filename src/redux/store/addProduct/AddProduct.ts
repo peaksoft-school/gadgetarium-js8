@@ -16,7 +16,7 @@ export interface SelectOptionsCategorie {
   products: any
   loading: boolean
   error: string | null
-  subProduct: object[]
+  subProduct: object
 }
 
 const initialState: SelectOptionsCategorie = {
@@ -27,7 +27,7 @@ const initialState: SelectOptionsCategorie = {
   products: [],
   loading: false,
   error: '',
-  subProduct: []
+  subProduct: {}
 }
 
 export const addProductSlice = createSlice({
@@ -35,7 +35,8 @@ export const addProductSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, { payload }) => {
-      state.products.push(payload)
+      state.products = [payload]
+      state.subProduct = {}
     },
     addSubProduct: (state, action) => {
       state.subProduct = action.payload
@@ -45,9 +46,7 @@ export const addProductSlice = createSlice({
         if (product.id === action.payload.id) {
           const updatedSubProducts = product.subProducts.map((subProduct: any) => {
             if (subProduct.id === action.payload.subProductId) {
-              if (action.payload.price !== 0) {
-                return { ...subProduct, price: action.payload.price }
-              }
+              return { ...subProduct, price: action.payload.price }
             }
             return subProduct
           })

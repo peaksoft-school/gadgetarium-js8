@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { ColorResult } from 'react-color'
 import { StyledInputContainer } from '../../AddTabComponent'
 import { StyledFormLable } from '../../../mailingList/MailingList'
 import { styled, SelectChangeEvent } from '@mui/material'
-import { ReusableSelect as Select } from '../../../../../ReusableSelect'
-import { ColorResult } from 'react-color'
+import { ReusableSelect as Select } from '../../../../ReusableSelect'
 import {
   MemoryСapacityForPlanshet,
   RAMForPlanshet,
@@ -12,7 +12,7 @@ import {
   ScreenSizeForPlanshet,
   batteryСapacityForPlanshet
 } from '../../../../../../utils/constants/optionsCategorie'
-import ReusableColorPicker from '../../../../../ReusableColorPicker'
+import ReusableColorPicker from '../../../../ReusableColorPicker'
 import ImagePickerAddProduct from '../../ImagePicker'
 import { useBanner } from '../../../../../../hooks/banner/useBanner'
 import { useDispatch, useSelector } from 'react-redux'
@@ -54,17 +54,15 @@ const CreatePlanshetCategorie = ({ selectedValueFirst }: Props) => {
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
   useEffect(() => {
     dispatch(
-      addProductActions.addSubProduct([
-        {
-          images: bannerImages,
-          characteristics: {
-            additionalProp3,
-            additionalProp2,
-            additionalProp1
-          },
-          colour
-        }
-      ])
+      addProductActions.addSubProduct({
+        images: bannerImages,
+        characteristics: {
+          память: additionalProp3,
+          'Оперативная память': additionalProp2,
+          'Разрешение экрана': additionalProp1
+        },
+        colour
+      })
     )
   }, [additionalProp3, bannerImages, colour, additionalProp1, additionalProp2])
 

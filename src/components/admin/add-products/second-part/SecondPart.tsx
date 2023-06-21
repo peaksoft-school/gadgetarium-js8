@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, ChangeEvent } from 'react'
-import { Button, SelectChangeEvent, styled } from '@mui/material'
+import { Button, TableCell, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../redux/store'
 import { Column } from '../../../../utils/constants/tableColumns'
@@ -84,14 +85,35 @@ const StyledSecondButton = styled(Button)(() => ({
   }
 }))
 
+const StyledTableCell = styled(TableCell)`
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  letter-spacing: 0.01em;
+  color: #292929;
+  border-top: 1px solid rgba(224, 224, 224, 1);
+  &:first-of-type {
+    border-left: 1px solid rgba(224, 224, 224, 1);
+  }
+  &:last-of-type {
+    border-right: 1px solid rgba(224, 224, 224, 1);
+  }
+`
+
 type Props = {
   handleNext: () => void
 }
 
-type ItemProps = {
-  price?: number
+type SubProduct = {
+  brandId: number
+  colour: string
+  characteristics: object
+  images: File[]
   quantity?: number
-  color?: string
+  price?: number
+  id: string
 }
 
 const SecondPart = ({ handleNext }: Props) => {
@@ -108,11 +130,34 @@ const SecondPart = ({ handleNext }: Props) => {
     dispatch(addProductActions.addPriceToAllProducts(transferredValue))
   }
 
-  const columns: Column<ProductType>[] = [
+  const tableCharacteristicHeaders = Object.keys(products[0].subProducts[0].characteristics)
+
+  const renderCharacteristics = (charsObj: any): React.ReactNode => {
+    if (!tableCharacteristicHeaders.length) {
+      return null
+    }
+
+    return tableCharacteristicHeaders.map((key: any) => {
+      return <StyledTableCell sx={{ paddingLeft: '3rem' }}>{charsObj[key]}</StyledTableCell>
+    })
+  }
+
+  const tableData = products[0]?.subProducts
+    ? products[0].subProducts.map((sub: any) => {
+        return {
+          ...sub,
+          brandId: products[0].brandId,
+          price: sub.price,
+          quantity: sub.quantity
+        }
+      })
+    : []
+
+  const columns: Column<SubProduct>[] = [
     {
       header: 'Бренд',
       key: 'brand',
-      render: (product: ProductType) => (
+      render: (product: SubProduct) => (
         <>
           <p style={{ paddingLeft: '1rem' }}>{product.brandId}</p>
         </>
@@ -121,73 +166,34 @@ const SecondPart = ({ handleNext }: Props) => {
     {
       header: 'Цвет',
       key: 'color',
-      render: (product: ProductType) => (
+      render: (product: SubProduct) => (
         <>
-          <p style={{ paddingLeft: '1rem' }}>
-            {product.subProducts.map((item: any) => item.colour)}
-          </p>
+          <p style={{ paddingLeft: '1rem' }}>{product.colour}</p>
         </>
       )
     },
     {
-      header: 'Название',
-      key: 'name',
-      render: (product: ProductType) => (
-        <>
-          <p style={{ paddingLeft: '1.5rem' }}>{product.name}</p>
-        </>
-      )
-    },
-    {
-      header: 'Гарантия',
-      key: 'guarantee',
-      render: (product: ProductType) => (
-        <>
-          <p style={{ paddingLeft: '1.5rem' }}>{product.guarantee}</p>
-        </>
-      )
-    },
-    {
-      header: 'Категория',
-      key: 'category',
-      render: (product: ProductType) => (
-        <>
-          <p style={{ paddingLeft: '1.5rem' }}>{product.subCategoryId}</p>
-        </>
-      )
-    },
-    {
-      header: 'Дата выпуска',
-      key: 'release',
-      render: (product: ProductType) => (
-        <>
-          <p style={{ paddingLeft: '1rem' }}>{product.dateOfIssue}</p>
-        </>
-      )
+      header: tableCharacteristicHeaders,
+      key: 'characteristics',
+      render: (product: SubProduct) => <>{renderCharacteristics(product.characteristics)}</>
     },
     {
       header: 'Кол-во товара',
       key: 'quantity',
-      render: (product: ProductType) => (
-        <TableQuantityInput
-          quantity={product.subProducts.map((item: ItemProps) => item.quantity)}
-          id={product.id}
-        />
+      render: (product: SubProduct) => (
+        <TableQuantityInput quantity={product.quantity} id={product.id} />
       )
     },
     {
       header: 'Цена',
       key: 'price',
-      render: (product: ProductType) => (
-        <TablePriceInput
-          transferredValue={product.subProducts.map((item: ItemProps) => item.price)}
-          id={product.id}
-        />
+      render: (product: SubProduct) => (
+        <TablePriceInput transferredValue={product.price} id={product.id} />
       )
     }
   ]
   return (
-    <main>
+    <form onSubmit={handleNext}>
       <div>
         <Title>Общая цена</Title>
         <PriceContainer>
@@ -201,10 +207,10 @@ const SecondPart = ({ handleNext }: Props) => {
         </PriceContainer>
       </div>
       <TableContainer>
-        <AddProductsTable rows={products} columns={columns} getUniqueId={(val: any) => val.id} />
-        <StyledSecondButton onClick={handleNext}>Далее</StyledSecondButton>
+        <AddProductsTable rows={tableData} columns={columns} getUniqueId={(val: any) => val.id} />
+        <StyledSecondButton type="submit">Далее</StyledSecondButton>
       </TableContainer>
-    </main>
+    </form>
   )
 }
 

@@ -13,6 +13,7 @@ type InputProps = {
 
 const InputStyled = styled(InputBase)(() => ({
   '&.input': {
+    // width: '100%',
     border: '0.1px solid #909CB5',
     background: '#F7F7F7',
     borderRadius: '5px',

@@ -10,7 +10,7 @@ import { styled } from '@mui/material'
 const ContainerFeedback = styled('div')(() => ({
   fontFamily: 'Inter',
   fontStyle: 'normal',
-  padding: '6.875rem 5rem 17.5rem 5.3125rem',
+  padding: '6.875rem 5rem 17.5rem 2.3125rem',
   display: 'flex',
   alignItems: 'start',
   justifyContent: 'space-between'

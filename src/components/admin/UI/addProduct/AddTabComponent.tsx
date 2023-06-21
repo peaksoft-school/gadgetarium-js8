@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import { StyledFormLable } from '../mailingList/MailingList'
-import { ReusableSelect as SelectComponent, StyledSelect } from '../../../ReusableSelect'
+import { ReusableSelect as SelectComponent, StyledSelect } from '../../ReusableSelect'
 import { styled, SelectChangeEvent } from '@mui/material'
 import Input from '../../../UI/inputs/Input'
 import AddbrandModal from './AddbrandModal'
@@ -17,6 +17,8 @@ import CreateLaptopCategorie from './addProductDetailes/CreateLaptopCategorie'
 import Button from '../../../UI/buttons/Button'
 import IconButtons from '../../../UI/buttons/IconButtons'
 import { addProductActions } from '../../../../redux/store/addProduct/AddProduct'
+import { isAxiosError } from 'axios'
+import { useSnackbar } from '../../../../hooks/snackbar/useSnackbar'
 
 interface Brand {
   name: string
@@ -34,7 +36,7 @@ export const Container = styled('div')(() => ({
   alignItems: 'center',
   padding: '.5rem 1.125rem',
   background: '#F7F7F7',
-  margin: '.3125rem',
+  margin: '.2125rem',
 
   '&:hover': {
     border: '.125rem solid #0a0a0a',
@@ -60,7 +62,7 @@ const StyledItemMenu = styled(MenuItem)(() => ({
   display: 'flex',
   gap: '.5625rem'
 }))
-const StyledForm = styled('form')`
+const StyledForm = styled('div')`
   display: flex;
   gap: 1.25rem;
 `
@@ -124,8 +126,8 @@ const StyledTextAddProduct = styled('span')(() => ({
 }))
 
 const StyledImage = styled('img')(() => ({
-  width: '1.5625rem',
-  height: '1.5625rem'
+  height: '1.1625rem',
+  paddingRight: '8px'
 }))
 
 const StyledMuiButton = styled(Button)(() => ({
@@ -164,7 +166,7 @@ const StyledButton = styled('li')(() => ({
   zIndex: 11
 }))
 const StyledLinkContainer = styled('div')(() => ({
-  marginLeft: '20rem'
+  marginLeft: '17.8rem'
 }))
 
 export type ProductType = {
@@ -179,6 +181,9 @@ export type ProductType = {
   video?: string
   pdfFile?: string
   guarantee?: number
+  characteristics?: {
+    [key: string]: string
+  }
 }
 
 type Props = {
@@ -188,8 +193,6 @@ type Props = {
 const AddTabComponent = ({ handleNext }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const { options, products, subProduct } = useSelector((state: RootState) => state.addNewProduct)
-
-  console.log(products)
 
   const [selectedValueFirst, setSelectedValueFirst] = useState<string | number>('')
   const [selectedValueSecond, setSelectedValueSecond] = useState<string | number>('')
@@ -202,18 +205,76 @@ const AddTabComponent = ({ handleNext }: Props) => {
   const [categories, setCategories] = useState([])
 
   const [quantity] = useState<number>(1)
+  const { snackbarHanler, ToastContainer } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
 
-  const saveHandler = () => {
+  const saveHandler = (e: FormEvent) => {
+    e.preventDefault()
+
+    const subProducts = products[0]?.subProducts || []
     const newProduct = {
       name: nameProduct,
       brandId: selectedValueSecond,
       guarantee: garanteeProduct,
       subCategoryId: selectedValueThird,
       dateOfIssue,
-      subProducts: subProduct,
-      id: Date.now().toString()
+      subProducts: [
+        ...subProducts.map((v: any) => ({ ...v, id: Date.now().toString() })),
+        { ...subProduct, subProduct, id: Date.now().toString() }
+      ]
     }
-    dispatch(addProductActions.addProduct(newProduct))
+    if (
+      newProduct.brandId !== undefined &&
+      newProduct.name.length !== 0 &&
+      newProduct.guarantee !== null &&
+      newProduct.subCategoryId !== null &&
+      newProduct.dateOfIssue !== null &&
+      newProduct.subProducts !== null
+    ) {
+      dispatch(addProductActions.addProduct(newProduct))
+      handleNext()
+    } else {
+      return snackbarHanler({
+        message: 'Все поля должны быть заполнены!',
+        linkText: '',
+        type: 'error'
+      })
+    }
+  }
+
+  const saveHandler2 = () => {
+    // e.preventDefault()
+
+    const subProducts = products[0]?.subProducts || []
+    const newProduct = {
+      name: nameProduct,
+      brandId: selectedValueSecond,
+      guarantee: garanteeProduct,
+      subCategoryId: selectedValueThird,
+      dateOfIssue,
+      subProducts: [
+        ...subProducts.map((v: any) => ({ ...v, id: Date.now().toString() })),
+        { ...subProduct, subProduct, id: Date.now().toString() }
+      ]
+    }
+    if (
+      newProduct.brandId !== undefined &&
+      newProduct.name.length !== 0 &&
+      newProduct.guarantee !== null &&
+      newProduct.subCategoryId !== null &&
+      newProduct.dateOfIssue !== null &&
+      newProduct.subProducts !== null
+    ) {
+      dispatch(addProductActions.addProduct(newProduct))
+    } else {
+      return snackbarHanler({
+        message: 'Все поля должны быть заполнены!',
+        linkText: '',
+        type: 'error'
+      })
+    }
   }
 
   const quantityChangeHandler = () => {
@@ -245,9 +306,21 @@ const AddTabComponent = ({ handleNext }: Props) => {
   const getCategories = async () => {
     try {
       const { data } = await getProductCategorieService()
-      console.log(data)
       setCategories(data)
-    } catch (error) {}
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return snackbarHanler({
+          message: e.response?.data.message,
+          linkText: '',
+          type: 'error'
+        })
+      }
+      return snackbarHanler({
+        message: 'Что-то пошло не так',
+        linkText: '',
+        type: 'error'
+      })
+    }
   }
 
   const getSubCategories = async () => {
@@ -264,129 +337,133 @@ const AddTabComponent = ({ handleNext }: Props) => {
 
   return (
     <>
-      <StyledForm>
-        <StyledInputContainer>
+      {ToastContainer}
+      <form onSubmit={saveHandler}>
+        <StyledForm>
           <StyledInputContainer>
-            <StyledFormLable required htmlFor="Выберите категорию *">
-              Выберите категорию
-            </StyledFormLable>
+            <StyledInputContainer>
+              <StyledFormLable htmlFor="Выберите категорию *">Выберите категорию</StyledFormLable>
 
-            <SelectComponent
-              id="Выберите категорию *"
-              name="Выберите категорию *"
-              placeholder="Выбрать"
-              options={categories}
-              value={selectedValueFirst}
-              onChange={firstHandleSelectChange}
-            />
-          </StyledInputContainer>
+              <SelectComponent
+                id="Выберите категорию *"
+                name="Выберите категорию *"
+                placeholder="Выбрать"
+                options={categories}
+                value={selectedValueFirst}
+                onChange={firstHandleSelectChange}
+              />
+            </StyledInputContainer>
 
-          <StyledInputContainer>
-            <StyledFormLable required htmlFor="Бренд *">
-              Бренд
-            </StyledFormLable>{' '}
-            <StyledSelect
-              displayEmpty
-              value={selectedValueSecond}
-              onChange={secondHandleSelectChange}
-            >
-              {options.brands.map((option: Brand) => (
-                <StyledItemMenu key={option.id} value={option.id}>
-                  <StyledImage src={option.logo} alt="" />
-                  {option.name}
+            <StyledInputContainer>
+              <StyledFormLable required htmlFor="Бренд *">
+                Бренд
+              </StyledFormLable>{' '}
+              <StyledSelect
+                displayEmpty
+                value={selectedValueSecond}
+                onChange={secondHandleSelectChange}
+              >
+                {options.brands.map((option: Brand) => (
+                  <StyledItemMenu key={option.id} value={option.id}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <StyledImage src={option.logo} alt="" />
+                      <p>{option.name}</p>
+                    </div>
+                  </StyledItemMenu>
+                ))}
+                <StyledItemMenu>
+                  <StyledButton onClick={handleModal}> + Создать новый бренд</StyledButton>
                 </StyledItemMenu>
-              ))}
-              <StyledItemMenu>
-                <StyledButton onClick={handleModal}> + Создать новый бренд</StyledButton>
-              </StyledItemMenu>
-            </StyledSelect>
-            <AddbrandModal
-              modal={openModal}
-              modalHandler={handleModal}
-              getSubCategories={getSubCategories}
-            />
+              </StyledSelect>
+              <AddbrandModal
+                modal={openModal}
+                modalHandler={handleModal}
+                getSubCategories={getSubCategories}
+              />
+            </StyledInputContainer>
+            <StyledInputContainer>
+              <StyledFormLable required htmlFor="Название товара *">
+                Название товара
+              </StyledFormLable>
+              <StyledInput
+                required
+                onChange={nameProductHandle}
+                value={nameProduct}
+                id="Название товара *"
+                placeholder="Введите название товара"
+              />
+            </StyledInputContainer>
           </StyledInputContainer>
           <StyledInputContainer>
-            <StyledFormLable required htmlFor="Название товара *">
-              Название товара
-            </StyledFormLable>
-            <StyledInput
-              onChange={nameProductHandle}
-              value={nameProduct}
-              id="Название товара *"
-              placeholder="Введите название товара"
-            />
-          </StyledInputContainer>
-        </StyledInputContainer>
-        <StyledInputContainer>
-          <StyledInputContainer>
-            <StyledFormLable required htmlFor="Выберите подкатегорию">
-              Выберите подкатегорию
-            </StyledFormLable>
+            <StyledInputContainer>
+              <StyledFormLable required htmlFor="Выберите подкатегорию">
+                Выберите подкатегорию
+              </StyledFormLable>
 
-            <SelectComponent
-              id="Выберите подкатегорию"
-              name="Выберите категорию"
-              placeholder="Выбрать"
-              options={options.subCategories}
-              value={selectedValueThird}
-              onChange={thirdHandleSelectChange}
-            />
+              <SelectComponent
+                id="Выберите подкатегорию"
+                name="Выберите категорию"
+                placeholder="Выбрать"
+                options={options.subCategories}
+                value={selectedValueThird}
+                onChange={thirdHandleSelectChange}
+              />
+            </StyledInputContainer>
+            <StyledInputContainer>
+              <StyledFormLable required htmlFor="Гарантия (месяцев) * ">
+                Гарантия (месяцев)
+              </StyledFormLable>
+              <StyledInput
+                required
+                value={garanteeProduct}
+                onChange={garanteeProductHandle}
+                id="Гарантия (месяцев) * "
+                placeholder="Введите гарантию товара"
+              />
+            </StyledInputContainer>
+            <StyledInputContainer>
+              <StyledFormLable required htmlFor="Дата выпуска *">
+                Дата выпуска
+              </StyledFormLable>
+              <StyledInput
+                onChange={dataProductHandle}
+                value={dateOfIssue}
+                type="date"
+                id="Дата выпуска *"
+                placeholder="Введите дату выпуска"
+              />
+            </StyledInputContainer>
           </StyledInputContainer>
-          <StyledInputContainer>
-            <StyledFormLable required htmlFor="Гарантия (месяцев) * ">
-              Гарантия (месяцев)
-            </StyledFormLable>
-            <StyledInput
-              value={garanteeProduct}
-              onChange={garanteeProductHandle}
-              id="Гарантия (месяцев) * "
-              placeholder="Введите гарантию товара"
-            />
-          </StyledInputContainer>
-          <StyledInputContainer>
-            <StyledFormLable required htmlFor="Дата выпуска *">
-              Дата выпуска
-            </StyledFormLable>
-            <StyledInput
-              onChange={dataProductHandle}
-              value={dateOfIssue}
-              type="date"
-              id="Дата выпуска *"
-              placeholder="Введите дату выпуска"
-            />
-          </StyledInputContainer>
-        </StyledInputContainer>
-      </StyledForm>
-      {selectedValueFirst === '' ? null : (
-        <>
-          <StyledContainer>
-            <StyledQuantityProduct>
-              Продукт <span>{products.length}</span>
-            </StyledQuantityProduct>
-            <StyledContainerAddProduct onClick={saveHandler}>
-              <IconButtons icon={<PlusIcon />} onClick={quantityChangeHandler} />
-              <StyledTextAddProduct style={{ cursor: 'pointer' }}>
-                Добавить продукт
-              </StyledTextAddProduct>
-            </StyledContainerAddProduct>
-          </StyledContainer>
-          {selectedValueFirst === 1 ? (
-            <AddDetailsProduct selectedValueFirst={selectedValueFirst} />
-          ) : null}
-          {selectedValueFirst === 4 ? <SmartWatchCategorie /> : null}
-          {selectedValueFirst === 2 ? (
-            <CreatePlanshetCategorie selectedValueFirst={selectedValueFirst} />
-          ) : null}
-          {selectedValueFirst === 3 ? (
-            <CreateLaptopCategorie selectedValueFirst={selectedValueFirst} />
-          ) : null}
-          <StyledLinkContainer>
-            <StyledMuiButton onClick={handleNext}>Далее</StyledMuiButton>
-          </StyledLinkContainer>
-        </>
-      )}
-      {console.log(selectedValueFirst)}
+        </StyledForm>
+        {selectedValueFirst === '' ? null : (
+          <>
+            <StyledContainer>
+              <StyledQuantityProduct>
+                Продукт <span>{products.length}</span>
+              </StyledQuantityProduct>
+              <StyledContainerAddProduct>
+                <IconButtons icon={<PlusIcon />} onClick={saveHandler2} />
+                <StyledTextAddProduct onClick={saveHandler2} style={{ cursor: 'pointer' }}>
+                  Добавить продукт
+                </StyledTextAddProduct>
+              </StyledContainerAddProduct>
+            </StyledContainer>
+            {selectedValueFirst === 1 ? (
+              <AddDetailsProduct selectedValueFirst={selectedValueFirst} />
+            ) : null}
+            {selectedValueFirst === 4 ? <SmartWatchCategorie /> : null}
+            {selectedValueFirst === 2 ? (
+              <CreatePlanshetCategorie selectedValueFirst={selectedValueFirst} />
+            ) : null}
+            {selectedValueFirst === 3 ? (
+              <CreateLaptopCategorie selectedValueFirst={selectedValueFirst} />
+            ) : null}
+            <div style={{ marginLeft: '17.8rem' }}>
+              <StyledMuiButton type="submit">Далее</StyledMuiButton>
+            </div>
+          </>
+        )}
+      </form>
     </>
   )
 }

@@ -1,10 +1,10 @@
+import { ColorResult } from 'react-color'
 import React, { useEffect, useState } from 'react'
 import { StyledInputContainer } from '../../AddTabComponent'
 import { StyledFormLable } from '../../../mailingList/MailingList'
-import ReusableColorPicker from '../../../../../ReusableColorPicker'
+import ReusableColorPicker from '../../../../ReusableColorPicker'
 import { styled, SelectChangeEvent } from '@mui/material'
-import { ReusableSelect as Select } from '../../../../../ReusableSelect'
-import { ColorResult } from 'react-color'
+import { ReusableSelect as Select } from '../../../../ReusableSelect'
 import {
   additionalProp1,
   additionalProp2,
@@ -51,17 +51,15 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
 
   useEffect(() => {
     dispatch(
-      addProductActions.addSubProduct([
-        {
-          colour: colour,
-          images: bannerImages,
-          characteristics: {
-            memorySize: memorySize,
-            ram: ram,
-            simCard: simCard
-          }
+      addProductActions.addSubProduct({
+        colour: colour,
+        images: bannerImages,
+        characteristics: {
+          память: memorySize,
+          'Оперативная память': ram,
+          'Кол-во SIM-карт': simCard
         }
-      ])
+      })
     )
   }, [memorySize, bannerImages, colour, ram, simCard])
 

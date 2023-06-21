@@ -14,10 +14,12 @@ type TableQuantityInputProps = {
 }
 
 export const TablePriceInput = ({ transferredValue, id }: TablePriceInputProps) => {
+  console.log(id, 'TablePriceInput')
+
   const dispatch = useAppDispatch()
 
   const changePriceHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(addProductActions.addPriceToSubProduct({ id: id, price: +e.target.value }))
+    dispatch(addProductActions.addPriceToSubProduct({ subProductId: id, price: +e.target.value }))
   }
   return (
     <MuiInput
@@ -42,9 +44,13 @@ export const TablePriceInput = ({ transferredValue, id }: TablePriceInputProps) 
 }
 
 export const TableQuantityInput = ({ quantity, id }: TableQuantityInputProps) => {
+  console.log(id, 'TableQuantityInput')
+
   const dispatch = useAppDispatch()
   const changeQuantityHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(addProductActions.addQuantityToSubProduct({ id: id, quantity: +e.target.value }))
+    dispatch(
+      addProductActions.addQuantityToSubProduct({ subProductId: id, quantity: +e.target.value })
+    )
   }
 
   return (

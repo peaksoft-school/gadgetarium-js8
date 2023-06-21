@@ -27,6 +27,7 @@ const Info1 = styled('div')(() => ({
   background: 'rgba(21, 86, 222, 0.09)',
   borderRadius: '8px',
   padding: '0.875rem',
+  width: '19.375rem',
   marginLeft: '-1.6825rem'
 }))
 

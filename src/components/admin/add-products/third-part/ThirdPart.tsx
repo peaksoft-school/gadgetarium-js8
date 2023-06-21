@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SetStateAction, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { Button, IconButton, InputAdornment, TextField, styled } from '@mui/material'
 import { ReactComponent as ImportIcon } from '../../../../assets/icons/admin-add-products/importIcon.svg'
 import TextEditor from './TextEditor'
@@ -7,11 +7,11 @@ import { addProductActions } from '../../../../redux/store/addProduct/AddProduct
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../../redux/store'
 import { addProducts } from '../../../../redux/store/addProduct/addProduct.thunk'
-import { uploadFileService } from '../../../../api/add-product/addProductService'
 import { useNavigate } from 'react-router-dom'
-import { PATHS } from '../../../../utils/constants/router/routerConsts'
+import { uploadFileService } from '../../../../api/add-product/addProductService'
+import { useSnackbar } from '../../../../hooks/snackbar/useSnackbar'
 
-const StyledLabel = styled('p')`
+const StyledLabel = styled('label')`
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
@@ -104,15 +104,15 @@ const ButtonsContainer = styled('div')(() => ({
   marginTop: '28px'
 }))
 
-type PdfType = {
-  name: ''
-}
-
 const ThirdPart = () => {
   const dispatch = useAppDispatch()
-  const [pdfFile, setPdfFile] = useState<PdfType | null>()
-  const [url, setUrl] = useState()
+  const [pdfFile, setPdfFile] = useState<File | null>(null)
+  const [fileName, setFileName] = useState()
   const navigate = useNavigate()
+  const { snackbarHanler, ToastContainer } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
 
   const products = useSelector((state: RootState) => state.addNewProduct.products)
 
@@ -122,20 +122,15 @@ const ThirdPart = () => {
 
   const pdfFileChangeHandler = (event: any) => {
     const file = event.target.files[0]
-    const formData = new FormData()
-    formData.append('file', file)
-    setPdfFile(formData as unknown as SetStateAction<PdfType | null | undefined>)
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = () => {
-        setUrl(reader.result as any)
-      }
-      reader.readAsDataURL(file)
-    }
+    setFileName(file.name)
+    setPdfFile(file)
   }
 
   const postPdfFileHandler = async () => {
-    const fileResponse = await uploadFileService(pdfFile)
+    if (!pdfFile) return undefined
+    const formData = new FormData()
+    formData.append('file', pdfFile)
+    const fileResponse = await uploadFileService(formData)
     const fileUrl = fileResponse.data.link
     setPdfFile(fileUrl)
     return fileUrl
@@ -146,20 +141,26 @@ const ThirdPart = () => {
   }
 
   const addProductHandler = async () => {
-    const fileResponse = pdfFile && (await postPdfFileHandler())
-    if (fileResponse) {
-      const productss = products.map((item: any) => ({ ...item, PDF: fileResponse }))
-      dispatch(addProducts(productss[0]))
-        .unwrap()
-        .then(() => navigate(PATHS.ADMIN.products))
+    try {
+      if (!pdfFile) return null
+      const fileResponse = await postPdfFileHandler()
+      const [firstProduct] = products
+      dispatch(addProducts({ ...firstProduct, PDF: fileResponse }))
+      snackbarHanler({
+        message: 'Товар успешно добавлен!',
+        linkText: '',
+        type: 'success'
+      })
+      navigate('/')
+    } catch (e) {
+      console.log(e)
     }
   }
 
-  console.log(url)
-
   return (
     <>
-      <main>
+      <form>
+        {ToastContainer}
         <ImportsContainer>
           <div>
             <StyledLabel>Загрузите видеообзор</StyledLabel>
@@ -181,7 +182,7 @@ const ThirdPart = () => {
           <div>
             <StyledLabel>Загрузите документ PDF</StyledLabel>
             <StyledTextField
-              value={url}
+              value={fileName}
               disabled
               placeholder="Вставьте документ в PDF файле"
               color="secondary"
@@ -206,10 +207,10 @@ const ThirdPart = () => {
           <TextEditor onChange={descriptionChangeHandler} value={products.description} />
         </DescriptionContainer>
         <ButtonsContainer>
-          <StyledButton>Отменить</StyledButton>
+          <StyledButton onClick={() => navigate('/addProducts')}>Отменить</StyledButton>
           <StyledButton2 onClick={addProductHandler}>Добавить</StyledButton2>
         </ButtonsContainer>
-      </main>
+      </form>
     </>
   )
 }

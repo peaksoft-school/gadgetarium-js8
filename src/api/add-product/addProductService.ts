@@ -1,12 +1,9 @@
-import { AddProducts } from '../../utils/constants/types'
-import { fileInstance, mainApi } from '../instances'
+import { fileInstance, mainApi } from '../../config/instances'
 
-export const addProductsRequest = (value: AddProducts) => {
-  console.log(value)
-
+export const addProductsRequest = (value: any) => {
   return mainApi.post('/api/admin/products', value)
 }
 
 export const uploadFileService = (value: any) => {
-  return fileInstance.post('/api/s3_file/upload', { file: value })
+  return fileInstance.post('/api/s3_file/upload', value)
 }

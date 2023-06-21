@@ -1,6 +1,6 @@
 export const PATHS = {
   ADMIN: {
-    default: '/',
+    default: '',
     products: 'products/*',
     addProducts: 'addproducts/*',
     productId: ':productId',

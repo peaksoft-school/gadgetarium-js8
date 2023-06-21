@@ -21,11 +21,22 @@ const StyledHeaderTr = styled(TableCell)`
   font-size: 14px;
   line-height: 17px;
   letter-spacing: 1px;
-  text-transform: 'none';
+  /* text-transform: 'none'; */
   padding: 16px 12px 16px 14px;
   color: #ffffff;
   border-radius: 0px;
   margin-bottom: 1rem;
+`
+
+const Styledth = styled('th')`
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 1px;
+  padding: 16px 12px 16px 0px;
+  color: #ffffff;
 `
 
 const StyledTableCell = styled(TableCell)`
@@ -45,37 +56,38 @@ const StyledTableCell = styled(TableCell)`
   }
 `
 
-const AddProductsTable = <T,>({ columns, rows, getUniqueId }: Props<T>) => {
+const AddProductsTable = <T extends object>({ columns, rows, getUniqueId }: Props<T>) => {
   return (
-    <div style={{ width: '100%', overflow: 'hidden', marginTop: '40px' }}>
+    <div style={{ width: '100%', marginTop: '40px' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table" sx={{ borderSpacing: '0 15px' }}>
           <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <StyledHeaderTr
-                  key={column.key}
-                  align={column.align || 'left'}
-                  style={
-                    column.minWidth
-                      ? {
-                          minWidth: column.minWidth
-                        }
-                      : {}
-                  }
-                >
-                  {column.header}
-                </StyledHeaderTr>
-              ))}
+            <TableRow sx={{ backgroundColor: 'rgba(56, 66, 85, 0.9)' }}>
+              {columns?.map((column) => {
+                if (Array.isArray(column.header)) {
+                  return column.header.map((head) => <Styledth key={column.key}>{head}</Styledth>)
+                }
+                return <Styledth key={column.key}>{column.header}</Styledth>
+              })}
             </TableRow>
           </TableHead>
 
           <TableBody>
             {rows.map((row, rowIndex) => {
               return (
-                <TableRow hover tabIndex={-1} key={getUniqueId(row)}>
+                <TableRow
+                  sx={{
+                    width: '100%'
+                  }}
+                  hover
+                  tabIndex={-1}
+                  key={getUniqueId(row)}
+                >
                   {columns.map((column) => {
                     if (column.render) {
+                      if (column.key === 'characteristics') {
+                        return column.render(row)
+                      }
                       return (
                         <StyledTableCell padding="none" key={column.key}>
                           {column.render(row)}
@@ -90,9 +102,11 @@ const AddProductsTable = <T,>({ columns, rows, getUniqueId }: Props<T>) => {
                         row[column.key]
 
                     return (
-                      <StyledTableCell key={column.key} align={column.align}>
-                        {value}
-                      </StyledTableCell>
+                      <>
+                        <StyledTableCell key={column.key} align={column.align}>
+                          {value}
+                        </StyledTableCell>
+                      </>
                     )
                   })}
                 </TableRow>

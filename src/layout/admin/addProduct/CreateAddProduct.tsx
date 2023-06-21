@@ -14,24 +14,6 @@ const StyledContainer = styled(Container)(() => ({
   marginBottom: '150px'
 }))
 
-const StyledNavLink = styled(NavLink)(() => ({
-  textDecoration: 'none',
-  fontFamily: 'Inter, sans-serif',
-  fontStyle: 'normal',
-  fontWeight: '400',
-  fontSize: '0.875rem',
-  lineHeight: '140%',
-  color: '#292929',
-  '&:not(:last-of-type)': {
-    color: '#91969E'
-  },
-  '&:not(:last-of-type)::after': {
-    margin: '0.25rem',
-    content: "'»'",
-    color: '#91969E'
-  }
-}))
-
 const StyledLink = styled('a')(() => ({
   textDecoration: 'none',
   fontFamily: 'Inter, sans-serif',
@@ -85,7 +67,7 @@ const AddProductsPage = () => {
     <>
       <StyledContainer>
         <StyledNav>
-          <StyledNavLink to={PATHS.ADMIN.default}>Товары </StyledNavLink>
+          <StyledLink href="/admin/products">Товары </StyledLink>
           <StyledLink>{renderedTitle}</StyledLink>
         </StyledNav>
 

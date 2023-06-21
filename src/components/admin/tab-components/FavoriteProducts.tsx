@@ -156,7 +156,7 @@ const FavoriteProducts = ({
       </div>
       <TableContainer>
         <SearchSortContainer>
-          <FoundProducts>{`Найдено ${products.foundProducts} Товаров`}</FoundProducts>
+          <FoundProducts>{`Найдено ${products.countOfElements} Товаров`}</FoundProducts>
           <Sorting onChange={onChangeHandler} />
         </SearchSortContainer>
         <AppTable

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import bannerData from '../../api/banner/bannerService'
 import { AxiosError, isAxiosError } from 'axios'
 import { isRejectedWithValue } from '@reduxjs/toolkit'
 import { ImageUrlsType } from '../../utils/common/types'
@@ -25,14 +24,7 @@ export const useAddProductBanner = () => {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
-      const reader = new FileReader()
-
-      reader.onload = () => {
-        const imageUrl = reader.result as string
-        setBannerImages((prevState) => [...prevState, imageUrl])
-      }
-      event.target.value = ''
-      reader.readAsDataURL(file)
+      setBannerImages((prevState) => [...prevState, file])
     }
   }
 

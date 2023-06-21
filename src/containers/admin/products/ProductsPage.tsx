@@ -18,7 +18,7 @@ import IconButtons from '../../../components/UI/buttons/IconButtons'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
 import { useDebounce } from '../../../hooks/useDebounced/useDebounce'
 import CustomizedSnackbars from '../../../components/admin/UI/error-snackbar/ErrorSnackbar'
-import CreateDiscount from '../../../components/discount/CreateDiscount'
+import CreateDiscount from '../../../components/admin/discount/CreateDiscount'
 
 const FirstContainer = styled('div')(() => ({
   width: '81.5625rem',

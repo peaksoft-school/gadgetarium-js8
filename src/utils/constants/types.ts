@@ -31,7 +31,13 @@ export type AddProducts = {
       }
       price: 0
       quantity: 1
-      images: [string, string]
+      images: File[]
     }
   ]
+}
+
+export type ErrorMessageType = {
+  httpStatus: string
+  exceptionClassName: string
+  message: string
 }

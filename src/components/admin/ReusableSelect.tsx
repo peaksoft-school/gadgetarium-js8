@@ -47,6 +47,10 @@ export const StyledSelect = styled(Select)(() => ({
     padding: '8px 14px !important'
   },
 
+  '& .MuiOutlinedInput-notchedOutline': {
+    border: '.125rem solid #F7F7F7 !important'
+  },
+
   border: ' .0625rem solid #CDCDCD',
   borderRadius: '.375rem',
   width: '20.75rem',
@@ -87,13 +91,14 @@ export const ReusableSelect: React.FC<SelectProps> = ({
   getOptionValue
 }) => {
   return (
-    <FormControl required>
-      <StyledSelect id={id} name={name} value={value} onChange={onChange} displayEmpty>
-        <StyledOption value="" disabled sx={{ display: 'none' }}>
+    <FormControl>
+      <StyledSelect required id={id} name={name} value={value} onChange={onChange} displayEmpty>
+        <StyledOption aria-required value="" disabled sx={{ display: 'none' }}>
           {placeholder}
         </StyledOption>
         {options.map((option: any) => (
           <StyledOption
+            aria-required
             key={option.id}
             value={getOptionValue ? getOptionValue(option.name) : option.id}
           >

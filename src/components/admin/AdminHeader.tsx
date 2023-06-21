@@ -6,6 +6,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import IconButtons from '../UI/buttons/IconButtons'
 import Modal from '../UI/modals/Modal'
 import CreateMailingList from './UI/mailingList/MailingList'
+import { STORAGE_KEYS } from '../../utils/constants/storage'
 
 const MainContainer = styled('div')(() => ({
   position: 'fixed',
@@ -27,7 +28,7 @@ const StyledList = styled('ul')(() => ({
   marginLeft: '3rem',
   alignItems: 'center',
   '.active': {
-    backgroundColor: '#858FA426',
+    backgroundColor: '#ffffff24',
     padding: '0.75rem 0.857rem',
     borderRadius: '4px'
   }
@@ -45,7 +46,7 @@ const StyledNavLink = styled(NavLink)(() => ({
   marginRight: '1.5rem',
   padding: '0.75rem 0.857rem',
   '&:hover': {
-    backgroundColor: '#6e707524',
+    backgroundColor: '#e4e4e423',
     padding: '0.75rem 0.857rem',
     borderRadius: '4px'
   }
@@ -217,8 +218,8 @@ const AdminHeader = () => {
   }
 
   const logOutHandler = () => {
-    localStorage.removeItem('AUTH')
-    navigate('/login')
+    localStorage.removeItem(STORAGE_KEYS.AUTH)
+    navigate('/login', { replace: true })
   }
   return (
     <header>
