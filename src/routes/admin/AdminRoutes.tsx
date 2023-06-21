@@ -16,6 +16,7 @@ const AdminRoutes = () => {
             <Route index element={<ProductsPage />} />
             <Route path={PATHS.ADMIN.addProducts} Component={AddProductsPage} />
             <Route path={PATHS.ADMIN.productId} element={<ProductInnerPage />} />
+            <Route path={PATHS.ADMIN.addProducts} Component={AddProductsPage} />
             <Route path={PATHS.ADMIN.not_found} element={<p>Not Found</p>} />
           </Route>
 

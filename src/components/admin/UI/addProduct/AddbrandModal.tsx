@@ -8,7 +8,7 @@ import {
   StyledInput,
   StyledTitle
 } from '../mailingList/MailingList'
-import { postBrand } from '../../../../api/addProductService'
+import { postBrand } from '../../../../api/addProduct/addProductService'
 import Modal from '../../../UI/modals/Modal'
 type Props = {
   modalHandler: () => void

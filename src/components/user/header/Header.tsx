@@ -10,11 +10,20 @@ import { ReactComponent as LikeIcon } from '../../../assets/icons/header-icons/l
 import { ReactComponent as HoveredLikeIcon } from '../../../assets/icons/header-icons/hoveredLikeIcon.svg'
 import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons/basketIcon.svg'
 import IconButtons from '../../UI/buttons/IconButtons'
+import Categories from '../../../components/UI/categories/Categories'
+import { PATHS } from '../../../utils/constants/router/routerConsts'
+import { useCallback, useEffect } from 'react'
+import ReusableHoverModal from '../UI/ReusableHoverModal'
+import Tippy from '@tippyjs/react'
+import 'tippy.js/dist/tippy.css'
+import { categories } from '../../../utils/constants/categories'
+import { getAllBusketProductService } from '../../../api/mainPage/AddProductToBusketService'
+import MenuItem from '../UI/MenuItem'
+import SearchItem from '../UI/SearchItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { PATHS } from '../../../utils/constants/router/routerConsts'
 import { SearchInput } from '../../UI/inputs/SearchInput'
 import { favouriteActions } from '../../../redux/store/favourites/favourites.slice'
 
@@ -52,7 +61,8 @@ const FirstHeaderContainer = styled('div')(() => ({
   backgroundColor: '#1A1A25',
   color: '#fff',
   height: '4.71875rem',
-  borderBottom: '1px solid #858FA426'
+  borderBottom: '1px solid #858FA426',
+  width: '100%'
 }))
 
 const SecondHeaderContainer = styled('div')(() => ({
@@ -80,7 +90,7 @@ const NumberContainer = styled('div')(() => ({
   lineHeight: '1.1875rem',
   p: {
     marginRight: '1.5rem',
-    marginTop: '0.1rem'
+    marginTop: '0.7rem'
   }
 }))
 
@@ -113,7 +123,17 @@ const StyledButton = styled(Button)(() => ({
     backgroundColor: '#991984'
   }
 }))
+const StyledButtonForScroll = styled(Button)(() => ({
+  backgroundColor: '#CB11AB',
+  color: '#fff',
+  opacity: '1000',
+  padding: '0.75rem 1.25rem 0.8125rem 1.25rem',
+  borderRadius: '4px',
 
+  '&:hover': {
+    backgroundColor: '#991984'
+  }
+}))
 const StyledPContent = styled('p')(() => ({
   fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
@@ -160,15 +180,24 @@ const InteractionIconsItem = styled('li')(() => ({
   }
 }))
 const StyledInputContainer = styled('div')(() => ({
-  width: '110rem',
+  // width: '110rem',
+  // height: '10.8125rem',
+  // marginTop: '8rem',
+  // marginLeft: '1rem'
+  width: '43rem',
   height: '10.8125rem',
-  marginTop: '8rem',
-  marginLeft: '1rem'
+  margin: '8rem 4rem 0 3rem '
 }))
 const SocialMediaListItem = styled('li')(() => ({
   'path:hover': {
     fill: '#CB11AB'
   }
+}))
+
+const StyledCategories = styled('div')(() => ({
+  position: 'fixed',
+  left: '14.875rem',
+  marginTop: '15.625rem'
 }))
 
 const LikeIconItem = styled('li')(() => ({
@@ -184,15 +213,52 @@ const LikeIconItem = styled('li')(() => ({
     }
   }
 }))
-const Header = () => {
-  const navigate = useNavigate()
+
+export const StyledIconButtonCart = styled('button')(() => ({
+  backgroundColor: 'transparent',
+  border: 'none'
+}))
+const StyledTippy = styled(Tippy)(() => ({
+  backgroundColor: 'transparent',
+  border: 'none',
+  width: '1000px',
+  marginRight: '12.5rem'
+}))
+export type QueryParams = {
+  keyword: string | null
+}
+
+const Header: React.FC = () => {
   const { totalQuantity } = useSelector((state: RootState) => state.favourites)
   const dispatch = useDispatch<AppDispatch>()
   const [catalog, setCatalog] = useState(false)
+  const [isScroll, setIsScroll] = useState(false)
+  const navigate = useNavigate()
+  const [open, setOpen] = useState(false)
+  const [basketItems, setBasketItems] = useState([])
+  const [isOpenMenuItem, setIsMenuItem] = useState(false)
 
   const catalogHandler = () => {
     setCatalog((prevState) => !prevState)
   }
+  const handleOpenMenuItem = () => {
+    setIsMenuItem((prevState) => !prevState)
+  }
+  const getAllBusket = async () => {
+    try {
+      const { data } = await getAllBusketProductService()
+      setBasketItems(data)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    getAllBusket()
+  }, [])
+
+  const openModalHandler = () => {
+    setOpen((prevState) => !prevState)
+  }
+
   const goToBasketHandler = () => {
     navigate('basket')
     dispatch(favouriteActions.addCount(0))
@@ -200,79 +266,265 @@ const Header = () => {
   const goToFavouritesHandler = () => {
     navigate('favourites')
   }
+
+  const scrollHandler = useCallback(() => {
+    const scroll = window.screenY || document.documentElement.scrollTop
+    if (scroll > 90) {
+      setIsScroll(true)
+      return
+    }
+    setIsScroll(false)
+  }, [])
+  useEffect(() => {
+    window.addEventListener('scroll', scrollHandler)
+    return () => {
+      window.removeEventListener('scroll', scrollHandler)
+    }
+  }, [])
   return (
-    <header>
-      <FirstHeaderContainer>
-        <div>
-          <a href="jbjknl">
-            <IconButtons icon={<LogoIcon />} />
-          </a>
-        </div>
-        <div>
-          <StyledList>
-            <StyledNavLink to="/">Главная</StyledNavLink>
-            <StyledNavLink to={PATHS.MAIN.about}>О магазине</StyledNavLink>
-            <StyledNavLink to={PATHS.MAIN.delivery}>Доставка</StyledNavLink>
-            <StyledNavLink to={PATHS.MAIN.faq}>FAQ</StyledNavLink>
-            <StyledNavLink to={PATHS.MAIN.contacts}>Контакты</StyledNavLink>
-          </StyledList>
-        </div>
-        <NumberContainer>
-          <p>+996 (400) 00-00-00</p>
-          <NumberIcon />
-        </NumberContainer>
-      </FirstHeaderContainer>
-      <SecondHeaderContainer>
-        <StyledButton onClick={catalogHandler}>
-          <CatalogIcon />
-          <StyledPContent>Каталог</StyledPContent>
-        </StyledButton>
-        <StyledDivider orientation="vertical" />
-        <StyledInputContainer>
-          <SearchInput />
-        </StyledInputContainer>
-        <SocialMediaList>
-          <SocialMediaListItem>
-            <span>
-              <IconButtons icon={<FacebookIcon />} />
-            </span>
-          </SocialMediaListItem>
-          <SocialMediaListItem>
-            <span>
-              <IconButtons icon={<InstagramIcon />} />
-            </span>
-          </SocialMediaListItem>
-          <SocialMediaListItem>
-            <span>
-              <IconButtons icon={<WhatsAppIcon />} />
-            </span>
-          </SocialMediaListItem>
-        </SocialMediaList>
-        <InteractionIcons>
-          <InteractionIconsItem>
-            <span>
-              <IconButtons icon={<UnionIcon />} />
-              <StyledNotificationIcon>8</StyledNotificationIcon>
-            </span>
-          </InteractionIconsItem>
-          <LikeIconItem>
-            <span>
-              <IconButtons icon={<LikeIcon />} />
-            </span>
-            <span>
-              <IconButtons icon={<HoveredLikeIcon />} onClick={goToFavouritesHandler} />
-            </span>
-          </LikeIconItem>
-          <InteractionIconsItem>
-            <span>
-              <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-              {totalQuantity > 0 ? (
-                <StyledNotificationIcon>{totalQuantity}</StyledNotificationIcon>
-              ) : null}
-            </span>
-          </InteractionIconsItem>
-        </InteractionIcons>
-      </SecondHeaderContainer>
+    <header style={{ position: isScroll ? 'fixed' : 'sticky', width: '100%', zIndex: '100' }}>
+      {isScroll ? (
+        <>
+          <SecondHeaderContainer>
+            <div style={{ padding: '0.75rem 1.25rem 1.25rem 3.25rem' }}>
+              <a href="/">
+                <IconButtons icon={<LogoIcon />} />
+              </a>
+            </div>
+            <StyledButtonForScroll onClick={openModalHandler}>
+              <CatalogIcon />
+              <StyledPContent>Каталог</StyledPContent>
+            </StyledButtonForScroll>
+            <StyledCategories>
+              {open === true ? <Categories data={categories} category={() => {}} /> : null}
+            </StyledCategories>
+
+            <StyledDivider orientation="vertical" />
+
+            <StyledInputContainer>{isScroll ? <SearchItem /> : null}</StyledInputContainer>
+
+            <InteractionIcons>
+              <InteractionIconsItem>
+                <span>
+                  <StyledTippy
+                    interactive={true}
+                    interactiveBorder={0}
+                    delay={100}
+                    trigger="mouseenter"
+                    content={
+                      <ReusableHoverModal path="/" basketItems={basketItems}>
+                        Сравнить
+                      </ReusableHoverModal>
+                    }
+                  >
+                    <StyledIconButtonCart>
+                      <IconButtons icon={<UnionIcon />} />
+                      <StyledNotificationIcon>8</StyledNotificationIcon>
+                    </StyledIconButtonCart>
+                  </StyledTippy>
+                </span>
+              </InteractionIconsItem>
+              <LikeIconItem>
+                <span>
+                  <StyledTippy
+                    interactive={true}
+                    interactiveBorder={10}
+                    delay={100}
+                    trigger="mouseenter"
+                    content={
+                      <ReusableHoverModal path="/favourites" basketItems={basketItems}>
+                        Перейти в избранное
+                      </ReusableHoverModal>
+                    }
+                  >
+                    <StyledIconButtonCart>
+                      <IconButtons icon={<LikeIcon />} />
+                    </StyledIconButtonCart>
+                  </StyledTippy>
+                </span>
+                <span>
+                  {' '}
+                  <StyledTippy
+                    interactive={true}
+                    interactiveBorder={20}
+                    delay={200}
+                    trigger="mouseenter"
+                    content={
+                      <ReusableHoverModal path={PATHS.MAIN.faq} basketItems={basketItems}>
+                        Перейти в избранное
+                      </ReusableHoverModal>
+                    }
+                  >
+                    <StyledIconButtonCart>
+                      <IconButtons icon={<HoveredLikeIcon />} />
+                    </StyledIconButtonCart>
+                  </StyledTippy>
+                </span>
+              </LikeIconItem>
+              <InteractionIconsItem>
+                <span>
+                  <StyledTippy
+                    interactive={true}
+                    interactiveBorder={30}
+                    delay={100}
+                    trigger="mouseenter"
+                    content={
+                      <ReusableHoverModal basketItems={basketItems} path={'/basket'}>
+                        Оформить заказ
+                      </ReusableHoverModal>
+                    }
+                  >
+                    <StyledIconButtonCart>
+                      <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
+                      <StyledNotificationIcon>{basketItems.length}</StyledNotificationIcon>
+                    </StyledIconButtonCart>
+                  </StyledTippy>
+                </span>
+              </InteractionIconsItem>
+            </InteractionIcons>
+          </SecondHeaderContainer>
+        </>
+      ) : (
+        <>
+          {' '}
+          <FirstHeaderContainer>
+            <div>
+              <a href="/">
+                <IconButtons icon={<LogoIcon />} />
+              </a>
+            </div>
+            <div>
+              <StyledList>
+                <StyledNavLink to="/">Главная</StyledNavLink>
+                <StyledNavLink to="">О магазине</StyledNavLink>
+                <StyledNavLink to={PATHS.MAIN.delivery}>Доставка</StyledNavLink>
+                <StyledNavLink to={PATHS.MAIN.faq}>FAQ</StyledNavLink>
+                <StyledNavLink to={PATHS.MAIN.contacts}>Контакты</StyledNavLink>
+              </StyledList>
+            </div>
+            <NumberContainer>
+              <p>+996 (400) 00-00-00</p>
+              <IconButtons icon={<NumberIcon />} onClick={handleOpenMenuItem} />
+              {isOpenMenuItem && (
+                <div>
+                  <MenuItem />
+                </div>
+              )}
+            </NumberContainer>
+          </FirstHeaderContainer>
+          <SecondHeaderContainer>
+            <StyledButton onClick={openModalHandler}>
+              <CatalogIcon />
+              <StyledPContent>Каталог</StyledPContent>
+            </StyledButton>
+            <StyledCategories>
+              {open === true ? <Categories data={categories} category={() => {}} /> : null}
+            </StyledCategories>
+
+            <StyledDivider orientation="vertical" />
+            <StyledInputContainer>
+              {' '}
+              <SearchItem />{' '}
+            </StyledInputContainer>
+            <SocialMediaList>
+              <SocialMediaListItem>
+                <a href="https://www.facebook.com/confirmemail.php?next=https%3A%2F%2Fwww.facebook.com%2F">
+                  <IconButtons icon={<FacebookIcon />} />
+                </a>
+              </SocialMediaListItem>
+              <SocialMediaListItem>
+                <a href="https://www.instagram.com/">
+                  <IconButtons icon={<InstagramIcon />} />
+                </a>
+              </SocialMediaListItem>
+              <SocialMediaListItem>
+                <a href="https://www.whatsapp.com/?lang=ru">
+                  <IconButtons icon={<WhatsAppIcon />} />
+                </a>
+              </SocialMediaListItem>
+            </SocialMediaList>
+            <InteractionIcons>
+              <InteractionIconsItem>
+                <span>
+                  <StyledTippy
+                    interactive={true}
+                    interactiveBorder={0}
+                    delay={100}
+                    trigger="mouseenter"
+                    content={
+                      <ReusableHoverModal path="/" basketItems={basketItems}>
+                        Сравнить
+                      </ReusableHoverModal>
+                    }
+                  >
+                    <StyledIconButtonCart>
+                      <IconButtons icon={<UnionIcon />} />
+                      <StyledNotificationIcon>8</StyledNotificationIcon>
+                    </StyledIconButtonCart>
+                  </StyledTippy>
+                </span>
+              </InteractionIconsItem>
+              <LikeIconItem>
+                <span>
+                  <StyledTippy
+                    interactive={true}
+                    interactiveBorder={10}
+                    delay={100}
+                    trigger="mouseenter"
+                    content={
+                      <ReusableHoverModal path="/favourites" basketItems={basketItems}>
+                        Перейти в избранное
+                      </ReusableHoverModal>
+                    }
+                  >
+                    <StyledIconButtonCart>
+                      <IconButtons icon={<LikeIcon />} />
+                    </StyledIconButtonCart>
+                  </StyledTippy>
+                </span>
+                <span>
+                  {' '}
+                  <StyledTippy
+                    interactive={true}
+                    interactiveBorder={20}
+                    delay={200}
+                    trigger="mouseenter"
+                    content={
+                      <ReusableHoverModal path={PATHS.MAIN.faq} basketItems={basketItems}>
+                        Перейти в избранное
+                      </ReusableHoverModal>
+                    }
+                  >
+                    <StyledIconButtonCart>
+                      <IconButtons icon={<HoveredLikeIcon />} />
+                    </StyledIconButtonCart>
+                  </StyledTippy>
+                </span>
+              </LikeIconItem>
+              <InteractionIconsItem>
+                <span>
+                  <StyledTippy
+                    interactive={true}
+                    interactiveBorder={30}
+                    delay={100}
+                    trigger="mouseenter"
+                    content={
+                      <ReusableHoverModal basketItems={basketItems} path={'/basket'}>
+                        Оформить заказ
+                      </ReusableHoverModal>
+                    }
+                  >
+                    <StyledIconButtonCart>
+                      <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
+                      <StyledNotificationIcon>{basketItems.length}</StyledNotificationIcon>
+                    </StyledIconButtonCart>
+                  </StyledTippy>
+                </span>
+              </InteractionIconsItem>
+            </InteractionIcons>
+          </SecondHeaderContainer>
+        </>
+      )}
     </header>
   )
 }

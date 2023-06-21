@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, isRejectedWithValue } from '@reduxjs/toolkit'
 import { AxiosError, isAxiosError } from 'axios'
 import { MailingListType } from '../../../utils/common/types'
 import { mailingData, mailingS3File } from '../../../api/mail/mailingService'
@@ -7,8 +7,9 @@ export const postMailingList = createAsyncThunk(
   'mailingList/postData',
   async (values: MailingListType, { rejectWithValue }) => {
     try {
-      const { data } = await mailingData(values)
-      return data
+      await mailingData(values)
+
+      values.snackbar('Product successully created!!', 'success')
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{ httpStatus: string; message: string }>

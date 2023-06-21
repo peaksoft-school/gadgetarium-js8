@@ -6,10 +6,15 @@ interface ImagePickerProps {
   onSelectImage: (selectedFile: File) => void
 }
 
-const StyledImg = styled('img')`
-  width: 60%;
-  height: 50%;
-`
+const StyledImg = styled('img')(() => ({
+  width: '60%',
+  height: '50%',
+  background: 'none',
+  '&.hover': {
+    background: 'none'
+  }
+}))
+
 const AvatarGroupStyle = styled(Avatar)`
   padding: 7rem;
   border-radius: 3px;
@@ -27,10 +32,10 @@ const StyledText = styled('p')`
   width: 100%;
   color: #91969e;
 `
-const StyledInput = styled('input')`
-  width: 100%;
-  height: 100%;
-`
+const StyledInput = styled('input')(() => ({
+  width: '100%',
+  height: '100%'
+}))
 const ImagePicker: FC<ImagePickerProps> = ({ onSelectImage }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
