@@ -26,7 +26,7 @@ const AddbrandModal = ({ modal, modalHandler, getSubCategories }: Props) => {
   const [logo, setLogo] = useState<string>('')
   const [name, setName] = useState<string>('')
 
-  const handleImageSelect = (imageUrl: string) => {
+  const handleImageSelect = (imageUrl: string | any) => {
     setLogo(imageUrl)
   }
   const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {

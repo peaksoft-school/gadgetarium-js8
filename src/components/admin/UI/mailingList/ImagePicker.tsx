@@ -3,13 +3,18 @@ import { ChangeEvent, FC, useState } from 'react'
 import { ReactComponent as AvatarIcon } from '../../../../assets/icons/AvatarIcon.svg'
 
 interface ImagePickerProps {
-  onSelectImage: (imageUrl: string) => void
+  onSelectImage: (selectedFile: File) => void
 }
 
-const StyledImg = styled('img')`
-  width: 60%;
-  height: 50%;
-`
+const StyledImg = styled('img')(() => ({
+  width: '60%',
+  height: '50%',
+  background: 'none',
+  '&.hover': {
+    background: 'none'
+  }
+}))
+
 const AvatarGroupStyle = styled(Avatar)`
   padding: 7rem;
   border-radius: 3px;
@@ -27,10 +32,10 @@ const StyledText = styled('p')`
   width: 100%;
   color: #91969e;
 `
-const StyledInput = styled('input')`
-  width: 100%;
-  height: 100%;
-`
+const StyledInput = styled('input')(() => ({
+  width: '100%',
+  height: '100%'
+}))
 const ImagePicker: FC<ImagePickerProps> = ({ onSelectImage }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
@@ -38,11 +43,12 @@ const ImagePicker: FC<ImagePickerProps> = ({ onSelectImage }) => {
     const selectedFile = e.target.files?.[0]
     if (selectedFile) {
       const reader = new FileReader()
+
       reader.readAsDataURL(selectedFile)
       reader.onload = () => {
         const imageUrl = reader.result as string
         setSelectedImage(imageUrl)
-        onSelectImage(imageUrl)
+        onSelectImage(selectedFile)
       }
     }
   }

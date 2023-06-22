@@ -7,7 +7,7 @@ import {
 import { getAllBasket } from '../basket/basket.thunk'
 import { AxiosError, isAxiosError } from 'axios'
 import { getDiscountProduct, getNewProduct, getRecommendedProduct } from './GetProduct.thunk'
-type SnackbarHandler = (message: string, type: 'error' | 'success' | undefined) => void
+export type SnackbarHandler = (message: string, type: 'error' | 'success' | undefined) => void
 
 export const addNewProductToBusket = createAsyncThunk(
   'mainPageToBusket/addNewProductToBusket',

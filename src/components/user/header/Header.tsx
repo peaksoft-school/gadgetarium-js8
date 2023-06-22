@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { SearchInput } from '../../UI/inputs/SearchInput'
 import { favouriteActions } from '../../../redux/store/favourites/favourites.slice'
 
 const StyledNotificationIcon = styled('span')(() => ({
@@ -179,6 +180,10 @@ const InteractionIconsItem = styled('li')(() => ({
   }
 }))
 const StyledInputContainer = styled('div')(() => ({
+  // width: '110rem',
+  // height: '10.8125rem',
+  // marginTop: '8rem',
+  // marginLeft: '1rem'
   width: '43rem',
   height: '10.8125rem',
   margin: '8rem 4rem 0 3rem '
@@ -208,6 +213,7 @@ const LikeIconItem = styled('li')(() => ({
     }
   }
 }))
+
 export const StyledIconButtonCart = styled('button')(() => ({
   backgroundColor: 'transparent',
   border: 'none'
@@ -232,6 +238,9 @@ const Header: React.FC = () => {
   const [basketItems, setBasketItems] = useState([])
   const [isOpenMenuItem, setIsMenuItem] = useState(false)
 
+  const catalogHandler = () => {
+    setCatalog((prevState) => !prevState)
+  }
   const handleOpenMenuItem = () => {
     setIsMenuItem((prevState) => !prevState)
   }
