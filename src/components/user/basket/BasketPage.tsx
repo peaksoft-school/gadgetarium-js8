@@ -3,8 +3,9 @@ import { AppDispatch, RootState } from '../../../redux/store'
 import { useEffect } from 'react'
 import { getAllBasket } from '../../../redux/store/basket/basket.thunk'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, CircularProgress, styled } from '@mui/material'
+import { Box, styled } from '@mui/material'
 import EmptyBasket from './EmptyBasket'
+import Loading from '../../UI/loading/Loading'
 const Container = styled('div')(() => ({
   width: '100%',
   height: '100%',
@@ -44,23 +45,22 @@ const BasketPage = () => {
   }, [])
   return (
     <>
-      <Container>
-        <SpanOne>Главная » </SpanOne>
-        <SpanTwo>Корзина</SpanTwo>
-        <Title>Товары в корзине</Title>
-        {basketData.isLoading ? (
-          <Box
-            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-            minHeight={'25rem'}
-          >
-            <CircularProgress />
-          </Box>
-        ) : basketData.items.length === 0 ? (
-          <EmptyBasket />
-        ) : (
-          <Basket basketData={basketData} />
-        )}
-      </Container>
+      {basketData.isLoading ? (
+        <Box
+          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          minHeight={'45rem'}
+        >
+          <Loading />
+        </Box>
+      ) : (
+        <Container>
+          <SpanOne>Главная » </SpanOne>
+          <SpanTwo>Корзина</SpanTwo>
+          <Title>Товары в корзине</Title>
+
+          {basketData.items.length === 0 ? <EmptyBasket /> : <Basket basketData={basketData} />}
+        </Container>
+      )}
     </>
   )
 }

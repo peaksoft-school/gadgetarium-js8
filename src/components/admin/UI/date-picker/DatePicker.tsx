@@ -58,6 +58,7 @@ const ProductsDatePicker = forwardRef(
             // onChange={onChange}
 
             slotProps={{ textField: { variant: 'outlined', placeholder } }}
+            disableFuture={true}
           />
         </Container>
       </LocalizationProvider>

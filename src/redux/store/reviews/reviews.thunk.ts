@@ -7,6 +7,7 @@ import {
   postReviewsRequest,
   updateRequest
 } from '../../../api/reviews/reviewsService'
+import { SnackbarHandler } from '../basket/basket.thunk'
 
 export const getAllReviews = createAsyncThunk(
   'reviews/getReviews',
@@ -31,16 +32,25 @@ export const getAllReviews = createAsyncThunk(
 
 export const deleteReviewById = createAsyncThunk(
   'reviews/deleteReviews',
-  async (payload: { id: number; page: string }, { dispatch, rejectWithValue }) => {
+  async (
+    payload: { id: number; page: string; snackbar: SnackbarHandler },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
       await deleteReviewByIdRequest(payload.id)
       dispatch(getAllReviews(payload.page))
+        .unwrap()
+        .then(() => {
+          payload.snackbar('Kомментарий удален из обзоров', 'success')
+        })
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{
           status: number
           message: string
         }>
+        payload.snackbar(error.response?.data.message || 'Повторите попытку', 'error')
+
         return rejectWithValue(error.response?.data.message)
       }
       return rejectWithValue('Something went wrong')
@@ -50,7 +60,10 @@ export const deleteReviewById = createAsyncThunk(
 
 export const postReviews = createAsyncThunk(
   'reviews/postReviews',
-  async (payload: { id: number; page: string; answer: string }, { dispatch, rejectWithValue }) => {
+  async (
+    payload: { id: number; page: string; answer: string; snackbar: SnackbarHandler },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
       const postData = {
         reviewId: payload.id,
@@ -58,12 +71,17 @@ export const postReviews = createAsyncThunk(
       }
       await postReviewsRequest(postData)
       dispatch(getAllReviews(payload.page))
+        .unwrap()
+        .then(() => {
+          payload.snackbar('Ответ успешно сохранен!', 'success')
+        })
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{
           status: number
           message: string
         }>
+        payload.snackbar(error.response?.data.message || 'Повторите попытку', 'error')
         return rejectWithValue(error.response?.data.message)
       }
       return rejectWithValue('Something went wrong')
@@ -72,7 +90,10 @@ export const postReviews = createAsyncThunk(
 )
 export const updateReviews = createAsyncThunk(
   'reviews/updateReviews',
-  async (payload: { id: number; page: string; answer: string }, { dispatch, rejectWithValue }) => {
+  async (
+    payload: { id: number; page: string; answer: string; snackbar: SnackbarHandler },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
       const postData = {
         reviewId: payload.id,
@@ -80,12 +101,17 @@ export const updateReviews = createAsyncThunk(
       }
       await updateRequest(postData)
       dispatch(getAllReviews(payload.page))
+        .unwrap()
+        .then(() => {
+          payload.snackbar('Ответ успешно обновлен!', 'success')
+        })
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{
           status: number
           message: string
         }>
+        payload.snackbar(error.response?.data.message || 'Повторите попытку', 'error')
         return rejectWithValue(error.response?.data.message)
       }
       return rejectWithValue('Something went wrong')

@@ -338,12 +338,11 @@ const Header: React.FC = () => {
                     }
                   >
                     <StyledIconButtonCart>
-                      <IconButtons icon={<LikeIcon />} />
+                      <IconButtons icon={<LikeIcon />} onClick={goToFavouritesHandler} />
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
                 <span>
-                  {' '}
                   <StyledTippy
                     interactive={true}
                     interactiveBorder={20}
@@ -356,7 +355,7 @@ const Header: React.FC = () => {
                     }
                   >
                     <StyledIconButtonCart>
-                      <IconButtons icon={<HoveredLikeIcon />} />
+                      <IconButtons icon={<HoveredLikeIcon />} onClick={goToFavouritesHandler} />
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -386,7 +385,6 @@ const Header: React.FC = () => {
         </>
       ) : (
         <>
-          {' '}
           <FirstHeaderContainer>
             <div>
               <a href="/">
@@ -483,7 +481,6 @@ const Header: React.FC = () => {
                   </StyledTippy>
                 </span>
                 <span>
-                  {' '}
                   <StyledTippy
                     interactive={true}
                     interactiveBorder={20}
@@ -496,7 +493,7 @@ const Header: React.FC = () => {
                     }
                   >
                     <StyledIconButtonCart>
-                      <IconButtons icon={<HoveredLikeIcon />} />
+                      <IconButtons icon={<HoveredLikeIcon />} onClick={goToFavouritesHandler} />
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -516,7 +513,9 @@ const Header: React.FC = () => {
                   >
                     <StyledIconButtonCart>
                       <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-                      <StyledNotificationIcon>{basketItems.length}</StyledNotificationIcon>
+                      {totalQuantity !== 0 ? (
+                        <StyledNotificationIcon>{totalQuantity}</StyledNotificationIcon>
+                      ) : null}
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
