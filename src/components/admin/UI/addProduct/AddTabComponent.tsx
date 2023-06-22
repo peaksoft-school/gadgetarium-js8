@@ -221,8 +221,8 @@ const AddTabComponent = ({ handleNext }: Props) => {
       subCategoryId: selectedValueThird,
       dateOfIssue,
       subProducts: [
-        ...subProducts.map((v: any) => ({ ...v, id: Date.now().toString() })),
-        { ...subProduct, subProduct, id: Date.now().toString() }
+        ...subProducts.map((v: any) => ({ ...v, id: Math.random().toString() })),
+        { ...subProduct, subProduct, id: Math.random().toString() }
       ]
     }
     if (
@@ -255,8 +255,8 @@ const AddTabComponent = ({ handleNext }: Props) => {
       subCategoryId: selectedValueThird,
       dateOfIssue,
       subProducts: [
-        ...subProducts.map((v: any) => ({ ...v, id: Date.now().toString() })),
-        { ...subProduct, subProduct, id: Date.now().toString() }
+        ...subProducts.map((v: any) => ({ ...v, id: Math.random().toString() })),
+        { ...subProduct, subProduct, id: Math.random().toString() }
       ]
     }
     if (

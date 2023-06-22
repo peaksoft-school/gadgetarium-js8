@@ -14,8 +14,6 @@ type TableQuantityInputProps = {
 }
 
 export const TablePriceInput = ({ transferredValue, id }: TablePriceInputProps) => {
-  console.log(id, 'TablePriceInput')
-
   const dispatch = useAppDispatch()
 
   const changePriceHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,8 +42,6 @@ export const TablePriceInput = ({ transferredValue, id }: TablePriceInputProps) 
 }
 
 export const TableQuantityInput = ({ quantity, id }: TableQuantityInputProps) => {
-  console.log(id, 'TableQuantityInput')
-
   const dispatch = useAppDispatch()
   const changeQuantityHandler = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(

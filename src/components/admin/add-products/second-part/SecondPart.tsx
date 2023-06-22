@@ -153,6 +153,8 @@ const SecondPart = ({ handleNext }: Props) => {
       })
     : []
 
+  console.log(tableData)
+
   const columns: Column<SubProduct>[] = [
     {
       header: 'Бренд',
@@ -180,9 +182,9 @@ const SecondPart = ({ handleNext }: Props) => {
     {
       header: 'Кол-во товара',
       key: 'quantity',
-      render: (product: SubProduct) => (
-        <TableQuantityInput quantity={product.quantity} id={product.id} />
-      )
+      render: (product: SubProduct) => {
+        return <TableQuantityInput quantity={product.quantity} id={product.id} />
+      }
     },
     {
       header: 'Цена',
