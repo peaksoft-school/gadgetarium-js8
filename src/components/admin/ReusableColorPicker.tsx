@@ -72,9 +72,9 @@ const ReusableColorPicker = ({
         <StyledInput required type="text" value={color} placeholder="Основной цвет" />
         <IconButtons icon={<Palette />} />
       </Container>
-      {openColorPicker && (
+      {openColorPicker ? (
         <PhotoshopPicker onCancel={openColorHandler} color={color} onChange={colorPickerHandler} />
-      )}
+      ) : null}
     </>
   )
 }

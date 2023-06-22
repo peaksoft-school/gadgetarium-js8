@@ -8,6 +8,10 @@ import { PATHS } from '../../utils/constants/router/routerConsts'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { UserRoles } from '../../utils/common/types'
+import MainPage from '../../layout/user/main/MainPage'
+import BasketPage from '../../components/user/basket/BasketPage'
+import AboutStore from '../../layout/user/about/AboutStore'
+import { FavouritesPage } from '../../components/user/favourites/FavouritesPage'
 
 const MainRoutes = () => {
   const role = useSelector((state: RootState) => state.auth.role)
@@ -18,7 +22,7 @@ const MainRoutes = () => {
   return (
     <MainLayout>
       <Routes>
-        <Route path={PATHS.MAIN.default} element={<p>MainPage</p>} />
+        <Route path={PATHS.MAIN.default} Component={MainPage} />
         <Route path={PATHS.MAIN.catalog} element={<Outlet />}>
           <Route index element={<p>CatalogPage</p>} />
           <Route path={PATHS.MAIN.productId} element={<p>ProductInnerPage</p>} />
@@ -27,10 +31,10 @@ const MainRoutes = () => {
         <Route path={PATHS.MAIN.favourites} element={<p>FavouritesPage</p>} />
 
         <Route path={PATHS.MAIN.favourites} element={<Outlet />}>
-          <Route index element={<p>BasketPage</p>} />
+          <Route index element={<FavouritesPage />} />
           <Route path={PATHS.MAIN.ordering} element={<p>OrderingPage</p>} />
         </Route>
-
+        <Route path={PATHS.MAIN.basket} element={<BasketPage />} />
         <Route
           path={PATHS.MAIN.user}
           element={
@@ -41,7 +45,7 @@ const MainRoutes = () => {
           }
         />
 
-        <Route path={PATHS.MAIN.about} element={<p>AboutPage</p>} />
+        <Route path={PATHS.MAIN.about} Component={AboutStore} />
         <Route path={PATHS.MAIN.delivery} Component={Delivery} />
         <Route path={PATHS.MAIN.faq} Component={FrequentlyAskedQuestions} />
         <Route path={PATHS.MAIN.contacts} Component={Contackts} />

@@ -37,13 +37,11 @@ const StyledButton = styled('button')(() => ({
     color: '#eee'
   }
 }))
-
 const ModalContainer = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
-  paddingTop: '',
-  paddingLeft: '60px',
-  paddingRight: '60px',
+  justifyContent: 'space-around',
+  padding: '20px 60px',
   p: {
     color: '#292929',
     fontFamily: 'Inter, sans-serif',
@@ -56,8 +54,9 @@ const ModalContainer = styled('div')(() => ({
 }))
 
 const ConfirmModalButton = styled(Button)(() => ({
+  width: '45%',
   backgroundColor: '#CB11AB',
-  padding: '0.5rem 1.5rem',
+  padding: '0.7rem 1.5rem',
   borderRadius: '4px',
   color: '#fff',
   fontFamily: 'Inter, sans-serif',
@@ -72,8 +71,9 @@ const ConfirmModalButton = styled(Button)(() => ({
 }))
 
 const CancelModalButton = styled(Button)(() => ({
+  width: '45%',
   backgroundColor: '#fff',
-  padding: '0.45rem 1rem',
+  padding: '0.7rem 1rem',
   borderRadius: '4px',
   border: '1px solid #CB11AB',
   color: '#CB11AB',
@@ -88,10 +88,11 @@ const CancelModalButton = styled(Button)(() => ({
     // backgroundColor: '#fff'
   }
 }))
+
 const ModalButtonContainers = styled('div')(() => ({
   marginTop: '1rem',
   display: 'flex',
-  justifyContent: 'space-around'
+  justifyContent: 'space-between'
 }))
 
 const ProductDetails = ({

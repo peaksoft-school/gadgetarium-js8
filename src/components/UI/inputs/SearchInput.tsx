@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 
 import { ReactComponent as WhiteSearchIcon } from '../../../assets/icons/search-input-icons/whiteSearchIcon.svg'
 import { styled } from '@mui/material'
@@ -20,9 +20,10 @@ export const Container = styled('div')(() => ({
   padding: '8px 18px',
   border: '1px solid #FFFFFF',
   borderRadius: '10px',
+  color: '#2a2727',
   '&:hover': {
     background: '#FAFAFA',
-    color: '#eaeff8',
+    color: '#5a5a5c',
     path: {
       fill: '#969696'
     }
@@ -39,7 +40,7 @@ export const Container = styled('div')(() => ({
 
 export const StyledInput = styled('input')(() => ({
   background: 'none',
-  color: '#b8afaf',
+  color: '#605d5d',
   width: '95%',
   height: '18px',
   fontFamily: 'Inter',
@@ -53,11 +54,11 @@ export const StyledInput = styled('input')(() => ({
   flexRow: '0'
 }))
 
-export const SearchInput = ({ ...props }: SearchInputProps) => {
+export const SearchInput = forwardRef(({ ...props }: SearchInputProps, ref: any) => {
   return (
     <Container>
-      <StyledInput {...props} />
+      <StyledInput {...props} ref={ref} />
       <IconButtons icon={<WhiteSearchIcon />} />
     </Container>
   )
-}
+})
