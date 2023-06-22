@@ -16,7 +16,6 @@ const AppContent = () => {
     <div>
       {ToastContainer}
       <AppRoutes />
-      <Snackbar />
     </div>
   )
 }

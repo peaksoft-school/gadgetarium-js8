@@ -1,5 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { getProductBrandAndSubCategorieService, postBrand } from '../../../api/addProductService'
+import {
+  getProductBrandAndSubCategorieService,
+  postBrand
+} from '../../../api/addProduct/addProductService'
 import { AxiosError, isAxiosError } from 'axios'
 import { PostBrandType } from '../../../utils/constants/types'
 

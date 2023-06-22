@@ -61,16 +61,9 @@ type HoveredBasketProps = {
   price: number
   img: string
   description: string
-  removeBasketPreviewItem: () => void
 }
 
-const BasketPreviewItem = ({
-  title,
-  price,
-  img,
-  description,
-  removeBasketPreviewItem
-}: HoveredBasketProps) => {
+const BasketPreviewItem = ({ title, price, img, description }: HoveredBasketProps) => {
   return (
     <div>
       <ProductContainer>
@@ -84,7 +77,7 @@ const BasketPreviewItem = ({
         </ProductInfoContainer>
         <PriceAndRemoveIconCont>
           <StyledPrice>{price}c</StyledPrice>
-          <StyledIconButtons onClick={removeBasketPreviewItem} icon={<RemoveIcon />} />
+          <StyledIconButtons icon={<RemoveIcon />} />
         </PriceAndRemoveIconCont>
       </ProductContainer>
       <StyledDivider />

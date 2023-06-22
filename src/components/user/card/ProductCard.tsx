@@ -1,38 +1,54 @@
 import { styled } from '@mui/material'
-import { ReactComponent as ScaleIcon } from '../../assets/icons/product-icons/scales.svg'
-import { ReactComponent as HeartIcon } from '../../assets/icons/product-icons/shape.svg'
-import { ReactComponent as BasketIcon } from '../../assets/icons/product-icons/basket.svg'
-import { ReactComponent as LikeIcon } from '../../assets/icons/product-icons/like_icon.svg'
-import ImageProduct from '../../assets/images/image53.png'
+import Tippy from '@tippyjs/react'
+import { ReactComponent as HeartIcon } from '../../../assets/icons/header-icons/hoveredLikeIcon.svg'
+import { ReactComponent as ScaleIcon } from '../../../assets/icons/product-icons/scales.svg'
+import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons/basketIcon.svg'
+
+import ImageProduct from '../../../assets/images/image53.png'
 import Button from '../../UI/buttons/Button'
 import IconButtons from '../../UI/buttons/IconButtons'
 import TextWithEllipsis from './CardText'
 import ProductRating from './RatingProduct'
+import { StyledIconButtonCart } from '../header/Header'
 
 interface ProductType {
+  id: number
   ellipseChildren?: string | React.ReactNode
   ellipseColor?: string
   amount?: number
   productText?: string
   rating?: number
-  newPrice?: number
-  oldPrice?: number
+  newPrice?: number | string
+  oldPrice?: number | string
   basketOnClick?: () => void
   ellipsIconOnClick?: () => void
   scaleIconOnClick?: () => void
   heartIconOnClick?: () => void
   image?: string
   quantityOfPeople?: number
+  inComparisons: boolean
+  inFavorites: boolean
 }
 type EllipseType = {
   ellipseColor: string
 }
-const StyledIconButton = styled(IconButtons)(() => ({
-  padding: 0
+const StyledIconButtons = styled(IconButtons)(({ activeColor }: { activeColor?: boolean }) => ({
+  padding: '5px',
+
+  path: {
+    fill: activeColor ? '#CB11AB' : 'gray'
+  }
+}))
+const StyledIconButtonHeart = styled(IconButtons)(({ activeColor }: { activeColor?: boolean }) => ({
+  padding: '5px',
+
+  path: {
+    fill: activeColor ? '#ef1c11' : 'grey'
+  }
 }))
 
 const CardContainer = styled('div')(() => ({
-  width: '300px',
+  width: '100%',
   borderRadius: '4px',
   boxSizing: 'border-box',
   background: '#fff',
@@ -67,14 +83,13 @@ const ContainerTwoIcons = styled('div')(() => ({
   justifyContent: 'space-between'
 }))
 const StyledArticle = styled('article')(() => ({
-  marginTop: '12px',
-  marginLeft: '45px'
+  textAlign: 'center'
 }))
 const StyledImage = styled('img')(() => ({
   width: '180px',
   height: '236px'
 }))
-const Title = styled('a')(() => ({
+const Title = styled('p')(() => ({
   display: 'block',
   fontWeight: 500,
   fontSize: '12px',
@@ -85,7 +100,13 @@ const Title = styled('a')(() => ({
 }))
 const StyledParagraph = styled('p')(() => ({
   paddingRight: '22px',
-  paddingBottom: '8px'
+  paddingBottom: '8px',
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '16px',
+  lineHeight: '22px',
+  textTransform: 'capitalize'
 }))
 const StyledSection = styled('section')(() => ({
   fontFamily: 'Inter',
@@ -100,6 +121,7 @@ const StyledButton = styled(Button)(() => ({
     backgroundColor: '#CB11AB'
   },
   padding: '12px 20px',
+  margin: '0px',
   marginRight: '5px'
 }))
 const StyledBasketTitle = styled('span')(() => ({
@@ -113,6 +135,7 @@ const StyledContainerPricesAndButton = styled('div')(() => ({
   marginTop: '16px',
   display: 'flex',
   alignItems: 'center',
+  gap: '5px',
   justifyContent: 'space-between'
 }))
 const StyledContainerPrices = styled('div')(() => ({
@@ -136,8 +159,19 @@ const ButtonContainer = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center'
 }))
+const StyledTippyForCatalog = styled(Tippy)(() => ({
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontWeight: '400',
+  fontSize: '14px',
+
+  display: 'flex',
+  alignItems: 'center',
+
+  color: '#FFFFFF'
+}))
 export const ProductCard = ({
-  ellipseChildren = <LikeIcon />,
+  ellipseChildren,
   ellipseColor = '#2C68F5',
   amount = 14,
   productText = 'Смартфон Apple iPhone 13 256gb синий 9(MLP3RULorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa cupiditate voluptatem reiciendis deserunt ducimus rem animi accusamus harum temporibus ullam. Placeat eligendi eos delectus cum dolor sunt ea possimus mollitia.',
@@ -148,36 +182,69 @@ export const ProductCard = ({
   ellipsIconOnClick = () => {},
   scaleIconOnClick = () => {},
   heartIconOnClick = () => {},
+  inComparisons,
+  inFavorites,
   image = ImageProduct,
   quantityOfPeople = 56
 }: ProductType) => {
   return (
     <CardContainer>
       <ContainerIcon>
-        <StyledIconButton
+        <IconButtons
           onClick={ellipsIconOnClick}
           icon={
             <StyledEllipseIcon ellipseColor={ellipseColor}>{ellipseChildren}</StyledEllipseIcon>
           }
         />
         <ContainerTwoIcons>
-          <StyledIconButton onClick={scaleIconOnClick} icon={<ScaleIcon />} />
-          <StyledIconButton onClick={heartIconOnClick} icon={<HeartIcon />} />
+          <StyledTippyForCatalog
+            interactive={true}
+            interactiveBorder={10}
+            delay={20}
+            trigger="mouseenter"
+            content={
+              inComparisons ? <h1>Удалить из сравнения </h1> : <h1>Добавить в сравнения </h1>
+            }
+          >
+            <StyledIconButtonCart>
+              <StyledIconButtons
+                activeColor={inComparisons}
+                onClick={scaleIconOnClick}
+                icon={<ScaleIcon />}
+              />
+            </StyledIconButtonCart>
+          </StyledTippyForCatalog>
+
+          <StyledTippyForCatalog
+            interactive={true}
+            interactiveBorder={10}
+            delay={20}
+            trigger="mouseenter"
+            content={inFavorites ? <h1>Добавить в избранное</h1> : <h1>Удалить из избранного</h1>}
+          >
+            <StyledIconButtonCart>
+              <StyledIconButtonHeart
+                activeColor={inFavorites}
+                onClick={heartIconOnClick}
+                icon={<HeartIcon />}
+              />
+            </StyledIconButtonCart>
+          </StyledTippyForCatalog>
         </ContainerTwoIcons>
       </ContainerIcon>
       <StyledArticle>
         <StyledImage src={image} alt="image" />
       </StyledArticle>
       <StyledSection>
-        <Title href="#">В наличии ({amount})</Title>
+        <Title>В наличии ({amount})</Title>
         <StyledParagraph>
           <TextWithEllipsis text={productText} />
         </StyledParagraph>
         <ProductRating rating={rating} quantityOfPeople={quantityOfPeople} />
         <StyledContainerPricesAndButton>
           <StyledContainerPrices>
-            <StyledNewPrice>{newPrice} с</StyledNewPrice>
-            <StyledOldPrice> {oldPrice}с</StyledOldPrice>
+            <StyledNewPrice>{newPrice}c</StyledNewPrice>
+            <StyledOldPrice> {oldPrice}</StyledOldPrice>
           </StyledContainerPrices>
           <ButtonContainer>
             <StyledButton variant="contained" onClick={basketOnClick}>
