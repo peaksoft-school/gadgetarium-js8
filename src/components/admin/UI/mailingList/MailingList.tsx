@@ -69,6 +69,7 @@ export const StyledFormLable = styled(FormLabel)`
   margin: 0;
   padding: 0;
   color: #384255;
+  margin-left: 7px;
 `
 export const StyledInputContainer = styled('div')`
   margin-bottom: 15px;
@@ -109,7 +110,6 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
   const [dateOfFinish, setDateOfEnd] = useState('')
   const handleImageSelect = (imageUrl: string) => {
     setImage(imageUrl)
-    console.log('Selected image:', imageUrl)
   }
   const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)

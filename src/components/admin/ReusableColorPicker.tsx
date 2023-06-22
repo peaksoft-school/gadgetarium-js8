@@ -20,12 +20,12 @@ export const Container = styled('div')(() => ({
   justifyContent: 'space-between',
   flexDirection: 'row',
   alignItems: 'center',
-  padding: '.5rem 1.125rem',
+  padding: '.08rem 1.125rem',
   background: '#F7F7F7',
   margin: '.3125rem',
   paddingLeft: '1rem',
   '&:hover': {
-    border: '.125rem solid #0a0a0a',
+    border: '0.5px solid #CB11AB',
     background: '#F4F4F4',
     color: '#0b0b0b',
     path: {
@@ -69,7 +69,7 @@ const ReusableColorPicker = ({
   return (
     <>
       <Container onClick={openColorHandler}>
-        <StyledInput type="text" value={color} placeholder="Основной цвет" />
+        <StyledInput required type="text" value={color} placeholder="Основной цвет" />
         <IconButtons icon={<Palette />} />
       </Container>
       {openColorPicker ? (

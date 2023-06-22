@@ -47,7 +47,7 @@ const StyledNotificationIcon = styled('span')(() => ({
   backgroundColor: 'rgb(235, 0, 20)',
   color: 'rgb(255, 255, 255)',
   top: '0.5rem',
-  right: '0.4rem',
+  right: '0.5rem',
   transform: 'scale(1) translate(50%, -50%)',
   transformOrigin: '100% 0%',
   border: '2px solid #1A1A25'
@@ -77,7 +77,8 @@ const StyledList = styled('ul')(() => ({
   listStyle: 'none',
   display: 'flex',
   marginLeft: '3rem',
-  alignItems: 'center'
+  alignItems: 'center',
+  width: '40rem'
 }))
 
 const NumberContainer = styled('div')(() => ({
@@ -102,7 +103,7 @@ const StyledNavLink = styled(NavLink)(() => ({
   fontSize: '1rem',
   lineHeight: '140%',
   textAlign: 'center',
-  marginRight: '1.5rem',
+  marginRight: '2.5rem',
   '&:focus': {
     backgroundColor: '#858FA426',
     padding: '0.75rem 0.857rem',
@@ -272,6 +273,7 @@ const Header: React.FC = () => {
       window.removeEventListener('scroll', scrollHandler)
     }
   }, [])
+
   return (
     <header style={{ position: isScroll ? 'fixed' : 'sticky', width: '100%', zIndex: '100' }}>
       {isScroll ? (

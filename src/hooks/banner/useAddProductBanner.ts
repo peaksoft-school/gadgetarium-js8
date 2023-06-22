@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import bannerData from '../../api/banner/bannerService'
 import { AxiosError, isAxiosError } from 'axios'
 import { isRejectedWithValue } from '@reduxjs/toolkit'
 import { ImageUrlsType } from '../../utils/common/types'
+import { uploadFileService } from '../../api/add-product/addProductService'
 
-export const useBanner = () => {
+export const useAddProductBanner = () => {
   const [bannerImages, setBannerImages] = useState<ImageUrlsType>([])
   const imagesClassname = () => {
     if (bannerImages.length === 1) {
@@ -30,10 +30,10 @@ export const useBanner = () => {
 
   const postRequestBanner = async () => {
     try {
-      const newBannerList = {
-        bannerList: bannerImages
-      }
-      await bannerData(newBannerList)
+      const imageResponse = await uploadFileService(bannerImages)
+      const newBannerList = imageResponse.data.link
+      setBannerImages(newBannerList)
+      return newBannerList
     } catch (e) {
       if (isAxiosError(e)) {
         const error = e as AxiosError<{ httpStatus: string; message: string }>

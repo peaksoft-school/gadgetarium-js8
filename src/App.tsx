@@ -4,10 +4,17 @@ import { ThemeProvider } from '@mui/material'
 import { appTheme } from './utils/constants/theme/theme'
 import { store } from './redux/store'
 import AppRoutes from './routes/AppRoutes'
+import Snackbar from './components/UI/snackbar/Snackbar'
+import { useSnackbar } from './hooks/snackbar/useSnackbar'
 
 const AppContent = () => {
+  const { snackbarHanler, ToastContainer } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
   return (
     <div>
+      {ToastContainer}
       <AppRoutes />
     </div>
   )

@@ -1,13 +1,20 @@
 import React from 'react'
 import { Container, Divider, styled } from '@mui/material'
 import { MyComponent } from '../../../components/admin/UI/addProduct/CreateAddTabsComponent'
+import { NavLink, useSearchParams } from 'react-router-dom'
+import { PATHS } from '../../../utils/constants/router/routerConsts'
 
 const StyledNav = styled('nav')(() => ({
   display: 'flex',
   marginTop: '60px'
 }))
 
-const StyledNavLink = styled('a')(() => ({
+const StyledContainer = styled(Container)(() => ({
+  marginTop: '140px',
+  marginBottom: '150px'
+}))
+
+const StyledLink = styled('a')(() => ({
   textDecoration: 'none',
   fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
@@ -43,21 +50,33 @@ const StyledDiv = styled('div')(() => ({
   width: '100%'
 }))
 
+const OBJECT = {
+  add: 'Добавление товара',
+  price: 'Установка цены и количества',
+  description: 'Описание и обзор'
+}
+
 const AddProductsPage = () => {
+  const [searchParams] = useSearchParams()
+
+  const titleKey: string = searchParams.get('new-product') || 'add'
+
+  const renderedTitle = OBJECT[titleKey as keyof typeof OBJECT]
+
   return (
     <>
-      <Container>
+      <StyledContainer>
         <StyledNav>
-          <StyledNavLink>Товары </StyledNavLink>
-          <StyledNavLink>Добавление товара </StyledNavLink>
+          <StyledLink href="/admin/products">Товары </StyledLink>
+          <StyledLink>{renderedTitle}</StyledLink>
         </StyledNav>
 
-        <Title>Добавление товара</Title>
+        <Title>{renderedTitle}</Title>
         <StyledDivider orientation="horizontal" />
         <StyledDiv>
           <MyComponent />
         </StyledDiv>
-      </Container>
+      </StyledContainer>
     </>
   )
 }

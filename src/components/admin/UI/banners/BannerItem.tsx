@@ -2,7 +2,7 @@ import IconButtons from '../../../UI/buttons/IconButtons'
 import { Grid, styled } from '@mui/material'
 import { ReactComponent as DeletePictureIcon } from '../../../../assets/icons/banner-icons/delete-icon.svg'
 interface PropsType {
-  url: string
+  url: File
   id: number
   deleteImage: (id: number) => void
 }
@@ -22,9 +22,10 @@ const StyledGrid = styled(Grid)(() => ({
   height: '100%'
 }))
 export const BannerItem = ({ url, id, deleteImage }: PropsType) => {
+  const imageName = URL.createObjectURL(url)
   return (
     <StyledGrid>
-      <StyledImage src={url} alt="Uploaded Image" />
+      <StyledImage src={imageName} alt="Uploaded Image" />
       <StyledIconButtons icon={<DeletePictureIcon />} onClick={() => deleteImage(id)} />
     </StyledGrid>
   )

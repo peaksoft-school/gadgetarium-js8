@@ -8,10 +8,10 @@ import { additionalProp2 } from '../../../../../../utils/constants/optionsCatego
 import ReusableColorPicker from '../../../../ReusableColorPicker'
 import { RadioButton } from '../../../../../UI/RadioButton'
 import ImagePickerAddProduct from '../../ImagePicker'
-import { useBanner } from '../../../../../../hooks/banner/useBanner'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../../../redux/store'
 import { addProductActions } from '../../../../../../redux/store/addProduct/AddProduct'
+import { useBanner } from '../../../../../../hooks/banner/useBanner'
 
 const SmartWatchCategorie = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -26,30 +26,38 @@ const SmartWatchCategorie = () => {
   const [waterproof, setWaterproof] = useState<string>('')
   const [wireless, setWireless] = useState('')
   const [shape, setShape] = useState('')
-  const { imagesClassname, bannerImages, handleImageUpload, setBannerImages, deleteImage } =
-    useBanner()
+  const {
+    imagesClassname,
+    bannerImages,
+    handleImageUpload,
+    setBannerImages,
+    deleteImage,
+    postRequestBanner
+  } = useBanner()
 
-  const [colorSmartWatch, setSmartWatchColor] = useState<string>('')
+  const [colour, setSmartWatchColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
 
   useEffect(() => {
     dispatch(
       addProductActions.addSubProduct({
-        shape,
-        colorSmartWatch,
-        memory1,
-        material,
-        size,
-        gender,
-        waterproof,
-        bannerImages,
-        size2,
-        display,
-        wireless
+        characteristics: {
+          память: shape,
+          'Материал браслета/ремешка': memory1,
+          'Материал корпуса': material,
+          'Размер смарт часов': size,
+          Пол: gender,
+          Водонепрницаемость: waterproof,
+          'Диагональ дисплея': size2,
+          'Форма корпуса': display,
+          'Беспроводные интерфейсы': wireless
+        },
+        images: bannerImages,
+        colour
       })
     )
   }, [
-    colorSmartWatch,
+    colour,
     memory1,
     material,
     size,
@@ -116,7 +124,7 @@ const SmartWatchCategorie = () => {
       <StyledInputContainer>
         <StyledFormLable htmlFor="Основной цвет">Основной цвет</StyledFormLable>
         <ReusableColorPicker
-          color={colorSmartWatch}
+          color={colour}
           colorPickerHandler={colorPickerHandler}
           openColorHandler={openColorHandler}
           openColorPicker={openColorPicker}

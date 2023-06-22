@@ -86,7 +86,7 @@ const FeedbackTab: React.FC<ProductsTabProps> = ({ tabs, defaultValue }) => {
         <TabContext value={value}>
           <TabList
             onChange={handleChange}
-            TabIndicatorProps={{ style: { backgroundColor: '#fff' } }}
+            TabIndicatorProps={{ style: { backgroundColor: 'transparent' } }}
             sx={{
               div: {
                 '& button.Mui-selected': {

@@ -3,7 +3,7 @@ import { ReactComponent as UploadPicture } from '../../../../assets/images/add_p
 import { Box, Grid, IconButton, Stack, styled } from '@mui/material'
 type Props = {
   imagesClassname: any
-  bannerImages: string[]
+  bannerImages: File[]
   handleImageUpload: any
   deleteImage: (id: number) => void
 }
@@ -39,7 +39,7 @@ const ContainerImages = styled(Box)(() => ({
   '&.image': {
     background: 'rgba(210, 212, 216, 0.5)',
     width: '380px',
-    height: '168px',
+    height: '100%',
     border: '1px dashed #292929',
     borderRadius: '4px',
     display: 'flex'
@@ -120,6 +120,7 @@ const StyledIcon = styled(UploadPicture)(() => ({
   height: '33.33px',
   marginBottom: '20px'
 }))
+
 const ImagePickerAddProduct = ({
   imagesClassname,
   bannerImages,
@@ -132,7 +133,17 @@ const ImagePickerAddProduct = ({
         <ContainerImages className={`image ${imagesClassname()}`}>
           {bannerImages.length >= 0 && bannerImages.length <= 5 && (
             <div>
-              <IconButton color="primary" aria-label="upload picture" component="label">
+              <IconButton
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none'
+                  }
+                }}
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+              >
                 <StyledStack className={`default-image ${imagesClassname()}`}>
                   <div>
                     <StyledIcon />

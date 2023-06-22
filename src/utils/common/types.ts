@@ -33,4 +33,4 @@ export type Column<T> = {
 export interface BannerListType {
   bannerList: ImageUrlsType
 }
-export type ImageUrlsType = string[]
+export type ImageUrlsType = File[]

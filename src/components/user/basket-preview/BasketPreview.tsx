@@ -52,42 +52,36 @@ const StyledButton = styled(Button)(() => ({
 
 interface Product {
   id: string
-  img: string
-  title: string
+  image: string
+  name: string
   description: string
   price: number
+  quantity: number
 }
 
 interface BasketPreviewProps {
   productData: Product[]
   totalPrice: number
-  orderRegistrationHandler: () => void
-  removeBasketPreviewItem: () => void
 }
 
-const BasketPreview: React.FC<BasketPreviewProps> = ({
-  productData,
-  totalPrice,
-  orderRegistrationHandler,
-  removeBasketPreviewItem
-}) => {
+const BasketPreview: React.FC<BasketPreviewProps> = ({ productData, totalPrice }) => {
   return (
     <MainContainer>
       <StyledTriangle />
       {productData.map((data) => {
         return (
           <BasketPreviewItem
-            removeBasketPreviewItem={removeBasketPreviewItem}
             description={data.description}
-            img={data.img}
-            title={data.title}
+            img={data.image}
+            title={data.name}
             price={data.price}
+            // quantity={data.quantity}
             key={data.id}
           />
         )
       })}
       <BottomContainer>
-        <StyledButton onClick={orderRegistrationHandler}>Оформить заказ</StyledButton>
+        <StyledButton>Оформить заказ</StyledButton>
         <TotalAmount>Итого {totalPrice}</TotalAmount>
       </BottomContainer>
     </MainContainer>
