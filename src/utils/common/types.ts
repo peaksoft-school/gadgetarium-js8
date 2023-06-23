@@ -34,3 +34,11 @@ export interface BannerListType {
   bannerList: ImageUrlsType
 }
 export type ImageUrlsType = string[]
+
+export type TypeOrderHistory = {
+  order_id: number
+  date: string
+  orderNumber: string
+  status: string
+  totalPrice: number
+}[]

@@ -218,6 +218,12 @@ const StyledTippy = styled(Tippy)(() => ({
   width: '1000px',
   marginRight: '12.5rem'
 }))
+const StyledTippyForMenuItem = styled(Tippy)(() => ({
+  backgroundColor: 'transparent',
+  border: 'none',
+  width: '200px',
+  marginRight: '2.5rem'
+}))
 export type QueryParams = {
   keyword: string | null
 }
@@ -225,16 +231,11 @@ export type QueryParams = {
 const Header: React.FC = () => {
   const { totalQuantity } = useSelector((state: RootState) => state.favourites)
   const dispatch = useDispatch<AppDispatch>()
-  const [catalog, setCatalog] = useState(false)
   const [isScroll, setIsScroll] = useState(false)
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [basketItems, setBasketItems] = useState([])
-  const [isOpenMenuItem, setIsMenuItem] = useState(false)
 
-  const handleOpenMenuItem = () => {
-    setIsMenuItem((prevState) => !prevState)
-  }
   const getAllBusket = async () => {
     try {
       const { data } = await getAllBusketProductService()
@@ -395,12 +396,19 @@ const Header: React.FC = () => {
             </div>
             <NumberContainer>
               <p>+996 (400) 00-00-00</p>
-              <IconButtons icon={<NumberIcon />} onClick={handleOpenMenuItem} />
-              {isOpenMenuItem && (
-                <div>
-                  <MenuItem />
-                </div>
-              )}
+              <span>
+                <StyledTippyForMenuItem
+                  interactive={true}
+                  interactiveBorder={0}
+                  delay={100}
+                  trigger="mouseenter"
+                  content={<MenuItem />}
+                >
+                  <StyledIconButtonCart>
+                    <IconButtons icon={<NumberIcon />} />
+                  </StyledIconButtonCart>
+                </StyledTippyForMenuItem>
+              </span>
             </NumberContainer>
           </FirstHeaderContainer>
           <SecondHeaderContainer>

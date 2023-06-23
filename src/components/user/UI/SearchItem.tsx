@@ -50,6 +50,7 @@ const SearchItem = () => {
   const [searchValue, setSearchValue] = useState('')
   const debouncedSearchTerm = useDebounce(searchValue, 2000)
   const { products } = useSelector((state: RootState) => state.search.data)
+
   const openModalHandler = () => {
     setOpenProductModal((prevState) => !prevState)
   }

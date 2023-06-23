@@ -93,13 +93,7 @@ const ImageSlider = () => {
                 height: '75vh',
                 backgroundSize: '100% 100%'
               }}
-            >
-              <StyledText>
-                <p>GADGETARIUM</p>
-                <h1>УСПЕЙТЕ КУПИТЬ iPHONE 13 PRO </h1>
-                <h2>CО СКИДКОЙ ДО 20%</h2>
-              </StyledText>
-            </div>
+            ></div>
           </div>
         ))}
       </StyledSlider>
