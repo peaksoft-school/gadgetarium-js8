@@ -1,4 +1,3 @@
-import { ColorResult } from 'react-color'
 import React, { useEffect, useState } from 'react'
 import { StyledFormLable } from '../../mailingList/MailingList'
 import { styled, SelectChangeEvent } from '@mui/material'
@@ -18,6 +17,7 @@ import { useBanner } from '../../../../../hooks/banner/useBanner'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../../redux/store'
 import { addProductActions } from '../../../../../redux/store/addProduct/AddProduct'
+import { getAllProductsColors } from '../../../../../redux/store/color/productColor.thunk'
 
 type Props = {
   selectedValueFirst: string | number
@@ -42,6 +42,7 @@ export const StyledInputPalette = styled('input')(() => ({
 const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const { products } = useSelector((state: RootState) => state.addNewProduct)
+  const { colors } = useSelector((state: RootState) => state.productsColor)
 
   const [laptopProcessor1, setLeptopProcessor] = useState('')
   const [srceen, setScreen] = useState('')
@@ -55,12 +56,17 @@ const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
   const [colour, setLaptopColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
 
-  const colorPickerHandler = (colorResult: ColorResult | any) => {
-    setLaptopColor(colorResult.hex)
+  const colorPickerHandler = (colorResult: string) => {
+    setLaptopColor(colorResult)
   }
   const openColorHandler = () => {
     setOpenColorPicker((prevState) => !prevState)
   }
+
+  useEffect(() => {
+    dispatch(getAllProductsColors())
+  }, [])
+
   useEffect(() => {
     dispatch(
       addProductActions.addSubProduct({
@@ -128,7 +134,8 @@ const CreateLaptopCategorie = ({ selectedValueFirst }: Props) => {
         <StyledFormLable htmlFor="Основной цвет">Основной цвет</StyledFormLable>
 
         <ReusableColorPicker
-          color={colour}
+          colors={colors}
+          colour={colour}
           colorPickerHandler={colorPickerHandler}
           openColorHandler={openColorHandler}
           openColorPicker={openColorPicker}

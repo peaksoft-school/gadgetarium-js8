@@ -59,21 +59,16 @@ const StyledIconButtons = styled(IconButtons)(() => ({
 type HoveredBasketProps = {
   title: string
   price: number
-  img: string
-  description: string
+  img: string | undefined
 }
 
-const BasketPreviewItem = ({ title, price, img, description }: HoveredBasketProps) => {
+const BasketPreviewItem = ({ title, price, img }: HoveredBasketProps) => {
   return (
     <div>
       <ProductContainer>
         <ProductInfoContainer>
           <StyledImage src={img} alt="phone" />
-          <StyledDescription>
-            {title}
-            <br />
-            {description}
-          </StyledDescription>
+          <StyledDescription>{title}</StyledDescription>
         </ProductInfoContainer>
         <PriceAndRemoveIconCont>
           <StyledPrice>{price}c</StyledPrice>

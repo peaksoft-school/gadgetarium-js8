@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { AxiosError, isAxiosError } from 'axios'
 import {
+  ProductQueryParams,
   deleteProductByIdRequest,
   deleteProductByIdRequest2,
   getAllProductsRequest
@@ -9,7 +10,7 @@ import {
 export const getAllProducts = createAsyncThunk(
   'products/getProducts',
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async (queryParams: any, { rejectWithValue }) => {
+  async (queryParams: ProductQueryParams, { rejectWithValue }) => {
     try {
       const { data } = await getAllProductsRequest(queryParams)
       if (data !== undefined || null) {
@@ -28,7 +29,7 @@ export const getAllProducts = createAsyncThunk(
   }
 )
 
-const queryParams = {
+const queryParams: ProductQueryParams = {
   keyWord: 'keyWord',
   status: 'все продукты',
   page: 1,

@@ -1,5 +1,5 @@
 import { ReactComponent as DeleteIcon } from '../../../assets/icons/favourites/favourite-delete-icon.svg'
-import { Box, CircularProgress, styled } from '@mui/material'
+import { Box, styled } from '@mui/material'
 import IconButtons from '../../UI/buttons/IconButtons'
 import { Favourites } from './Favourites'
 import { useEffect, useState } from 'react'
@@ -11,6 +11,7 @@ import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 import { DeleteModal } from '../UI/modal/DeleteModal'
 import Button from '../../UI/buttons/Button'
 import { useNavigate } from 'react-router-dom'
+import Loading from '../../UI/loading/Loading'
 
 const Container = styled('div')(() => ({
   width: '100%',
@@ -124,7 +125,7 @@ export const FavouritesPage = () => {
           sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
           minHeight={'700px'}
         >
-          <CircularProgress />
+          <Loading />
         </Box>
       ) : (
         <Container>

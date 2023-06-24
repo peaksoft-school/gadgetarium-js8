@@ -120,6 +120,7 @@ const ThirdPart = () => {
     dispatch(addProductActions.addVideoLinkToProducts({ videoLink: e.target.value }))
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pdfFileChangeHandler = (event: any) => {
     const file = event.target.files[0]
     setFileName(file.name)
@@ -153,7 +154,7 @@ const ThirdPart = () => {
       })
       navigate('/')
     } catch (e) {
-      console.log(e)
+      // console.log(e)
     }
   }
 

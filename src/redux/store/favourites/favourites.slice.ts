@@ -16,7 +16,7 @@ export type FavouriteType = {
   inFavorites: boolean
 }
 
-type ItemsFavouriteType = FavouriteType[]
+export type ItemsFavouriteType = FavouriteType[]
 type InitType = {
   items: ItemsFavouriteType
   isLoading: boolean

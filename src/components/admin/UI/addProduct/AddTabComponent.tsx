@@ -165,9 +165,6 @@ const StyledButton = styled('li')(() => ({
   position: 'relative',
   zIndex: 11
 }))
-const StyledLinkContainer = styled('div')(() => ({
-  marginLeft: '17.8rem'
-}))
 
 export type ProductType = {
   name: string | number
@@ -204,7 +201,6 @@ const AddTabComponent = ({ handleNext }: Props) => {
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [categories, setCategories] = useState([])
 
-  const [quantity] = useState<number>(1)
   const { snackbarHanler, ToastContainer } = useSnackbar({
     autoClose: 2500,
     position: 'bottom-right'
@@ -221,8 +217,8 @@ const AddTabComponent = ({ handleNext }: Props) => {
       subCategoryId: selectedValueThird,
       dateOfIssue,
       subProducts: [
-        ...subProducts.map((v: any) => ({ ...v, id: Date.now().toString() })),
-        { ...subProduct, subProduct, id: Date.now().toString() }
+        ...subProducts.map((v: any) => ({ ...v, id: Math.random().toString() })),
+        { ...subProduct, subProduct, id: Math.random().toString() }
       ]
     }
     if (
@@ -245,8 +241,6 @@ const AddTabComponent = ({ handleNext }: Props) => {
   }
 
   const saveHandler2 = () => {
-    // e.preventDefault()
-
     const subProducts = products[0]?.subProducts || []
     const newProduct = {
       name: nameProduct,
@@ -255,8 +249,8 @@ const AddTabComponent = ({ handleNext }: Props) => {
       subCategoryId: selectedValueThird,
       dateOfIssue,
       subProducts: [
-        ...subProducts.map((v: any) => ({ ...v, id: Date.now().toString() })),
-        { ...subProduct, subProduct, id: Date.now().toString() }
+        ...subProducts.map((v: any) => ({ ...v, id: Math.random().toString() })),
+        { ...subProduct, subProduct, id: Math.random().toString() }
       ]
     }
     if (
@@ -275,10 +269,6 @@ const AddTabComponent = ({ handleNext }: Props) => {
         type: 'error'
       })
     }
-  }
-
-  const quantityChangeHandler = () => {
-    dispatch(addProductActions.addQuantityToAllProducts(quantity))
   }
 
   const handleModal = () => {

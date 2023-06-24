@@ -1,15 +1,18 @@
-import { ColorResult, PhotoshopPicker } from 'react-color'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ColorResult } from 'react-color'
 
-import { styled } from '@mui/material'
+import { IconButton, styled } from '@mui/material'
 
 import { Palette } from '@mui/icons-material'
 import IconButtons from '../UI/buttons/IconButtons'
+import { ProductColor } from '../../api/color/productColorService'
 
 type PropsColorPicker = {
   openColorPicker: boolean
   openColorHandler: () => void
-  color: string
+  colors: any
   colorPickerHandler: ColorResult | any
+  colour: string
 }
 
 export const Container = styled('div')(() => ({
@@ -60,20 +63,54 @@ export const StyledInput = styled('input')(() => ({
   flexRow: '0'
 }))
 
+const StyledSquare = styled('div')(() => ({
+  width: '20px',
+  height: '20px',
+  display: 'inline-block',
+  margin: '5px'
+}))
+
+interface ColorSquareProps {
+  color: string
+}
+
+const ColorSquare: React.FC<ColorSquareProps> = ({ color }) => (
+  <StyledSquare style={{ backgroundColor: color }} />
+)
+
 const ReusableColorPicker = ({
   openColorHandler,
   colorPickerHandler,
   openColorPicker,
-  color
+  colors,
+  colour
 }: PropsColorPicker) => {
   return (
     <>
       <Container onClick={openColorHandler}>
-        <StyledInput required type="text" value={color} placeholder="Основной цвет" />
+        <StyledInput required type="text" placeholder="Основной цвет" value={colour} />
         <IconButtons icon={<Palette />} />
       </Container>
       {openColorPicker ? (
-        <PhotoshopPicker onCancel={openColorHandler} color={color} onChange={colorPickerHandler} />
+        <div
+          onMouseLeave={openColorHandler}
+          style={{
+            width: '22rem',
+            height: '100%',
+            backgroundColor: '#f3f3f3',
+            paddingLeft: '1rem'
+          }}
+        >
+          {colors.map((colorr: ProductColor) => (
+            <IconButton
+              size="small"
+              sx={{ padding: '1px' }}
+              onClick={() => colorPickerHandler(colorr.colorName)}
+            >
+              <ColorSquare key={Math.random().toString()} color={colorr.hexCode} />
+            </IconButton>
+          ))}
+        </div>
       ) : null}
     </>
   )

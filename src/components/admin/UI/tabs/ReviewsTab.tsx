@@ -31,6 +31,7 @@ interface ProductsTabProps {
   defaultValue: string
   handlerChangePage: (value: string) => void
   page: string
+  setChangeTab: React.Dispatch<React.SetStateAction<string>>
 }
 
 const MyCustomLabel = ({ text, count }: { text: string; count: number }) => {
@@ -44,7 +45,12 @@ const MyCustomLabel = ({ text, count }: { text: string; count: number }) => {
   )
 }
 
-const ReviewsTab: React.FC<ProductsTabProps> = ({ defaultValue, handlerChangePage, page }) => {
+const ReviewsTab: React.FC<ProductsTabProps> = ({
+  defaultValue,
+  handlerChangePage,
+  page,
+  setChangeTab
+}) => {
   const [value, setValue] = React.useState(defaultValue)
   const { count } = useSelector((state: RootState) => state.reviews)
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -84,6 +90,9 @@ const ReviewsTab: React.FC<ProductsTabProps> = ({ defaultValue, handlerChangePag
               '& button.Mui-selected': {
                 backgroundColor: '#CB11AB',
                 color: '#fff'
+              },
+              '& .MuiTabs-indicator': {
+                display: 'none'
               }
             }
           }}
@@ -92,18 +101,27 @@ const ReviewsTab: React.FC<ProductsTabProps> = ({ defaultValue, handlerChangePag
           <StyledTab
             label={'Все отзывы'}
             value={'Все отзывы'}
-            onClick={() => handlerChangePage('AllReviews')}
+            onClick={() => {
+              handlerChangePage('AllReviews')
+              setChangeTab('Все отзывы')
+            }}
           />
           <StyledTab
             label={<MyCustomLabel text="Неотвеченные" count={count} />}
             value={'Неотвеченные'}
-            onClick={() => handlerChangePage('Unanswered')}
+            onClick={() => {
+              setChangeTab('Неотвеченные')
+              handlerChangePage('Unanswered')
+            }}
           />
 
           <StyledTab
             label={'Отвеченные'}
             value={'Отвеченные'}
-            onClick={() => handlerChangePage('Answered')}
+            onClick={() => {
+              setChangeTab('Отвеченные')
+              handlerChangePage('Answered')
+            }}
           />
         </TabList>
         {tabs?.map((el) => {

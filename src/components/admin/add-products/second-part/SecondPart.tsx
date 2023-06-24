@@ -6,7 +6,6 @@ import { AppDispatch, RootState } from '../../../../redux/store'
 import { Column } from '../../../../utils/constants/tableColumns'
 import AddProductsTable from './AddProductsTable'
 import Input from '../../../UI/inputs/Input'
-import { ProductType } from '../../UI/addProduct/AddTabComponent'
 import { TablePriceInput, TableQuantityInput } from '../../UI/table-inputs/TableInputs'
 import { addProductActions } from '../../../../redux/store/addProduct/AddProduct'
 
@@ -180,9 +179,9 @@ const SecondPart = ({ handleNext }: Props) => {
     {
       header: 'Кол-во товара',
       key: 'quantity',
-      render: (product: SubProduct) => (
-        <TableQuantityInput quantity={product.quantity} id={product.id} />
-      )
+      render: (product: SubProduct) => {
+        return <TableQuantityInput quantity={product.quantity} id={product.id} />
+      }
     },
     {
       header: 'Цена',

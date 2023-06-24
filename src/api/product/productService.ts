@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { mainApi } from '../../config/instances'
 
 export interface Product {
@@ -25,7 +24,17 @@ type AllProductsResponse = {
   data: Product
 }
 
-export const getAllProductsRequest = (queryParams: any) => {
+export type ProductQueryParams = {
+  keyWord: string | null
+  status: string | null
+  page: number | null
+  pageSize: number | null
+  sortBy: string | null
+  from: string | null
+  before: string | null
+}
+
+export const getAllProductsRequest = (queryParams: ProductQueryParams) => {
   return mainApi.get<AllProductsResponse>('/api/admin/products', {
     params: {
       keyWord: queryParams.keyWord,

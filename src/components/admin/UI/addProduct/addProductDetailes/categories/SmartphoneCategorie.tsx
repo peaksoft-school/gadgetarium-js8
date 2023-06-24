@@ -15,6 +15,7 @@ import { useBanner } from '../../../../../../hooks/banner/useBanner'
 import { addProductActions } from '../../../../../../redux/store/addProduct/AddProduct'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../../../redux/store'
+import { getAllProductsColors } from '../../../../../../redux/store/color/productColor.thunk'
 
 type Props = {
   selectedValueFirst: string | number
@@ -39,6 +40,8 @@ export const StyledInputPalette = styled('input')(() => ({
 const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const { products } = useSelector((state: RootState) => state.addNewProduct)
+  const { colors } = useSelector((state: RootState) => state.productsColor)
+
   const [memorySize, setMemorySize] = useState('')
   const [ram, setRam] = useState('')
   const [simCard, setSIMcard] = useState('')
@@ -79,8 +82,8 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
     }
   }
 
-  const colorPickerHandler = (colorResult: ColorResult | any) => {
-    setColor(colorResult.hex)
+  const colorPickerHandler = (colorResult: string) => {
+    setColor(colorResult)
   }
   const openColorHandler = () => {
     setOpenColorPicker((prevState) => !prevState)
@@ -95,12 +98,17 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
     setSIMcard(event.target.value)
   }
 
+  useEffect(() => {
+    dispatch(getAllProductsColors())
+  }, [])
+
   return (
     <>
       <StyledInputContainer>
         <StyledFormLable htmlFor="Основной цвет">Основной цвет</StyledFormLable>
         <ReusableColorPicker
-          color={colour}
+          colors={colors}
+          colour={colour}
           colorPickerHandler={colorPickerHandler}
           openColorHandler={openColorHandler}
           openColorPicker={openColorPicker}

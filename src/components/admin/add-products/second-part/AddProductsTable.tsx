@@ -13,21 +13,6 @@ type Props<T> = {
   getUniqueId: (val: T) => number
 }
 
-const StyledHeaderTr = styled(TableCell)`
-  background-color: rgba(56, 66, 85, 0.9);
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 1px;
-  /* text-transform: 'none'; */
-  padding: 16px 12px 16px 14px;
-  color: #ffffff;
-  border-radius: 0px;
-  margin-bottom: 1rem;
-`
-
 const Styledth = styled('th')`
   font-family: 'Inter';
   font-style: normal;

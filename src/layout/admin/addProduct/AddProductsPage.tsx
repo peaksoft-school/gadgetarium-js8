@@ -1,8 +1,6 @@
-import React from 'react'
 import { Container, Divider, styled } from '@mui/material'
 import { MyComponent } from '../../../components/admin/UI/addProduct/CreateAddTabsComponent'
-import { NavLink, useSearchParams } from 'react-router-dom'
-import { PATHS } from '../../../utils/constants/router/routerConsts'
+import { useSearchParams } from 'react-router-dom'
 
 const StyledNav = styled('nav')(() => ({
   display: 'flex',

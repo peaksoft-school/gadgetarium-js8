@@ -13,7 +13,6 @@ import IconButtons from '../../UI/buttons/IconButtons'
 import Categories from '../../../components/UI/categories/Categories'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
 import { useCallback, useEffect } from 'react'
-import ReusableHoverModal from '../UI/ReusableHoverModal'
 import Tippy from '@tippyjs/react'
 import 'tippy.js/dist/tippy.css'
 import { categories } from '../../../utils/constants/categories'
@@ -25,6 +24,10 @@ import { AppDispatch, RootState } from '../../../redux/store'
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { favouriteActions } from '../../../redux/store/favourites/favourites.slice'
+import { Tooltip, TooltipProps, tooltipClasses } from '@mui/material'
+import BasketPreview from '../basket-preview/BasketPreview'
+import { getAllCompareProducts } from '../../../redux/store/compare-products/compareProducts.thunk'
+import { getFavourite } from '../../../redux/store/favourites/favourites.thunk'
 
 const StyledNotificationIcon = styled('span')(() => ({
   display: 'flex',
@@ -180,6 +183,10 @@ const InteractionIconsItem = styled('li')(() => ({
   }
 }))
 const StyledInputContainer = styled('div')(() => ({
+  // width: '110rem',
+  // height: '10.8125rem',
+  // marginTop: '8rem',
+  // marginLeft: '1rem'
   width: '43rem',
   height: '10.8125rem',
   margin: '8rem 4rem 0 3rem '
@@ -209,22 +216,16 @@ const LikeIconItem = styled('li')(() => ({
     }
   }
 }))
+
 export const StyledIconButtonCart = styled('button')(() => ({
   backgroundColor: 'transparent',
   border: 'none'
 }))
-const StyledTippy = styled(Tippy)(() => ({
-  backgroundColor: 'transparent',
-  border: 'none',
-  width: '1000px',
-  marginRight: '12.5rem'
-}))
-export type QueryParams = {
-  keyword: string | null
-}
 
 const Header: React.FC = () => {
   const { totalQuantity } = useSelector((state: RootState) => state.favourites)
+  const { products } = useSelector((state: RootState) => state.compareProducts)
+  const { items } = useSelector((state: RootState) => state.favourites)
   const dispatch = useDispatch<AppDispatch>()
   const [catalog, setCatalog] = useState(false)
   const [isScroll, setIsScroll] = useState(false)
@@ -232,7 +233,11 @@ const Header: React.FC = () => {
   const [open, setOpen] = useState(false)
   const [basketItems, setBasketItems] = useState([])
   const [isOpenMenuItem, setIsMenuItem] = useState(false)
+  const [queryParams, setQueryParams] = useState({ categoryName: 'Смартфон' })
 
+  const catalogHandler = () => {
+    setCatalog((prevState) => !prevState)
+  }
   const handleOpenMenuItem = () => {
     setIsMenuItem((prevState) => !prevState)
   }
@@ -273,6 +278,27 @@ const Header: React.FC = () => {
       window.removeEventListener('scroll', scrollHandler)
     }
   }, [])
+  useEffect(() => {
+    dispatch(getAllCompareProducts(queryParams))
+  }, [])
+
+  useEffect(() => {
+    dispatch(getFavourite())
+  }, [])
+
+  const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))({
+    [`& .${tooltipClasses.tooltip}`]: {
+      maxWidth: '32.875rem',
+      maxHeight: '300px',
+      backgroundColor: 'transparent'
+    }
+  })
+
+  const goToComparisonPage = () => {
+    navigate('comparison')
+  }
 
   return (
     <header style={{ position: isScroll ? 'fixed' : 'sticky', width: '100%', zIndex: '100' }}>
@@ -298,88 +324,76 @@ const Header: React.FC = () => {
 
             <InteractionIcons>
               <InteractionIconsItem>
-                <span>
-                  <StyledTippy
-                    interactive={true}
-                    interactiveBorder={0}
-                    delay={100}
-                    trigger="mouseenter"
-                    content={
-                      <ReusableHoverModal path="/" basketItems={basketItems}>
-                        Сравнить
-                      </ReusableHoverModal>
-                    }
-                  >
-                    <StyledIconButtonCart>
-                      <IconButtons icon={<UnionIcon />} />
-                      <StyledNotificationIcon>8</StyledNotificationIcon>
-                    </StyledIconButtonCart>
-                  </StyledTippy>
-                </span>
+                <CustomWidthTooltip
+                  title={
+                    <BasketPreview
+                      navigateHandler={goToComparisonPage}
+                      childrenn="Сравнить"
+                      productData={products}
+                    />
+                  }
+                  placement="bottom-end"
+                >
+                  <div>
+                    <IconButtons onClick={() => navigate('/comparison')} icon={<UnionIcon />} />
+                    <StyledNotificationIcon>{products.length}</StyledNotificationIcon>
+                  </div>
+                </CustomWidthTooltip>
               </InteractionIconsItem>
               <LikeIconItem>
-                <span>
-                  <StyledTippy
-                    interactive={true}
-                    interactiveBorder={10}
-                    delay={100}
-                    trigger="mouseenter"
-                    content={
-                      <ReusableHoverModal path="/favourites" basketItems={basketItems}>
-                        Перейти в избранное
-                      </ReusableHoverModal>
-                    }
-                  >
-                    <StyledIconButtonCart>
-                      <IconButtons icon={<LikeIcon />} />
-                    </StyledIconButtonCart>
-                  </StyledTippy>
-                </span>
-                <span>
-                  {' '}
-                  <StyledTippy
-                    interactive={true}
-                    interactiveBorder={20}
-                    delay={200}
-                    trigger="mouseenter"
-                    content={
-                      <ReusableHoverModal path={PATHS.MAIN.faq} basketItems={basketItems}>
-                        Перейти в избранное
-                      </ReusableHoverModal>
-                    }
-                  >
-                    <StyledIconButtonCart>
-                      <IconButtons icon={<HoveredLikeIcon />} />
-                    </StyledIconButtonCart>
-                  </StyledTippy>
-                </span>
+                <CustomWidthTooltip
+                  title={
+                    <BasketPreview
+                      navigateHandler={goToFavouritesHandler}
+                      childrenn="Перейти в избранное"
+                      productData={basketItems}
+                    />
+                  }
+                  placement="bottom-end"
+                >
+                  <span>
+                    <IconButtons onClick={() => navigate('/comparison')} icon={<LikeIcon />} />
+                  </span>
+                </CustomWidthTooltip>
+                <CustomWidthTooltip
+                  title={
+                    <BasketPreview
+                      navigateHandler={goToFavouritesHandler}
+                      childrenn="Перейти в избранное"
+                      productData={basketItems}
+                    />
+                  }
+                  placement="bottom-end"
+                >
+                  <span>
+                    <IconButtons onClick={goToFavouritesHandler} icon={<HoveredLikeIcon />} />
+                  </span>
+                </CustomWidthTooltip>
               </LikeIconItem>
               <InteractionIconsItem>
-                <span>
-                  <StyledTippy
-                    interactive={true}
-                    interactiveBorder={30}
-                    delay={100}
-                    trigger="mouseenter"
-                    content={
-                      <ReusableHoverModal basketItems={basketItems} path={'/basket'}>
-                        Оформить заказ
-                      </ReusableHoverModal>
-                    }
-                  >
-                    <StyledIconButtonCart>
-                      <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-                      <StyledNotificationIcon>{basketItems.length}</StyledNotificationIcon>
-                    </StyledIconButtonCart>
-                  </StyledTippy>
-                </span>
+                <CustomWidthTooltip
+                  title={
+                    <BasketPreview
+                      navigateHandler={goToBasketHandler}
+                      childrenn="Оформить заказ"
+                      productData={basketItems}
+                    />
+                  }
+                  placement="bottom-end"
+                >
+                  <span>
+                    <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
+                    {totalQuantity !== 0 ? (
+                      <StyledNotificationIcon>{totalQuantity}</StyledNotificationIcon>
+                    ) : null}
+                  </span>
+                </CustomWidthTooltip>
               </InteractionIconsItem>
             </InteractionIcons>
           </SecondHeaderContainer>
         </>
       ) : (
         <>
-          {' '}
           <FirstHeaderContainer>
             <div>
               <a href="/">
@@ -438,81 +452,70 @@ const Header: React.FC = () => {
             </SocialMediaList>
             <InteractionIcons>
               <InteractionIconsItem>
-                <span>
-                  <StyledTippy
-                    interactive={true}
-                    interactiveBorder={0}
-                    delay={100}
-                    trigger="mouseenter"
-                    content={
-                      <ReusableHoverModal path="/" basketItems={basketItems}>
-                        Сравнить
-                      </ReusableHoverModal>
-                    }
-                  >
-                    <StyledIconButtonCart>
-                      <IconButtons icon={<UnionIcon />} />
-                      <StyledNotificationIcon>8</StyledNotificationIcon>
-                    </StyledIconButtonCart>
-                  </StyledTippy>
-                </span>
+                <CustomWidthTooltip
+                  title={
+                    <BasketPreview
+                      navigateHandler={goToComparisonPage}
+                      childrenn="Сравнить"
+                      productData={products}
+                    />
+                  }
+                  placement="bottom-end"
+                >
+                  <div>
+                    <IconButtons onClick={() => navigate('/comparison')} icon={<UnionIcon />} />
+                    <StyledNotificationIcon>{products.length}</StyledNotificationIcon>
+                  </div>
+                </CustomWidthTooltip>
               </InteractionIconsItem>
               <LikeIconItem>
-                <span>
-                  <StyledTippy
-                    interactive={true}
-                    interactiveBorder={10}
-                    delay={100}
-                    trigger="mouseenter"
-                    content={
-                      <ReusableHoverModal path="/favourites" basketItems={basketItems}>
-                        Перейти в избранное
-                      </ReusableHoverModal>
-                    }
-                  >
-                    <StyledIconButtonCart>
-                      <IconButtons icon={<LikeIcon />} />
-                    </StyledIconButtonCart>
-                  </StyledTippy>
-                </span>
-                <span>
-                  {' '}
-                  <StyledTippy
-                    interactive={true}
-                    interactiveBorder={20}
-                    delay={200}
-                    trigger="mouseenter"
-                    content={
-                      <ReusableHoverModal path={PATHS.MAIN.faq} basketItems={basketItems}>
-                        Перейти в избранное
-                      </ReusableHoverModal>
-                    }
-                  >
-                    <StyledIconButtonCart>
-                      <IconButtons icon={<HoveredLikeIcon />} />
-                    </StyledIconButtonCart>
-                  </StyledTippy>
-                </span>
+                <CustomWidthTooltip
+                  title={
+                    <BasketPreview
+                      navigateHandler={goToFavouritesHandler}
+                      childrenn="Перейти в избранное"
+                      productData={basketItems}
+                    />
+                  }
+                  placement="bottom-end"
+                >
+                  <span>
+                    <IconButtons onClick={() => navigate('/comparison')} icon={<LikeIcon />} />
+                  </span>
+                </CustomWidthTooltip>
+                <CustomWidthTooltip
+                  title={
+                    <BasketPreview
+                      navigateHandler={goToFavouritesHandler}
+                      childrenn="Перейти в избранное"
+                      productData={basketItems}
+                    />
+                  }
+                  placement="bottom-end"
+                >
+                  <span>
+                    <IconButtons onClick={goToFavouritesHandler} icon={<HoveredLikeIcon />} />
+                  </span>
+                </CustomWidthTooltip>
               </LikeIconItem>
               <InteractionIconsItem>
-                <span>
-                  <StyledTippy
-                    interactive={true}
-                    interactiveBorder={30}
-                    delay={100}
-                    trigger="mouseenter"
-                    content={
-                      <ReusableHoverModal basketItems={basketItems} path={'/basket'}>
-                        Оформить заказ
-                      </ReusableHoverModal>
-                    }
-                  >
-                    <StyledIconButtonCart>
-                      <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-                      <StyledNotificationIcon>{basketItems.length}</StyledNotificationIcon>
-                    </StyledIconButtonCart>
-                  </StyledTippy>
-                </span>
+                <CustomWidthTooltip
+                  title={
+                    <BasketPreview
+                      navigateHandler={goToBasketHandler}
+                      childrenn="Оформить заказ"
+                      productData={basketItems}
+                    />
+                  }
+                  placement="bottom-end"
+                >
+                  <span>
+                    <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
+                    {totalQuantity !== 0 ? (
+                      <StyledNotificationIcon>{totalQuantity}</StyledNotificationIcon>
+                    ) : null}
+                  </span>
+                </CustomWidthTooltip>
               </InteractionIconsItem>
             </InteractionIcons>
           </SecondHeaderContainer>

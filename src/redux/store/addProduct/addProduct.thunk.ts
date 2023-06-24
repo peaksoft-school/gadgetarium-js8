@@ -38,6 +38,7 @@ export const addProducts = createAsyncThunk(
               return response
             })
           )
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const imagesAsString = promise.map((i: any) => i.data.link)
           return {
             ...sub,
