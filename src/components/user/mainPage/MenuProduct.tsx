@@ -1,21 +1,24 @@
-import React, { MouseEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ProductCard } from '../card/ProductCard'
 import { ReactComponent as LikeIcon } from '../../../assets/icons/userMainPageIcons/like.svg'
 import { Button, styled } from '@mui/material'
 import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
+import { useNavigate } from 'react-router-dom'
 import {
   addNewProductToBusket,
   addNewProductToComparison,
   addNewProductToFavorite
-} from '../../../redux/store/userMainPage/MainPage.thunk'
+} from '../../../redux/store/userMainPage/mainPage.thunk'
 import {
   getDiscountProduct,
   getNewProduct,
   getRecommendedProduct
-} from '../../../redux/store/userMainPage/GetProduct.thunk'
-import { useNavigate } from 'react-router-dom'
+} from '../../../redux/store/userMainPage/getProduct.thunk'
+import { incrementQuantityBusket } from '../../../redux/store/countProduct/countProductBusket.slice'
+import { incrementQuantityComparison } from '../../../redux/store/countProduct/countProductComparison.thunk'
+
 export type DiscountProduct =
   | {
       inFavorites: boolean
@@ -56,7 +59,7 @@ const ButtonContainer = styled('div')(() => ({
 
 const StyledButton = styled(Button)(() => ({
   marginTop: '2.1875rem',
-
+  outline: 'none',
   border: '1px solid #CB11AB',
   borderRadius: '4px',
   color: '#CB11AB',
@@ -65,15 +68,23 @@ const StyledButton = styled(Button)(() => ({
   fontWeight: '600',
   fontSize: '16px',
   lineHeight: '120%',
-  '&.hover': {
+  '&.MuiButton-contained': {
     border: '1px solid #CB11AB',
-    borderRadius: '4px',
-    backgroundColor: '#CB11AB'
+    borderRadius: '4px'
   },
-  '&.focuse': {
-    border: '1px solid #CB11AB',
+  '&:active': {
     borderRadius: '4px',
-    backgroundColor: '#CB11AB'
+    border: '1px solid #CB11AB'
+  },
+  '&:hover': {
+    borderRadius: '4px',
+    border: '1px solid #CB11AB'
+  },
+  '&.Mui-disabled': {
+    backgroundColor: 'rgb(81, 81, 81)',
+    color: '#fff',
+    cursor: 'not-drop',
+    border: 'none'
   }
 }))
 
@@ -91,6 +102,7 @@ const MenuProduct = () => {
   const [showAllProduct, setShowAllProduct] = useState(5)
   const [showAllNewProduct, setShowAllNewProduct] = useState(5)
   const [showAllRecomendProduct, setShowRecomendAllProduct] = useState(5)
+
   const { snackbarHanler, ToastContainer } = useSnackbar({
     autoClose: 3000,
     position: 'top-right'
@@ -103,9 +115,16 @@ const MenuProduct = () => {
     })
   }
 
+  const handleCountQuantityComparison = () => {
+    dispatch(incrementQuantityComparison())
+  }
+  const handleCountQuantityBusket = () => {
+    dispatch(incrementQuantityBusket())
+  }
   const addProductToBusket = (e: any, subProductId: number) => {
     e.stopPropagation()
     dispatch(addNewProductToBusket({ id: subProductId, snackbar: snackbarHandler }))
+    handleCountQuantityBusket()
   }
   const productMovedToComparisonHandle = (e: any, subProductId: number, inComparisons: boolean) => {
     e.stopPropagation()
@@ -118,6 +137,7 @@ const MenuProduct = () => {
       showAllRecomendProduct
     }
     dispatch(addNewProductToComparison(dataComparisons))
+    handleCountQuantityComparison()
   }
 
   const addProductToFavourites = (e: any, subProductId: number, inFavorites: boolean) => {
@@ -157,132 +177,139 @@ const MenuProduct = () => {
   return (
     <>
       {ToastContainer}
-      <StyledCartContainer>
-        <StyledTitle>Акции</StyledTitle>
-        <div>
-          <StyledProduct>
-            {discount?.map((product) => (
-              <div onClick={() => navigate(`/user/product/${product.subProductId}`)}>
-                <ProductCard
-                  id={product.subProductId}
-                  ellipseChildren={`-${product.discount}%`}
-                  ellipseColor="#F10000"
-                  amount={product.quantity}
-                  productText={product.productInfo}
-                  rating={product.rating}
-                  newPrice={
-                    product.discount > 0
-                      ? ((((100 - product.discount) * product.price) / 100).toFixed(
-                          0
-                        ) as unknown as number)
-                      : 0
-                  }
-                  oldPrice={`${product.price}c`}
-                  basketOnClick={(e) => addProductToBusket(e, product.subProductId)}
-                  ellipsIconOnClick={() => {}}
-                  scaleIconOnClick={(e) =>
-                    productMovedToComparisonHandle(e, product.subProductId, product.inComparisons)
-                  }
-                  heartIconOnClick={(e) =>
-                    addProductToFavourites(e, product.subProductId, product.inFavorites)
-                  }
-                  image={product.image}
-                  quantityOfPeople={product.countOfReviews}
-                  inComparisons={product.inComparisons}
-                  inFavorites={product.inFavorites}
-                />
-              </div>
-            ))}
-          </StyledProduct>
-          <ButtonContainer>
-            <StyledButton onClick={showProductHandler} variant="outlined">
-              Показать еще
-            </StyledButton>
-          </ButtonContainer>
-        </div>
-      </StyledCartContainer>
-      <StyledCartContainer>
-        <StyledTitle>Новинки</StyledTitle>
-        <div>
-          <StyledProduct>
-            {newProduct?.map((product) => (
-              <div onClick={() => navigate(`/user/product/${product.subProductId}`)}>
-                <ProductCard
-                  ellipseChildren="new"
-                  id={product.subProductId}
-                  ellipseColor="#2FC509"
-                  amount={product.quantity}
-                  productText={product.productInfo}
-                  rating={product.rating}
-                  newPrice={`${product.price}`}
-                  oldPrice=""
-                  basketOnClick={(e) => addProductToBusket(e, product.subProductId)}
-                  ellipsIconOnClick={() => {}}
-                  scaleIconOnClick={(e) =>
-                    productMovedToComparisonHandle(e, product.subProductId, product.inComparisons)
-                  }
-                  heartIconOnClick={(e) =>
-                    addProductToFavourites(e, product.subProductId, product.inFavorites)
-                  }
-                  image={product.image}
-                  quantityOfPeople={product.countOfReviews}
-                  inComparisons={product.inComparisons}
-                  inFavorites={product.inFavorites}
-                />
-              </div>
-            ))}
-          </StyledProduct>
-          <ButtonContainer>
-            <StyledButton onClick={showNewProductHandler} variant="outlined">
-              Показать еще
-            </StyledButton>
-          </ButtonContainer>
-        </div>
-      </StyledCartContainer>
-      <StyledCartContainer>
-        <StyledTitle>Мы рекомендуем</StyledTitle>
-        <div>
-          <StyledProduct>
-            {recommendProduct.map((product) => (
-              <div onClick={() => navigate(`/user/product/${product.subProductId}`)}>
-                <ProductCard
-                  id={product.subProductId}
-                  ellipseChildren={<LikeIcon />}
-                  ellipseColor="#2C68F5"
-                  amount={product.quantity}
-                  productText={product.productInfo}
-                  rating={product.rating}
-                  newPrice={
-                    product.discount > 0
-                      ? ((((100 - product.discount) * product.price) / 100).toFixed(
-                          0
-                        ) as unknown as number)
-                      : 0
-                  }
-                  oldPrice={`${product.price}c`}
-                  basketOnClick={(e) => addProductToBusket(e, product.subProductId)}
-                  ellipsIconOnClick={() => {}}
-                  scaleIconOnClick={(e) =>
-                    productMovedToComparisonHandle(e, product.subProductId, product.inComparisons)
-                  }
-                  heartIconOnClick={(e) =>
-                    addProductToFavourites(e, product.subProductId, product.inFavorites)
-                  }
-                  image={product.image}
-                  quantityOfPeople={product.countOfReviews}
-                  inComparisons={product.inComparisons}
-                  inFavorites={product.inFavorites}
-                />
-              </div>
-            ))}
-          </StyledProduct>
-          <ButtonContainer>
-            <StyledButton onClick={showRecomendProductHandler} variant="outlined">
-              Показать еще
-            </StyledButton>
-          </ButtonContainer>
-        </div>
-      </StyledCartContainer>
+      {discount.length ? (
+        <StyledCartContainer>
+          <StyledTitle>Aкция</StyledTitle>
+          <div>
+            <StyledProduct>
+              {discount?.map((product) => (
+                <div onClick={() => navigate(`/user/product/${product.subProductId}`)}>
+                  <ProductCard
+                    id={product.subProductId}
+                    ellipseChildren={`-${product.discount}%`}
+                    ellipseColor="#F10000"
+                    amount={product.quantity}
+                    productText={product.productInfo}
+                    rating={product.rating}
+                    newPrice={
+                      product.discount > 0
+                        ? ((((100 - product.discount) * product.price) / 100).toFixed(
+                            0
+                          ) as unknown as number)
+                        : 0
+                    }
+                    oldPrice={`${product.price}c`}
+                    basketOnClick={(e) => addProductToBusket(e, product.subProductId)}
+                    ellipsIconOnClick={() => {}}
+                    scaleIconOnClick={(e) =>
+                      productMovedToComparisonHandle(e, product.subProductId, product.inComparisons)
+                    }
+                    heartIconOnClick={(e) =>
+                      addProductToFavourites(e, product.subProductId, product.inFavorites)
+                    }
+                    image={product.image}
+                    quantityOfPeople={product.countOfReviews}
+                    inComparisons={product.inComparisons}
+                    inFavorites={product.inFavorites}
+                  />
+                </div>
+              ))}
+            </StyledProduct>
+            <ButtonContainer>
+              <StyledButton onClick={showProductHandler} variant="outlined">
+                Показать еще
+              </StyledButton>
+            </ButtonContainer>
+          </div>
+        </StyledCartContainer>
+      ) : null}
+
+      {newProduct.length ? (
+        <StyledCartContainer>
+          <StyledTitle>Новинки</StyledTitle>
+          <div>
+            <StyledProduct>
+              {newProduct?.map((product) => (
+                <div onClick={() => navigate(`/user/product/${product.subProductId}`)}>
+                  <ProductCard
+                    ellipseChildren="new"
+                    id={product.subProductId}
+                    ellipseColor="#2FC509"
+                    amount={product.quantity}
+                    productText={product.productInfo}
+                    rating={product.rating}
+                    newPrice={`${product.price}`}
+                    oldPrice=""
+                    basketOnClick={(e) => addProductToBusket(e, product.subProductId)}
+                    ellipsIconOnClick={() => {}}
+                    scaleIconOnClick={(e) =>
+                      productMovedToComparisonHandle(e, product.subProductId, product.inComparisons)
+                    }
+                    heartIconOnClick={(e) =>
+                      addProductToFavourites(e, product.subProductId, product.inFavorites)
+                    }
+                    image={product.image}
+                    quantityOfPeople={product.countOfReviews}
+                    inComparisons={product.inComparisons}
+                    inFavorites={product.inFavorites}
+                  />
+                </div>
+              ))}
+            </StyledProduct>
+            <ButtonContainer>
+              <StyledButton onClick={showNewProductHandler} variant="outlined">
+                Показать еще
+              </StyledButton>
+            </ButtonContainer>
+          </div>
+        </StyledCartContainer>
+      ) : null}
+      {recommendProduct ? (
+        <StyledCartContainer>
+          <StyledTitle>Мы рекомендуем</StyledTitle>
+          <div>
+            <StyledProduct>
+              {recommendProduct.map((product) => (
+                <div onClick={() => navigate(`/user/product/${product.subProductId}`)}>
+                  <ProductCard
+                    id={product.subProductId}
+                    ellipseChildren={<LikeIcon />}
+                    ellipseColor="#2C68F5"
+                    amount={product.quantity}
+                    productText={product.productInfo}
+                    rating={product.rating}
+                    newPrice={
+                      product.discount > 0
+                        ? ((((100 - product.discount) * product.price) / 100).toFixed(
+                            0
+                          ) as unknown as number)
+                        : 0
+                    }
+                    oldPrice={`${product.price}c`}
+                    basketOnClick={(e) => addProductToBusket(e, product.subProductId)}
+                    ellipsIconOnClick={() => {}}
+                    scaleIconOnClick={(e) =>
+                      productMovedToComparisonHandle(e, product.subProductId, product.inComparisons)
+                    }
+                    heartIconOnClick={(e) =>
+                      addProductToFavourites(e, product.subProductId, product.inFavorites)
+                    }
+                    image={product.image}
+                    quantityOfPeople={product.countOfReviews}
+                    inComparisons={product.inComparisons}
+                    inFavorites={product.inFavorites}
+                  />
+                </div>
+              ))}
+            </StyledProduct>
+            <ButtonContainer>
+              <StyledButton onClick={showRecomendProductHandler} variant="outlined">
+                Показать еще
+              </StyledButton>
+            </ButtonContainer>
+          </div>
+        </StyledCartContainer>
+      ) : null}
     </>
   )
 }

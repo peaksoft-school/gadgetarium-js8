@@ -5,6 +5,7 @@ import {
   getRecommendedProductService
 } from '../../../api/mainPage/getProductsService'
 import { AxiosError, isAxiosError } from 'axios'
+import { getBannerImagesService } from '../../../api/mainPage/getBannerService'
 
 export const getDiscountProduct = createAsyncThunk(
   'discountProduct/getDiscountProduct',
@@ -48,6 +49,25 @@ export const getRecommendedProduct = createAsyncThunk(
   async (showAllProduct: number, { rejectWithValue }) => {
     try {
       const { data } = await getRecommendedProductService(showAllProduct)
+      return data
+    } catch (e) {
+      if (isAxiosError(e)) {
+        const error = e as AxiosError<{
+          status: number
+          message: string
+        }>
+        return rejectWithValue(error.response?.data.message)
+      }
+      return rejectWithValue('Something went wrong')
+    }
+  }
+)
+
+export const getBunnerImg = createAsyncThunk(
+  'bunnerImg/getBunnerImg',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await getBannerImagesService()
       return data
     } catch (e) {
       if (isAxiosError(e)) {

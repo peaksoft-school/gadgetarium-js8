@@ -6,7 +6,7 @@ const StyledMuiButton = styled(Button)(() => ({
   color: '#ffff'
 }))
 const StyledContainer = styled('div')(() => ({
-  width: '32.25rem',
+  width: '30.25rem',
   padding: '1.875rem',
   background: '#FFFFFF',
   boxShadow: '0rem 1.25rem 3.75rem rgba(133, 143, 164, 0.1)',
@@ -27,7 +27,10 @@ const StyledTitele = styled('p')(() => ({
   fontSize: '1.2rem',
   lineHeight: '150%',
   paddingTop: '30px',
-  color: '#292929'
+  color: '#292929',
+  display: 'flex',
+  width: '255px',
+  flexDirection: 'column'
 }))
 const StyledPrice = styled('h2')(() => ({
   width: '6.25rem',
@@ -71,7 +74,8 @@ const StyledNavLink = styled(NavLink)(() => ({
   alignItems: 'center'
 }))
 const StyledImage = styled('img')(() => ({
-  width: '11.875rem '
+  width: '59.38px',
+  height: '67.783px'
 }))
 const ReusableHoverModal = ({ children, path, basketItems }: Props) => {
   return (

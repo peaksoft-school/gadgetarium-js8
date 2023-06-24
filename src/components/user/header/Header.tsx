@@ -24,7 +24,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { SearchInput } from '../../UI/inputs/SearchInput'
 import { favouriteActions } from '../../../redux/store/favourites/favourites.slice'
 
 const StyledNotificationIcon = styled('span')(() => ({
@@ -180,10 +179,6 @@ const InteractionIconsItem = styled('li')(() => ({
   }
 }))
 const StyledInputContainer = styled('div')(() => ({
-  // width: '110rem',
-  // height: '10.8125rem',
-  // marginTop: '8rem',
-  // marginLeft: '1rem'
   width: '43rem',
   height: '10.8125rem',
   margin: '8rem 4rem 0 3rem '
@@ -224,26 +219,26 @@ const StyledTippy = styled(Tippy)(() => ({
   width: '1000px',
   marginRight: '12.5rem'
 }))
+const StyledTippyForMenuItem = styled(Tippy)(() => ({
+  backgroundColor: 'transparent',
+  border: 'none',
+  width: '150px',
+  marginRight: '2.5rem'
+}))
 export type QueryParams = {
   keyword: string | null
 }
 
 const Header: React.FC = () => {
-  const { totalQuantity } = useSelector((state: RootState) => state.favourites)
+  const { quantityBasket } = useSelector((state: RootState) => state.quantityBusket)
+  const { quantityComparison } = useSelector((state: RootState) => state.quantityComparison)
+
   const dispatch = useDispatch<AppDispatch>()
-  const [catalog, setCatalog] = useState(false)
   const [isScroll, setIsScroll] = useState(false)
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [basketItems, setBasketItems] = useState([])
-  const [isOpenMenuItem, setIsMenuItem] = useState(false)
 
-  const catalogHandler = () => {
-    setCatalog((prevState) => !prevState)
-  }
-  const handleOpenMenuItem = () => {
-    setIsMenuItem((prevState) => !prevState)
-  }
   const getAllBusket = async () => {
     try {
       const { data } = await getAllBusketProductService()
@@ -312,14 +307,14 @@ const Header: React.FC = () => {
                     delay={100}
                     trigger="mouseenter"
                     content={
-                      <ReusableHoverModal path="/" basketItems={basketItems}>
+                      <ReusableHoverModal path={PATHS.MAIN.comparison} basketItems={basketItems}>
                         Сравнить
                       </ReusableHoverModal>
                     }
                   >
                     <StyledIconButtonCart>
                       <IconButtons icon={<UnionIcon />} />
-                      <StyledNotificationIcon>8</StyledNotificationIcon>
+                      <StyledNotificationIcon>{quantityComparison}</StyledNotificationIcon>
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -375,7 +370,7 @@ const Header: React.FC = () => {
                   >
                     <StyledIconButtonCart>
                       <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-                      <StyledNotificationIcon>{basketItems.length}</StyledNotificationIcon>
+                      <StyledNotificationIcon>{quantityBasket}</StyledNotificationIcon>
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -394,7 +389,7 @@ const Header: React.FC = () => {
             <div>
               <StyledList>
                 <StyledNavLink to="/">Главная</StyledNavLink>
-                <StyledNavLink to="">О магазине</StyledNavLink>
+                <StyledNavLink to={PATHS.MAIN.about}>О магазине</StyledNavLink>
                 <StyledNavLink to={PATHS.MAIN.delivery}>Доставка</StyledNavLink>
                 <StyledNavLink to={PATHS.MAIN.faq}>FAQ</StyledNavLink>
                 <StyledNavLink to={PATHS.MAIN.contacts}>Контакты</StyledNavLink>
@@ -402,12 +397,18 @@ const Header: React.FC = () => {
             </div>
             <NumberContainer>
               <p>+996 (400) 00-00-00</p>
-              <IconButtons icon={<NumberIcon />} onClick={handleOpenMenuItem} />
-              {isOpenMenuItem && (
-                <div>
-                  <MenuItem />
-                </div>
-              )}
+              <span>
+                <StyledTippyForMenuItem
+                  interactive={true}
+                  delay={100}
+                  trigger="mouseenter"
+                  content={<MenuItem />}
+                >
+                  <StyledIconButtonCart>
+                    <IconButtons icon={<NumberIcon />} />
+                  </StyledIconButtonCart>
+                </StyledTippyForMenuItem>
+              </span>
             </NumberContainer>
           </FirstHeaderContainer>
           <SecondHeaderContainer>
@@ -450,14 +451,14 @@ const Header: React.FC = () => {
                     delay={100}
                     trigger="mouseenter"
                     content={
-                      <ReusableHoverModal path="/" basketItems={basketItems}>
+                      <ReusableHoverModal path={PATHS.MAIN.comparison} basketItems={basketItems}>
                         Сравнить
                       </ReusableHoverModal>
                     }
                   >
                     <StyledIconButtonCart>
                       <IconButtons icon={<UnionIcon />} />
-                      <StyledNotificationIcon>8</StyledNotificationIcon>
+                      <StyledNotificationIcon>{quantityComparison}</StyledNotificationIcon>
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -487,7 +488,7 @@ const Header: React.FC = () => {
                     delay={200}
                     trigger="mouseenter"
                     content={
-                      <ReusableHoverModal path={PATHS.MAIN.faq} basketItems={basketItems}>
+                      <ReusableHoverModal path="/favourites" basketItems={basketItems}>
                         Перейти в избранное
                       </ReusableHoverModal>
                     }
@@ -513,9 +514,7 @@ const Header: React.FC = () => {
                   >
                     <StyledIconButtonCart>
                       <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-                      {totalQuantity !== 0 ? (
-                        <StyledNotificationIcon>{totalQuantity}</StyledNotificationIcon>
-                      ) : null}
+                      <StyledNotificationIcon>{quantityBasket}</StyledNotificationIcon>
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
