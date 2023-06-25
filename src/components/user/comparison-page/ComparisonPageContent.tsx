@@ -264,7 +264,7 @@ const ComparisonPageContent = ({ type, data }: Props) => {
   }
   return (
     <>
-      {ToastContainer}
+      {/* {ToastContainer} */}
       <ComparisonPageTools>
         <ComparisonToolsTable>
           <tbody>

@@ -294,16 +294,6 @@ const Header: React.FC = () => {
     dispatch(getFavourite())
   }, [])
 
-  const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))({
-    [`& .${tooltipClasses.tooltip}`]: {
-      maxWidth: '32.875rem',
-      maxHeight: '300px',
-      backgroundColor: 'transparent'
-    }
-  })
-
   const goToComparisonPage = () => {
     navigate('comparison')
   }
@@ -346,7 +336,9 @@ const Header: React.FC = () => {
                   >
                     <StyledIconButtonCart>
                       <IconButtons onClick={goToComparisonPage} icon={<UnionIcon />} />
-                      <StyledNotificationIcon>{quantityComparison}</StyledNotificationIcon>
+                      {quantityComparison !== 0 ? (
+                        <StyledNotificationIcon>{quantityComparison}</StyledNotificationIcon>
+                      ) : null}
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -402,7 +394,9 @@ const Header: React.FC = () => {
                   >
                     <StyledIconButtonCart>
                       <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-                      <StyledNotificationIcon>{quantityBasket}</StyledNotificationIcon>
+                      {quantityBasket !== 0 ? (
+                        <StyledNotificationIcon>{quantityBasket}</StyledNotificationIcon>
+                      ) : null}
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -490,7 +484,9 @@ const Header: React.FC = () => {
                   >
                     <StyledIconButtonCart>
                       <IconButtons onClick={goToComparisonPage} icon={<UnionIcon />} />
-                      <StyledNotificationIcon>{quantityComparison}</StyledNotificationIcon>
+                      {quantityComparison !== 0 ? (
+                        <StyledNotificationIcon>{quantityComparison}</StyledNotificationIcon>
+                      ) : null}
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -546,8 +542,8 @@ const Header: React.FC = () => {
                   >
                     <StyledIconButtonCart>
                       <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-                      {basketItems.length !== 0 ? (
-                        <StyledNotificationIcon>{basketItems.length}</StyledNotificationIcon>
+                      {quantityBasket !== 0 ? (
+                        <StyledNotificationIcon>{quantityBasket}</StyledNotificationIcon>
                       ) : null}
                     </StyledIconButtonCart>
                   </StyledTippy>

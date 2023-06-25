@@ -160,8 +160,8 @@ const ThirdPart = () => {
 
   return (
     <>
+      {ToastContainer}
       <form>
-        {ToastContainer}
         <ImportsContainer>
           <div>
             <StyledLabel>Загрузите видеообзор</StyledLabel>
