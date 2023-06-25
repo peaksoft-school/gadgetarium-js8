@@ -96,7 +96,7 @@ const ProductsPage = () => {
     before: null
   })
   const [basketQueryParams, setBasketQueryParams] = useState({
-    status: 'В корзине',
+    status: 'в корзине',
     page: 1,
     keyWord: null,
     pageSize: 7,
@@ -105,7 +105,7 @@ const ProductsPage = () => {
     before: null
   })
   const [favoriteQueryParams, setFavoriteQueryParams] = useState({
-    status: 'В избранном',
+    status: 'в избранном',
     page: 1,
     keyWord: null,
     pageSize: 7,
@@ -114,7 +114,7 @@ const ProductsPage = () => {
     before: null
   })
   const [productsOnSaleQueryParams, setProductsOnSaleQueryParams] = useState({
-    status: 'В продаже',
+    status: 'в продаже',
     page: 1,
     keyWord: null,
     pageSize: 7,
