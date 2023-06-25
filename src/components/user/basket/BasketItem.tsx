@@ -134,17 +134,17 @@ const FavoritesContainer = styled('div')(() => ({
   justifyContent: 'flex-end',
   gap: '.75rem'
 }))
-const StyledLikeIcon = styled(LikeIcon)(() => ({
+export const StyledLikeIcon = styled(LikeIcon)(() => ({
   width: '1rem',
   height: '.8125rem'
 }))
-const HoveredLikeIconStyled = styled(HoveredLikeIcon)(() => ({
+export const HoveredLikeIconStyled = styled(HoveredLikeIcon)(() => ({
   width: '1rem',
   height: '1rem',
   margin: '0rem',
   padding: '0rem'
 }))
-const MiniContainer = styled('label')(() => ({
+export const MiniContainer = styled('label')(() => ({
   display: 'flex',
   alignItems: 'center'
 }))

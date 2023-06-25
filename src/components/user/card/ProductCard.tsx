@@ -1,5 +1,4 @@
 import { styled } from '@mui/material'
-import Tippy from '@tippyjs/react'
 import { ReactComponent as HeartIcon } from '../../../assets/icons/header-icons/hoveredLikeIcon.svg'
 import { ReactComponent as ScaleIcon } from '../../../assets/icons/product-icons/scales.svg'
 import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons/basketIcon.svg'
@@ -10,6 +9,7 @@ import IconButtons from '../../UI/buttons/IconButtons'
 import TextWithEllipsis from './CardText'
 import ProductRating from './RatingProduct'
 import { StyledIconButtonCart } from '../header/Header'
+import { CustomTooltip } from '../../UI/tooltip/CustomTooltip'
 interface ProductType {
   id: number
   ellipseChildren?: string | React.ReactNode
@@ -91,7 +91,7 @@ const StyledImage = styled('img')(() => ({
 const Title = styled('p')(() => ({
   display: 'block',
   fontWeight: 500,
-  fontSize: '12px',
+  fontSize: '10px',
   lineHeight: ' 15px',
   color: '#2FC509',
   marginBottom: '8px',
@@ -158,17 +158,7 @@ const ButtonContainer = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center'
 }))
-const StyledTippyForCatalog = styled(Tippy)(() => ({
-  fontFamily: 'Inter',
-  fontStyle: 'normal',
-  fontWeight: '400',
-  fontSize: '14px',
 
-  display: 'flex',
-  alignItems: 'center',
-
-  color: '#FFFFFF'
-}))
 export const ProductCard = ({
   ellipseChildren,
   ellipseColor = '#2C68F5',
@@ -196,31 +186,17 @@ export const ProductCard = ({
           }
         />
         <ContainerTwoIcons>
-          <StyledTippyForCatalog
-            interactive={true}
-            interactiveBorder={10}
-            delay={20}
-            trigger="mouseenter"
-            content={
-              inComparisons ? <h1>Удалить из сравнения </h1> : <h1>Добавить в сравнения </h1>
-            }
-          >
+          <CustomTooltip title={inComparisons ? 'Удалить из сравнения' : 'Добавить к сравнению'}>
             <StyledIconButtonCart onClick={scaleIconOnClick}>
               <StyledIconButtons activeColor={inComparisons} icon={<ScaleIcon />} />
             </StyledIconButtonCart>
-          </StyledTippyForCatalog>
+          </CustomTooltip>
 
-          <StyledTippyForCatalog
-            interactive={true}
-            interactiveBorder={10}
-            delay={20}
-            trigger="mouseenter"
-            content={inFavorites ? <h1>Добавить в избранное</h1> : <h1>Удалить из избранного</h1>}
-          >
+          <CustomTooltip title={inFavorites ? 'Удалить из избранного' : 'Добавить в избранное'}>
             <StyledIconButtonCart onClick={heartIconOnClick}>
               <StyledIconButtonHeart activeColor={inFavorites} icon={<HeartIcon />} />
             </StyledIconButtonCart>
-          </StyledTippyForCatalog>
+          </CustomTooltip>
         </ContainerTwoIcons>
       </ContainerIcon>
       <StyledArticle>

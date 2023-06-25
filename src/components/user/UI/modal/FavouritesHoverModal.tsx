@@ -1,7 +1,8 @@
 import React from 'react'
 import { styled } from '@mui/material'
-import Button from '../../UI/buttons/Button'
 import { NavLink } from 'react-router-dom'
+import Button from '../../../UI/buttons/Button'
+import { ItemsFavouriteType } from '../../../../redux/store/favourites/favourites.slice'
 const StyledMuiButton = styled(Button)(() => ({
   color: '#ffff'
 }))
@@ -46,19 +47,7 @@ const StyledPrice = styled('h2')(() => ({
 type Props = {
   children: string
   path: string
-  basketItems: {
-    productId: number
-    subProductId: number
-    image: string
-    name: string
-    rating: number
-    numberOfReviews: number
-    quantity: number
-    itemNumber: number
-    price: number
-    percent: number
-    quantityProduct: number
-  }[]
+  basketItems: ItemsFavouriteType
 }
 const StyledBtnContainer = styled('div')(() => ({
   marginTop: '.75rem',
@@ -77,13 +66,13 @@ const StyledImage = styled('img')(() => ({
   width: '59.38px',
   height: '67.783px'
 }))
-const ReusableHoverModal = ({ children, path, basketItems }: Props) => {
+const FavouritessonHoverModal = ({ children, path, basketItems }: Props) => {
   return (
     <StyledContainer>
       {basketItems.map((items) => (
         <StyledContent>
           <StyledImage src={items.image} alt="" />
-          <StyledTitele>{items.name}</StyledTitele>
+          <StyledTitele>{items.productInfo}</StyledTitele>
           <StyledPrice>{items.price}c</StyledPrice>
         </StyledContent>
       ))}
@@ -96,4 +85,4 @@ const ReusableHoverModal = ({ children, path, basketItems }: Props) => {
   )
 }
 
-export default ReusableHoverModal
+export default FavouritessonHoverModal
