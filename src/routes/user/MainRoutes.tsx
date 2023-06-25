@@ -13,6 +13,7 @@ import BasketPage from '../../components/user/basket/BasketPage'
 import AboutStore from '../../layout/user/about/AboutStore'
 import { FavouritesPage } from '../../components/user/favourites/FavouritesPage'
 import { UserOrderPage } from '../../containers/user/order/UserOrderPage'
+import ComparisonPage from '../../containers/user/comparison-page/ComparisonPage'
 
 const MainRoutes = () => {
   const role = useSelector((state: RootState) => state.auth.role)
@@ -28,7 +29,7 @@ const MainRoutes = () => {
           <Route index element={<p>CatalogPage</p>} />
           <Route path={PATHS.MAIN.productId} element={<p>ProductInnerPage</p>} />
         </Route>
-        <Route path={PATHS.MAIN.comparison} element={<p>ComparisonPage</p>} />
+        <Route path={PATHS.MAIN.comparison} element={<ComparisonPage />} />
         <Route path={PATHS.MAIN.favourites} element={<p>FavouritesPage</p>} />
 
         <Route path={PATHS.MAIN.favourites} element={<Outlet />}>

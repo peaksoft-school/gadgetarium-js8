@@ -145,13 +145,19 @@ const StyledSuccess = styled('img')(() => ({
   width: '100px',
   height: '100px'
 }))
+const ErrorMessage = styled('h3')(() => ({
+  textAlign: 'center',
+  color: '#e61717',
+  marginTop: '10px'
+}))
 const PaymentMethod = ({ handleTabChange }: { handleTabChange: (newValue: string) => void }) => {
+  const elements = useElements()
+  const stripe = useStripe()
   const order = useSelector((state: RootState) => state.userorder)
   const { totalSum } = useSelector((state: RootState) => state.basket)
   const amount = totalSum ? +totalSum.toFixed(2) : +totalSum
-  const elements = useElements()
-  const stripe = useStripe()
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
   const dispatch = useDispatch<AppDispatch>()
   const payCardHandler = () => {
     const checkedData = {
@@ -215,6 +221,7 @@ const PaymentMethod = ({ handleTabChange }: { handleTabChange: (newValue: string
           isRejectedWithValue('Successfully payment')
         }
       } catch (e) {
+        setErrorMessage('Что-то пошло не так!')
         isRejectedWithValue(e)
       }
     }
@@ -263,6 +270,7 @@ const PaymentMethod = ({ handleTabChange }: { handleTabChange: (newValue: string
             </ContainerCardElement>
             <StyledTextField id="standard-basic" label="Имя владельца" variant="standard" />
           </Card>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
           {order.payCardChecked ? (
             <StyledButton onClick={paymentHanlder}>оплатить</StyledButton>
           ) : (

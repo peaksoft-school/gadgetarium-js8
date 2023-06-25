@@ -106,10 +106,10 @@ const FirstLineData = styled('div')(() => ({
   gap: '10px'
 }))
 const StyledInput = styled(Input)(() => ({
-  width: '500px'
+  width: '100%'
 }))
 const StyledInpuNumber = styled(Input)(() => ({
-  width: '500px',
+  width: '100%',
   '& input[type="number"]::-webkit-inner-spin-button': {
     '-webkit-appearance': 'none',
     margin: 0
@@ -172,11 +172,11 @@ const PickupAndDelivered = ({
           </FirstLine>
         </SecondCard>
       </CardContainer>
-      <Grid>
+      <Grid sx={{ width: '730px' }}>
         <CustomDataText>Личные данные</CustomDataText>
         <form onSubmit={submitHandler}>
           <FirstLineData>
-            <Grid>
+            <Grid sx={{ display: 'flex', flexDirection: 'column' }}>
               <label htmlFor="">
                 Имя <Star>*</Star>
               </label>
@@ -188,7 +188,7 @@ const PickupAndDelivered = ({
                 error={formError.errorFirstName}
               />
             </Grid>
-            <Grid>
+            <Grid sx={{ display: 'flex', flexDirection: 'column' }}>
               <label htmlFor="">
                 Фамилия <Star>*</Star>
               </label>
@@ -200,7 +200,9 @@ const PickupAndDelivered = ({
                 error={formError.errorLastName}
               />
             </Grid>
-            <Grid>
+          </FirstLineData>
+          <FirstLineData>
+            <Grid sx={{ display: 'flex', flexDirection: 'column' }}>
               <label htmlFor="">
                 E-mail <Star>*</Star>
               </label>
@@ -213,7 +215,7 @@ const PickupAndDelivered = ({
                 required
               />
             </Grid>
-            <Grid>
+            <Grid sx={{ display: 'flex', flexDirection: 'column' }}>
               <label htmlFor="">
                 Телефон <Star>*</Star>
               </label>
@@ -228,7 +230,7 @@ const PickupAndDelivered = ({
             </Grid>
           </FirstLineData>
           {order.isCheckedTwo ? (
-            <Grid>
+            <Grid sx={{ display: 'flex', flexDirection: 'column' }}>
               <label htmlFor="">
                 Адрес доставки <Star>*</Star>
               </label>

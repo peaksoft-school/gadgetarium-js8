@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { mainApi } from '../../config/instances'
 
 export interface Product {
-  foundProducts: number
+  countOfElements: number
   elements: [
     {
       createdAt: string
@@ -25,7 +24,17 @@ type AllProductsResponse = {
   data: Product
 }
 
-export const getAllProductsRequest = (queryParams: any) => {
+export type ProductQueryParams = {
+  keyWord: string | null
+  status: string | null
+  page: number | null
+  pageSize: number | null
+  sortBy: string | null
+  from: string | null
+  before: string | null
+}
+
+export const getAllProductsRequest = (queryParams: ProductQueryParams) => {
   return mainApi.get<AllProductsResponse>('/api/admin/products', {
     params: {
       keyWord: queryParams.keyWord,
@@ -41,4 +50,8 @@ export const getAllProductsRequest = (queryParams: any) => {
 
 export const deleteProductByIdRequest = (ids: number[]) => {
   return mainApi.delete<AllProductsResponse>(`/api/admin/products?subProductIds=${ids}`)
+}
+
+export const deleteProductByIdRequest2 = (subProductId: number) => {
+  return mainApi.delete<AllProductsResponse>(`/api/admin/products?subProductIds=${subProductId}`)
 }

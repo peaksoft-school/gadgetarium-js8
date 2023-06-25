@@ -6,7 +6,7 @@ const StyledTitle = styled('span')(() => ({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   fontWeight: 500,
-  fontSize: '16px',
+  fontSize: '15px',
   lineHeight: '22px',
   textTransform: 'capitalize',
   color: '#292929'

@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Box, Tab, Tabs, Typography } from '@mui/material'
-import { Circle as CircleIcon } from '@mui/icons-material'
-import { styled } from '@mui/material'
+import { Box } from '@mui/material'
 import AddTabComponent from './AddTabComponent'
+import SecondPart from '../../add-products/second-part/SecondPart'
+import ThirdPart from '../../add-products/third-part/ThirdPart'
+import HorizontalNonLinearStepper from '../Stepper'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -30,99 +31,66 @@ function TabPanel(props: TabPanelProps) {
   )
 }
 
-const StyledText = styled(Typography)(() => ({
-  fontFamily: 'Inter',
-  fontStyle: 'normal',
-  fontWeight: '500',
-  fontSize: '12px',
-  lineHeight: '22px',
-
-  display: 'flex',
-  alignItems: 'center',
-  letterSpacing: '0.2px',
-
-  color: '#CB11AB'
-}))
-
 export function MyComponent() {
   const [activeTab, setActiveTab] = useState(0)
+  const [completed] = useState<{
+    [k: number]: boolean
+  }>({})
 
-  const handleTabChange = (event: React.SyntheticEvent, newTab: number) => {
-    setActiveTab(newTab)
+  const steps = [
+    {
+      label: 'Добавление товара',
+      key: 'add'
+    },
+    {
+      label: 'Установка цены и количества товара',
+      key: 'price'
+    },
+    {
+      label: 'Описание и обзор',
+      key: 'description'
+    }
+  ]
+
+  const totalSteps = () => {
+    return steps.length
+  }
+
+  const completedSteps = () => {
+    return Object.keys(completed).length
+  }
+
+  const isLastStep = () => {
+    return activeTab === totalSteps() - 1
+  }
+
+  const allStepsCompleted = () => {
+    return completedSteps() === totalSteps()
+  }
+
+  const handleNext = () => {
+    const newActiveStep =
+      isLastStep() && !allStepsCompleted()
+        ? steps.findIndex((step, i) => !(i in completed))
+        : activeTab + 1
+    setActiveTab(newActiveStep)
   }
 
   return (
-    <Box sx={{ with: '100%' }}>
-      <Tabs sx={{ with: '100%' }} onChange={handleTabChange}>
-        <Tab
-          sx={{ with: '100%' }}
-          icon={
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <CircleIcon
-                sx={{
-                  color: activeTab === 0 ? '#cb11ab' : 'action.disabled',
-                  fontSize: 50,
-                  marginRight: 1
-                }}
-              />
-              <StyledText
-                variant="body1"
-                sx={{ color: activeTab === 0 ? '#cb11ab' : 'action.disabled' }}
-              >
-                Добавление товара
-              </StyledText>
-            </Box>
-          }
-        />
-
-        <Tab
-          sx={{ with: '100%' }}
-          icon={
-            <Box sx={{ display: 'flex', alignItems: 'center', width: '80rem' }}>
-              <CircleIcon
-                sx={{
-                  color: activeTab === 1 ? '#cb11ab' : 'action.disabled',
-                  fontSize: 50,
-                  marginRight: 1
-                }}
-              />
-              <StyledText
-                variant="body1"
-                sx={{ color: activeTab === 1 ? '#cb11ab' : 'action.disabled' }}
-              >
-                Установка цены и количества товара
-              </StyledText>
-            </Box>
-          }
-        />
-        <Tab
-          icon={
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <CircleIcon
-                sx={{
-                  color: activeTab === 2 ? '#cb11ab' : 'action.disabled',
-                  fontSize: 50,
-                  marginRight: 1
-                }}
-              />
-              <StyledText
-                variant="body2"
-                sx={{ color: activeTab === 2 ? '#cb11ab' : 'action.disabled' }}
-              >
-                Описание и обзор{' '}
-              </StyledText>
-            </Box>
-          }
-        />
-      </Tabs>
+    <Box sx={{ with: '100%', marginTop: '30px' }}>
+      <HorizontalNonLinearStepper
+        steps={steps}
+        activeStep={activeTab}
+        setActiveStep={setActiveTab}
+      />
       <TabPanel value={activeTab} index={0}>
-        <AddTabComponent />
+        <AddTabComponent handleNext={handleNext} />
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
-        Content for Tab 2
+        <SecondPart handleNext={handleNext} />
       </TabPanel>
       <TabPanel value={activeTab} index={2}>
-        Content for Tab 3
+        <ThirdPart />
       </TabPanel>
     </Box>
   )

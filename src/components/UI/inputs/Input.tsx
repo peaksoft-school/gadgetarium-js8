@@ -9,11 +9,12 @@ type InputProps = {
   type?: string
   id?: string
   required?: boolean
+  className?: string
 }
 
 const InputStyled = styled(InputBase)(() => ({
   '&.input': {
-    width: '100%',
+    // width: '100%',
     border: '0.1px solid #909CB5',
     background: '#F7F7F7',
     borderRadius: '5px',
@@ -35,6 +36,7 @@ const InputStyled = styled(InputBase)(() => ({
 const Input = forwardRef(
   (
     {
+      className,
       value,
       type = 'text',
       onChange,
@@ -49,6 +51,7 @@ const Input = forwardRef(
     return (
       <InputStyled
         {...props}
+        className={className}
         placeholder={placeholder}
         value={value}
         type={type}

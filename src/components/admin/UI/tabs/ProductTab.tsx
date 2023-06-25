@@ -53,7 +53,7 @@ const DownloadIconContainer = styled('div')(() => ({
   fontWeight: '500',
   fontSize: '0.875rem',
   lineHeight: '1.0625rem',
-  marginLeft: '15rem'
+  marginLeft: '23rem'
 }))
 
 interface Product {
@@ -86,7 +86,7 @@ const FeedbackTab: React.FC<ProductsTabProps> = ({ tabs, defaultValue }) => {
         <TabContext value={value}>
           <TabList
             onChange={handleChange}
-            TabIndicatorProps={{ style: { backgroundColor: '#fff' } }}
+            TabIndicatorProps={{ style: { backgroundColor: 'transparent' } }}
             sx={{
               div: {
                 '& button.Mui-selected': {

@@ -55,7 +55,7 @@ const ContainerSumOfOrder = styled('div')(() => ({
   padding: '1.875rem',
   borderRadius: '.3125rem',
   position: 'fixed',
-  right: '10.5rem'
+  right: '7.5rem'
 }))
 const TitleSumOfOrder = styled('h3')(() => ({
   fontWeight: 500,
@@ -74,7 +74,7 @@ const ListOrder = styled('li')(() => ({
   justifyContent: 'space-between',
   alignItems: 'center'
 }))
-const MainContainer = styled('div')(() => ({
+export const MainContainer = styled('div')(() => ({
   marginTop: '.9375rem',
   display: 'flex',
   justifyContent: 'space-between'
