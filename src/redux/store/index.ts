@@ -9,6 +9,9 @@ import { basketSlice } from './basket/basket.slice'
 import { getProductSlice } from './userMainPage/getProduct.slice'
 import searchSlice from './userMainPage/search.slice'
 import { favouritesSlice } from './favourites/favourites.slice'
+import bannerSlice from './userMainPage/bunnerSlice'
+import { quantityBusketSlice } from './countProduct/countProductBusket.slice'
+import { quantityComparisonSlice } from './countProduct/countProductComparison.thunk'
 
 export const store = configureStore({
   reducer: {
@@ -22,7 +25,10 @@ export const store = configureStore({
     [basketSlice.name]: basketSlice.reducer,
     [getProductSlice.name]: getProductSlice.reducer,
     [searchSlice.name]: searchSlice.reducer,
-    [favouritesSlice.name]: favouritesSlice.reducer
+    [favouritesSlice.name]: favouritesSlice.reducer,
+    [bannerSlice.name]: bannerSlice.reducer,
+    [quantityBusketSlice.name]: quantityBusketSlice.reducer,
+    [quantityComparisonSlice.name]: quantityComparisonSlice.reducer
   }
 })
 

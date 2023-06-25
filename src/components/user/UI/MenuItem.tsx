@@ -12,10 +12,6 @@ const StyledMenuItem = styled('ul')(() => ({
   background: '#FFFFFF',
   boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.1)',
   borderRadius: '4px',
-  position: 'fixed',
-  zIndex: '100',
-  top: '3.125rem',
-  right: '1.5625rem',
   fontFamily: 'Inter',
   fontStyle: 'normal',
   fontWeight: '400',
@@ -45,16 +41,6 @@ const MenuItem = () => {
     <StyledMenuItem>
       {isAuthorized ? (
         <>
-          <StyledLink to={PATHS.APP.logIn}>
-            <li>Войти</li>
-          </StyledLink>
-          <StyledLink to={PATHS.APP.signUp}>
-            <li>Регистрация</li>
-          </StyledLink>
-        </>
-      ) : (
-        <>
-          {' '}
           <StyledLink to={'/'}>
             <li>История заказов</li>
           </StyledLink>
@@ -66,6 +52,16 @@ const MenuItem = () => {
           </StyledLink>
           <StyledLink to={PATHS.APP.logIn}>
             <li>Выйти</li>
+          </StyledLink>
+        </>
+      ) : (
+        <>
+          {' '}
+          <StyledLink to={PATHS.APP.logIn}>
+            <li>Войти</li>
+          </StyledLink>
+          <StyledLink to={PATHS.APP.signUp}>
+            <li>Регистрация</li>
           </StyledLink>
         </>
       )}
