@@ -16,6 +16,7 @@ import {
 } from '../../../redux/store/reviews/reviews.thunk'
 import CutTextReviews from './CutTextReviews'
 import Modal from '../../UI/modals/Modal'
+import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 
 type AllReviewsType = {
   id: number
@@ -188,6 +189,10 @@ const StyledTextField = styled(TextField)(() => ({
   marginTop: '.625rem'
 }))
 const RowTable = ({ item, index, page }: PropsType) => {
+  const { snackbarHanler, ToastContainer } = useSnackbar({
+    autoClose: 2500,
+    position: 'bottom-right'
+  })
   const dispatch = useDispatch<AppDispatch>()
   const { error } = useSelector((state: RootState) => state.reviews)
   const [inputValue, setInputValue] = useState('')
@@ -203,24 +208,28 @@ const RowTable = ({ item, index, page }: PropsType) => {
       return false
     }
   }
-
+  const reviewsSnackbarHandler = (message: string, type: 'error' | 'success' | undefined) => {
+    snackbarHanler({ message, linkText: '', type })
+  }
   const sendHandleButtonClick = () => {
     const reviewData = {
       page: page,
       id: item.id,
-      answer: inputValue
+      answer: inputValue,
+      snackbar: reviewsSnackbarHandler
     }
     dispatch(postReviews(reviewData))
     setOpenArrowIcon(false)
   }
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const trimmedValue = event.target.value.trim()
+    const trimmedValue = event.target.value
     setInputValue(trimmedValue)
   }
   const removeItemById = () => {
     const reviewData = {
       id: item.id,
-      page: page
+      page: page,
+      snackbar: reviewsSnackbarHandler
     }
     dispatch(deleteReviewById(reviewData))
     setOpenModal(false)
@@ -229,7 +238,8 @@ const RowTable = ({ item, index, page }: PropsType) => {
     const updateData = {
       id: item.id,
       page: page,
-      answer: inputValue
+      answer: inputValue.trim(),
+      snackbar: reviewsSnackbarHandler
     }
 
     dispatch(updateReviews(updateData))
@@ -250,6 +260,7 @@ const RowTable = ({ item, index, page }: PropsType) => {
   }
   return (
     <React.Fragment>
+      {ToastContainer}
       <TableRow>
         <StyledTableBodyCell style={{ width: '1.875rem' }}>{index + 1}</StyledTableBodyCell>
         <StyledTableBodyCell style={{ width: '6.25rem' }}>
@@ -332,16 +343,16 @@ const RowTable = ({ item, index, page }: PropsType) => {
             </form>
           </Collapse>
         </StyledTableBodyCell>
+        <Modal open={openModal} onClose={closeModalHandler}>
+          <ModalContainer>
+            <p>Вы уверены, что хотите удалить?</p>
+            <ModalButtonContainers>
+              <CancelModalButton onClick={closeModalHandler}>Отменить</CancelModalButton>
+              <DeleteModalButton onClick={removeItemById}>Удалить</DeleteModalButton>
+            </ModalButtonContainers>
+          </ModalContainer>
+        </Modal>
       </TableRow>
-      <Modal open={openModal} onClose={closeModalHandler}>
-        <ModalContainer>
-          <p>Вы уверены, что хотите удалить?</p>
-          <ModalButtonContainers>
-            <CancelModalButton onClick={closeModalHandler}>Отменить</CancelModalButton>
-            <DeleteModalButton onClick={removeItemById}>Удалить</DeleteModalButton>
-          </ModalButtonContainers>
-        </ModalContainer>
-      </Modal>
     </React.Fragment>
   )
 }

@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { SearchInput } from '../../UI/inputs/SearchInput'
 import { favouriteActions } from '../../../redux/store/favourites/favourites.slice'
 
 const StyledNotificationIcon = styled('span')(() => ({
@@ -179,6 +180,10 @@ const InteractionIconsItem = styled('li')(() => ({
   }
 }))
 const StyledInputContainer = styled('div')(() => ({
+  // width: '110rem',
+  // height: '10.8125rem',
+  // marginTop: '8rem',
+  // marginLeft: '1rem'
   width: '43rem',
   height: '10.8125rem',
   margin: '8rem 4rem 0 3rem '
@@ -208,6 +213,7 @@ const LikeIconItem = styled('li')(() => ({
     }
   }
 }))
+
 export const StyledIconButtonCart = styled('button')(() => ({
   backgroundColor: 'transparent',
   border: 'none'
@@ -330,12 +336,11 @@ const Header: React.FC = () => {
                     }
                   >
                     <StyledIconButtonCart>
-                      <IconButtons icon={<LikeIcon />} />
+                      <IconButtons icon={<LikeIcon />} onClick={goToFavouritesHandler} />
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
                 <span>
-                  {' '}
                   <StyledTippy
                     interactive={true}
                     interactiveBorder={20}
@@ -348,7 +353,7 @@ const Header: React.FC = () => {
                     }
                   >
                     <StyledIconButtonCart>
-                      <IconButtons icon={<HoveredLikeIcon />} />
+                      <IconButtons icon={<HoveredLikeIcon />} onClick={goToFavouritesHandler} />
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -378,7 +383,6 @@ const Header: React.FC = () => {
         </>
       ) : (
         <>
-          {' '}
           <FirstHeaderContainer>
             <div>
               <a href="/">
@@ -482,7 +486,6 @@ const Header: React.FC = () => {
                   </StyledTippy>
                 </span>
                 <span>
-                  {' '}
                   <StyledTippy
                     interactive={true}
                     interactiveBorder={20}
@@ -495,7 +498,7 @@ const Header: React.FC = () => {
                     }
                   >
                     <StyledIconButtonCart>
-                      <IconButtons icon={<HoveredLikeIcon />} />
+                      <IconButtons icon={<HoveredLikeIcon />} onClick={goToFavouritesHandler} />
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -515,7 +518,9 @@ const Header: React.FC = () => {
                   >
                     <StyledIconButtonCart>
                       <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-                      <StyledNotificationIcon>{basketItems.length}</StyledNotificationIcon>
+                      {totalQuantity !== 0 ? (
+                        <StyledNotificationIcon>{totalQuantity}</StyledNotificationIcon>
+                      ) : null}
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>

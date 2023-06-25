@@ -1,9 +1,3 @@
-// export const categories = [
-//   { id: 1, value: 'Смартфоны', label: 'Смартфоны' },
-//   { id: 2, value: 'Ноутбуки и планшеты', label: 'Ноутбуки и планшеты' },
-//   { id: 3, value: 'Смарт-часы и браслеты', label: 'Смарт-часы и браслеты' }
-// ]
-
 /////////////////////For Smartphone////////////////
 export const subCategorySmartphones = [
   { id: 1, name: 'Apple', label: 'Apple' },

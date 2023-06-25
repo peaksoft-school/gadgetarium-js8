@@ -1,3 +1,5 @@
+type SnackbarHandler = (message: string, type: 'error' | 'success' | undefined) => void
+
 export enum UserRoles {
   ADMIN = 'ADMIN',
   USER = 'USER'
@@ -14,9 +16,9 @@ export type SignUpUser = {
 export type MailingListType = {
   name: string
   description: string
-  image: string | null
+  image: string | File
   dateOfStart: string
-
+  snackbar: SnackbarHandler
   dateOfFinish: string
 }
 
@@ -35,10 +37,8 @@ export interface BannerListType {
 }
 export type ImageUrlsType = string[]
 
-export type TypeOrderHistory = {
-  order_id: number
-  date: string
-  orderNumber: string
-  status: string
-  totalPrice: number
-}[]
+export type OrderPaginationType = {
+  currentPage: number
+  totalPages: number
+  countOfElements: number
+}

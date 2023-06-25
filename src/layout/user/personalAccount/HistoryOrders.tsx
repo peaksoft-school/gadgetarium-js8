@@ -5,6 +5,8 @@ import {
 } from '../../../api/personalAccount/history/HistoryService'
 import { useEffect, useState } from 'react'
 import { TypeOrderHistory } from '../../../utils/common/types'
+import { useNavigate } from 'react-router-dom'
+import { PATHS } from '../../../utils/constants/router/routerConsts'
 const StyledTr = styled('tr')(() => ({
   width: '65.625rem',
   padding: '.9375rem .625rem .5rem 0px',
@@ -55,6 +57,7 @@ const StyledTitle = styled('div')(() => ({
   paddingTop: '10px'
 }))
 const HistoryOrders = () => {
+  const navigate = useNavigate()
   const [orderHistory, setOrderHistory] = useState<TypeOrderHistory>([])
   const getOrderHistory = async () => {
     try {
@@ -96,15 +99,19 @@ const HistoryOrders = () => {
   return (
     <>
       <table>
+        <StyledTitle onClick={deleteAllOrder}>x Очистить список заказов</StyledTitle>
         <StyledBody>
           {orderHistory.map((item, index) => (
-            <StyledTr key={item.order_id}>
-              {/* <StyledTitle onClick={deleteAllOrder}>x Очистить список заказов</StyledTitle> */}
-              <StyledTd1>{item.date}</StyledTd1>
-              <StyledTd2>№ {item.orderNumber}</StyledTd2>
-              <StyledTd3>{translateWords()[index]}</StyledTd3>
-              <StyledTd4>{item.totalPrice} c</StyledTd4>
-            </StyledTr>
+            <>
+              <StyledTr key={item.order_id}>
+                <StyledTd1>{item.date}</StyledTd1>
+                <StyledTd2 onClick={() => navigate(PATHS.PERSONAL.detailsHistory)}>
+                  № {item.orderNumber}
+                </StyledTd2>
+                <StyledTd3>{translateWords()[index]}</StyledTd3>
+                <StyledTd4>{item.totalPrice} c</StyledTd4>
+              </StyledTr>
+            </>
           ))}
         </StyledBody>
       </table>

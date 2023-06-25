@@ -6,3 +6,6 @@ export const getOrderHistoryRequest = () => {
 export const deletetOrderHistoryByIdRequest = () => {
   return mainApi.delete(`api/order_history/delete`)
 }
+export const getOrderHistoryDetailsRequest = (categoryid: any) => {
+  return mainApi.get(`/api/order_history/${categoryid}`)
+}

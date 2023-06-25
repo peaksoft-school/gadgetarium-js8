@@ -10,7 +10,6 @@ import IconButtons from '../../UI/buttons/IconButtons'
 import TextWithEllipsis from './CardText'
 import ProductRating from './RatingProduct'
 import { StyledIconButtonCart } from '../header/Header'
-
 interface ProductType {
   id: number
   ellipseChildren?: string | React.ReactNode
@@ -20,10 +19,10 @@ interface ProductType {
   rating?: number
   newPrice?: number | string
   oldPrice?: number | string
-  basketOnClick?: () => void
+  basketOnClick?: (e: any) => void
   ellipsIconOnClick?: () => void
-  scaleIconOnClick?: () => void
-  heartIconOnClick?: () => void
+  scaleIconOnClick?: (e: any) => void
+  heartIconOnClick?: (e: any) => void
   image?: string
   quantityOfPeople?: number
   inComparisons: boolean
@@ -206,12 +205,8 @@ export const ProductCard = ({
               inComparisons ? <h1>Удалить из сравнения </h1> : <h1>Добавить в сравнения </h1>
             }
           >
-            <StyledIconButtonCart>
-              <StyledIconButtons
-                activeColor={inComparisons}
-                onClick={scaleIconOnClick}
-                icon={<ScaleIcon />}
-              />
+            <StyledIconButtonCart onClick={scaleIconOnClick}>
+              <StyledIconButtons activeColor={inComparisons} icon={<ScaleIcon />} />
             </StyledIconButtonCart>
           </StyledTippyForCatalog>
 
@@ -222,12 +217,8 @@ export const ProductCard = ({
             trigger="mouseenter"
             content={inFavorites ? <h1>Добавить в избранное</h1> : <h1>Удалить из избранного</h1>}
           >
-            <StyledIconButtonCart>
-              <StyledIconButtonHeart
-                activeColor={inFavorites}
-                onClick={heartIconOnClick}
-                icon={<HeartIcon />}
-              />
+            <StyledIconButtonCart onClick={heartIconOnClick}>
+              <StyledIconButtonHeart activeColor={inFavorites} icon={<HeartIcon />} />
             </StyledIconButtonCart>
           </StyledTippyForCatalog>
         </ContainerTwoIcons>

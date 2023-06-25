@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { MouseEvent, useEffect, useState } from 'react'
 import { ProductCard } from '../card/ProductCard'
 import { ReactComponent as LikeIcon } from '../../../assets/icons/userMainPageIcons/like.svg'
 import { Button, styled } from '@mui/material'
@@ -103,10 +103,12 @@ const MenuProduct = () => {
     })
   }
 
-  const addProductToBusket = (subProductId: number) => {
+  const addProductToBusket = (e: any, subProductId: number) => {
+    e.stopPropagation()
     dispatch(addNewProductToBusket({ id: subProductId, snackbar: snackbarHandler }))
   }
-  const productMovedToComparisonHandle = (subProductId: number, inComparisons: boolean) => {
+  const productMovedToComparisonHandle = (e: any, subProductId: number, inComparisons: boolean) => {
+    e.stopPropagation()
     const dataComparisons = {
       id: subProductId,
       isComparisons: !inComparisons,
@@ -118,7 +120,8 @@ const MenuProduct = () => {
     dispatch(addNewProductToComparison(dataComparisons))
   }
 
-  const addProductToFavourites = (subProductId: number, inFavorites: boolean) => {
+  const addProductToFavourites = (e: any, subProductId: number, inFavorites: boolean) => {
+    e.stopPropagation()
     const dataFavourite = {
       id: subProductId,
       isFavorites: !inFavorites,
@@ -175,13 +178,13 @@ const MenuProduct = () => {
                       : 0
                   }
                   oldPrice={`${product.price}c`}
-                  basketOnClick={() => addProductToBusket(product.subProductId)}
+                  basketOnClick={(e) => addProductToBusket(e, product.subProductId)}
                   ellipsIconOnClick={() => {}}
-                  scaleIconOnClick={() =>
-                    productMovedToComparisonHandle(product.subProductId, product.inComparisons)
+                  scaleIconOnClick={(e) =>
+                    productMovedToComparisonHandle(e, product.subProductId, product.inComparisons)
                   }
-                  heartIconOnClick={() =>
-                    addProductToFavourites(product.subProductId, product.inFavorites)
+                  heartIconOnClick={(e) =>
+                    addProductToFavourites(e, product.subProductId, product.inFavorites)
                   }
                   image={product.image}
                   quantityOfPeople={product.countOfReviews}
@@ -213,13 +216,13 @@ const MenuProduct = () => {
                   rating={product.rating}
                   newPrice={`${product.price}`}
                   oldPrice=""
-                  basketOnClick={() => addProductToBusket(product.subProductId)}
+                  basketOnClick={(e) => addProductToBusket(e, product.subProductId)}
                   ellipsIconOnClick={() => {}}
-                  scaleIconOnClick={() =>
-                    productMovedToComparisonHandle(product.subProductId, product.inComparisons)
+                  scaleIconOnClick={(e) =>
+                    productMovedToComparisonHandle(e, product.subProductId, product.inComparisons)
                   }
-                  heartIconOnClick={() =>
-                    addProductToFavourites(product.subProductId, product.inFavorites)
+                  heartIconOnClick={(e) =>
+                    addProductToFavourites(e, product.subProductId, product.inFavorites)
                   }
                   image={product.image}
                   quantityOfPeople={product.countOfReviews}
@@ -257,13 +260,13 @@ const MenuProduct = () => {
                       : 0
                   }
                   oldPrice={`${product.price}c`}
-                  basketOnClick={() => addProductToBusket(product.subProductId)}
+                  basketOnClick={(e) => addProductToBusket(e, product.subProductId)}
                   ellipsIconOnClick={() => {}}
-                  scaleIconOnClick={() =>
-                    productMovedToComparisonHandle(product.subProductId, product.inComparisons)
+                  scaleIconOnClick={(e) =>
+                    productMovedToComparisonHandle(e, product.subProductId, product.inComparisons)
                   }
-                  heartIconOnClick={() =>
-                    addProductToFavourites(product.subProductId, product.inFavorites)
+                  heartIconOnClick={(e) =>
+                    addProductToFavourites(e, product.subProductId, product.inFavorites)
                   }
                   image={product.image}
                   quantityOfPeople={product.countOfReviews}

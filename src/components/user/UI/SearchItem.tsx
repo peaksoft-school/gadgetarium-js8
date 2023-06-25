@@ -22,6 +22,7 @@ const Item = styled(Paper)(() => ({
 const StyledTableCellImage = styled(Box)(() => ({
   height: '50px',
   alignItems: 'center',
+  margin: ' 0 0 0 20px ',
   '& .image': {
     width: '100%',
     height: '80%',
@@ -34,14 +35,20 @@ const BoxStyled = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
+
   '& .product-name': {
     fontFamily: 'Inter',
     fontWeight: '600',
     fontSize: '16px'
   },
   '&:hover': {
-    background: '#f1f1f2'
+    background: '#f1f1f2',
+    cursor: 'pointer'
   }
+}))
+const StyledText = styled('p')(() => ({
+  color: 'red',
+  padding: '10px'
 }))
 const SearchItem = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -50,7 +57,6 @@ const SearchItem = () => {
   const [searchValue, setSearchValue] = useState('')
   const debouncedSearchTerm = useDebounce(searchValue, 2000)
   const { products } = useSelector((state: RootState) => state.search.data)
-
   const openModalHandler = () => {
     setOpenProductModal((prevState) => !prevState)
   }
@@ -80,34 +86,25 @@ const SearchItem = () => {
       <SearchInput
         value={searchValue}
         onChange={inputSearchHandler}
-        onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
-          e.preventDefault()
-          if (e.key === 'Enter') {
-            if (products.productCardResponses.length !== 1) {
-              navigate(`user/product/${products.productCardResponses[0].sub_product_id}`)
-            } else {
-              products.productCardResponses.find((product) => {
-                navigate(`/user/product/${product.sub_product_id}`)
-              })
-            }
-            setSearchValue('')
-          }
-        }}
         placeholder=" Поиск по каталогу магазина"
       />
       {openProductModal ? (
-        <Item className="item">
-          {products?.productCardResponses?.map((item) => (
-            <BoxStyled
-              key={item.sub_product_id}
-              onClick={() => chooseProductHandler(item.sub_product_id)}
-            >
-              <StyledTableCellImage className="flex-start">
-                <img src={item.image} alt="" className="image" />
-              </StyledTableCellImage>
-              <Typography className="product-name">{item.fullname}</Typography>
-            </BoxStyled>
-          ))}
+        <Item className="item" onMouseLeave={openModalHandler}>
+          {products.productCardResponses?.length === 0 ? (
+            <StyledText>Не найденно</StyledText>
+          ) : (
+            products?.productCardResponses?.map((item) => (
+              <BoxStyled
+                key={item.sub_product_id}
+                onClick={() => chooseProductHandler(item.sub_product_id)}
+              >
+                <StyledTableCellImage className="flex-start">
+                  <img src={item.image} alt="" className="image" />
+                </StyledTableCellImage>
+                <Typography className="product-name">{item.fullname}</Typography>
+              </BoxStyled>
+            ))
+          )}
         </Item>
       ) : null}
     </Stack>

@@ -31,6 +31,7 @@ export const PATHS = {
     not_found: '*'
   },
   PERSONAL: {
-    personalAccount: 'personalAccount'
+    personalAccount: 'personalAccount',
+    detailsHistory: '/detailsHistory'
   }
 }
