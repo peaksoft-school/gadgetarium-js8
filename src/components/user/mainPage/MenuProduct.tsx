@@ -268,6 +268,7 @@ const MenuProduct = () => {
           </div>
         </StyledCartContainer>
       ) : null}
+
       {recommendProduct.length ? (
         <StyledCartContainer>
           <StyledTitle>Мы рекомендуем</StyledTitle>
