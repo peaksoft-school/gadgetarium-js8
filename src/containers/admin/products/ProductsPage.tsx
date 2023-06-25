@@ -221,11 +221,7 @@ const ProductsPage = () => {
   }
 
   const openDiscountHandler = () => {
-    if (selectedIds.length === 0) {
-      setOpenDiscount(false)
-    } else {
-      setOpenDiscount(true)
-    }
+    setOpenDiscount((prevState) => !prevState)
   }
 
   const collectSelectedIds = (ids: number[]) => {
