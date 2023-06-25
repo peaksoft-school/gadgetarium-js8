@@ -3,6 +3,7 @@ import { OrderDataType } from './OrderInfoPage'
 import { NavLink } from 'react-router-dom'
 type Props = {
   getInfoOrder: OrderDataType | null
+  quantityProduct: number | null
 }
 const ContainerStyled = styled('div')(() => ({
   width: '100%',
@@ -107,7 +108,8 @@ const StyledDicountNumber = styled('p')(() => ({
   marginTop: '28px'
 }))
 const CardContainer = styled('div')(() => ({
-  width: '590px'
+  width: '590px',
+  marginTop: '21px'
 }))
 const StyledTotal = styled('p')(() => ({
   textAlign: 'right',
@@ -148,10 +150,11 @@ const StyledNumberOfOrder = styled('span')(() => ({
   fontWeight: 400,
   fontSize: '15px'
 }))
-const StyledText = styled('p')(() => ({
+const StyledText = styled('span')(() => ({
   fontWeight: 400,
   fontSize: '16px',
-  marginTop: '5px'
+  marginTop: '5px',
+  marginLeft: '4px'
 }))
 const StyledFirstTypography = styled(Typography)(() => ({
   fontFamily: 'Inter',
@@ -163,7 +166,7 @@ const StyledFirstTypography = styled(Typography)(() => ({
   borderBottom: '2px solid  #CDCDCD  ',
   paddingBottom: '18px'
 }))
-const OrderInfoItem = ({ getInfoOrder }: Props) => {
+const OrderInfoItem = ({ getInfoOrder, quantityProduct }: Props) => {
   return (
     <ContainerStyled>
       <StyledNav>
@@ -174,36 +177,39 @@ const OrderInfoItem = ({ getInfoOrder }: Props) => {
         <TypographyStyled variant="h5">Оплата заказа {getInfoOrder?.orderNumber}</TypographyStyled>
       </BoxStyled>
       <StyledGridContainer>
-        {getInfoOrder?.products.map((product) => {
-          return (
-            <CardContainer>
-              <Container>
-                <CardList>
-                  <List>Наименование:</List>
-                  <List>Кол-во товара:</List>
+        <div>
+          {getInfoOrder?.products.map((product) => {
+            return (
+              <CardContainer>
+                <Container>
+                  <CardList>
+                    <List>Наименование:</List>
 
-                  <List>
-                    <p>Общая сумма заказа:</p>
-                    <StyledDiscount>Скидка:{`${product.percentOfDiscount}%`}</StyledDiscount>
-                  </List>
-                  <List>Сумма скидки:</List>
-                </CardList>
-                <CardList>
-                  <li>{product.name}</li>
-                  <li>{getInfoOrder.quantity}</li>
-                  <li>{getInfoOrder.totalPrice.toFixed(2)}</li>
-                  <li>
-                    <StyledDicountNumber>{product.sumOfDiscount.toFixed(2)}</StyledDicountNumber>
-                  </li>
-                </CardList>
-              </Container>
-              <StyledTotal>
-                <StyledSpan>Итого:</StyledSpan>
-                {(getInfoOrder.totalPrice - product.sumOfDiscount).toFixed(2)}
-              </StyledTotal>
-            </CardContainer>
-          )
-        })}
+                    <List>
+                      <p>Общая сумма заказа:</p>
+                      <StyledDiscount>Скидка:{`${product.percentOfDiscount}%`}</StyledDiscount>
+                    </List>
+                    <List>Сумма скидки:</List>
+                  </CardList>
+                  <CardList>
+                    <li>{product.name}</li>
+
+                    <li>{getInfoOrder.totalPrice.toFixed(2)}</li>
+                    <li>
+                      <StyledDicountNumber>
+                        {product.sumOfDiscount ? product.sumOfDiscount.toFixed(2) : 0}
+                      </StyledDicountNumber>
+                    </li>
+                  </CardList>
+                </Container>
+                <StyledTotal>
+                  <StyledSpan>Итого:</StyledSpan>
+                  {(getInfoOrder.totalPrice - product.sumOfDiscount || 0).toFixed(2)}
+                </StyledTotal>
+              </CardContainer>
+            )
+          })}
+        </div>
         <InfoOrderContainer>
           <StyledFirstTypography>Информация о заказе</StyledFirstTypography>
           <StyledTypography>
@@ -212,6 +218,7 @@ const OrderInfoItem = ({ getInfoOrder }: Props) => {
           <StyledTypography>
             Состояние: <StyledNumberOfOrder>Завершено</StyledNumberOfOrder>
           </StyledTypography>
+          <StyledTypography>Кол-во товара: {quantityProduct}</StyledTypography>
           <StyledTypography>
             Контактный телефон:
             <StyledText>{getInfoOrder?.phoneNumber}</StyledText>

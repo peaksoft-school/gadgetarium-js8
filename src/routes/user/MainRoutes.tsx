@@ -12,6 +12,7 @@ import MainPage from '../../layout/user/main/MainPage'
 import BasketPage from '../../components/user/basket/BasketPage'
 import AboutStore from '../../layout/user/about/AboutStore'
 import { FavouritesPage } from '../../components/user/favourites/FavouritesPage'
+import { UserOrderPage } from '../../containers/user/order/UserOrderPage'
 
 const MainRoutes = () => {
   const role = useSelector((state: RootState) => state.auth.role)
@@ -32,9 +33,11 @@ const MainRoutes = () => {
 
         <Route path={PATHS.MAIN.favourites} element={<Outlet />}>
           <Route index element={<FavouritesPage />} />
-          <Route path={PATHS.MAIN.ordering} element={<p>OrderingPage</p>} />
         </Route>
-        <Route path={PATHS.MAIN.basket} element={<BasketPage />} />
+        <Route path={PATHS.MAIN.basket} element={<Outlet />}>
+          <Route index element={<BasketPage />} />
+          <Route path={PATHS.MAIN.ordering} element={<UserOrderPage />} />
+        </Route>
         <Route
           path={PATHS.MAIN.user}
           element={
