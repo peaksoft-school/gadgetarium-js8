@@ -187,7 +187,7 @@ const Footer = () => {
           </a>
         </div>
         <p>
-          © 2022 Gadgetarium. Интернет магазин <br /> Все права защищены.
+          © 2023 Gadgetarium. Интернет магазин <br /> Все права защищены.
         </p>
       </StyledThirdFooterBlock>
     </StyledFooter>

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { DiscountProduct } from '../../../components/user/mainPage/MenuProduct'
-import { getDiscountProduct, getNewProduct, getRecommendedProduct } from './getProduct.thunk'
+import { getDiscountProduct, getNewProduct, getRecommendedProduct } from './GetProduct.thunk'
 
 const initialState: {
   discount: DiscountProduct

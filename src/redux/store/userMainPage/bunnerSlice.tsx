@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getBunnerImg } from './getProduct.thunk'
+import { getBunnerImg } from './GetProduct.thunk'
 interface Image {
   banner: string
   id: number

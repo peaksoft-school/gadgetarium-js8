@@ -6,7 +6,7 @@ import {
 } from '../../../api/mainPage/AddProductToBusketService'
 import { getAllBasket } from '../basket/basket.thunk'
 import { AxiosError, isAxiosError } from 'axios'
-import { getDiscountProduct, getNewProduct, getRecommendedProduct } from './getProduct.thunk'
+import { getDiscountProduct, getNewProduct, getRecommendedProduct } from './GetProduct.thunk'
 
 export type SnackbarHandler = (message: string, type: 'error' | 'success' | undefined) => void
 

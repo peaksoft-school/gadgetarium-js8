@@ -23,7 +23,7 @@ export type AddProducts = {
   description: string
   subProducts: [
     {
-      colour: string
+      color: string
       characteristics: {
         additionalProp1: string
         additionalProp2: string
@@ -31,7 +31,7 @@ export type AddProducts = {
       }
       price: 0
       quantity: 1
-      images: [string, string]
+      images: File[]
     }
   ]
 }

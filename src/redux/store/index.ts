@@ -12,6 +12,9 @@ import { favouritesSlice } from './favourites/favourites.slice'
 import bannerSlice from './userMainPage/bunnerSlice'
 import { quantityBusketSlice } from './countProduct/countProductBusket.slice'
 import { quantityComparisonSlice } from './countProduct/countProductComparison.thunk'
+import { productsColorSlice } from './color/productColor.slice'
+import { compareProductsSlice } from './compare-products/compareProducts.slice'
+import { countCompareSlice } from './compare-products/count-compare/countCompare.slice'
 
 export const store = configureStore({
   reducer: {
@@ -28,7 +31,10 @@ export const store = configureStore({
     [favouritesSlice.name]: favouritesSlice.reducer,
     [bannerSlice.name]: bannerSlice.reducer,
     [quantityBusketSlice.name]: quantityBusketSlice.reducer,
-    [quantityComparisonSlice.name]: quantityComparisonSlice.reducer
+    [quantityComparisonSlice.name]: quantityComparisonSlice.reducer,
+    [productsColorSlice.name]: productsColorSlice.reducer,
+    [compareProductsSlice.name]: compareProductsSlice.reducer,
+    [countCompareSlice.name]: countCompareSlice.reducer
   }
 })
 

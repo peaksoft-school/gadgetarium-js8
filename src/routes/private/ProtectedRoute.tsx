@@ -12,8 +12,6 @@ const ProtectedRoute = ({
   isAuthenticated,
   fallback = '/login'
 }: ProtectedRouteProps) => {
-  // console.log('rolesPROTECTED', isAuthenticated)
-
   if (!isAuthenticated) {
     return <Navigate to={fallback} replace />
   }

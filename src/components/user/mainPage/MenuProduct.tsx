@@ -6,18 +6,18 @@ import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { useNavigate } from 'react-router-dom'
+import { incrementQuantityBusket } from '../../../redux/store/countProduct/countProductBusket.slice'
+import { incrementQuantityComparison } from '../../../redux/store/countProduct/countProductComparison.thunk'
 import {
   addNewProductToBusket,
   addNewProductToComparison,
   addNewProductToFavorite
-} from '../../../redux/store/userMainPage/mainPage.thunk'
+} from '../../../redux/store/userMainPage/MainPage.thunk'
 import {
   getDiscountProduct,
   getNewProduct,
   getRecommendedProduct
-} from '../../../redux/store/userMainPage/getProduct.thunk'
-import { incrementQuantityBusket } from '../../../redux/store/countProduct/countProductBusket.slice'
-import { incrementQuantityComparison } from '../../../redux/store/countProduct/countProductComparison.thunk'
+} from '../../../redux/store/userMainPage/GetProduct.thunk'
 
 export type DiscountProduct =
   | {

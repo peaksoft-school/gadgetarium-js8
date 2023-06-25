@@ -44,7 +44,6 @@ export const signUp = createAsyncThunk(
     try {
       const { data } = await signUpRequest(payload)
       const userData = data
-      console.log(userData, 'userData')
 
       localStorage.setItem(STORAGE_KEYS.AUTH, JSON.stringify(userData))
 

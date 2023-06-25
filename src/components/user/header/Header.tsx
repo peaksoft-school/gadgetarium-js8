@@ -13,8 +13,6 @@ import IconButtons from '../../UI/buttons/IconButtons'
 import Categories from '../../../components/UI/categories/Categories'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
 import { useCallback, useEffect } from 'react'
-import ReusableHoverModal from '../UI/ReusableHoverModal'
-import Tippy from '@tippyjs/react'
 import 'tippy.js/dist/tippy.css'
 import { categories } from '../../../utils/constants/categories'
 import { getAllBusketProductService } from '../../../api/mainPage/AddProductToBusketService'
@@ -25,6 +23,14 @@ import { AppDispatch, RootState } from '../../../redux/store'
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { favouriteActions } from '../../../redux/store/favourites/favourites.slice'
+import { Tooltip, TooltipProps, tooltipClasses } from '@mui/material'
+import BasketPreview from '../basket-preview/BasketPreview'
+import { getAllCompareProducts } from '../../../redux/store/compare-products/compareProducts.thunk'
+import { getFavourite } from '../../../redux/store/favourites/favourites.thunk'
+import Tippy from '@tippyjs/react'
+import ReusableHoverModal from '../UI/ReusableHoverModal'
+import ComparisonHoverModal from '../UI/modal/ComparisonHoverModal'
+import FavouritessonHoverModal from '../UI/modal/FavouritesHoverModal'
 
 const StyledNotificationIcon = styled('span')(() => ({
   display: 'flex',
@@ -47,7 +53,7 @@ const StyledNotificationIcon = styled('span')(() => ({
   backgroundColor: 'rgb(235, 0, 20)',
   color: 'rgb(255, 255, 255)',
   top: '0.5rem',
-  right: '0.4rem',
+  right: '0.5rem',
   transform: 'scale(1) translate(50%, -50%)',
   transformOrigin: '100% 0%',
   border: '2px solid #1A1A25'
@@ -77,7 +83,8 @@ const StyledList = styled('ul')(() => ({
   listStyle: 'none',
   display: 'flex',
   marginLeft: '3rem',
-  alignItems: 'center'
+  alignItems: 'center',
+  width: '40rem'
 }))
 
 const NumberContainer = styled('div')(() => ({
@@ -102,7 +109,7 @@ const StyledNavLink = styled(NavLink)(() => ({
   fontSize: '1rem',
   lineHeight: '140%',
   textAlign: 'center',
-  marginRight: '1.5rem',
+  marginRight: '2.5rem',
   '&:focus': {
     backgroundColor: '#858FA426',
     padding: '0.75rem 0.857rem',
@@ -232,12 +239,15 @@ export type QueryParams = {
 const Header: React.FC = () => {
   const { quantityBasket } = useSelector((state: RootState) => state.quantityBusket)
   const { quantityComparison } = useSelector((state: RootState) => state.quantityComparison)
+  const { products } = useSelector((state: RootState) => state.compareProducts)
+  const { items } = useSelector((state: RootState) => state.favourites)
 
   const dispatch = useDispatch<AppDispatch>()
   const [isScroll, setIsScroll] = useState(false)
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [basketItems, setBasketItems] = useState([])
+  const [queryParams] = useState({ categoryName: 'Смартфон' })
 
   const getAllBusket = async () => {
     try {
@@ -276,6 +286,18 @@ const Header: React.FC = () => {
       window.removeEventListener('scroll', scrollHandler)
     }
   }, [])
+  useEffect(() => {
+    dispatch(getAllCompareProducts(queryParams))
+  }, [])
+
+  useEffect(() => {
+    dispatch(getFavourite())
+  }, [])
+
+  const goToComparisonPage = () => {
+    navigate('comparison')
+  }
+
   return (
     <header style={{ position: isScroll ? 'fixed' : 'sticky', width: '100%', zIndex: '100' }}>
       {isScroll ? (
@@ -313,8 +335,10 @@ const Header: React.FC = () => {
                     }
                   >
                     <StyledIconButtonCart>
-                      <IconButtons icon={<UnionIcon />} />
-                      <StyledNotificationIcon>{quantityComparison}</StyledNotificationIcon>
+                      <IconButtons onClick={goToComparisonPage} icon={<UnionIcon />} />
+                      {quantityComparison !== 0 ? (
+                        <StyledNotificationIcon>{quantityComparison}</StyledNotificationIcon>
+                      ) : null}
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -327,13 +351,13 @@ const Header: React.FC = () => {
                     delay={100}
                     trigger="mouseenter"
                     content={
-                      <ReusableHoverModal path="/favourites" basketItems={basketItems}>
+                      <FavouritessonHoverModal path={PATHS.MAIN.faq} basketItems={items}>
                         Перейти в избранное
-                      </ReusableHoverModal>
+                      </FavouritessonHoverModal>
                     }
                   >
                     <StyledIconButtonCart>
-                      <IconButtons icon={<LikeIcon />} onClick={goToFavouritesHandler} />
+                      <IconButtons onClick={goToFavouritesHandler} icon={<LikeIcon />} />
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -344,9 +368,9 @@ const Header: React.FC = () => {
                     delay={200}
                     trigger="mouseenter"
                     content={
-                      <ReusableHoverModal path={PATHS.MAIN.faq} basketItems={basketItems}>
+                      <FavouritessonHoverModal path={PATHS.MAIN.faq} basketItems={items}>
                         Перейти в избранное
-                      </ReusableHoverModal>
+                      </FavouritessonHoverModal>
                     }
                   >
                     <StyledIconButtonCart>
@@ -370,7 +394,9 @@ const Header: React.FC = () => {
                   >
                     <StyledIconButtonCart>
                       <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-                      <StyledNotificationIcon>{quantityBasket}</StyledNotificationIcon>
+                      {quantityBasket !== 0 ? (
+                        <StyledNotificationIcon>{quantityBasket}</StyledNotificationIcon>
+                      ) : null}
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -451,14 +477,16 @@ const Header: React.FC = () => {
                     delay={100}
                     trigger="mouseenter"
                     content={
-                      <ReusableHoverModal path={PATHS.MAIN.comparison} basketItems={basketItems}>
+                      <ComparisonHoverModal path={PATHS.MAIN.comparison} basketItems={products}>
                         Сравнить
-                      </ReusableHoverModal>
+                      </ComparisonHoverModal>
                     }
                   >
                     <StyledIconButtonCart>
-                      <IconButtons icon={<UnionIcon />} />
-                      <StyledNotificationIcon>{quantityComparison}</StyledNotificationIcon>
+                      <IconButtons onClick={goToComparisonPage} icon={<UnionIcon />} />
+                      {quantityComparison !== 0 ? (
+                        <StyledNotificationIcon>{quantityComparison}</StyledNotificationIcon>
+                      ) : null}
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -471,13 +499,13 @@ const Header: React.FC = () => {
                     delay={100}
                     trigger="mouseenter"
                     content={
-                      <ReusableHoverModal path="/favourites" basketItems={basketItems}>
+                      <FavouritessonHoverModal path={PATHS.MAIN.faq} basketItems={items}>
                         Перейти в избранное
-                      </ReusableHoverModal>
+                      </FavouritessonHoverModal>
                     }
                   >
                     <StyledIconButtonCart>
-                      <IconButtons icon={<LikeIcon />} />
+                      <IconButtons onClick={goToFavouritesHandler} icon={<LikeIcon />} />
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>
@@ -488,9 +516,9 @@ const Header: React.FC = () => {
                     delay={200}
                     trigger="mouseenter"
                     content={
-                      <ReusableHoverModal path="/favourites" basketItems={basketItems}>
+                      <FavouritessonHoverModal path={PATHS.MAIN.faq} basketItems={items}>
                         Перейти в избранное
-                      </ReusableHoverModal>
+                      </FavouritessonHoverModal>
                     }
                   >
                     <StyledIconButtonCart>
@@ -514,7 +542,9 @@ const Header: React.FC = () => {
                   >
                     <StyledIconButtonCart>
                       <IconButtons icon={<BasketIcon />} onClick={goToBasketHandler} />
-                      <StyledNotificationIcon>{quantityBasket}</StyledNotificationIcon>
+                      {quantityBasket !== 0 ? (
+                        <StyledNotificationIcon>{quantityBasket}</StyledNotificationIcon>
+                      ) : null}
                     </StyledIconButtonCart>
                   </StyledTippy>
                 </span>

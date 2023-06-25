@@ -59,32 +59,20 @@ const StyledIconButtons = styled(IconButtons)(() => ({
 type HoveredBasketProps = {
   title: string
   price: number
-  img: string
-  description: string
-  removeBasketPreviewItem: () => void
+  img: string | undefined
 }
 
-const BasketPreviewItem = ({
-  title,
-  price,
-  img,
-  description,
-  removeBasketPreviewItem
-}: HoveredBasketProps) => {
+const BasketPreviewItem = ({ title, price, img }: HoveredBasketProps) => {
   return (
     <div>
       <ProductContainer>
         <ProductInfoContainer>
           <StyledImage src={img} alt="phone" />
-          <StyledDescription>
-            {title}
-            <br />
-            {description}
-          </StyledDescription>
+          <StyledDescription>{title}</StyledDescription>
         </ProductInfoContainer>
         <PriceAndRemoveIconCont>
           <StyledPrice>{price}c</StyledPrice>
-          <StyledIconButtons onClick={removeBasketPreviewItem} icon={<RemoveIcon />} />
+          <StyledIconButtons icon={<RemoveIcon />} />
         </PriceAndRemoveIconCont>
       </ProductContainer>
       <StyledDivider />

@@ -15,6 +15,7 @@ import { useBanner } from '../../../../../../hooks/banner/useBanner'
 import { addProductActions } from '../../../../../../redux/store/addProduct/AddProduct'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../../../redux/store'
+import { getAllProductsColors } from '../../../../../../redux/store/color/productColor.thunk'
 
 type Props = {
   selectedValueFirst: string | number
@@ -39,28 +40,38 @@ export const StyledInputPalette = styled('input')(() => ({
 const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const { products } = useSelector((state: RootState) => state.addNewProduct)
+  const { colors } = useSelector((state: RootState) => state.productsColor)
+
   const [memorySize, setMemorySize] = useState('')
   const [ram, setRam] = useState('')
-  const [simCart, setSIMcart] = useState('')
+  const [simCard, setSIMcard] = useState('')
 
   const { imagesClassname, bannerImages, handleImageUpload, setBannerImages, deleteImage } =
     useBanner()
 
-  const [color, setColor] = useState<string>('')
+  const [colour, setColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
 
   useEffect(() => {
     dispatch(
-      addProductActions.addSubProduct({ bannerImages, colour: color, memorySize, ram, simCart })
+      addProductActions.addSubProduct({
+        colour: colour,
+        images: bannerImages,
+        characteristics: {
+          память: memorySize,
+          'Оперативная память': ram,
+          'Кол-во SIM-карт': simCard
+        }
+      })
     )
-  }, [memorySize, bannerImages, color, ram, simCart])
+  }, [memorySize, bannerImages, colour, ram, simCard])
 
   useEffect(() => {
     setBannerImages([])
     setColor('')
     setMemorySize('')
     setRam('')
-    setSIMcart('')
+    setSIMcard('')
   }, [products])
 
   const changeOptions = () => {
@@ -71,8 +82,8 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
     }
   }
 
-  const colorPickerHandler = (colorResult: ColorResult | any) => {
-    setColor(colorResult.hex)
+  const colorPickerHandler = (colorResult: string) => {
+    setColor(colorResult)
   }
   const openColorHandler = () => {
     setOpenColorPicker((prevState) => !prevState)
@@ -83,16 +94,21 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
   const RAMHandler = (event: SelectChangeEvent<typeof ram>) => {
     setRam(event.target.value)
   }
-  const SimCartHandler = (event: SelectChangeEvent<typeof simCart>) => {
-    setSIMcart(event.target.value)
+  const SimCardHandler = (event: SelectChangeEvent<typeof simCard>) => {
+    setSIMcard(event.target.value)
   }
+
+  useEffect(() => {
+    dispatch(getAllProductsColors())
+  }, [])
 
   return (
     <>
       <StyledInputContainer>
         <StyledFormLable htmlFor="Основной цвет">Основной цвет</StyledFormLable>
         <ReusableColorPicker
-          color={color}
+          colors={colors}
+          colour={colour}
           colorPickerHandler={colorPickerHandler}
           openColorHandler={openColorHandler}
           openColorPicker={openColorPicker}
@@ -109,11 +125,11 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
           options={changeOptions().item1}
           value={memorySize}
           onChange={memorySizeHandler}
+          getOptionValue={(option) => option}
         />
       </StyledInputContainer>
       <StyledInputContainer>
         <StyledFormLable htmlFor="Оперативная память">Оперативная память</StyledFormLable>
-
         <Select
           id="Оперативная память"
           name="Оперативная память"
@@ -121,6 +137,7 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
           options={changeOptions().item2}
           value={ram}
           onChange={RAMHandler}
+          getOptionValue={(option) => option}
         />
       </StyledInputContainer>
       <StyledInputContainer>
@@ -131,8 +148,9 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
           name="Выберите категорию *"
           placeholder="Выберите SIM-карты"
           options={changeOptions().item3}
-          value={simCart}
-          onChange={SimCartHandler}
+          value={simCard}
+          onChange={SimCardHandler}
+          getOptionValue={(option) => option}
         />
       </StyledInputContainer>
       <StyledInputContainer>

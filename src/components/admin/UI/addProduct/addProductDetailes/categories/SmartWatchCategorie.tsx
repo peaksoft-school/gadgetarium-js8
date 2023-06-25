@@ -8,14 +8,16 @@ import { additionalProp2 } from '../../../../../../utils/constants/optionsCatego
 import ReusableColorPicker from '../../../../ReusableColorPicker'
 import { RadioButton } from '../../../../../UI/RadioButton'
 import ImagePickerAddProduct from '../../ImagePicker'
-import { useBanner } from '../../../../../../hooks/banner/useBanner'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../../../redux/store'
 import { addProductActions } from '../../../../../../redux/store/addProduct/AddProduct'
+import { useBanner } from '../../../../../../hooks/banner/useBanner'
+import { getAllProductsColors } from '../../../../../../redux/store/color/productColor.thunk'
 
 const SmartWatchCategorie = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { products } = useSelector((state: RootState) => state.addNewProduct)
+  const { colors } = useSelector((state: RootState) => state.productsColor)
 
   const [memory1, setMemory1] = useState('')
   const [material, setMaterial] = useState('')
@@ -26,30 +28,42 @@ const SmartWatchCategorie = () => {
   const [waterproof, setWaterproof] = useState<string>('')
   const [wireless, setWireless] = useState('')
   const [shape, setShape] = useState('')
-  const { imagesClassname, bannerImages, handleImageUpload, setBannerImages, deleteImage } =
-    useBanner()
+  const {
+    imagesClassname,
+    bannerImages,
+    handleImageUpload,
+    setBannerImages,
+    deleteImage,
+    postRequestBanner
+  } = useBanner()
 
-  const [colorSmartWatch, setSmartWatchColor] = useState<string>('')
+  const [colour, setSmartWatchColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
+
+  useEffect(() => {
+    dispatch(getAllProductsColors())
+  }, [])
 
   useEffect(() => {
     dispatch(
       addProductActions.addSubProduct({
-        shape,
-        colorSmartWatch,
-        memory1,
-        material,
-        size,
-        gender,
-        waterproof,
-        bannerImages,
-        size2,
-        display,
-        wireless
+        characteristics: {
+          память: shape,
+          'Материал браслета/ремешка': memory1,
+          'Материал корпуса': material,
+          'Размер смарт часов': size,
+          Пол: gender,
+          Водонепрницаемость: waterproof,
+          'Диагональ дисплея': size2,
+          'Форма корпуса': display,
+          'Беспроводные интерфейсы': wireless
+        },
+        images: bannerImages,
+        colour
       })
     )
   }, [
-    colorSmartWatch,
+    colour,
     memory1,
     material,
     size,
@@ -104,8 +118,8 @@ const SmartWatchCategorie = () => {
     setShape(event.target.value)
   }
 
-  const colorPickerHandler = (colorResult: ColorResult | any) => {
-    setSmartWatchColor(colorResult.hex)
+  const colorPickerHandler = (colorResult: string) => {
+    setSmartWatchColor(colorResult)
   }
   const openColorHandler = () => {
     setOpenColorPicker((prevState) => !prevState)
@@ -116,7 +130,8 @@ const SmartWatchCategorie = () => {
       <StyledInputContainer>
         <StyledFormLable htmlFor="Основной цвет">Основной цвет</StyledFormLable>
         <ReusableColorPicker
-          color={colorSmartWatch}
+          colors={colors}
+          colour={colour}
           colorPickerHandler={colorPickerHandler}
           openColorHandler={openColorHandler}
           openColorPicker={openColorPicker}

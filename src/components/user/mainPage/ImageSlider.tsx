@@ -3,7 +3,7 @@ import Slider from 'react-slick'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
-import { getBunnerImg } from '../../../redux/store/userMainPage/getProduct.thunk'
+import { getBunnerImg } from '../../../redux/store/userMainPage/GetProduct.thunk'
 import Loading from '../../UI/loading/Loading'
 
 const StyledWrapper = styled('section')(() => ({

@@ -2,6 +2,7 @@ export type Column<T> = {
   header: string | string[]
   key: string
   width?: string | number
+  minWidth?: string | number
   index?: boolean
   cell?: string
   style?: string

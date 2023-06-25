@@ -115,8 +115,6 @@ const SignInModal = ({ open, onClose, feedback = false, hideBackdrop = false }: 
   })
 
   const submitHandler = (values: FormSchema) => {
-    // console.log(values)
-
     dispatch(signIn(values))
       .unwrap()
       .then(() => navigate('/'))

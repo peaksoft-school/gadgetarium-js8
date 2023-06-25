@@ -7,7 +7,7 @@ const MainContainer = styled('div')(() => ({
   position: 'relative',
   width: '32.875rem',
   height: '100%',
-  margin: '0 auto',
+  marginLeft: '2.6rem',
   background: '#FFFFFF',
   boxShadow: '0rem 0.625rem 1.875rem rgba(133, 143, 164, 0.1)',
   borderRadius: '5px'
@@ -50,45 +50,35 @@ const StyledButton = styled(Button)(() => ({
   }
 }))
 
-interface Product {
-  id: string
-  img: string
-  title: string
-  description: string
-  price: number
+type BasketPreviewProps<T extends { img?: string; name: string; price: number; image?: string }> = {
+  productData: T[]
+  childrenn: string
+  totalAmount?: number
+  navigateHandler: () => void
 }
 
-interface BasketPreviewProps {
-  productData: Product[]
-  totalPrice: number
-  orderRegistrationHandler: () => void
-  removeBasketPreviewItem: () => void
-}
-
-const BasketPreview: React.FC<BasketPreviewProps> = ({
+const BasketPreview = <T extends { img?: string; name: string; price: number; image?: string }>({
   productData,
-  totalPrice,
-  orderRegistrationHandler,
-  removeBasketPreviewItem
-}) => {
+  childrenn,
+  totalAmount,
+  navigateHandler
+}: BasketPreviewProps<T>) => {
   return (
     <MainContainer>
       <StyledTriangle />
       {productData.map((data) => {
         return (
           <BasketPreviewItem
-            removeBasketPreviewItem={removeBasketPreviewItem}
-            description={data.description}
-            img={data.img}
-            title={data.title}
+            img={data.img || data.image}
+            title={data.name}
             price={data.price}
-            key={data.id}
+            key={data.name}
           />
         )
       })}
       <BottomContainer>
-        <StyledButton onClick={orderRegistrationHandler}>Оформить заказ</StyledButton>
-        <TotalAmount>Итого {totalPrice}</TotalAmount>
+        <StyledButton onClick={navigateHandler}>{childrenn}</StyledButton>
+        {totalAmount ? <TotalAmount>Итого {totalAmount}</TotalAmount> : null}
       </BottomContainer>
     </MainContainer>
   )

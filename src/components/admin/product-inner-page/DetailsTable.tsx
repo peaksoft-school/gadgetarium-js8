@@ -80,7 +80,7 @@ const DetailsTable = <T,>({
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [hoveredId, setHoveredId] = useState<number | null>(null)
   const [isOpen, setOpen] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('Error')
+  const [errorMessage] = useState('Error')
   const { paginate } = useClientSidePagination()
 
   const handleSelect = (id: number) => {
@@ -100,6 +100,7 @@ const DetailsTable = <T,>({
     getSelectedIds(selectedIds)
   }, [selectedIds])
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderCharacteristics = (charsObj: any): React.ReactNode => {
     if (!tableCharacteristicHeaders.length) {
       return null

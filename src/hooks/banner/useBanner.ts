@@ -24,14 +24,7 @@ export const useBanner = () => {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
-      const reader = new FileReader()
-
-      reader.onload = () => {
-        const imageUrl = reader.result as string
-        setBannerImages((prevState) => [...prevState, imageUrl])
-      }
-      event.target.value = ''
-      reader.readAsDataURL(file)
+      setBannerImages((prevState) => [...prevState, file])
     }
   }
 
