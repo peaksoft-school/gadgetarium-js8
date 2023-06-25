@@ -172,7 +172,7 @@ const Basket = ({ basketData }: { basketData: InitType }) => {
     }
   }
   const goToCheckoutHandler = () => {
-    navigate('checkout')
+    navigate('ordering')
   }
   return (
     <Stack>
