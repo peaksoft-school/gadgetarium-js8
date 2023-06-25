@@ -4,6 +4,8 @@ import { ReactComponent as Mail } from '../../../assets/icons/footer-icons/mail_
 import { ReactComponent as Location } from '../../../assets/icons/footer-icons/location_icon.svg'
 import { ReactComponent as Logo } from '../../../assets/images/logo/logo.svg'
 import { styled } from '@mui/material'
+import { mailingSubcribe } from '../../../api/mail/mailingService'
+import { useState } from 'react'
 
 const StyledFooter = styled('footer')(() => ({
   backgroundColor: '#1A1A25',
@@ -98,6 +100,14 @@ const StyledInfoBlockSpan = styled('span')(() => ({
 }))
 
 const Footer = () => {
+  const [mailingAccount, setMailingAccound] = useState<string>('')
+  const mailingHandler = async () => {
+    const data = { userEmail: mailingAccount }
+
+    await mailingSubcribe(data)
+    setMailingAccound('')
+  }
+
   return (
     <StyledFooter>
       <StyledFirstFooterBlock>
@@ -156,8 +166,13 @@ const Footer = () => {
 
         <StyledSecondFooterBlock>
           <StyledBlockName>Расскажем об акциях и скидках</StyledBlockName>
-          <StyledInput placeholder="Email" type="email" />
-          <StyledButton>Подпиcаться</StyledButton>
+          <StyledInput
+            placeholder="Email"
+            type="email"
+            value={mailingAccount}
+            onChange={(e) => setMailingAccound(e.target.value)}
+          />
+          <StyledButton onClick={mailingHandler}>Подпиcаться</StyledButton>
           <p style={{ color: '#FFF' }}>
             Нажимая на кнопку «подписаться» Вы соглашаетесь на обработку персональных данных
           </p>
@@ -187,7 +202,7 @@ const Footer = () => {
           </a>
         </div>
         <p>
-          © 2022 Gadgetarium. Интернет магазин <br /> Все права защищены.
+          © 2023 Gadgetarium. Интернет магазин <br /> Все права защищены.
         </p>
       </StyledThirdFooterBlock>
     </StyledFooter>

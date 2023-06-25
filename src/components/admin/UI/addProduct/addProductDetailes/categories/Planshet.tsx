@@ -18,6 +18,7 @@ import { useBanner } from '../../../../../../hooks/banner/useBanner'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../../../../redux/store'
 import { addProductActions } from '../../../../../../redux/store/addProduct/AddProduct'
+import { getAllProductsColors } from '../../../../../../redux/store/color/productColor.thunk'
 
 type Props = {
   selectedValueFirst: string | number
@@ -42,6 +43,7 @@ export const StyledInputPalette = styled('input')(() => ({
 const CreatePlanshetCategorie = ({ selectedValueFirst }: Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const { products } = useSelector((state: RootState) => state.addNewProduct)
+  const { colors } = useSelector((state: RootState) => state.productsColor)
 
   const [additionalProp1, setAdditionalProp1] = useState('')
   const [additionalProp2, setAdditionalProp2] = useState('')
@@ -50,19 +52,21 @@ const CreatePlanshetCategorie = ({ selectedValueFirst }: Props) => {
   const { imagesClassname, bannerImages, handleImageUpload, deleteImage, setBannerImages } =
     useBanner()
 
-  const [colorPlanshet, setPlanshetColor] = useState<string>('')
+  const [colour, setPlanshetColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
   useEffect(() => {
     dispatch(
       addProductActions.addSubProduct({
-        additionalProp3,
-        additionalProp2,
-        bannerImages,
-        colorPlanshet,
-        additionalProp1
+        images: bannerImages,
+        characteristics: {
+          память: additionalProp3,
+          'Оперативная память': additionalProp2,
+          'Разрешение экрана': additionalProp1
+        },
+        colour
       })
     )
-  }, [additionalProp3, bannerImages, colorPlanshet, additionalProp1, additionalProp2])
+  }, [additionalProp3, bannerImages, colour, additionalProp1, additionalProp2])
 
   useEffect(() => {
     setBannerImages([])
@@ -97,19 +101,25 @@ const CreatePlanshetCategorie = ({ selectedValueFirst }: Props) => {
     setAdditionalProp1(event.target.value)
   }
 
-  const colorPickerHandler = (colorResult: ColorResult | any) => {
-    setPlanshetColor(colorResult.hex)
+  const colorPickerHandler = (colorResult: string) => {
+    setPlanshetColor(colorResult)
   }
   const openColorHandler = () => {
     setOpenColorPicker((prevState) => !prevState)
   }
+
+  useEffect(() => {
+    dispatch(getAllProductsColors())
+  }, [])
+
   return (
     <>
       <StyledInputContainer>
         <StyledFormLable htmlFor="Основной цвет">Основной цвет</StyledFormLable>
 
         <ReusableColorPicker
-          color={colorPlanshet}
+          colors={colors}
+          colour={colour}
           colorPickerHandler={colorPickerHandler}
           openColorHandler={openColorHandler}
           openColorPicker={openColorPicker}

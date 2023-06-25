@@ -7,6 +7,7 @@ import {
 import { getAllBasket } from '../basket/basket.thunk'
 import { AxiosError, isAxiosError } from 'axios'
 import { getDiscountProduct, getNewProduct, getRecommendedProduct } from './GetProduct.thunk'
+
 export type SnackbarHandler = (message: string, type: 'error' | 'success' | undefined) => void
 
 export const addNewProductToBusket = createAsyncThunk(
@@ -18,7 +19,7 @@ export const addNewProductToBusket = createAsyncThunk(
       dispatch(getAllBasket())
         .unwrap()
         .then(() => {
-          payload.snackbar('Товар успешно добавлен в избранное!', 'success')
+          payload.snackbar('Товар успешно добавлен в корзину !', 'success')
         })
         .catch((e) => {
           isRejectedWithValue(e)

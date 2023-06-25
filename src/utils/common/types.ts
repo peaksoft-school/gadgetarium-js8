@@ -35,7 +35,7 @@ export type Column<T> = {
 export interface BannerListType {
   bannerList: ImageUrlsType
 }
-export type ImageUrlsType = string[]
+export type ImageUrlsType = File[]
 
 export type OrderPaginationType = {
   currentPage: number

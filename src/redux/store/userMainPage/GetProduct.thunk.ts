@@ -5,7 +5,7 @@ import {
   getRecommendedProductService
 } from '../../../api/mainPage/getProductsService'
 import { AxiosError, isAxiosError } from 'axios'
-import { getOrderHistoryDetailsRequest } from '../../../api/personalAccount/history/HistoryService'
+import { getBannerImagesService } from '../../../api/mainPage/getBannerService'
 
 export const getDiscountProduct = createAsyncThunk(
   'discountProduct/getDiscountProduct',
@@ -62,11 +62,12 @@ export const getRecommendedProduct = createAsyncThunk(
     }
   }
 )
-export const getHistoryOrderDetails = createAsyncThunk(
-  'historyOrderDitails/getHistoryOrderDetails',
-  async (orderId: number, { rejectWithValue }) => {
+
+export const getBunnerImg = createAsyncThunk(
+  'bunnerImg/getBunnerImg',
+  async (_, { rejectWithValue }) => {
     try {
-      const { data } = await getOrderHistoryDetailsRequest(orderId)
+      const { data } = await getBannerImagesService()
       return data
     } catch (e) {
       if (isAxiosError(e)) {

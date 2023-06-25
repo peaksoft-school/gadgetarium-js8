@@ -4,7 +4,6 @@ import {
   ProductIdRequestType,
   ProductReviewsResquestType,
   ReviewType,
-  getProductDocumentPDFByIdRequest,
   getProductReviewsByIdRequest
 } from '../../../api/product-id/product_idService'
 import { ReactComponent as DeleteIcon } from '../../../assets/icons/product-inner-page-icons/delete-icon.svg'
@@ -404,7 +403,7 @@ function a11yProps(index: number) {
 const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPropType) => {
   const [value, setValue] = useState(0)
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [pdfLink, setPdfLink] = useState('')
+  const [pdfLink] = useState('')
   const [reviewRequestPage, setReviewRequestPage] = useState(3)
 
   const [reviewsRating, setReviewsRating] = useState<ProductReviewsRatingResponseType>({
@@ -443,7 +442,6 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
     subProductId
   } = product
 
-  // console.log(subProductId)
   let productWithDiscount = price
   if (percentOfDiscount > 0) {
     productWithDiscount = (price / 100) * (100 - percentOfDiscount)
@@ -516,26 +514,26 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
     }
   }
 
-  const getProductDocumentPDF = async (id: number) => {
-    try {
-      const { data } = await getProductDocumentPDFByIdRequest(id)
+  // const getProductDocumentPDF = async (id: number) => {
+  //   try {
+  //     const { data } = await getProductDocumentPDFByIdRequest(id)
 
-      setPdfLink(data)
-    } catch (e) {
-      if (isAxiosError(e)) {
-        return snackbarHanler({
-          message: e.response?.data.message,
-          linkText: '',
-          type: 'error'
-        })
-      }
-      return snackbarHanler({
-        message: 'Что-то пошло не так',
-        linkText: '',
-        type: 'error'
-      })
-    }
-  }
+  //     setPdfLink(data)
+  //   } catch (e) {
+  //     if (isAxiosError(e)) {
+  //       return snackbarHanler({
+  //         message: e.response?.data.message,
+  //         linkText: '',
+  //         type: 'error'
+  //       })
+  //     }
+  //     return snackbarHanler({
+  //       message: 'Что-то пошло не так',
+  //       linkText: '',
+  //       type: 'error'
+  //     })
+  //   }
+  // }
 
   // const handleDownload = () => {
   //   const link = document.createElement('a')
@@ -558,7 +556,7 @@ const ProductInfo = ({ product, getOneProduct, deleteSubProductById }: ProductPr
         link.click()
         URL.revokeObjectURL(pdflink)
       })
-      .catch((error) => console.log(error))
+    // .catch((error) => console.log(error))
   }
 
   return (

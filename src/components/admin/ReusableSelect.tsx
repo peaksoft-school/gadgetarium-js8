@@ -26,6 +26,7 @@ type SelectProps = {
   placeholder: string
   name: string
   id: string
+  getOptionValue?: (option: Option) => any
 }
 
 export const StyledOption = styled(MenuItem)(() => ({
@@ -42,8 +43,12 @@ export const StyledOption = styled(MenuItem)(() => ({
   }
 }))
 export const StyledSelect = styled(Select)(() => ({
-  '&.MuiSelect-outlined': {
-    padding: '0px'
+  '.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input': {
+    padding: '8px 14px !important'
+  },
+
+  '& .MuiOutlinedInput-notchedOutline': {
+    border: '.125rem solid #F7F7F7 !important'
   },
 
   border: ' .0625rem solid #CDCDCD',
@@ -57,7 +62,7 @@ export const StyledSelect = styled(Select)(() => ({
   margin: '.3125rem',
 
   '&:hover': {
-    border: '.125rem solid #0a0a0a',
+    border: '0.5px solid #CB11AB',
     background: '#F4F4F4',
     color: '#292929',
     path: {
@@ -65,7 +70,7 @@ export const StyledSelect = styled(Select)(() => ({
     }
   },
   '&:focus': {
-    border: '.125rem solid #0a0a0a',
+    border: '.125rem solid #CB11AB',
     background: '#F4F4F4',
     color: '#292929'
   },
@@ -82,16 +87,21 @@ export const ReusableSelect: React.FC<SelectProps> = ({
   value,
   onChange,
   placeholder,
-  name
+  name,
+  getOptionValue
 }) => {
   return (
     <FormControl>
-      <StyledSelect id={id} name={name} value={value} onChange={onChange} displayEmpty>
-        <StyledOption value="" disabled sx={{ display: 'none' }}>
+      <StyledSelect required id={id} name={name} value={value} onChange={onChange} displayEmpty>
+        <StyledOption aria-required value="" disabled sx={{ display: 'none' }}>
           {placeholder}
         </StyledOption>
-        {options.map((option) => (
-          <StyledOption key={option.id} value={option.id}>
+        {options.map((option: any) => (
+          <StyledOption
+            aria-required
+            key={option.id}
+            value={getOptionValue ? getOptionValue(option.name) : option.id}
+          >
             {option.name}
           </StyledOption>
         ))}

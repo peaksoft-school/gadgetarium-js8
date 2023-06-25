@@ -1,104 +1,82 @@
-import React, { useEffect, useState } from 'react'
+import { Typography, styled } from '@mui/material'
+import Slider from 'react-slick'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../redux/store'
+import { getBunnerImg } from '../../../redux/store/userMainPage/GetProduct.thunk'
+import Loading from '../../UI/loading/Loading'
 
-import 'react-slideshow-image/dist/styles.css'
-import { Slide } from 'react-slideshow-image'
-import { getBannerImagesService } from '../../../api/mainPage/getBannerService'
-import { styled } from '@mui/material'
-
-interface Image {
-  banner: string
-  id: number
-}
-
-const divStyle = {}
-
-const StyledText = styled('div')(() => ({
-  fontSize: '20px',
-  background: 'none',
-  padding: '90px 130px',
-  p: {
-    width: ' 185px',
-    height: '70px',
-
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '900',
-    fontSize: '24px',
-    lineHeight: ' 110%',
-
-    textTransform: 'uppercase',
-
-    color: '#CB11AB',
-
-    flex: 'none',
-    order: '0',
-    flexGrow: '0'
-  },
-  h1: {
-    width: ' 32rem',
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '900',
-    fontSize: '3.125rem',
-    lineHeight: ' 120%',
-
-    textTransform: 'uppercase',
-
-    color: '#323236'
-  },
-  h2: {
-    width: ' 34rem',
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '400',
-    fontSize: '3.125rem',
-    lineHeight: ' 120%',
-
-    textTransform: 'uppercase',
-
-    color: '#58585b'
-  }
-}))
-
-const StyledSlider = styled(Slide)(() => ({
+const StyledWrapper = styled('section')(() => ({
+  paddingTop: '15px',
   width: '100%',
-  height: '31.25rem'
-}))
-const StyledContainer = styled('div')(() => ({
-  padding: '1.875rem 0 3.75rem'
-}))
-const ImageSlider = () => {
-  const [images, setImages] = useState<Image[]>([])
+  height: '550px',
+  background: '#E9EAEF',
 
-  const getImages = async () => {
-    try {
-      const { data } = await getBannerImagesService()
-      setImages(data)
-    } catch (error) {}
+  '.slick-dots li.slick-active button:before': {
+    color: '#CB11AB',
+    fontSize: '14px'
+  },
+  '.slick-dots li button:before': {
+    color: '#CB11AB',
+    fontSize: '8px'
   }
+}))
+
+const WrapperStyled = styled('div')(() => ({
+  width: '100%',
+  height: '550px',
+  position: 'relative',
+  '.container': {
+    width: '500px',
+    position: 'absolute',
+    left: '100px'
+  }
+}))
+const StyledImg = styled('img')(() => ({
+  height: '100%',
+  width: '100%',
+  mixBlendMode: 'color-burn',
+  backgroundPosition: 'center',
+  objectFit: 'fill'
+}))
+
+const Banner = () => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 1000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: false
+  }
+
+  const { banners, isLoading, message } = useSelector((state: RootState) => state.bannerSlice)
+  const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-    getImages()
-  }, [])
+    dispatch(getBunnerImg())
+  }, [dispatch])
 
   return (
-    <StyledContainer>
-      <StyledSlider>
-        {images.map((image) => (
-          <div key={image.id}>
-            <div
-              style={{
-                ...divStyle,
-                backgroundImage: `url(${image.banner})`,
-                height: '75vh',
-                backgroundSize: '100% 100%'
-              }}
-            ></div>
-          </div>
-        ))}
-      </StyledSlider>
-    </StyledContainer>
+    <StyledWrapper>
+      {isLoading && <Loading />}
+      <Slider {...settings}>
+        {message ? (
+          <Typography variant="h5" component="h2">
+            {message}
+          </Typography>
+        ) : (
+          banners?.map((image) => (
+            <WrapperStyled key={image.id} className="container">
+              <StyledImg src={image.banner} alt="" />
+            </WrapperStyled>
+          ))
+        )}
+      </Slider>
+    </StyledWrapper>
   )
 }
 
-export default ImageSlider
+export default Banner

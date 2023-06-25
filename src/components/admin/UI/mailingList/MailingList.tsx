@@ -73,6 +73,7 @@ export const StyledFormLable = styled(FormLabel)`
   margin: 0;
   padding: 0;
   color: #384255;
+  margin-left: 7px;
 `
 export const StyledInputContainer = styled('div')`
   margin-bottom: 0.9375rem;
@@ -239,7 +240,7 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
                   </StyledFormLable>
                   <StyledDatePicker
                     value={dateOfStart}
-                    onChange={(date) => dateOfStartChangeHandler(date)}
+                    onChange={(date: any) => dateOfStartChangeHandler(date)}
                     maxDate={dateOfStart}
                     minDate={dateOfFinish}
                   />
@@ -250,7 +251,7 @@ const CreateMailingList = ({ modalHandler, modal }: Props) => {
                   </StyledFormLable>
                   <StyledDatePicker
                     value={dateOfFinish}
-                    onChange={(date) => dateOfEndChangeHandler(date)}
+                    onChange={(date: any) => dateOfEndChangeHandler(date)}
                     maxDate={dateOfFinish}
                     minDate={dateOfStart}
                   />

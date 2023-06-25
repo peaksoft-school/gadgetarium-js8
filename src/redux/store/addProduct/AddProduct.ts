@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from '@reduxjs/toolkit'
 import { getProductBrandAndSubCategories } from './getCategories.thunk'
 
@@ -35,10 +36,65 @@ export const addProductSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, { payload }) => {
-      state.products.push(payload)
+      state.products = [payload]
+      state.subProduct = {}
     },
     addSubProduct: (state, action) => {
       state.subProduct = action.payload
+    },
+    addPriceToSubProduct: (state, action) => {
+      state.products = state.products.map((product: any) => {
+        if (product.id === action.payload.id) {
+          const updatedSubProducts = product.subProducts.map((subProduct: any) => {
+            if (subProduct.id === action.payload.subProductId) {
+              return { ...subProduct, price: action.payload.price }
+            }
+            return subProduct
+          })
+          return { ...product, subProducts: updatedSubProducts }
+        }
+        return product
+      })
+    },
+    addPriceToAllProducts: (state, action) => {
+      state.products = state.products.map((product: any) => {
+        const updatedSubProducts = product.subProducts.map((subProduct: any) => {
+          return { ...subProduct, price: action.payload }
+        })
+        return { ...product, subProducts: updatedSubProducts }
+      })
+    },
+    addQuantityToSubProduct: (state, action) => {
+      state.products = state.products.map((product: any) => {
+        if (product.id === action.payload.id) {
+          const updatedSubProducts = product.subProducts.map((subProduct: any) => {
+            if (subProduct.id === action.payload.subProductId) {
+              return { ...subProduct, quantity: action.payload.quantity }
+            }
+            return subProduct
+          })
+          return { ...product, subProducts: updatedSubProducts }
+        }
+        return product
+      })
+    },
+    addQuantityToAllProducts: (state, action) => {
+      state.products = state.products.map((product: any) => {
+        const updatedSubProducts = product.subProducts.map((subProduct: any) => {
+          return { ...subProduct, quantity: action.payload }
+        })
+        return { ...product, subProducts: updatedSubProducts }
+      })
+    },
+    addDescriptionToProducts: (state, action) => {
+      state.products = state.products.map((product: object) => {
+        return { ...product, description: action.payload.description }
+      })
+    },
+    addVideoLinkToProducts: (state, action) => {
+      state.products = state.products.map((product: object) => {
+        return { ...product, video: action.payload.videoLink }
+      })
     }
   },
   extraReducers: (builder) => {

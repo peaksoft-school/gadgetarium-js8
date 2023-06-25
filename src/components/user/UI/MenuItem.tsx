@@ -42,22 +42,24 @@ const MenuItem = () => {
     <StyledMenuItem>
       {isAuthorized ? (
         <>
-          <StyledLink to={PATHS.PERSONAL.personalAccount} state={{ tab: 0 }}>
-            <li>История заказов</li>
-          </StyledLink>
-          <StyledLink to={PATHS.PERSONAL.personalAccount} state={{ tab: 1 }}>
-            <li>Избранное</li>
-          </StyledLink>
-          <StyledLink to={PATHS.PERSONAL.personalAccount} state={{ tab: 2 }}>
-            <li>Профиль</li>
-          </StyledLink>
           <StyledLink to={PATHS.APP.logIn}>
-            <li>Выйти</li>
+            <li>Войти</li>
+          </StyledLink>
+          <StyledLink to={PATHS.APP.signUp}>
+            <li>Регистрация</li>
           </StyledLink>
         </>
       ) : (
         <>
-          {' '}
+          <StyledLink to={'/'}>
+            <li>История заказов</li>
+          </StyledLink>
+          <StyledLink to={'/'}>
+            <li>Избранное</li>
+          </StyledLink>
+          <StyledLink to={'/'}>
+            <li>Профиль</li>
+          </StyledLink>
           <StyledLink to={PATHS.APP.logIn}>
             <li>Войти</li>
           </StyledLink>

@@ -95,6 +95,33 @@ const ProductsPage = () => {
     from: null,
     before: null
   })
+  const [basketQueryParams, setBasketQueryParams] = useState({
+    status: 'в корзине',
+    page: 1,
+    keyWord: null,
+    pageSize: 7,
+    sortBy: null,
+    from: null,
+    before: null
+  })
+  const [favoriteQueryParams, setFavoriteQueryParams] = useState({
+    status: 'в избранном',
+    page: 1,
+    keyWord: null,
+    pageSize: 7,
+    sortBy: null,
+    from: null,
+    before: null
+  })
+  const [productsOnSaleQueryParams, setProductsOnSaleQueryParams] = useState({
+    status: 'в продаже',
+    page: 1,
+    keyWord: null,
+    pageSize: 7,
+    sortBy: null,
+    from: null,
+    before: null
+  })
   const [searchTerm, setSearchTerm] = useState('')
   const [isOpen, setOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState('Error')
@@ -112,8 +139,8 @@ const ProductsPage = () => {
     )
       .unwrap()
       .then()
-      .catch((e) => {
-        setErrorMessage(JSON.stringify(e))
+      .catch((error) => {
+        setErrorMessage(JSON.stringify(error))
         setOpen(true)
       })
   }, [queryParams, openDiscount])
@@ -226,19 +253,49 @@ const ProductsPage = () => {
       id: 2,
       label: 'В продаже',
       value: 'В продаже',
-      Component: <ProductsOnSale />
+      Component: (
+        <ProductsOnSale
+          collectSelectedIds={collectSelectedIds}
+          queryParams={productsOnSaleQueryParams}
+          setQueryParams={setProductsOnSaleQueryParams}
+          onChangeHandler={onChangeHandler}
+          handlerChangePage={handlerChangePage}
+          onFirstChange={onFirstChange}
+          onSecondChange={onSecondChange}
+        />
+      )
     },
     {
       id: 3,
       label: 'В избранном',
       value: 'В избранном',
-      Component: <FavoriteProducts />
+      Component: (
+        <FavoriteProducts
+          collectSelectedIds={collectSelectedIds}
+          queryParams={favoriteQueryParams}
+          setQueryParams={setFavoriteQueryParams}
+          onChangeHandler={onChangeHandler}
+          handlerChangePage={handlerChangePage}
+          onFirstChange={onFirstChange}
+          onSecondChange={onSecondChange}
+        />
+      )
     },
     {
       id: 4,
       label: 'В корзине',
       value: 'В корзине',
-      Component: <BasketProducts />
+      Component: (
+        <BasketProducts
+          collectSelectedIds={collectSelectedIds}
+          queryParams={basketQueryParams}
+          setQueryParams={setBasketQueryParams}
+          onChangeHandler={onChangeHandler}
+          handlerChangePage={handlerChangePage}
+          onFirstChange={onFirstChange}
+          onSecondChange={onSecondChange}
+        />
+      )
     }
   ]
   return (

@@ -8,7 +8,7 @@ import { CSSProperties, FC, MouseEventHandler } from 'react'
 const StyledMainBlock = styled('div')(() => ({
   width: '100%',
   background: '#F4F4F4',
-  margin: '3rem 0rem'
+  padding: '3rem 0rem'
 }))
 
 const StyledTopLink = styled('a')(() => ({
