@@ -309,7 +309,10 @@ const AppTable = <T,>({
                       <TotalPrice>{row.totalPrice}c</TotalPrice>
                     </Styledtd>
                     <Styledtd>
-                      <IconButtons icon={<EditIcon />} onClick={() => {}} />
+                      <IconButtons
+                        icon={<EditIcon />}
+                        onClick={() => navigateToInnerPageHandler(row.productId)}
+                      />
                       <IconButtons
                         icon={<DeleteIcon />}
                         onClick={() => openModalHandler(row.subProductId)}

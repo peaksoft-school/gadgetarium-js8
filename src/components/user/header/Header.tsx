@@ -13,7 +13,6 @@ import IconButtons from '../../UI/buttons/IconButtons'
 import Categories from '../../../components/UI/categories/Categories'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
 import { useCallback, useEffect } from 'react'
-import Tippy from '@tippyjs/react'
 import 'tippy.js/dist/tippy.css'
 import { categories } from '../../../utils/constants/categories'
 import { getAllBusketProductService } from '../../../api/mainPage/AddProductToBusketService'
@@ -183,10 +182,6 @@ const InteractionIconsItem = styled('li')(() => ({
   }
 }))
 const StyledInputContainer = styled('div')(() => ({
-  // width: '110rem',
-  // height: '10.8125rem',
-  // marginTop: '8rem',
-  // marginLeft: '1rem'
   width: '43rem',
   height: '10.8125rem',
   margin: '8rem 4rem 0 3rem '

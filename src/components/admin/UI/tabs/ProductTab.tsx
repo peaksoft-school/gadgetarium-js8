@@ -53,7 +53,7 @@ const DownloadIconContainer = styled('div')(() => ({
   fontWeight: '500',
   fontSize: '0.875rem',
   lineHeight: '1.0625rem',
-  marginLeft: '15rem'
+  marginLeft: '23rem'
 }))
 
 interface Product {
