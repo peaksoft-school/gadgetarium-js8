@@ -139,8 +139,8 @@ const ProductsPage = () => {
     )
       .unwrap()
       .then()
-      .catch((e) => {
-        setErrorMessage(JSON.stringify(e))
+      .catch((error) => {
+        setErrorMessage(JSON.stringify(error))
         setOpen(true)
       })
   }, [queryParams, openDiscount])

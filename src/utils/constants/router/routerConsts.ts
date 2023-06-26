@@ -29,5 +29,9 @@ export const PATHS = {
     mainRoutes: '/*',
     admin: '/admin/*',
     not_found: '*'
+  },
+  PERSONAL: {
+    personalAccount: 'personalAccount',
+    detailsHistory: '/detailsHistory'
   }
 }
