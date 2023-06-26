@@ -74,6 +74,8 @@ const SmartphoneCategorie = ({ selectedValueFirst }: Props) => {
     setSIMcard('')
   }, [products])
 
+  // console.log(bannerImages)
+
   const changeOptions = () => {
     if (selectedValueFirst === 1) {
       return { item1: additionalProp2, item2: additionalProp3, item3: additionalProp1 }

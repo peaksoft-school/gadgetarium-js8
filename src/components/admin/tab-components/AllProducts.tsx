@@ -7,6 +7,10 @@ import { RootState } from '../../../redux/store'
 import { Product } from '../../../api/product/productService'
 import ProductsDatePicker from '../UI/date-picker/DatePicker'
 import Sorting from '../UI/sorting/Sorting'
+import { useEffect } from 'react'
+import { useAppDispatch } from '../../../hooks/redux/redux'
+import { getAllProducts } from '../../../redux/store/products/products.thunk'
+import { format } from 'date-fns'
 
 const StyledDivider = styled(Divider)(() => ({
   width: '100%',
@@ -74,6 +78,17 @@ const AllProducts = ({
   onSecondChange
 }: Props) => {
   const products = useSelector((state: RootState) => state.products.items)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(
+      getAllProducts({
+        ...queryParams,
+        from: queryParams.from ? format(queryParams.from, 'yyyy-MM-dd') : null,
+        before: queryParams.before ? format(queryParams.before, 'yyyy-MM-dd') : null
+      })
+    )
+  }, [queryParams])
 
   const columns: Column<Product>[] = [
     {

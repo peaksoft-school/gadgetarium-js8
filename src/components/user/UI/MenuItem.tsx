@@ -1,9 +1,10 @@
 import { styled } from '@mui/material'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { RootState } from '../../../redux/store'
 import { PATHS } from '../../../utils/constants/router/routerConsts'
+import { STORAGE_KEYS } from '../../../utils/constants/storage'
 
 const StyledMenuItem = styled('ul')(() => ({
   listStyle: 'none',
@@ -36,7 +37,11 @@ const StyledLink = styled(Link)(() => ({
 
 const MenuItem = () => {
   const { isAuthorized } = useSelector((state: RootState) => state.auth)
-
+  const navigate = useNavigate()
+  const logOutHandler = () => {
+    localStorage.removeItem(STORAGE_KEYS.AUTH)
+    navigate('/login', { replace: true })
+  }
   return (
     <StyledMenuItem>
       {isAuthorized ? (
@@ -51,7 +56,7 @@ const MenuItem = () => {
             <li>Профиль</li>
           </StyledLink>
           <StyledLink to={PATHS.APP.logIn}>
-            <li>Выйти</li>
+            <div onClick={logOutHandler}>Выйти</div>
           </StyledLink>
         </>
       ) : (
