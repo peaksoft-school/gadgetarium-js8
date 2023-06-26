@@ -9,12 +9,12 @@ const rotateAnimation = keyframes`
   }
 `
 const StyledLogo = styled(Logo)`
-  width: 3.125rem;
-  height: 3.125rem;
+  width: 4.125rem;
+  height: 4.125rem;
   position: absolute;
-  top: 50%;
+  top: 45%;
   right: 50%;
-  animation: ${rotateAnimation} 0.5s infinite linear;
+  animation: ${rotateAnimation} 1s infinite linear;
   background-color: #cb11ab;
   padding: 0.375rem;
   border-radius: 100%;

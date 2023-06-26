@@ -215,13 +215,12 @@ const MenuProduct = () => {
                 </div>
               ))}
             </StyledProduct>
-            {discount.length > 5 ? null : (
-              <ButtonContainer>
-                <StyledButton onClick={showProductHandler} variant="outlined">
-                  Показать еще
-                </StyledButton>
-              </ButtonContainer>
-            )}
+
+            <ButtonContainer>
+              <StyledButton onClick={showProductHandler} variant="outlined">
+                Показать еще
+              </StyledButton>
+            </ButtonContainer>
           </div>
         </StyledCartContainer>
       ) : null}
@@ -258,13 +257,12 @@ const MenuProduct = () => {
                 </div>
               ))}
             </StyledProduct>
-            {newProduct.length > 5 ? (
-              <ButtonContainer>
-                <StyledButton onClick={showNewProductHandler} variant="outlined">
-                  Показать еще
-                </StyledButton>
-              </ButtonContainer>
-            ) : null}
+
+            <ButtonContainer>
+              <StyledButton onClick={showNewProductHandler} variant="outlined">
+                Показать еще
+              </StyledButton>
+            </ButtonContainer>
           </div>
         </StyledCartContainer>
       ) : null}
@@ -307,13 +305,12 @@ const MenuProduct = () => {
                 </div>
               ))}
             </StyledProduct>
-            {recommendProduct.length > 5 ? null : (
-              <ButtonContainer>
-                <StyledButton onClick={showRecomendProductHandler} variant="outlined">
-                  Показать еще
-                </StyledButton>
-              </ButtonContainer>
-            )}
+
+            <ButtonContainer>
+              <StyledButton onClick={showRecomendProductHandler} variant="outlined">
+                Показать еще
+              </StyledButton>
+            </ButtonContainer>
           </div>
         </StyledCartContainer>
       ) : null}

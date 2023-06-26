@@ -6,6 +6,8 @@ import { ReactComponent as Logo } from '../../../assets/images/logo/logo.svg'
 import { styled } from '@mui/material'
 import { mailingSubcribe } from '../../../api/mail/mailingService'
 import { useState } from 'react'
+import { NavLink } from 'react-router-dom'
+import { PATHS } from '../../../utils/constants/router/routerConsts'
 
 const StyledFooter = styled('footer')(() => ({
   backgroundColor: '#1A1A25',
@@ -19,7 +21,7 @@ const StyledFooter = styled('footer')(() => ({
   paddingRight: '7rem'
 }))
 
-const StyledLink = styled('a')(() => ({
+const StyledLink = styled(NavLink)(() => ({
   textDecoration: 'none',
   color: '#858FA4',
   fontFamily: 'Inter',
@@ -116,16 +118,16 @@ const Footer = () => {
             <StyledBlockName>Каталог</StyledBlockName>
             <ul>
               <li>
-                <StyledLink href="#">Смартфоны</StyledLink>
+                <StyledLink to="#">Смартфоны</StyledLink>
               </li>
               <li>
-                <StyledLink href="#">Ноутбуки и планшеты</StyledLink>
+                <StyledLink to="#">Ноутбуки и планшеты</StyledLink>
               </li>
               <li>
-                <StyledLink href="#">Смарт-часы и браслеты</StyledLink>
+                <StyledLink to="#">Смарт-часы и браслеты</StyledLink>
               </li>
               <li>
-                <StyledLink href="#">Аксессуары</StyledLink>
+                <StyledLink to="#">Аксессуары</StyledLink>
               </li>
             </ul>
           </div>
@@ -134,13 +136,13 @@ const Footer = () => {
             <StyledBlockName>Будь с нами</StyledBlockName>
             <ul>
               <li>
-                <StyledLink href="#">Акции</StyledLink>
+                <StyledLink to="#">Акции</StyledLink>
               </li>
               <li>
-                <StyledLink href="#">Новинки</StyledLink>
+                <StyledLink to="#">Новинки</StyledLink>
               </li>
               <li>
-                <StyledLink href="#">Популярные категории</StyledLink>
+                <StyledLink to="#">Популярные категории</StyledLink>
               </li>
             </ul>
           </div>
@@ -149,16 +151,16 @@ const Footer = () => {
             <StyledBlockName>Помощь и сервисы</StyledBlockName>
             <ul>
               <li>
-                <StyledLink href="#">О магазине</StyledLink>
+                <StyledLink to={PATHS.MAIN.about}>О магазине</StyledLink>
               </li>
               <li>
-                <StyledLink href="#">Доставка</StyledLink>
+                <StyledLink to={PATHS.MAIN.delivery}>Доставка</StyledLink>
               </li>
               <li>
-                <StyledLink href="#">FAQ</StyledLink>
+                <StyledLink to={PATHS.MAIN.faq}>FAQ</StyledLink>
               </li>
               <li>
-                <StyledLink href="#">Контакты</StyledLink>
+                <StyledLink to={PATHS.MAIN.contacts}>Контакты</StyledLink>
               </li>
             </ul>
           </div>

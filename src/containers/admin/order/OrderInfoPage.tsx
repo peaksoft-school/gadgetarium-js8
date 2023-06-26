@@ -31,6 +31,7 @@ const OrderInfoPage = () => {
   const { orderId = null } = useParams()
   const [isLoading, setIsLoading] = useState(false)
   const orderIdNumber: number | null = Number(orderId)
+  const [quantityProduct, setQuantityProduct] = useState<number | null>(null)
   const [getInfoOrder, setGetInfoOrder] = useState<OrderDataType | null>(null)
   const getOrderProduct = async () => {
     try {
@@ -39,6 +40,7 @@ const OrderInfoPage = () => {
       const { data } = await getByIdProductOrderRequest(orderIdNumber)
       if (data !== null) {
         setGetInfoOrder(data)
+        setQuantityProduct(data.quantity)
       }
     } catch (e) {
       setIsLoading(true)
@@ -49,7 +51,15 @@ const OrderInfoPage = () => {
   useEffect(() => {
     getOrderProduct()
   }, [])
-  return <>{isLoading ? <Loading /> : <OrderInfoItem getInfoOrder={getInfoOrder} />}</>
+  return (
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <OrderInfoItem getInfoOrder={getInfoOrder} quantityProduct={quantityProduct} />
+      )}
+    </>
+  )
 }
 
 export default OrderInfoPage
