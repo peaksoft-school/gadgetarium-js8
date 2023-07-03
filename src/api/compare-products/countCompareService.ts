@@ -5,7 +5,7 @@ export interface CountCompare {
     ['Ноутбук']: number
     ['Планшет']: number
     ['Смартфон']: number
-    ['Смарт Часы']: number
+    ['Смарт-часы']: number
   }
 }
 

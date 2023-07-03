@@ -146,7 +146,6 @@ const ThirdPart = () => {
       if (!pdfFile) return null
       const fileResponse = await postPdfFileHandler()
       const [firstProduct] = products
-      console.log(firstProduct)
       dispatch(addProducts({ ...firstProduct, PDF: fileResponse }))
       snackbarHanler({
         message: 'Товар успешно добавлен!',

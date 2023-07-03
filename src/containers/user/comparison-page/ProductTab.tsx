@@ -38,7 +38,7 @@ const AdditionalActionsContainer = styled('div')(() => ({
   width: '425px',
   display: 'flex',
   justifyContent: 'space-between',
-  marginTop: '0.3rem'
+  marginTop: '0.6rem'
 }))
 
 const StyledText = styled('p')(() => ({

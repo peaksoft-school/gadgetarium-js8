@@ -1,10 +1,13 @@
-import { ColorResult } from 'react-color'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { SelectChangeEvent } from '@mui/material'
 import { StyledInputContainer } from '../../AddTabComponent'
 import { StyledFormLable } from '../../../mailingList/MailingList'
 import { ReusableSelect as Select } from '../../../../ReusableSelect'
-import { additionalProp2 } from '../../../../../../utils/constants/optionsCategorie'
+import {
+  additionalProp2,
+  housingMaterial,
+  materialOfSmartWatches
+} from '../../../../../../utils/constants/optionsCategorie'
 import ReusableColorPicker from '../../../../ReusableColorPicker'
 import { RadioButton } from '../../../../../UI/RadioButton'
 import ImagePickerAddProduct from '../../ImagePicker'
@@ -28,14 +31,8 @@ const SmartWatchCategorie = () => {
   const [waterproof, setWaterproof] = useState<string>('')
   const [wireless, setWireless] = useState('')
   const [shape, setShape] = useState('')
-  const {
-    imagesClassname,
-    bannerImages,
-    handleImageUpload,
-    setBannerImages,
-    deleteImage,
-    postRequestBanner
-  } = useBanner()
+  const { imagesClassname, bannerImages, handleImageUpload, setBannerImages, deleteImage } =
+    useBanner()
 
   const [colour, setSmartWatchColor] = useState<string>('')
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false)
@@ -48,14 +45,14 @@ const SmartWatchCategorie = () => {
     dispatch(
       addProductActions.addSubProduct({
         characteristics: {
-          память: shape,
-          'Материал браслета/ремешка': memory1,
+          память: memory1,
+          'Материал браслета/ремешка': material,
           'Материал корпуса': material,
           'Размер смарт часов': size,
           Пол: gender,
           Водонепрницаемость: waterproof,
-          'Диагональ дисплея': size2,
-          'Форма корпуса': display,
+          'Диагональ дисплея': display,
+          'Форма корпуса': shape,
           'Беспроводные интерфейсы': wireless
         },
         images: bannerImages,
@@ -157,7 +154,7 @@ const SmartWatchCategorie = () => {
           id="Выберите материал браслета/ремешка"
           name="Выберите материал браслета/ремешка"
           placeholder="Выберите материал браслета/ремешка"
-          options={additionalProp2}
+          options={materialOfSmartWatches}
           value={material}
           onChange={materialHandler}
         />
@@ -168,7 +165,7 @@ const SmartWatchCategorie = () => {
           id="Материал корпуса"
           name="Материал корпуса"
           placeholder="Выберите материал корпуса"
-          options={additionalProp2}
+          options={housingMaterial}
           value={size}
           onChange={sizeHandler}
         />

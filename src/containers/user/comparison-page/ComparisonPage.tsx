@@ -1,13 +1,11 @@
 import ComparisonPageContent from '../../../components/user/comparison-page/ComparisonPageContent'
-import { Button, Divider, styled } from '@mui/material'
+import { styled } from '@mui/material'
 import ProductTab from './ProductTab'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
 import { useEffect, useState } from 'react'
 import { useAppDispatch } from '../../../hooks/redux/redux'
 import { getAllCompareProducts } from '../../../redux/store/compare-products/compareProducts.thunk'
-// import EmptyComparison from '../../../assets/images/comparison/emptyComparison.png'
-import { useNavigate } from 'react-router-dom'
 import { getCountCompare } from '../../../redux/store/compare-products/count-compare/countCompare.thunk'
 import ComparisonPageContentLaptop from '../../../components/user/comparison-page/ComparisonPageContentLaptop'
 import ComparisonPageContentTablet from '../../../components/user/comparison-page/ComparisonPageContentTablet'
@@ -103,7 +101,7 @@ const ComparisonPage = () => {
     {
       id: 4,
       label: `Смарт-часы (${
-        count.countCompare['Смарт Часы'] === undefined ? 0 : count.countCompare['Смарт Часы']
+        count.countCompare['Смарт-часы'] === undefined ? 0 : count.countCompare['Смарт-часы']
       })`,
       value: 'Смарт-часы',
       Component: <ComparisonPageContentWatches type="SMARTWATCHES" data={products} />

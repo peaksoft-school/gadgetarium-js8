@@ -63,7 +63,6 @@ const LeftArrowSlider = styled(ArrowSlider)`
   cursor: pointer;
   border: 1px solid #cb11ab;
   transition: 0.4s;
-  opacity: 0.5;
   &:hover {
     box-shadow: 0px 2px 6px rgb(0 0 0 / 7%), 0px 0px 25px rgb(0 0 0 / 10%);
     opacity: 1;
@@ -75,12 +74,12 @@ const RightArrowSlider = styled(ArrowSlider)`
   height: 50px;
   position: absolute;
   right: 0;
+  left: 60rem;
   background: #fff;
   border-radius: 25px;
   cursor: pointer;
   border: 1px solid #cb11ab;
   transition: 0.4s;
-  opacity: 0.5;
   &:hover {
     box-shadow: 0px 2px 6px rgb(0 0 0 / 7%), 0px 0px 25px rgb(0 0 0 / 10%);
     opacity: 1;
