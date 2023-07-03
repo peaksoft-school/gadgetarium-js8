@@ -13,7 +13,6 @@ import {
 } from '../../../redux/store/userMainPage/MainPage.thunk'
 import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 import { getAllCompareProducts } from '../../../redux/store/compare-products/compareProducts.thunk'
-import IconButtons from '../../UI/buttons/IconButtons'
 import { incrementQuantityComparison } from '../../../redux/store/countProduct/countProductComparison.thunk'
 
 const ComparisonToolsTable = styled('table')`
