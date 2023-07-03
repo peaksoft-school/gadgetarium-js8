@@ -13,12 +13,12 @@ export const additionalProp1 = [
 ]
 
 export const additionalProp2 = [
-  { name: '16', label: '16', id: 1 },
-  { name: '32', label: '32', id: 2 },
-  { name: '64', label: '64', id: 3 },
-  { name: '128', label: '128', id: 4 },
-  { name: '256', label: '256', id: 5 },
-  { name: '512', label: '512', id: 6 }
+  { name: '16GB', label: '16GB', id: 1 },
+  { name: '32GB', label: '32GB', id: 2 },
+  { name: '64GB', label: '64GB', id: 3 },
+  { name: '128GB', label: '128GB', id: 4 },
+  { name: '256GB', label: '256GB', id: 5 },
+  { name: '512GB', label: '512GB', id: 6 }
 ]
 
 export const additionalProp3 = [
@@ -145,4 +145,24 @@ export const batteryСapacityForPlanshet = [
   { name: '4800 – 7199 мА/час', label: '4800 – 7199 мА/час', id: 3 },
   { name: '7200 – 9599 мА/ч', label: '7200 – 9599 мА/ч', id: 4 },
   { name: '9600 – 12000 мА/ч', label: '9600 – 12000 мА/ч', id: 5 }
+]
+
+export const materialOfSmartWatches = [
+  { name: 'Силикон', label: 'Силикон', id: 1 },
+  { name: 'Кожа', label: 'Кожа', id: 2 },
+  { name: 'Резина', label: 'Резина', id: 3 },
+  { name: 'Пластик', label: 'Пластик', id: 4 },
+  { name: 'Нейлон', label: 'Нейлон', id: 5 },
+  { name: 'Из искусственной кожи ', label: 'Из искусственной кожи ', id: 6 },
+  { name: 'Имитация керамики', label: 'Имитация керамики', id: 7 }
+]
+
+export const housingMaterial = [
+  { name: 'Акриловый', label: 'Акриловый', id: 1 },
+  { name: 'Алюминий', label: 'Алюминий', id: 2 },
+  { name: 'Керамика', label: 'Керамика', id: 3 },
+  { name: 'Пластик ', label: 'Пластик ', id: 4 },
+  { name: 'Металл', label: 'Металл', id: 5 },
+  { name: 'Нержавеющая сталь', label: 'Нержавейщая сталь', id: 6 },
+  { name: 'Стекло', label: 'Стекло', id: 7 }
 ]

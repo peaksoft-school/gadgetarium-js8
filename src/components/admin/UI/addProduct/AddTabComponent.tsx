@@ -327,7 +327,6 @@ const AddTabComponent = ({ handleNext }: Props) => {
 
   return (
     <>
-      {ToastContainer}
       <form onSubmit={saveHandler}>
         <StyledForm>
           <StyledInputContainer>

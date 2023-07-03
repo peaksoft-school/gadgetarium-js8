@@ -1,15 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from 'react'
 import * as ITEMS from './compareItems'
 import { CompareProducts } from '../../../api/compare-products/compareProductsService'
-import { Button, styled } from '@mui/material'
+import { Button, IconButton, styled } from '@mui/material'
 import { ReactComponent as Delete } from '../../../assets/icons/compare-icons/deleteIconn.svg'
 import { ReactComponent as ArrowSlider } from '../../../assets/icons/compare-icons/arrow2.svg'
 import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons/basketIcon.svg'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../../redux/store'
-import { addNewProductToBusket } from '../../../redux/store/userMainPage/MainPage.thunk'
+import {
+  addNewProductToBusket,
+  addNewProductToComparison
+} from '../../../redux/store/userMainPage/MainPage.thunk'
 import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 import { getAllCompareProducts } from '../../../redux/store/compare-products/compareProducts.thunk'
+import { incrementQuantityComparison } from '../../../redux/store/countProduct/countProductComparison.thunk'
 
 const ComparisonToolsTable = styled('table')`
   width: 100%;
@@ -54,12 +59,10 @@ const LeftArrowSlider = styled(ArrowSlider)`
   position: absolute;
   left: 0;
   transform: rotate(180deg);
-  /* padding: 15px; */
   border-radius: 25px;
   cursor: pointer;
   border: 1px solid #cb11ab;
   transition: 0.4s;
-  opacity: 0.5;
   &:hover {
     box-shadow: 0px 2px 6px rgb(0 0 0 / 7%), 0px 0px 25px rgb(0 0 0 / 10%);
     opacity: 1;
@@ -71,13 +74,12 @@ const RightArrowSlider = styled(ArrowSlider)`
   height: 50px;
   position: absolute;
   right: 0;
+  left: 60rem;
   background: #fff;
-  /* padding: 15px; */
   border-radius: 25px;
   cursor: pointer;
   border: 1px solid #cb11ab;
   transition: 0.4s;
-  opacity: 0.5;
   &:hover {
     box-shadow: 0px 2px 6px rgb(0 0 0 / 7%), 0px 0px 25px rgb(0 0 0 / 10%);
     opacity: 1;
@@ -231,6 +233,9 @@ type Props = {
 
 const ComparisonPageContentTablet = ({ type, data }: Props) => {
   const [queryParamsTablet] = useState({ categoryName: 'Планшет' })
+  const [showAllProduct] = useState(5)
+  const [showAllNewProduct] = useState(5)
+  const [showAllRecomendProduct] = useState(5)
   const dispatch = useDispatch<AppDispatch>()
   const { snackbarHanler, ToastContainer } = useSnackbar({
     autoClose: 3000,
@@ -268,9 +273,26 @@ const ComparisonPageContentTablet = ({ type, data }: Props) => {
     e.stopPropagation()
     dispatch(addNewProductToBusket({ id: subProductId, snackbar: snackbarHandler }))
   }
+
+  const handleCountQuantityComparison = () => {
+    dispatch(incrementQuantityComparison())
+  }
+
+  const productMovedToComparisonHandle = (e: any, subProductId: number, inComparisons: boolean) => {
+    e.stopPropagation()
+    const dataComparisons = {
+      id: subProductId,
+      isComparisons: !inComparisons,
+      snackbar: snackbarHandler,
+      showAllProduct,
+      showAllNewProduct,
+      showAllRecomendProduct
+    }
+    dispatch(addNewProductToComparison(dataComparisons))
+    handleCountQuantityComparison()
+  }
   return (
     <>
-      {ToastContainer}
       <ComparisonPageTools>
         <ComparisonToolsTable>
           <tbody>
@@ -292,9 +314,13 @@ const ComparisonPageContentTablet = ({ type, data }: Props) => {
                       <ComparisonToolsRightLi key={el.name}>
                         <ComparisonPageCard>
                           <ComparisonCardClear>
-                            <p>
+                            <IconButton
+                              onClick={(e) =>
+                                productMovedToComparisonHandle(e, el.subProductId, true)
+                              }
+                            >
                               <Delete />
-                            </p>
+                            </IconButton>
                           </ComparisonCardClear>
                           <ComparisonCardImage>
                             <img src={el.img} alt={el.name} />
