@@ -229,7 +229,7 @@ const StyledTippy = styled(Tippy)(() => ({
 const StyledTippyForMenuItem = styled(Tippy)(() => ({
   backgroundColor: 'transparent',
   border: 'none',
-  width: '150px',
+  width: '200px',
   marginRight: '2.5rem'
 }))
 export type QueryParams = {
@@ -426,6 +426,7 @@ const Header: React.FC = () => {
               <span>
                 <StyledTippyForMenuItem
                   interactive={true}
+                  interactiveBorder={0}
                   delay={100}
                   trigger="mouseenter"
                   content={<MenuItem />}

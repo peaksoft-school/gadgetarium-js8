@@ -27,6 +27,8 @@ export type InitType = {
   totalDiscount: number
   sumPrice: number
   isLoading: boolean
+  openModal: boolean
+  orderNumber: string
 }
 const initialState: InitType = {
   items: [],
@@ -35,7 +37,9 @@ const initialState: InitType = {
   totalQuantity: 0,
   totalDiscount: 0,
   sumPrice: 0,
-  isLoading: false
+  isLoading: false,
+  openModal: false,
+  orderNumber: ''
 }
 
 export const basketSlice = createSlice({
@@ -109,6 +113,12 @@ export const basketSlice = createSlice({
       state.sumPrice = sumPrice
       state.totalDiscount = discountSum
       state.totalSum = sumPrice - discountSum
+    },
+    openModalSuccess(state, { payload }) {
+      state.openModal = payload.openModal
+    },
+    getOrderNumber(state, { payload }) {
+      state.orderNumber = payload
     }
   },
 

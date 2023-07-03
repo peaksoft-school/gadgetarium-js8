@@ -16,7 +16,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <Container>
       <Header />
-      <main style={{ background: '#E8E8E8' }}>{children}</main>
+      <main>{children}</main>
       <Footer />
     </Container>
   )

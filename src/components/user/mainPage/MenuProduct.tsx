@@ -215,6 +215,7 @@ const MenuProduct = () => {
                 </div>
               ))}
             </StyledProduct>
+
             <ButtonContainer>
               <StyledButton onClick={showProductHandler} variant="outlined">
                 Показать еще
@@ -256,6 +257,7 @@ const MenuProduct = () => {
                 </div>
               ))}
             </StyledProduct>
+
             <ButtonContainer>
               <StyledButton onClick={showNewProductHandler} variant="outlined">
                 Показать еще
@@ -264,7 +266,8 @@ const MenuProduct = () => {
           </div>
         </StyledCartContainer>
       ) : null}
-      {recommendProduct ? (
+
+      {recommendProduct.length ? (
         <StyledCartContainer>
           <StyledTitle>Мы рекомендуем</StyledTitle>
           <div>
@@ -302,6 +305,7 @@ const MenuProduct = () => {
                 </div>
               ))}
             </StyledProduct>
+
             <ButtonContainer>
               <StyledButton onClick={showRecomendProductHandler} variant="outlined">
                 Показать еще

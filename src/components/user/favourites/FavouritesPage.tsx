@@ -16,7 +16,7 @@ import Loading from '../../UI/loading/Loading'
 const Container = styled('div')(() => ({
   width: '100%',
   height: '100%',
-  padding: '60px 195px 120px 195px',
+  padding: '60px 105px 120px 195px',
   fontFamily: 'Inter',
   fontStyle: 'normal',
   backgroundColor: '#e1e1e1'
@@ -59,10 +59,7 @@ const Label = styled('label')(() => ({
   lineHeight: '140%'
 }))
 const ListContainer = styled('div')(() => ({
-  marginTop: '30px',
-  display: 'grid',
-  gridTemplateColumns: ' 1fr 1fr 1fr 1fr 1fr',
-  gap: '12px'
+  marginTop: '30px'
 }))
 
 const StyledButton = styled(Button)(({ theme }) => ({

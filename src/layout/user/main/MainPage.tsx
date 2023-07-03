@@ -11,7 +11,7 @@ const StyledFirstContainer = styled('div')(() => ({
 
 const MainPage = () => {
   return (
-    <>
+    <div style={{ background: '#E8E8E8' }}>
       <StyledFirstContainer>
         <Banner />
       </StyledFirstContainer>
@@ -20,7 +20,7 @@ const MainPage = () => {
 
         <ReusableServiceCart />
       </Container>
-    </>
+    </div>
   )
 }
 

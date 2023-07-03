@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box, styled } from '@mui/material'
 import EmptyBasket from './EmptyBasket'
 import Loading from '../../UI/loading/Loading'
+import { SuccessModal } from '../../../containers/user/order/SuccessModal'
+import { basketActions } from '../../../redux/store/basket/basket.slice'
+import { userOrderActions } from '../../../redux/store/user-order/user.order.slice'
 const Container = styled('div')(() => ({
   width: '100%',
   height: '100%',
@@ -43,6 +46,13 @@ const BasketPage = () => {
   useEffect(() => {
     dispatch(getAllBasket())
   }, [])
+  const closeModalHandler = () => {
+    const isModal = {
+      openModal: !basketData.openModal
+    }
+    dispatch(basketActions.openModalSuccess(isModal))
+    dispatch(userOrderActions.clearOrder())
+  }
   return (
     <>
       {basketData.isLoading ? (
@@ -61,6 +71,11 @@ const BasketPage = () => {
           {basketData.items.length === 0 ? <EmptyBasket /> : <Basket basketData={basketData} />}
         </Container>
       )}
+      <SuccessModal
+        open={basketData.openModal}
+        onClose={closeModalHandler}
+        orderNumber={basketData.orderNumber}
+      />
     </>
   )
 }

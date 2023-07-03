@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Button, InputBase, Paper, Grid, styled } from '@mui/material'
 import ProductsTab from '../../../components/admin/UI/tabs/ProductTab'
 import Infographics from '../../../components/admin/product-infographics/Infographics'
@@ -139,8 +139,8 @@ const ProductsPage = () => {
     )
       .unwrap()
       .then()
-      .catch((e) => {
-        setErrorMessage(JSON.stringify(e))
+      .catch((error) => {
+        setErrorMessage(JSON.stringify(error))
         setOpen(true)
       })
   }, [queryParams, openDiscount])

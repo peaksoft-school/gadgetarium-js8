@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { styled, Divider } from '@mui/material'
 import AppTable from '../UI/table/Table'
 import { Column } from '../../../utils/constants/tableColumns'
