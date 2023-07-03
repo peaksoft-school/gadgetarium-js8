@@ -293,7 +293,6 @@ const ComparisonPageContentTablet = ({ type, data }: Props) => {
   }
   return (
     <>
-      {ToastContainer}
       <ComparisonPageTools>
         <ComparisonToolsTable>
           <tbody>

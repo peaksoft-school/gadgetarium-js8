@@ -294,6 +294,7 @@ const ComparisonPageContent = ({ type, data }: Props) => {
   }
   return (
     <>
+      {ToastContainer}
       {products.length !== 0 ? (
         <ComparisonPageTools>
           <ComparisonToolsTable>

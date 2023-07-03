@@ -160,7 +160,6 @@ const ThirdPart = () => {
 
   return (
     <>
-      {ToastContainer}
       <form>
         <ImportsContainer>
           <div>

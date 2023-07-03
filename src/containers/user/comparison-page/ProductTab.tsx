@@ -165,7 +165,6 @@ const ProductTab: React.FC<ProductsTabProps> = ({ tabs, defaultValue }) => {
 
   return (
     <>
-      {ToastContainer}
       <TabContainer>
         <TabContext value={value}>
           <TabList
