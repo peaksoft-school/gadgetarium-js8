@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from 'react'
 import * as ITEMS from './compareItems'
 import { CompareProducts } from '../../../api/compare-products/compareProductsService'
