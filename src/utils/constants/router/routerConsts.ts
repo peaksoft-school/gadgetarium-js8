@@ -32,6 +32,6 @@ export const PATHS = {
   },
   PERSONAL: {
     personalAccount: 'personalAccount',
-    detailsHistory: '/detailsHistory'
+    order_id: ':id'
   }
 }

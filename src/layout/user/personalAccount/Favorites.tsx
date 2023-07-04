@@ -1,19 +1,31 @@
 import React from 'react'
-
+import CartProduct from '../../../components/user/historyOrders/CartProduct'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../redux/store'
+import { styled } from '@mui/material'
+import EmptyFavourites from '../../../components/user/favourites/EmptyFavourites'
+const StyledCartProduct = styled('div')(() => ({
+  width: '500px',
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
+  gap: '30px'
+}))
 const Favorites = () => {
+  const { items } = useSelector((state: RootState) => state.favourites)
+  console.log(items)
+
   return (
-    <div>
-      Favourites Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit, ullam. Illo omnis,
-      commodi ab iste assumenda molestiae saepe iusto. At minus eius dolore inventore quis ex. Quas
-      iure aspernatur blanditiis. Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe
-      doloribus aliquam molestiae magni corporis sunt? Accusantium commodi provident mollitia vero
-      fugit similique, quasi error odio laborum magnam, culpa consectetur quaerat! Lorem ipsum dolor
-      sit amet consectetur, adipisicing elit. Mollitia soluta quod numquam cumque saepe rem nesciunt
-      distinctio similique animi nulla. Sequi tempore facere consectetur similique, corrupti
-      incidunt. Rem, itaque illum?Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
-      commodi, alias praesentium vero voluptatum vitae pariatur culpa quia animi eveniet similique
-      molestiae qui laborum? Modi magnam rem est aperiam cum?
-    </div>
+    <StyledCartProduct>
+      {items?.map((item) => (
+        <CartProduct
+          img={item.image}
+          title={item.productInfo}
+          rating={item.rating}
+          price={item.price}
+          quantityOfPeople={item.quantityBasket}
+        />
+      ))}
+    </StyledCartProduct>
   )
 }
 

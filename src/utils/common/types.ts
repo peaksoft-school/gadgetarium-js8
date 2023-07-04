@@ -42,3 +42,37 @@ export type OrderPaginationType = {
   totalPages: number
   countOfElements: number
 }
+
+export type DetailsHistoryType = {
+  data: {
+    orderNumber: string
+    orderedProducts: [
+      {
+        subProductId: number
+        image: string
+        quantity: number
+        productInfo: string
+        rating: number
+        countOfReviews: number
+        price: number
+        discount: number
+        createdAt: string
+        inFavorites: boolean
+        inComparisons: boolean
+      }
+    ]
+    status: string
+    client: string
+    firstName: string
+    region: string
+    address: string
+    telNumber: string
+    email: string
+    date: string
+    paymentType: string
+    lastName: string
+    city: string
+    discountPrice: number
+    totalPrice: number
+  }
+}

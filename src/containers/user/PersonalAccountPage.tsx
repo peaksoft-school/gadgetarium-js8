@@ -61,18 +61,20 @@ const PersonalAccount = () => {
   }
   const text = getText()
   return (
-    <Container>
-      <StyledNav>
-        <StyledNavLink>Личный кабинет </StyledNavLink>
-        <StyledNavLink>{text} </StyledNavLink>
-      </StyledNav>
+    <div style={{ background: '#f4f4f4' }}>
+      <Container>
+        <StyledNav>
+          <StyledNavLink>Личный кабинет </StyledNavLink>
+          <StyledNavLink>{text} </StyledNavLink>
+        </StyledNav>
 
-      <Title>{text}</Title>
-      <StyledDivider orientation="horizontal" />
-      <StyledDiv>
-        <CreateTabContainer value={value} setValue={setValue} />
-      </StyledDiv>
-    </Container>
+        <Title>{text}</Title>
+        <StyledDivider orientation="horizontal" />
+        <StyledDiv>
+          <CreateTabContainer value={value} setValue={setValue} />
+        </StyledDiv>
+      </Container>
+    </div>
   )
 }
 

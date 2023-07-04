@@ -13,7 +13,6 @@ import BasketPage from '../../components/user/basket/BasketPage'
 import AboutStore from '../../layout/user/about/AboutStore'
 import { FavouritesPage } from '../../components/user/favourites/FavouritesPage'
 import PersonalAccount from '../../containers/user/PersonalAccountPage'
-import { Details } from '@mui/icons-material'
 import DetailsHistoryProduct from '../../components/user/historyOrders/DetailsProduct'
 
 const MainRoutes = () => {
@@ -38,8 +37,10 @@ const MainRoutes = () => {
           <Route path={PATHS.MAIN.ordering} element={<p>OrderingPage</p>} />
         </Route>
         <Route path={PATHS.MAIN.basket} element={<BasketPage />} />
-        <Route path={PATHS.PERSONAL.personalAccount} element={<PersonalAccount />} />
-        <Route path={PATHS.PERSONAL.detailsHistory} element={<DetailsHistoryProduct />} />
+        <Route path={PATHS.PERSONAL.personalAccount} element={<Outlet />}>
+          <Route index element={<PersonalAccount />} />
+          <Route path={PATHS.PERSONAL.order_id} element={<DetailsHistoryProduct />} />
+        </Route>
 
         <Route
           path={PATHS.MAIN.user}

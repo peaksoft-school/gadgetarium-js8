@@ -41,3 +41,11 @@ export type ErrorMessageType = {
   exceptionClassName: string
   message: string
 }
+
+export type TypeOrderHistory = {
+  order_id: number
+  date: string
+  orderNumber: string
+  status: string
+  totalPrice: number
+}[]

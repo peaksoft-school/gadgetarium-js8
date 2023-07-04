@@ -9,7 +9,8 @@ import { basketSlice } from './basket/basket.slice'
 import { getProductSlice } from './userMainPage/getProduct.slice'
 import searchSlice from './userMainPage/search.slice'
 import { favouritesSlice } from './favourites/favourites.slice'
-// import { historyOrderSlice } from './userMainPage/orderHistory.slice'
+import { historyOrderSlice } from './userMainPage/orderHistory.slice'
+import dataProfileSlice from './userMainPage/profileData.slice'
 
 export const store = configureStore({
   reducer: {
@@ -23,8 +24,9 @@ export const store = configureStore({
     [basketSlice.name]: basketSlice.reducer,
     [getProductSlice.name]: getProductSlice.reducer,
     [searchSlice.name]: searchSlice.reducer,
-    [favouritesSlice.name]: favouritesSlice.reducer
-    // [historyOrderSlice.name]: historyOrderSlice.reducer
+    [favouritesSlice.name]: favouritesSlice.reducer,
+    [historyOrderSlice.name]: historyOrderSlice.reducer,
+    [dataProfileSlice.name]: dataProfileSlice.reducer
   }
 })
 

@@ -64,9 +64,9 @@ export const getRecommendedProduct = createAsyncThunk(
 )
 export const getHistoryOrderDetails = createAsyncThunk(
   'historyOrderDitails/getHistoryOrderDetails',
-  async (orderId: number, { rejectWithValue }) => {
+  async (id: string | undefined, { rejectWithValue }) => {
     try {
-      const { data } = await getOrderHistoryDetailsRequest(orderId)
+      const { data } = await getOrderHistoryDetailsRequest(id)
       return data
     } catch (e) {
       if (isAxiosError(e)) {
