@@ -25,7 +25,7 @@ const Toastify = styled(ToastContainer)(() => ({
     }
   }
 }))
-export const useSnackbar = ({ autoClose = 2000, position = 'top-right' }: SnackbarType) => {
+export const useSnackbar = ({ autoClose = 2000, position = 'bottom-right' }: SnackbarType) => {
   const snackbarHanler = ({
     message = 'Товар успешно добавлен в корзину!',
     linkText = '',

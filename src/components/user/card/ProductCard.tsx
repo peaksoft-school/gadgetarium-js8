@@ -47,7 +47,7 @@ const StyledIconButtonHeart = styled(IconButtons)(({ activeColor }: { activeColo
 }))
 
 const CardContainer = styled('div')(() => ({
-  width: '100%',
+  width: '350px',
   borderRadius: '4px',
   boxSizing: 'border-box',
   background: '#fff',

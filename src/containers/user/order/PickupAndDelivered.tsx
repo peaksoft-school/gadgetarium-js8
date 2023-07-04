@@ -5,7 +5,8 @@ import Button from '../../../components/UI/buttons/Button'
 import { ChangeEvent } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
-
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 type Props = {
   chooseSecondCardHandler: () => void
   chooseFirstCardHandler: () => void
@@ -17,7 +18,7 @@ type Props = {
   email: string
   phoneNumber: string
   changeEmailHandler: (event: ChangeEvent<HTMLInputElement>) => void
-  changePhoneNumberHandler: (event: ChangeEvent<HTMLInputElement>) => void
+  changePhoneNumberHandler: (value: string) => void
   address: string
   changeAddressHandler: (event: ChangeEvent<HTMLInputElement>) => void
   formError: {
@@ -108,17 +109,7 @@ const FirstLineData = styled('div')(() => ({
 const StyledInput = styled(Input)(() => ({
   width: '100%'
 }))
-const StyledInpuNumber = styled(Input)(() => ({
-  width: '100%',
-  '& input[type="number"]::-webkit-inner-spin-button': {
-    '-webkit-appearance': 'none',
-    margin: 0
-  },
-  '& input[type="number"]::-webkit-outer-spin-button': {
-    '-webkit-appearance': 'none',
-    margin: 0
-  }
-}))
+
 const StyledButton = styled(Button)(() => ({
   width: '100%',
   textTransform: 'capitalize',
@@ -144,7 +135,6 @@ const PickupAndDelivered = ({
   submitHandler
 }: Props) => {
   const order = useSelector((state: RootState) => state.userorder)
-
   return (
     <Container>
       <Title>{order.isCheckedTwo ? 'Доставка' : 'Варианты доставки'}</Title>
@@ -219,13 +209,30 @@ const PickupAndDelivered = ({
               <label htmlFor="">
                 Телефон <Star>*</Star>
               </label>
-              <StyledInpuNumber
+              {/* <StyledInpuNumber
                 value={phoneNumber}
                 onChange={changePhoneNumberHandler}
                 type="number"
                 placeholder="+996 (_ _ _) _ _  _ _  _ _"
                 error={formError.errorPhoneNumber}
                 required
+              /> */}
+              <PhoneInput
+                country={'kg'}
+                inputStyle={{
+                  fontSize: '16px',
+                  width: '100%',
+                  height: '48px',
+                  borderRadius: '5px'
+                }}
+                containerStyle={{
+                  width: '100%',
+                  marginTop: '12.8px',
+                  outline: 'none',
+                  borderRadius: '5px'
+                }}
+                value={phoneNumber}
+                onChange={changePhoneNumberHandler}
               />
             </Grid>
           </FirstLineData>

@@ -54,7 +54,7 @@ const ContainerSumOfOrder = styled('div')(() => ({
   backgroundColor: '#ffff',
   padding: '1.875rem',
   borderRadius: '.3125rem',
-  position: 'fixed',
+  position: 'sticky',
   right: '7.5rem'
 }))
 const TitleSumOfOrder = styled('h3')(() => ({
