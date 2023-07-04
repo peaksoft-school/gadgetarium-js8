@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { Button, Checkbox, styled, Tab } from '@mui/material'
+import { Button, styled, Tab } from '@mui/material'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
-import { purple } from '@mui/material/colors'
 import { ReactComponent as RemoveIcon } from '../../../assets/icons/compare-icons/removeIcon.svg'
 import IconButtons from '../../../components/UI/buttons/IconButtons'
 import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
@@ -30,12 +29,6 @@ const StyledTabPanel = styled(TabPanel)(() => ({
 const TabContainer = styled('div')(() => ({
   width: '100%'
 }))
-
-const FilterContainer = styled('div')(() => ({
-  display: 'flex',
-  alignItems: 'center'
-}))
-
 const RemoveContainer = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center'
@@ -45,7 +38,7 @@ const AdditionalActionsContainer = styled('div')(() => ({
   width: '425px',
   display: 'flex',
   justifyContent: 'space-between',
-  marginTop: '0.3rem'
+  marginTop: '0.6rem'
 }))
 
 const StyledText = styled('p')(() => ({
@@ -172,7 +165,6 @@ const ProductTab: React.FC<ProductsTabProps> = ({ tabs, defaultValue }) => {
 
   return (
     <>
-      {ToastContainer}
       <TabContainer>
         <TabContext value={value}>
           <TabList
@@ -193,20 +185,6 @@ const ProductTab: React.FC<ProductsTabProps> = ({ tabs, defaultValue }) => {
             ))}
           </TabList>
           <AdditionalActionsContainer>
-            <FilterContainer>
-              <Checkbox
-                defaultChecked
-                sx={{
-                  // eslint-disable-next-line @typescript-eslint/dot-notation
-                  color: purple['A400'],
-                  '&.Mui-checked': {
-                    // eslint-disable-next-line @typescript-eslint/dot-notation
-                    color: purple['A400']
-                  }
-                }}
-              />
-              <StyledText>Показывать только различия</StyledText>
-            </FilterContainer>
             <RemoveContainer>
               <IconButtons onClick={openModalHandler} icon={<RemoveIcon />} />
               <StyledText onClick={openModalHandler}>Очистить список</StyledText>

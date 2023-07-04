@@ -244,7 +244,6 @@ const AppTable = <T,>({
 
   return (
     <>
-      {ToastContainer}
       <StyledTable>
         <StyledHeaderTr>
           {columns?.map((column) => (

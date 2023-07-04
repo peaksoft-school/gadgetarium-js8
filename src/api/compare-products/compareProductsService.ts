@@ -33,5 +33,5 @@ export const getCompareProducts = (queryParams: QueryType) => {
 }
 
 export const deleteCompareProductRequest = () => {
-  return mainApi.delete<AllCompareProductsResponse>(`/api/comparisons/`)
+  return mainApi.delete<AllCompareProductsResponse>(`/api/comparisons`)
 }

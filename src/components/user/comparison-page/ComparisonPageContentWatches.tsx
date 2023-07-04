@@ -1,15 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as ITEMS from './compareItems'
 import { CompareProducts } from '../../../api/compare-products/compareProductsService'
-import { Button, styled } from '@mui/material'
+import { Button, IconButton, styled } from '@mui/material'
 import { ReactComponent as Delete } from '../../../assets/icons/compare-icons/deleteIconn.svg'
 import { ReactComponent as ArrowSlider } from '../../../assets/icons/compare-icons/arrow2.svg'
 import { ReactComponent as BasketIcon } from '../../../assets/icons/header-icons/basketIcon.svg'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../../redux/store'
-import { addNewProductToBusket } from '../../../redux/store/userMainPage/MainPage.thunk'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../redux/store'
+import {
+  addNewProductToBusket,
+  addNewProductToComparison
+} from '../../../redux/store/userMainPage/MainPage.thunk'
 import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 import { getAllCompareProducts } from '../../../redux/store/compare-products/compareProducts.thunk'
+import IconButtons from '../../UI/buttons/IconButtons'
+import { incrementQuantityComparison } from '../../../redux/store/countProduct/countProductComparison.thunk'
+import EmptyComparisonPage from '../../../containers/user/comparison-page/EmtyComparison'
 
 const ComparisonToolsTable = styled('table')`
   width: 100%;
@@ -54,12 +60,10 @@ const LeftArrowSlider = styled(ArrowSlider)`
   position: absolute;
   left: 0;
   transform: rotate(180deg);
-  /* padding: 15px; */
   border-radius: 25px;
   cursor: pointer;
   border: 1px solid #cb11ab;
   transition: 0.4s;
-  opacity: 0.5;
   &:hover {
     box-shadow: 0px 2px 6px rgb(0 0 0 / 7%), 0px 0px 25px rgb(0 0 0 / 10%);
     opacity: 1;
@@ -71,13 +75,12 @@ const RightArrowSlider = styled(ArrowSlider)`
   height: 50px;
   position: absolute;
   right: 0;
+  left: 60rem;
   background: #fff;
-  /* padding: 15px; */
   border-radius: 25px;
   cursor: pointer;
   border: 1px solid #cb11ab;
   transition: 0.4s;
-  opacity: 0.5;
   &:hover {
     box-shadow: 0px 2px 6px rgb(0 0 0 / 7%), 0px 0px 25px rgb(0 0 0 / 10%);
     opacity: 1;
@@ -231,8 +234,12 @@ type Props = {
 
 const ComparisonPageContentWatches = ({ type, data }: Props) => {
   const [queryParamsSmartWatches] = useState({
-    categoryName: 'Смарт Часы'
+    categoryName: 'Смарт-часы'
   })
+  const { products } = useSelector((state: RootState) => state.compareProducts)
+  const [showAllProduct] = useState(5)
+  const [showAllNewProduct] = useState(5)
+  const [showAllRecomendProduct] = useState(5)
   const dispatch = useDispatch<AppDispatch>()
   const { snackbarHanler, ToastContainer } = useSnackbar({
     autoClose: 3000,
@@ -270,66 +277,92 @@ const ComparisonPageContentWatches = ({ type, data }: Props) => {
     e.stopPropagation()
     dispatch(addNewProductToBusket({ id: subProductId, snackbar: snackbarHandler }))
   }
+
+  const handleCountQuantityComparison = () => {
+    dispatch(incrementQuantityComparison())
+  }
+
+  const productMovedToComparisonHandle = (e: any, subProductId: number, inComparisons: boolean) => {
+    e.stopPropagation()
+    const dataComparisons = {
+      id: subProductId,
+      isComparisons: !inComparisons,
+      snackbar: snackbarHandler,
+      showAllProduct,
+      showAllNewProduct,
+      showAllRecomendProduct
+    }
+    dispatch(addNewProductToComparison(dataComparisons))
+    handleCountQuantityComparison()
+  }
   return (
     <>
-      {ToastContainer}
-      <ComparisonPageTools>
-        <ComparisonToolsTable>
-          <tbody>
-            <tr>
-              <ComparisonToolsTdLeft>
-                <div>
-                  <ComparisonToolSLeftUl>
-                    {renderSwitch(type)?.map((dataa) => (
-                      <li key={dataa.id}>{dataa.placeholder}</li>
-                    ))}
-                  </ComparisonToolSLeftUl>
-                </div>
-              </ComparisonToolsTdLeft>
-              <ComparisonToolsTdRight>
-                <ComparisonToolsRightDiv>
-                  <ComparisonToolsRightUl ref={slideRef}>
-                    <LeftArrowSlider onClick={slideLeft} />
-                    {data?.map((el) => (
-                      <ComparisonToolsRightLi key={el.name}>
-                        <ComparisonPageCard>
-                          <ComparisonCardClear>
-                            <p>
-                              <Delete />
-                            </p>
-                          </ComparisonCardClear>
-                          <ComparisonCardImage>
-                            <img src={el.img} alt={el.name} />
-                          </ComparisonCardImage>
-                          <ComparisonCardTitle>
-                            <ComparisonTitleHeader>{el.name}</ComparisonTitleHeader>
-                            <ComparisonTitleParagraph>{el.price} с</ComparisonTitleParagraph>
-                          </ComparisonCardTitle>
-                          <ComparisonCardButton>
-                            <StyledSecondButton
-                              onClick={(e) => addProductToBusket(e, el.productId)}
-                            >
-                              <BasketIcon />В корзину
-                            </StyledSecondButton>
-                          </ComparisonCardButton>
-                        </ComparisonPageCard>
-                        <ul key={el.productId}>
-                          <>
-                            <li key={el.productId}>{el.brandName}</li>
-                            <li key={el.productId}>{el.color}</li>
-                            <li key={el.productId}>{el.memory}</li>
-                          </>
-                        </ul>
-                      </ComparisonToolsRightLi>
-                    ))}
-                    <RightArrowSlider onClick={slideRight} />
-                  </ComparisonToolsRightUl>
-                </ComparisonToolsRightDiv>
-              </ComparisonToolsTdRight>
-            </tr>
-          </tbody>
-        </ComparisonToolsTable>
-      </ComparisonPageTools>
+      {/* {ToastContainer} */}
+      {products.length !== 0 ? (
+        <ComparisonPageTools>
+          <ComparisonToolsTable>
+            <tbody>
+              <tr>
+                <ComparisonToolsTdLeft>
+                  <div>
+                    <ComparisonToolSLeftUl>
+                      {renderSwitch(type)?.map((dataa) => (
+                        <li key={dataa.id}>{dataa.placeholder}</li>
+                      ))}
+                    </ComparisonToolSLeftUl>
+                  </div>
+                </ComparisonToolsTdLeft>
+                <ComparisonToolsTdRight>
+                  <ComparisonToolsRightDiv>
+                    <ComparisonToolsRightUl ref={slideRef}>
+                      <LeftArrowSlider onClick={slideLeft} />
+                      {data?.map((el) => (
+                        <ComparisonToolsRightLi key={el.name}>
+                          <ComparisonPageCard>
+                            <ComparisonCardClear>
+                              <IconButton
+                                onClick={(e) =>
+                                  productMovedToComparisonHandle(e, el.subProductId, true)
+                                }
+                              >
+                                <Delete />
+                              </IconButton>
+                            </ComparisonCardClear>
+                            <ComparisonCardImage>
+                              <img src={el.img} alt={el.name} />
+                            </ComparisonCardImage>
+                            <ComparisonCardTitle>
+                              <ComparisonTitleHeader>{el.name}</ComparisonTitleHeader>
+                              <ComparisonTitleParagraph>{el.price} с</ComparisonTitleParagraph>
+                            </ComparisonCardTitle>
+                            <ComparisonCardButton>
+                              <StyledSecondButton
+                                onClick={(e) => addProductToBusket(e, el.productId)}
+                              >
+                                <BasketIcon />В корзину
+                              </StyledSecondButton>
+                            </ComparisonCardButton>
+                          </ComparisonPageCard>
+                          <ul key={el.productId}>
+                            <>
+                              <li key={el.productId}>{el.brandName}</li>
+                              <li key={el.productId}>{el.color}</li>
+                              <li key={el.productId}>{el.memory}</li>
+                            </>
+                          </ul>
+                        </ComparisonToolsRightLi>
+                      ))}
+                      <RightArrowSlider onClick={slideRight} />
+                    </ComparisonToolsRightUl>
+                  </ComparisonToolsRightDiv>
+                </ComparisonToolsTdRight>
+              </tr>
+            </tbody>
+          </ComparisonToolsTable>
+        </ComparisonPageTools>
+      ) : (
+        <EmptyComparisonPage />
+      )}
     </>
   )
 }
