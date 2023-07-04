@@ -7,11 +7,11 @@ import Infographics from '../../../components/admin/product-infographics/Infogra
 import { AppDispatch } from '../../../redux/store'
 import OrderTab from './tabs/OrderTab'
 import { getInfographics } from '../../../redux/store/infographics/infographicsThunk'
-import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 import { DeliveryMenu } from '../../../components/admin/UI/menu-list/DeliveryMenu'
 import PickupMenu from '../../../components/admin/UI/menu-list/PickupMenu'
 import { DeleteModalOrder } from './DeleteModalOrder'
 import { useOrderAdmin } from '../../../hooks/order/useOrderAdmin'
+import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 
 const FirstContainer = styled('div')(() => ({
   width: '81.5625rem',
@@ -57,10 +57,7 @@ const StyledSearchIcon = styled(SearchIcon)(() => ({
 const OrderPage = () => {
   const dispatch = useDispatch<AppDispatch>()
   const [changeTabColor, setChangeTabColor] = useState('В обработке')
-  const { ToastContainer } = useSnackbar({
-    autoClose: 2500,
-    position: 'bottom-right'
-  })
+
   const {
     updatedTab,
     chooseDeliveryTypeHandler,
@@ -82,6 +79,7 @@ const OrderPage = () => {
     anchorEl,
     setQueryParams
   } = useOrderAdmin()
+  const { ToastContainer } = useSnackbar({ position: 'bottom-right', autoClose: 2500 })
   useEffect(() => {
     dispatch(getInfographics('day'))
   }, [])
@@ -95,55 +93,52 @@ const OrderPage = () => {
   }, [debouncedSearchTerm])
   return (
     <>
-      <>
-        <DeleteModalOrder
-          openModal={openModal}
-          closeModalHandler={closeModalHandler}
-          deleteHandler={() => deleteProductHandler(getIdProduct)}
-          text={`Вы уверены, что хотите удалить товар
-    ${getNameProduct}?`}
-        />
-        <Main>
-          <FirstContainer>
-            <StyledGrid>
-              <StyledPaper>
-                <InputBase
-                  value={searchTerm}
-                  onChange={searchTermHandler}
-                  placeholder="Поиск по артикулу или ..."
-                />
-                <IconButtons icon={<StyledSearchIcon />} />
-              </StyledPaper>
-            </StyledGrid>
-            {delivered ? (
-              <DeliveryMenu
-                open={openList}
-                anchorEl={anchorEl}
-                onClick={chooseDeliveryTypeHandler}
-                onClose={handleClose}
-              />
-            ) : (
-              <PickupMenu
-                open={openList}
-                anchorEl={anchorEl}
-                onClick={chooseDeliveryTypeHandler}
-                onClose={handleClose}
-              />
-            )}
-            <ProductsTabContainer>
-              <OrderTab
-                tabs={updatedTab}
-                defaultValue={changeTabColor}
-                setQueryParams={setQueryParams}
-                setChangeTabColor={setChangeTabColor}
-              />
-            </ProductsTabContainer>
-          </FirstContainer>
-          <Infographics infographicsData={infographics} />
-        </Main>
-      </>
-
       {ToastContainer}
+      <DeleteModalOrder
+        openModal={openModal}
+        closeModalHandler={closeModalHandler}
+        deleteHandler={() => deleteProductHandler(getIdProduct)}
+        text={`Вы уверены, что хотите удалить товар
+    ${getNameProduct}?`}
+      />
+      <Main>
+        <FirstContainer>
+          <StyledGrid>
+            <StyledPaper>
+              <InputBase
+                value={searchTerm}
+                onChange={searchTermHandler}
+                placeholder="Поиск по артикулу или ..."
+              />
+              <IconButtons icon={<StyledSearchIcon />} />
+            </StyledPaper>
+          </StyledGrid>
+          {delivered ? (
+            <DeliveryMenu
+              open={openList}
+              anchorEl={anchorEl}
+              onClick={chooseDeliveryTypeHandler}
+              onClose={handleClose}
+            />
+          ) : (
+            <PickupMenu
+              open={openList}
+              anchorEl={anchorEl}
+              onClick={chooseDeliveryTypeHandler}
+              onClose={handleClose}
+            />
+          )}
+          <ProductsTabContainer>
+            <OrderTab
+              tabs={updatedTab}
+              defaultValue={changeTabColor}
+              setQueryParams={setQueryParams}
+              setChangeTabColor={setChangeTabColor}
+            />
+          </ProductsTabContainer>
+        </FirstContainer>
+        <Infographics infographicsData={infographics} />
+      </Main>
     </>
   )
 }

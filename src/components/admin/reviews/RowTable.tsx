@@ -139,7 +139,8 @@ const EmailOfUser = styled(Typography)(() => ({
   color: '#91969E'
 }))
 const ContainerImageAndTitle = styled('div')(() => ({
-  display: 'flex'
+  display: 'flex',
+  width: '20px'
 }))
 const ContainerIconButtons = styled('div')(() => ({
   display: 'flex',

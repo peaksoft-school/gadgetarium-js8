@@ -9,6 +9,7 @@ import Loading from '../../UI/loading/Loading'
 import { SuccessModal } from '../../../containers/user/order/SuccessModal'
 import { basketActions } from '../../../redux/store/basket/basket.slice'
 import { userOrderActions } from '../../../redux/store/user-order/user.order.slice'
+import { NavLink } from 'react-router-dom'
 const Container = styled('div')(() => ({
   width: '100%',
   height: '100%',
@@ -17,11 +18,12 @@ const Container = styled('div')(() => ({
   fontStyle: 'normal',
   backgroundColor: '#e1e1e1'
 }))
-const SpanOne = styled('span')(() => ({
+const SpanOne = styled(NavLink)(() => ({
   fontWeight: 400,
   fontSize: '.875rem',
   lineHeight: '140%',
-  color: '#91969E;'
+  color: '#91969E',
+  textDecoration: 'none'
 }))
 const SpanTwo = styled('span')(() => ({
   color: '#292929',
@@ -64,7 +66,7 @@ const BasketPage = () => {
         </Box>
       ) : (
         <Container>
-          <SpanOne>Главная » </SpanOne>
+          <SpanOne to={'/'}>Главная » </SpanOne>
           <SpanTwo>Корзина</SpanTwo>
           <Title>Товары в корзине</Title>
 

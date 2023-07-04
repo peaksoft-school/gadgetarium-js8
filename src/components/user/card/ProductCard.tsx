@@ -47,7 +47,7 @@ const StyledIconButtonHeart = styled(IconButtons)(({ activeColor }: { activeColo
 }))
 
 const CardContainer = styled('div')(() => ({
-  width: '100%',
+  width: '350px',
   borderRadius: '4px',
   boxSizing: 'border-box',
   background: '#fff',
@@ -101,6 +101,7 @@ const StyledParagraph = styled('p')(() => ({
   paddingRight: '22px',
   paddingBottom: '8px',
   fontFamily: 'Inter',
+  height: '50px',
   fontStyle: 'normal',
   fontWeight: 500,
   fontSize: '16px',

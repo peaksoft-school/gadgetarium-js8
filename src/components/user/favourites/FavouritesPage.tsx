@@ -10,7 +10,7 @@ import EmptyFavourites from './EmptyFavourites'
 import { useSnackbar } from '../../../hooks/snackbar/useSnackbar'
 import { DeleteModal } from '../UI/modal/DeleteModal'
 import Button from '../../UI/buttons/Button'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import Loading from '../../UI/loading/Loading'
 
 const Container = styled('div')(() => ({
@@ -21,11 +21,12 @@ const Container = styled('div')(() => ({
   fontStyle: 'normal',
   backgroundColor: '#e1e1e1'
 }))
-const SpanOne = styled('span')(() => ({
+const SpanOne = styled(NavLink)(() => ({
   fontWeight: 400,
   fontSize: '14px',
   lineHeight: '140%',
-  color: '#91969E;'
+  color: '#91969E',
+  textDecoration: 'none'
 }))
 const SpanTwo = styled('span')(() => ({
   color: '#292929',
@@ -126,7 +127,7 @@ export const FavouritesPage = () => {
         </Box>
       ) : (
         <Container>
-          <SpanOne>Главная » </SpanOne>
+          <SpanOne to={'/'}>Главная » </SpanOne>
           <SpanTwo>Избранное</SpanTwo>
           <Title>Избранное</Title>
           {items.length === 0 ? (

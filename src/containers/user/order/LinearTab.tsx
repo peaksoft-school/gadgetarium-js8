@@ -133,8 +133,8 @@ const LinearTabs: React.FC = () => {
   const changeEmailHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value)
   }
-  const changePhoneNumberHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setPhoneNumber(event.target.value)
+  const changePhoneNumberHandler = (value: string) => {
+    setPhoneNumber(value)
   }
   const changeAddressHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setAddress(event.target.value)

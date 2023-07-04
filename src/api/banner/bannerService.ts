@@ -1,7 +1,6 @@
-import { BannerListType } from '../../utils/common/types'
 import { mainApi } from '../../config/instances'
 
-const bannerData = (values: BannerListType) => {
+const bannerData = (values: { bannerList: string[] }) => {
   return mainApi.post('api/banners', values)
 }
 

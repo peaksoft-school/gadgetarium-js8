@@ -35,9 +35,9 @@ export type DiscountProduct =
     }[]
 
 const StyledProduct = styled('div')(() => ({
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
-  gap: '8px'
+  display: 'flex',
+  flexFlow: 'wrap',
+  gap: '30px'
 }))
 
 const StyledTitle = styled('h1')(() => ({

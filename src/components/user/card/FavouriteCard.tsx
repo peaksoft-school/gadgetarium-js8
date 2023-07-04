@@ -9,7 +9,7 @@ import Button from '../../UI/buttons/Button'
 import IconButtons from '../../UI/buttons/IconButtons'
 import TextWithEllipsis from './CardText'
 import ProductRating from './RatingProduct'
-import { styled } from '@mui/material'
+import { Box, styled } from '@mui/material'
 import { CustomTooltip } from '../../UI/tooltip/CustomTooltip'
 
 interface ProductType {
@@ -72,8 +72,8 @@ const ContainerTwoIcons = styled('div')(() => ({
   alignItems: 'center',
   justifyContent: 'space-between'
 }))
-const StyledArticle = styled('article')(() => ({
-  marginTop: '30px',
+const StyledArticle = styled('article')(({ newPrice }: { newPrice: number }) => ({
+  marginTop: newPrice === 0 ? '65px' : '30px',
   textAlign: 'center'
 }))
 const StyledImage = styled('img')(() => ({
@@ -94,6 +94,7 @@ const StyledParagraph = styled('p')(() => ({
   paddingBottom: '8px',
   fontFamily: 'Inter',
   fontStyle: 'normal',
+  height: '50px',
   fontWeight: 500,
   fontSize: '16px',
   lineHeight: '22px',
@@ -192,7 +193,7 @@ export const FavouriteCard = ({
           </CustomTooltip>
         </ContainerTwoIcons>
       </ContainerIcon>
-      <StyledArticle>
+      <StyledArticle newPrice={newPrice}>
         <StyledImage src={image} alt="image" />
       </StyledArticle>
       <StyledSection>
