@@ -94,6 +94,7 @@ const StyledParagraph = styled('p')(() => ({
   paddingBottom: '8px',
   fontFamily: 'Inter',
   fontStyle: 'normal',
+  height: '50px',
   fontWeight: 500,
   fontSize: '16px',
   lineHeight: '22px',
